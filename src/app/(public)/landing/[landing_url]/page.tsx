@@ -20,10 +20,12 @@ import {
 } from "@mantine/core";
 import { IconCircleCheck, IconStar } from "@tabler/icons-react";
 
-export default async function CoursePage() {
+export default async function CoursePage({ params }: { params: { landing_url: string } }) {
+    const { landing_url } = params;
+
 
     const res = await fetch(
-    "https://api.eduelle.com/api/landingPageDetails?final_url=the-bodys-wisdom-free-the-tension-b&domain=https:%2F%2Feduelle.com",
+    `https://api.eduelle.com/api/landingPageDetails?final_url=${landing_url}&domain=https:%2F%2Feduelle.com`,
     { cache: "no-store" } // ensures fresh data every time
   );
 
