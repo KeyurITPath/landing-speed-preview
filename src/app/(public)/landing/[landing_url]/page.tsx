@@ -38,7 +38,7 @@ export default async function CoursePage({ params }: { params: { landing_url: st
   const priceData = data?.data?.course?.course_prices[0];
 
   return (
-    <Container size="lg" py="xl">
+    <Container size="md" py="xl">
       {/* Video & Title */}
       <Card withBorder radius="md" mb="lg" shadow="sm" p="md">
         <Image
