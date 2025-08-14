@@ -35,13 +35,14 @@ export default async function CoursePage({ params }: { params: { landing_url: st
 
   const data = await res.json();
   const courseData = data?.data?.landing_page_translations[0] as any
+  const priceData = data?.data?.course?.course_prices[0];
 
   return (
     <Container size="lg" py="xl">
       {/* Video & Title */}
       <Card withBorder radius="md" mb="lg" shadow="sm" p="md">
         <Image
-          src="https://coursemarketplace2025.s3.amazonaws.com/intro-thumbnail/1750091793423-the_bodys_wisdom.jpeg" // Replace with actual video preview image
+          src={courseData?.intro_thumbnail} // Replace with actual video preview image
           alt="Course Preview"
           radius="md"
         />
@@ -71,9 +72,9 @@ export default async function CoursePage({ params }: { params: { landing_url: st
       <Title order={3} mb="sm">
         Reviews
       </Title>
-      {courseData?.comments?.map?.((item:any)=>{
+      {courseData?.comments?.map?.((item:any, index:number)=>{
         return (
-<Card withBorder radius="md" p="md" mb="xl">
+<Card key={`comment-${index}`} withBorder radius="md" p="md" mb="xl">
         <Group>
           <Avatar src="/reviewer.jpg" radius="xl" />
           <Stack gap={0}>
@@ -118,9 +119,9 @@ export default async function CoursePage({ params }: { params: { landing_url: st
         How We’ll Make It Happen
       </Title>
       <List spacing="sm" size="sm" mb="xl">
-        {courseData?.landing_page_lessons?.map?.((item:any)=>{
+        {courseData?.landing_page_lessons?.map?.((item:any, index:number)=>{
           return(
- <ListItem>
+ <ListItem key={`landing-lession-${index}`}>
           <Text fw={500}>{item?.ap_title}</Text>
           {item?.ap_description}
         </ListItem>
@@ -165,7 +166,7 @@ export default async function CoursePage({ params }: { params: { landing_url: st
 
       {/* CTA */}
       <Button size="lg" color="green" fullWidth>
-        Join Now – $19 (90% Off)
+        Join Now – {`${priceData?.currency?.currency_symbol}${priceData?.price}`} (90% Off)
       </Button>
     </Container>
   );
