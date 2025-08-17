@@ -1,6 +1,41 @@
 import { rem } from '@mantine/core';
 import dayjs from 'dayjs';
 import { capitalize } from '@/utils/helper';
+import momentTimezone from 'moment-timezone';
+
+export const LOCAL_STORAGE_KEY = 'edzenity:';
+
+// const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+export const DOMAIN = 'https://staging.eduelle.com';
+
+export const RAPID_API_KEY = "8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b";
+
+export const SERVER_URL = 'https://staging-api.eduelle.com';
+
+export const TIMEZONE = momentTimezone.tz.guess();
+
+export const USER_ROLE = {
+    CUSTOMER: 'customer',
+    AUTHOR: 'author',
+};
+
+export const POPUPS_CATEGORIES = {
+    sales: 'sales_popups',
+    cancel: 'cancel_popups',
+    trial_popups: 'trial_popups',
+    trial_banner: 'trial_banner',
+    cancel_delay: 'cancel_delay'
+};
+
+export const METHODS = {
+    GET: 'get',
+    DELETE: 'delete',
+    HEAD: 'head',
+    OPTIONS: 'options',
+    POST: 'post',
+    PUT: 'put',
+    PATCH: 'patch'
+};
 
 export const DASHBOARD_HEADER_HEIGHT = rem(60);
 export const DASHBOARD_FOOTER_HEIGHT = rem(40);

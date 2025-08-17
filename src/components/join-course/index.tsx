@@ -1,0 +1,354 @@
+import { Avatar, Box, Container, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { keyframes } from '@emotion/react';
+import CustomButton from "@shared/button"
+// import CustomButton from '../../../../shared/button';
+// import { Trans, useTranslation } from 'react-i18next';
+// import { URLS } from '../../../../constant/urls';
+// import { useEffect, useState, useRef, useMemo } from 'react';
+// import { scrollToSection } from '../../../../assets/utils/function';
+import { scrollToSection } from '@utils/helper';
+// import { useSelector } from 'react-redux';
+import { JOIN_COURSE_IMAGES, MEMBER_AVATAR_IMAGES } from '../../assets/images';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import {useTranslations} from 'next-intl';
+
+// import useLocation from '../../../../hooks/use-location';
+
+const scrollAnimation = keyframes`
+  0% { transform: translateY(0); }
+  100% { transform: translateY(calc(-50%)); }
+`;
+
+const JOIN_COURSES = [
+    JOIN_COURSE_IMAGES.joinCourse1,
+    JOIN_COURSE_IMAGES.joinCourse2,
+    JOIN_COURSE_IMAGES.joinCourse3,
+    JOIN_COURSE_IMAGES.joinCourse4,
+    JOIN_COURSE_IMAGES.joinCourse5,
+    JOIN_COURSE_IMAGES.joinCourse6
+];
+
+const MEMBER_AVATARS = [
+    MEMBER_AVATAR_IMAGES.memberAvatar1,
+    MEMBER_AVATAR_IMAGES.memberAvatar2,
+    MEMBER_AVATAR_IMAGES.memberAvatar3,
+    MEMBER_AVATAR_IMAGES.memberAvatar4,
+    MEMBER_AVATAR_IMAGES.memberAvatar5
+];
+
+const JoinCourse = () => {
+    const t = useTranslations();
+    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [startAnimation, setStartAnimation] = useState(false);
+    const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+
+    const loadedImagesCount = useRef(0);
+    const totalExpectedImages = useRef(0);
+
+    // const { domainDetails } = useSelector((state) => state.defaults);
+    // const DOMAIN_DETAILS = useMemo(() => {
+    //     const clone = { ...domainDetails };
+    //     return {
+    //         BRAND_NAME: clone?.data?.domain_detail?.brand_name || ''
+    //     };
+    // }, [domainDetails]);
+
+    // const { isLoggedIn } = useSelector(({ auth }) => auth);
+    // const { handleRedirect } = useLocation()
+
+    const hasImages = Array.isArray(JOIN_COURSES) && JOIN_COURSES.length > 0;
+    // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+    const quadruplicatedImages = hasImages
+        ? [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES]
+        : [];
+
+    const leftColumnImages = quadruplicatedImages.filter((_, i) => i % 2 === 0);
+    const rightColumnImages = quadruplicatedImages.filter((_, i) => i % 2 !== 0);
+
+    useEffect(() => {
+        if (hasImages) {
+            totalExpectedImages.current = leftColumnImages.length + rightColumnImages.length;
+        }
+    }, [hasImages, leftColumnImages.length, rightColumnImages.length]);
+
+// Removed useEffect for isMobile, as useMediaQuery is now used directly
+
+    const handleImageLoad = () => {
+        loadedImagesCount.current += 1;
+        if (loadedImagesCount.current >= Math.min(4, totalExpectedImages.current)) {
+            setImagesLoaded(true);
+        }
+    };
+
+    useEffect(() => {
+        if (imagesLoaded) {
+            const timer = setTimeout(() => {
+                setStartAnimation(true);
+            }, 300);
+            return () => clearTimeout(timer);
+        }
+    }, [imagesLoaded]);
+
+    const animationDuration = hasImages ? Math.max(40, JOIN_COURSES.length * 5) : 0;
+
+    return (
+        <Box
+            sx={{
+                width: '100%',
+                backgroundColor: '#fcfaff',
+                flexDirection: { xs: 'column', md: 'row' },
+                alignItems: 'center'
+            }}
+        >
+            <Container maxWidth="lg" component={Grid} container>
+                <Grid size={{ xs: 12 }}>
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{ display: 'flex', flexDirection: { xs: 'row', sm: 'row' } }}
+                    >
+                        <Grid
+                            size={{ xs: 12, sm: 7 }}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-start'
+                            }}
+                        >
+                            <Stack
+                                spacing={{ xs: 2, sm: 3 }}
+                                gap={{ xs: 1, sm: 2 }}
+                                maxWidth={{ xs: '100%', sm: '400px' }}
+                                mx={{ xs: 'auto', sm: 0 }}
+                                my={{ xs: 2, sm: 0 }}
+                            >
+                                {/* <Typography sx={{ xs: 14, sm: 18 }}>
+                                    <span style={{ color: '#304BE0' }}>
+                                        {t('unlock_your_potential', {
+                                            brand_name: DOMAIN_DETAILS.BRAND_NAME
+                                        })}
+                                    </span>{' '}
+                                </Typography> */}
+                                <Typography variant="h3">{t('live_with_total_mind')}</Typography>
+
+                                <Typography sx={{ xs: 16, sm: 18 }}>
+                                    {/* {t('get_unlimited_access')} */}
+                                    {/* <Trans
+                                        i18nKey="get_unlimited_access"
+                                        components={{
+                                            span: (
+                                                <span
+                                                    style={{ fontWeight: 600, color: '#304BE0' }}
+                                                />
+                                            )
+                                        }}
+                                    /> */}
+                                </Typography>
+
+                                <Stack
+                                    spacing={2}
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-start'
+                                    }}
+                                >
+                                    {/* {isLoggedIn ? ( */}
+                                    {false ? (
+                                        <CustomButton
+                                            variant="gradient"
+                                            size={isMobile ? 'medium' : 'large'}
+                                            sx={{
+                                                borderRadius: '8px',
+                                                fontSize: { xs: '14px', sm: '16px' }
+                                            }}
+                                            // onClick={() => handleRedirect(URLS.DASHBOARD.path)}
+                                        >
+                                            {t('dashboard')}
+                                        </CustomButton>
+                                    ) : (
+                                        <CustomButton
+                                            variant="gradient"
+                                            size={isMobile ? 'medium' : 'large'}
+                                            sx={{
+                                                borderRadius: '8px',
+                                                fontSize: { xs: '14px', sm: '16px' }
+                                            }}
+                                            onClick={() => scrollToSection('courses')}
+                                        >
+                                            {t('join_now')}
+                                        </CustomButton>
+                                    )}
+                                </Stack>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={{ xs: 1, sm: 2 }}
+                                >
+                                    <Stack direction="row" sx={{ position: 'relative' }}>
+                                        {MEMBER_AVATARS?.map((memberImg, index) => (
+                                            <Avatar
+                                                key={index}
+                                                src={typeof memberImg === 'string' ? memberImg : memberImg.src}
+                                                alt={`member-${index}`}
+                                                sx={{
+                                                    width: { xs: 42, sm: 48 },
+                                                    height: { xs: 42, sm: 48 },
+                                                    marginLeft: index === 0 ? 0 : '-14px',
+                                                    zIndex: 1
+                                                }}
+                                            />
+                                        ))}
+                                    </Stack>
+                                    <Stack>
+                                        <Typography
+                                            color="#747474"
+                                            fontSize={{ xs: '10px', sm: '12px' }}
+                                        >
+                                            {t('trusted_by')}
+                                        </Typography>
+                                        <Typography
+                                            fontSize={{ xs: '14px', sm: '18px' }}
+                                            fontWeight={500}
+                                        >
+                                            {t('members')}
+                                        </Typography>
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Grid>
+
+                        <Grid size={{ xs: 12, sm: 5 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 2,
+                                    overflow: 'hidden',
+                                    height: '500px',
+                                    width: '100%',
+                                    opacity: imagesLoaded ? 1 : 0.1,
+                                    transition: 'opacity 0.8s ease-in',
+                                    position: 'relative'
+                                }}
+                            >
+                                {hasImages && (
+                                    <>
+                                        <Box
+                                            sx={{
+                                                flex: 1,
+                                                overflow: 'hidden',
+                                                position: 'relative',
+                                                willChange: 'transform',
+                                                perspective: 1000,
+                                                backfaceVisibility: 'hidden'
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    animation: startAnimation
+                                                        ? `${scrollAnimation} ${animationDuration}s linear infinite`
+                                                        : 'none',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    gap: '16px',
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    willChange: 'transform',
+                                                    transform: 'translate3d(0,0,0)'
+                                                }}
+                                            >
+                                                {leftColumnImages.map((item, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        sx={{
+                                                            mb: 2,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                    >
+                                                        <Image
+                                                        src={item}
+                                                        alt={`join-course-${index}`}
+                                                        loading={index < 4 ? 'eager' : 'lazy'}
+                                                            style={{
+                                                                borderRadius: '14px',
+                                                                width: '100%',
+                                                                maxWidth: 230,
+                                                                maxHeight: 250,
+                                                                objectFit: 'cover',
+                                                                display: 'block'
+                                                            }}
+                                                            onLoad={handleImageLoad}
+                                                        />
+
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        </Box>
+
+                                        <Box
+                                            sx={{
+                                                flex: 1,
+                                                overflow: 'hidden',
+                                                position: 'relative',
+                                                willChange: 'transform',
+                                                perspective: 1000,
+                                                backfaceVisibility: 'hidden'
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    animation: startAnimation
+                                                        ? `${scrollAnimation} ${animationDuration + 5}s linear infinite`
+                                                        : 'none',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    gap: '16px',
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    transform: 'translate3d(0, -10%, 0)',
+                                                    willChange: 'transform'
+                                                }}
+                                            >
+                                                {rightColumnImages.map((item, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        sx={{
+                                                            mb: 2,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center'
+                                                        }}
+                                                    >
+
+                                                        <Image
+                                                            src={item}
+                                                            alt={`join-course-alt-${index}`}
+                                                            loading={index < 4 ? 'eager' : 'lazy'}
+                                                            style={{
+                                                                borderRadius: '14px',
+                                                                width: '100%',
+                                                                maxHeight: 250,
+                                                                objectFit: 'cover',
+                                                                display: 'block'
+                                                            }}
+                                                            onLoad={handleImageLoad}
+                                                        />
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        </Box>
+                                    </>
+                                )}
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Container>
+        </Box>
+    );
+};
+
+export default JoinCourse;

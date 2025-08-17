@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routes } from '@/utils/constants/routes';
+import createMiddleware from 'next-intl/middleware';
+
 
 const PUBLIC_ROUTES = Object.values(routes.public);
 const AUTH_ROUTES = Object.values(routes.auth);
@@ -59,3 +61,8 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|api).*)',
   ],
 };
+
+export default createMiddleware({
+  locales: ['en', 'es', 'fr'],
+  defaultLocale: 'en'
+});

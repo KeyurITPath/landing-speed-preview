@@ -1,5 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 import { API } from '../../configs/env';
+import { LOCAL_STORAGE_KEY } from '../../configs/constant';
+import { SERVER_URL } from '@utils/constants';
 
 export interface LogError {
   (error: unknown): void;
@@ -188,4 +190,82 @@ export const isInitialSetCookies = () => {
     return true;
   }
   return false;
+};
+
+
+export const getLocalStorage = (key:string) => {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+};
+
+export const getPersistReducerState = (reducer:string) => {
+    const persistedData = localStorage.getItem(`persist:${LOCAL_STORAGE_KEY}`);
+    if (persistedData) {
+        try {
+            const state = JSON.parse(persistedData);
+            return JSON.parse(state[reducer]);
+        } catch (error) {
+            logError(error);
+            return null;
+        }
+    }
+    return null;
+};
+
+export const scrollToSection = (id:string) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+
+export const getDomainName = (url = '') => {
+    if (!url) return '';
+    // Ensure the URL is valid
+    const hostname = new URL(url).hostname; // e.g. "staging.edzen.org"
+    const parts = hostname.split('.');
+
+    // Handles domains like "staging.edzen.org" or "admin.panel.eduelle.com"
+    const mainDomain = parts.length >= 2 ? parts[parts.length - 2] : parts[0];
+
+    // Capitalize first letter
+    return mainDomain.charAt(0).toUpperCase() + mainDomain.slice(1);
+};
+
+
+export const formatCurrency = (amount = 0, currencyCode = 'USD') => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    }).format(amount);
+};
+
+export const isEmptyArray = (arr) => {
+    if (!arr) return true;
+    return arr.length === 0;
+};
+
+export const isEmptyObject = (obj) => {
+    if (!obj) return true;
+    return Object.getOwnPropertyNames(obj).length === 0;
+};
+
+
+export const shouldOfferTrial = (user) => {
+    const { is_user_purchased_trial, subscription_end_date } = user;
+
+    const now = new Date();
+    const subEndDate = subscription_end_date ? new Date(subscription_end_date) : null;
+    const isSubscriptionExpired = subEndDate && subEndDate < now;
+
+    // Show discount modal only if both: trial was purchased AND subscription is expired
+    return is_user_purchased_trial || isSubscriptionExpired;
+};
+
+export const videoURL = (url = '') => {
+    if (!url) return '';
+    return url.startsWith('http://') || url.startsWith('https://') ? url : SERVER_URL + url;
 };

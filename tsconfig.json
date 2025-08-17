@@ -21,10 +21,12 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
+      "@shared/*": ["./src/shared/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
       "@assets/*": ["./src/assets/*"],
       "@api/*": ["./src/api/*"],
+      "@store/*": ["./src/store/*"],
       "@configs/*": ["./src/configs/*"],
       "@layouts/*": ["./src/layouts/*"]
     }

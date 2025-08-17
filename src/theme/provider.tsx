@@ -1,5 +1,5 @@
 import { MantineProvider } from '@mantine/core';
-import { customTheme } from './index';
+import { customTheme } from './index-old';
 
 interface ThemeProviderProps {
   children: React.ReactNode;

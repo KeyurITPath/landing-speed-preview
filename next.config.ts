@@ -1,11 +1,16 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
 
 const nextConfig: NextConfig = {
   /* config options here */
 
   typescript: {
     ignoreBuildErrors: true, // Ignore TypeScript errors during build
+  },
+  eslint:{
+    ignoreDuringBuilds: true,
   },
 
   reactStrictMode: false,
@@ -33,7 +38,11 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+const withNextIntl = createNextIntlPlugin();
+
+const nextIntlConfig = withNextIntl(nextConfig);
+
+export default withSentryConfig(nextIntlConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 

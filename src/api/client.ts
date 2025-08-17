@@ -28,6 +28,7 @@ const client = async ({
   data = {},
   cookieToken = '',
   headers = {},
+  params = {},
   isServer = false,
   ...rest
 }: {
@@ -36,6 +37,7 @@ const client = async ({
   cookieToken?: string;
   isServer?: boolean;
   headers?: Record<string, string>;
+  params?: any;
   data?: {
     params?: any;
     [key: string]: unknown;
@@ -47,7 +49,7 @@ const client = async ({
     : `${FULL_BASE_URL}${url}`;
   let token = cookieToken;
 
-  const { params, ...restData } = data;
+  const { ...restData } = data;
 
   // Handle query params
   if (isNotEmptyObject(params)) {
@@ -71,6 +73,7 @@ const client = async ({
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
+
     credentials: 'include',
     ...rest,
   };
@@ -86,8 +89,7 @@ const client = async ({
         .get('Content-Type')
         ?.includes('application/json');
       const responseType = isJSON ? await res.json() : await res.text();
-
-      if (!res.ok) {
+      if (res.ok) {
         return { status: res?.status, data: responseType };
       } else {
         const { data, error } = responseType || {};

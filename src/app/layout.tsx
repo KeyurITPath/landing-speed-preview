@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import '@mantine/core/styles.css';
-import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
-import ThemeProvider from '../theme/provider';
+import ThemeRegistry from './ThemeRegistry';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import notFound from './not-found';
+import { NextIntlClientProvider } from 'next-intl';
+import ReduxProvider from '../store/ReduxProvider';
+
+
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -46,18 +50,28 @@ export const viewport: Viewport = {
   themeColor: '#0A192F',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+export default async function RootLayout(props: Readonly<{
   children: React.ReactNode;
+
 }>) {
+  const { children } = props;
+
+  const locale = "en";
+
   return (
-    <html lang='en' {...mantineHtmlProps}>
+    <html lang={locale}>
       <head>
-        <ColorSchemeScript />
+        {/* <ColorSchemeScript /> */}
       </head>
       <body className={`${poppins.variable}`} suppressHydrationWarning={true}>
-        <ThemeProvider>{children}</ThemeProvider>
+        {/* <ThemeProvider>{children}</ThemeProvider> */}
+      <ReduxProvider>
+        <NextIntlClientProvider>
+          <AppRouterCacheProvider>
+            <ThemeRegistry>{children}</ThemeRegistry>
+          </AppRouterCacheProvider>
+        </NextIntlClientProvider>
+      </ReduxProvider>
       </body>
     </html>
   );
