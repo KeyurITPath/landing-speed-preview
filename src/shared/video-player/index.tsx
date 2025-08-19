@@ -5,6 +5,7 @@ import 'video.js/dist/video-js.css';
 import './video-player.css';
 import { IconButton, Skeleton, useMediaQuery } from '@mui/material';
 import { ICONS } from '@assets/icons';
+import Image from 'next/image';
 
 const VideoPlayer = ({
   options,
@@ -317,11 +318,13 @@ const VideoPlayer = ({
           }}
         >
           {options?.poster ? (
-            // eslint-disable-next-line
-            <img fetchpriority="high"
+
+            <Image
               src={options.poster}
               alt="Loading video"
-              loading="eager"
+              loading="lazy"
+              width={options?.posterWidth || 640}
+              height={options?.posterHeight || 360}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           ) : (
