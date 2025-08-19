@@ -5,6 +5,7 @@ import ThemeRegistry from './ThemeRegistry';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { NextIntlClientProvider } from 'next-intl';
 import ReduxProvider from '../store/ReduxProvider';
+import Footer from '@components/footer';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -63,7 +64,11 @@ export default async function RootLayout(
         <ReduxProvider>
           <NextIntlClientProvider>
             <AppRouterCacheProvider>
-              <ThemeRegistry>{children}</ThemeRegistry>
+              <ThemeRegistry>
+                {children}
+                <Footer />
+              </ThemeRegistry>
+
             </AppRouterCacheProvider>
           </NextIntlClientProvider>
         </ReduxProvider>
