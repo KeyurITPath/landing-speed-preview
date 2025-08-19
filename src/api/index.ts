@@ -53,7 +53,7 @@ export const api = {
       }),
     logout: ({ ...configs }: any) =>
       client({
-        url: '/logout',
+        url: '/api/logout',
         method: METHODS.POST,
         isServer: true,
         ...configs,

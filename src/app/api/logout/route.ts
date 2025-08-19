@@ -5,17 +5,8 @@ export async function POST() {
   try {
     // Get cookies
     const cookieStore = await cookies();
-
-    // Here you would typically:
-    // 1. Validate the token
-    // 2. Add token to blacklist/revoke on your backend
-    // 3. Log the logout event
-
     const token = cookieStore.get('token')?.value;
-
     if (token) {
-      // You can add your backend logout logic here
-      // For example: await revokeToken(token);
       console.log('Token being logged out:', token);
     }
 

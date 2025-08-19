@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const isFunction = (fn: any) => typeof fn === 'function';
 
-const isTokenActive = (token = null) => {
+const isTokenActive = (token = '') => {
   if (!token) return false;
   const decoded = jwtDecode(token);
   return decoded?.exp && decoded.exp > Date.now() / 1000;
@@ -17,7 +17,7 @@ const scrollToSection = (id = '') => {
   }
 };
 
-const decodeToken = (token = null) => {
+const decodeToken = (token = '') => {
   if (!token) return false;
   const decoded = jwtDecode(token);
   return { ...decoded, token };

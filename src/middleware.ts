@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routes } from '@/utils/constants/routes';
 import createMiddleware from 'next-intl/middleware';
+import { decodeToken, isTokenActive } from './utils/helper';
+import { USER_ROLE } from '@/utils/constants';
 
 const PUBLIC_ROUTES = Object.values(routes.public);
 const AUTH_ROUTES = Object.values(routes.auth);
@@ -8,43 +10,41 @@ const PROTECTED_ROUTES = Object.values(routes.private).filter(
   route => typeof route === 'string'
 );
 
+function getRedirectUrl(decodedToken: any, request: NextRequest): NextResponse | null {
+  if (
+    (decodedToken?.role === USER_ROLE.CUSTOMER && decodedToken?.is_verified) ||
+    decodedToken?.role === USER_ROLE.AUTHOR
+  ) {
+    return NextResponse.redirect(new URL(routes.private.dashboard, request.url));
+  }
+  if (decodedToken?.role === USER_ROLE.CUSTOMER && !decodedToken?.is_verified) {
+    return NextResponse.redirect(new URL(routes.public.home, request.url));
+  }
+  return null; // no redirect, just continue
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('token')?.value; // replace 'token' with your cookie name
+  const token = request.cookies.get('token')?.value || ''; // replace 'token' with your cookie name
 
-  // Check if token exists and is active (pseudo-check, replace with real logic)
-  let isTokenValid = false;
-  if (token) {
-    try {
-      const payload = JSON.parse(
-        Buffer.from(token.split('.')[1], 'base64').toString()
-      );
-      const now = Math.floor(Date.now() / 1000);
-      isTokenValid = payload.exp && payload.exp > now;
-    } catch {
-      isTokenValid = false;
+  const decodedToken = decodeToken(token);
+
+ // Public routes → allow
+  if (PUBLIC_ROUTES.includes(pathname)) return NextResponse.next();
+
+  // Auth routes → redirect if already logged in
+  if (AUTH_ROUTES.includes(pathname) && decodedToken) {
+    const redirect = getRedirectUrl(decodedToken, request);
+    return redirect ?? NextResponse.next();
+  }
+
+ // Protected routes → redirect if not logged in
+  if (PROTECTED_ROUTES.some(route => pathname.startsWith(route))) {
+    if (!decodedToken) {
+      return NextResponse.redirect(new URL(routes.auth.login, request.url));
     }
-  }
-
-  // --- 1. Allow public routes
-  if (PUBLIC_ROUTES.includes(pathname)) {
-    return NextResponse.next();
-  }
-
-  // --- 2. Auth pages: redirect to /dashboard if already logged in
-  if (AUTH_ROUTES.includes(pathname) && isTokenValid) {
-    return NextResponse.redirect(
-      new URL(routes.private.dashboard, request.url)
-    );
-  }
-
-  // --- 3. Protected routes
-  const isProtected = PROTECTED_ROUTES.some(prefix =>
-    pathname.startsWith(prefix)
-  );
-
-  if (isProtected && !isTokenValid) {
-    return NextResponse.redirect(new URL(routes.auth.login, request.url));
+    const redirect = getRedirectUrl(decodedToken, request);
+    return redirect ?? NextResponse.next();
   }
 
   // --- 4. Everything else

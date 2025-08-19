@@ -5,8 +5,6 @@ const BASE_URL = SERVER_URL;
 const DEFAULT_PREFIX = '/api';
 const FULL_BASE_URL = `${BASE_URL}${DEFAULT_PREFIX}`;
 
-const FULL_SERVER_URL = `${SERVER_URL}${DEFAULT_PREFIX}`;
-
 export const METHODS = {
   POST: 'post',
   GET: 'get',
@@ -42,7 +40,7 @@ const client = async ({
   rest?: Record<string, unknown>;
 }) => {
   let fullUrl = isServer
-    ? `${FULL_SERVER_URL}${url}`
+    ? `${url}`
     : `${FULL_BASE_URL}${url}`;
   let token = cookieToken;
 
