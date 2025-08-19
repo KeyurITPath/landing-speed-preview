@@ -1,26 +1,26 @@
 import { useState } from 'react';
 
 const useToggleState = (initialState = false) => {
-    const [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialState);
 
-    const close = () => {
-        setState(false);
-    };
+  const close = () => {
+    setState(false);
+  };
 
-    const open = (data) => {
-        setState(data || true);
-    };
+  const open = data => {
+    setState(data || true);
+  };
 
-    const toggle = () => {
-        setState((state) => !state);
-    };
+  const toggle = () => {
+    setState(state => !state);
+  };
 
-    const hookData = [state, open, close, toggle];
-    hookData.state = state;
-    hookData.open = open;
-    hookData.close = close;
-    hookData.toggle = toggle;
-    return hookData;
+  const hookData = [state, open, close, toggle];
+  hookData.state = state;
+  hookData.open = open;
+  hookData.close = close;
+  hookData.toggle = toggle;
+  return hookData;
 };
 
 export default useToggleState;

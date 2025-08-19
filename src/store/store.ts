@@ -16,21 +16,21 @@ import trialsActivationSlice from './features/trials-activation.slice';
 export function makeStore() {
   return configureStore({
     reducer: {
-    auth: authSlice,
-    course: courseSlice,
-    user: userSlice,
-    popup: popupSlice,
-    defaults: defaultsSlice,
-    home: homeSlice,
-    courseCategories: courseCategoriesSlice,
-    dashboard: dashboardSlice,
-    countries: countriesSlice,
-    sidebar: sidebarSlice,
-    courseDetails: courseDetailsSlice,
-    widgetScript: widgetScriptSlice,
-    trialsActivation: trialsActivationSlice
+      auth: authSlice,
+      course: courseSlice,
+      user: userSlice,
+      popup: popupSlice,
+      defaults: defaultsSlice,
+      home: homeSlice,
+      courseCategories: courseCategoriesSlice,
+      dashboard: dashboardSlice,
+      countries: countriesSlice,
+      sidebar: sidebarSlice,
+      courseDetails: courseDetailsSlice,
+      widgetScript: widgetScriptSlice,
+      trialsActivation: trialsActivationSlice,
     },
-    devTools: process.env.NODE_ENV !== 'production'
+    devTools: process.env.NODE_ENV !== 'production',
   });
 }
 

@@ -6,6 +6,8 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { NextIntlClientProvider } from 'next-intl';
 import ReduxProvider from '../store/ReduxProvider';
 import Footer from '@components/footer';
+import ToastProvider from '../context/stack-provider';
+import AuthProvider from '../context/auth-provider';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -65,10 +67,13 @@ export default async function RootLayout(
           <NextIntlClientProvider>
             <AppRouterCacheProvider>
               <ThemeRegistry>
-                {children}
-                <Footer />
+                <ToastProvider>
+                  <AuthProvider>
+                    {children}
+                    <Footer />
+                  </AuthProvider>
+                </ToastProvider>
               </ThemeRegistry>
-
             </AppRouterCacheProvider>
           </NextIntlClientProvider>
         </ReduxProvider>

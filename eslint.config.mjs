@@ -18,10 +18,7 @@ const eslintConfig = [
     },
     rules: {
       'prettier/prettier': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'off',
-        { argsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['off', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',

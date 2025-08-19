@@ -14,7 +14,6 @@ import laptopAccount from './laptop-account.png';
 import bookClockOutline from './book-clock-outline.png';
 import doubleQuotes from '../../assets/images/double-quotes.png';
 
-
 import author1 from './author-images/author-(1).jpg';
 import author2 from './author-images/author-(2).jpg';
 import author3 from './author-images/author-(3).jpg';
@@ -98,99 +97,111 @@ import frenchFlag from './language-flags/french-flag.webp';
 import FireCircle from './fire-circle.png';
 
 export const IMAGES = {
-    HandEmoji,
-    FireEmoji,
-    defaultBanner,
-    gradientBg,
-    byeEmoji,
-    checkEmoji,
-    demoCourseBanner,
-    imagePlaceholder,
-    whatYouGetBanner,
-    communityBannerNew,
-    arrow1,
-    meditation,
-    laptopAccount,
-    bookClockOutline,
-    userPopupBackground,
-    leftTrialBannerImage,
-    rightTrialBannerImage,
-    courseOfTheWeekImage,
-    englishFlag,
-    spanishFlag,
-    frenchFlag,
-    FireCircle,
-    doubleQuotes
+  HandEmoji,
+  FireEmoji,
+  defaultBanner,
+  gradientBg,
+  byeEmoji,
+  checkEmoji,
+  demoCourseBanner,
+  imagePlaceholder,
+  whatYouGetBanner,
+  communityBannerNew,
+  arrow1,
+  meditation,
+  laptopAccount,
+  bookClockOutline,
+  userPopupBackground,
+  leftTrialBannerImage,
+  rightTrialBannerImage,
+  courseOfTheWeekImage,
+  englishFlag,
+  spanishFlag,
+  frenchFlag,
+  FireCircle,
+  doubleQuotes,
 };
 
 export const AUTHORS = {
-    author1,
-    author2,
-    author3,
-    author4,
-    author5
+  author1,
+  author2,
+  author3,
+  author4,
+  author5,
 };
 
 export const AUTHORS_NEW = {
-    author1New,
-    author2New,
-    author3New,
-    author4New,
-    author5New,
-    author6New
+  author1New,
+  author2New,
+  author3New,
+  author4New,
+  author5New,
+  author6New,
 };
 
-export const AVATARS = { avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7 };
+export const AVATARS = {
+  avatar1,
+  avatar2,
+  avatar3,
+  avatar4,
+  avatar5,
+  avatar6,
+  avatar7,
+};
 
 export const INSTRUCTORS = {
-    instructor1,
-    instructor2,
-    instructor3,
-    instructor4,
-    instructor5,
-    instructor6,
-    instructor7,
-    instructor8,
-    instructor9
+  instructor1,
+  instructor2,
+  instructor3,
+  instructor4,
+  instructor5,
+  instructor6,
+  instructor7,
+  instructor8,
+  instructor9,
 };
 
 export const USER_REVIEW_IMAGES = {
-    userReviewImage1,
-    userReviewImage2,
-    userReviewImage3,
-    userReviewImage4,
-    userReviewImage5
+  userReviewImage1,
+  userReviewImage2,
+  userReviewImage3,
+  userReviewImage4,
+  userReviewImage5,
 };
 
-export const BECOME_AUTHOR_IMAGES = { becomeAuthor1, becomeAuthor2, becomeAuthor3 };
+export const BECOME_AUTHOR_IMAGES = {
+  becomeAuthor1,
+  becomeAuthor2,
+  becomeAuthor3,
+};
 
 export const JOIN_COURSE_IMAGES = {
-    joinCourse1,
-    joinCourse2,
-    joinCourse3,
-    joinCourse4,
-    joinCourse5,
-    joinCourse6
+  joinCourse1,
+  joinCourse2,
+  joinCourse3,
+  joinCourse4,
+  joinCourse5,
+  joinCourse6,
 };
 
 export const MEMBER_AVATAR_IMAGES = {
-    memberAvatar1,
-    memberAvatar2,
-    memberAvatar3,
-    memberAvatar4,
-    memberAvatar5
+  memberAvatar1,
+  memberAvatar2,
+  memberAvatar3,
+  memberAvatar4,
+  memberAvatar5,
 };
 
 export const SIDE_BANNER_IMAGE = {
-    sideBanner1,
-    sideBanner2,
-    sideBanner3,
-    sideBanner4,
-    sideBanner5,
-    sideBanner6,
-    sideBanner7,
-    sideBanner8,
-    sideBanner9
+  sideBanner1,
+  sideBanner2,
+  sideBanner3,
+  sideBanner4,
+  sideBanner5,
+  sideBanner6,
+  sideBanner7,
+  sideBanner8,
+  sideBanner9,
 };
 
 export const GET_STARTED_IMAGE = GetStartedImage;

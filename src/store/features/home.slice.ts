@@ -2,119 +2,125 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
 
 export const fetchHomeCourses = createAsyncThunk(
-    'home/fetchHomeCourses',
-    async (data: any = {}, { rejectWithValue, signal }) => {
-        try {
-            const response = await api.home.fetchHomeCourses({ ...data, signal });
-            return response?.data;
-        } catch (error) {
-            return rejectWithValue(error);
-        }
+  'home/fetchHomeCourses',
+  async (data: any = {}, { rejectWithValue, signal }) => {
+    try {
+      const response = await api.home.fetchHomeCourses({ ...data, signal });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error);
     }
+  }
 );
 
 export const getAllPopularCoursesOnBrand = createAsyncThunk(
-    'courseCategories/getAllPopularCoursesOnBrand',
-    async (data: any = {}, { rejectWithValue, signal }) => {
-        try {
-            console.log("Fetching popular courses for brand:", data);
-            const response = await api.home.getAllPopularCoursesOnBrand({ ...data, signal });
-            return response?.data;
-        } catch (error) {
-            return rejectWithValue(error);
-        }
+  'courseCategories/getAllPopularCoursesOnBrand',
+  async (data: any = {}, { rejectWithValue, signal }) => {
+    try {
+      console.log('Fetching popular courses for brand:', data);
+      const response = await api.home.getAllPopularCoursesOnBrand({
+        ...data,
+        signal,
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error);
     }
+  }
 );
 
 export const initialState = {
-    courses: {
-        data: [],
-        loading: false,
-        pagination: { search: '', limit: 8, page: 1, course_categories: [] },
-        total_data: 1,
-        current_page: 1
-    },
-    popularCoursesOnBrand: {
-        data: [],
-        loading: false,
-        pagination: { search: '', limit: 8, page: 1, course_categories: [] },
-        total_data: 1,
-        current_page: 1
-    }
+  courses: {
+    data: [],
+    loading: false,
+    pagination: { search: '', limit: 8, page: 1, course_categories: [] },
+    total_data: 1,
+    current_page: 1,
+  },
+  popularCoursesOnBrand: {
+    data: [],
+    loading: false,
+    pagination: { search: '', limit: 8, page: 1, course_categories: [] },
+    total_data: 1,
+    current_page: 1,
+  },
 };
 
 const homeSlice = createSlice({
-    name: 'home',
-    initialState,
-    reducers: {
-        handlePagination: (state, action) => {
-            state.courses.pagination = action.payload;
-        },
-        handlePaginationForPopularCoursesOnBrand: (state, action) => {
-            state.popularCoursesOnBrand.pagination = action.payload;
-        },
-        resetPagination: (state) => {
-            state.courses = initialState.courses;
-            state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
-        }
+  name: 'home',
+  initialState,
+  reducers: {
+    handlePagination: (state, action) => {
+      state.courses.pagination = action.payload;
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchHomeCourses.pending, (state) => {
-                state.courses.loading = true;
-            })
+    handlePaginationForPopularCoursesOnBrand: (state, action) => {
+      state.popularCoursesOnBrand.pagination = action.payload;
+    },
+    resetPagination: state => {
+      state.courses = initialState.courses;
+      state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
+    },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchHomeCourses.pending, state => {
+        state.courses.loading = true;
+      })
 
-            .addCase(fetchHomeCourses.fulfilled, (state, action) => {
-                state.courses.loading = false;
-                const {
-                    payload: {
-                        data: { result, pagination }
-                    }
-                } = action;
-                state.courses.data = result;
-                if (pagination) {
-                    state.courses.total_data = pagination.totalItems;
-                    state.courses.current_page = pagination.currentPage;
-                }
-            })
+      .addCase(fetchHomeCourses.fulfilled, (state, action) => {
+        state.courses.loading = false;
+        const {
+          payload: {
+            data: { result, pagination },
+          },
+        } = action;
+        state.courses.data = result;
+        if (pagination) {
+          state.courses.total_data = pagination.totalItems;
+          state.courses.current_page = pagination.currentPage;
+        }
+      })
 
-            .addCase(fetchHomeCourses.rejected, (state, action) => {
-                // Check if the request was cancelled
-                if (action.meta.aborted) {
-                    return;
-                }
-                state.courses = initialState.courses;
-            });
+      .addCase(fetchHomeCourses.rejected, (state, action) => {
+        // Check if the request was cancelled
+        if (action.meta.aborted) {
+          return;
+        }
+        state.courses = initialState.courses;
+      });
 
-        builder
-            .addCase(getAllPopularCoursesOnBrand.pending, (state) => {
-                state.popularCoursesOnBrand.loading = true;
-            })
+    builder
+      .addCase(getAllPopularCoursesOnBrand.pending, state => {
+        state.popularCoursesOnBrand.loading = true;
+      })
 
-            .addCase(getAllPopularCoursesOnBrand.fulfilled, (state, action) => {
-                state.popularCoursesOnBrand.loading = false;
-                const {
-                    payload: {
-                        data: { result, pagination }
-                    }
-                } = action;
-                state.popularCoursesOnBrand.data = result;
-                if (pagination) {
-                    state.popularCoursesOnBrand.total_data = pagination.totalItems;
-                    state.popularCoursesOnBrand.current_page = pagination.currentPage;
-                }
-            })
+      .addCase(getAllPopularCoursesOnBrand.fulfilled, (state, action) => {
+        state.popularCoursesOnBrand.loading = false;
+        const {
+          payload: {
+            data: { result, pagination },
+          },
+        } = action;
+        state.popularCoursesOnBrand.data = result;
+        if (pagination) {
+          state.popularCoursesOnBrand.total_data = pagination.totalItems;
+          state.popularCoursesOnBrand.current_page = pagination.currentPage;
+        }
+      })
 
-            .addCase(getAllPopularCoursesOnBrand.rejected, (state, action) => {
-                // Check if the request was cancelled
-                if (action.meta.aborted) {
-                    return;
-                }
-                state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
-            });
-    }
+      .addCase(getAllPopularCoursesOnBrand.rejected, (state, action) => {
+        // Check if the request was cancelled
+        if (action.meta.aborted) {
+          return;
+        }
+        state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
+      });
+  },
 });
-export const { resetPagination, handlePagination, handlePaginationForPopularCoursesOnBrand } =
-    homeSlice.actions;
+export const {
+  resetPagination,
+  handlePagination,
+  handlePaginationForPopularCoursesOnBrand,
+} = homeSlice.actions;
 
 export default homeSlice.reducer;

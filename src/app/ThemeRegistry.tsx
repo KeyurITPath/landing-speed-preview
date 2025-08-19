@@ -24,10 +24,10 @@ export default function ThemeRegistry({
   return (
     <EmotionRegistry>
       {/* <CacheProvider value={emotionCache}> */}
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
       {/* </CacheProvider> */}
     </EmotionRegistry>
   );

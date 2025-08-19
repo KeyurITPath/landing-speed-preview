@@ -1,736 +1,736 @@
 {
-    "reviews": "reviews",
-    "author": "Author",
-    "participants": "participants",
-    "last_update": "Last Update",
+  "reviews": "reviews",
+  "author": "Author",
+  "participants": "participants",
+  "last_update": "Last Update",
 
-    "discount": "discount",
-    "end_of_sale": "End of sale",
-    "hours": "2 hours",
-    "get_access": "Get Access",
-    "money_back": "We guarantee your money back",
-    "email_support_message": "For any reason the course does not meet your expectations, we have you covered. Email support within 14 days at <a>{{ email }}</a> for a full refund, no questions ask.",
+  "discount": "discount",
+  "end_of_sale": "End of sale",
+  "hours": "2 hours",
+  "get_access": "Get Access",
+  "money_back": "We guarantee your money back",
+  "email_support_message": "For any reason the course does not meet your expectations, we have you covered. Email support within 14 days at <a>{{ email }}</a> for a full refund, no questions ask.",
 
-    "comments_about_course": "Comments about the course",
-    "course_includes": "Course includes",
+  "comments_about_course": "Comments about the course",
+  "course_includes": "Course includes",
 
-    "why_choose_this_course": "Why choose this course?",
-    "academic_plan": "Academic Plan",
-    "meet_course_author": "Meet the course author",
+  "why_choose_this_course": "Why choose this course?",
+  "academic_plan": "Academic Plan",
+  "meet_course_author": "Meet the course author",
 
-    "refund_after_days": "If after 14 days, you still aren't happy, no worries. <span>We still will refund the price of the course no questions asked. Drop us an email to support at</span> <a>{{ email }}</a>.",
-    "after_payment_practicing": "After payment, you can immediately start practicing",
-    "payment_steps": [
-        "Click the \"Get Access\" button, enter your email in the field and you will be taken to a secure payment page.",
-        "Complete the order process and you will instantly receive a password to access your personal {{brand_name}} account.",
-        "Take lessons, perform practical tasks, ask the author questions and discover new courses."
-    ],
+  "refund_after_days": "If after 14 days, you still aren't happy, no worries. <span>We still will refund the price of the course no questions asked. Drop us an email to support at</span> <a>{{ email }}</a>.",
+  "after_payment_practicing": "After payment, you can immediately start practicing",
+  "payment_steps": [
+    "Click the \"Get Access\" button, enter your email in the field and you will be taken to a secure payment page.",
+    "Complete the order process and you will instantly receive a password to access your personal {{brand_name}} account.",
+    "Take lessons, perform practical tasks, ask the author questions and discover new courses."
+  ],
 
-    "faq": [
-        {
-            "question": "For how long do I have access to the course?",
-            "answer": "You have unlimited time access to the course. You can take the course at your convenience, at your own pace."
-        },
-        {
-            "question": "When does the course start?",
-            "answer": "After you pay and sign up, you will receive an email link with an access password to your personal cabinet where all course materials are already in place."
-        },
-        {
-            "question": "How do I get access to the course?",
-            "answer": "To access the course, you have to make a payment and provide your email address, to which you will receive an email with a link and a password."
-        },
-        {
-            "question": "How do I pay for the course?",
-            "answer": "You can pay for the course using any Visa, MasterCard, Maestro, Visa Electron cards."
-        },
-        {
-            "question": "Can I buy the course as a present for someone?",
-            "answer": "Yes. In that case, when you register for the course, please provide us with the email address of the person you want to receive the gift, and they will receive an authorization letter and access to their personal account."
-        },
-        {
-            "question": "If I don't like the course, can I get my money back?",
-            "answer": "Yes, you can. You do not run any risks. If the course doesn't meet your expectations within the first 14 days of purchase, we'll give you a full refund on your card, no questions asked. Just email our support at <a>{{email}}</a>."
-        }
-    ],
+  "faq": [
+    {
+      "question": "For how long do I have access to the course?",
+      "answer": "You have unlimited time access to the course. You can take the course at your convenience, at your own pace."
+    },
+    {
+      "question": "When does the course start?",
+      "answer": "After you pay and sign up, you will receive an email link with an access password to your personal cabinet where all course materials are already in place."
+    },
+    {
+      "question": "How do I get access to the course?",
+      "answer": "To access the course, you have to make a payment and provide your email address, to which you will receive an email with a link and a password."
+    },
+    {
+      "question": "How do I pay for the course?",
+      "answer": "You can pay for the course using any Visa, MasterCard, Maestro, Visa Electron cards."
+    },
+    {
+      "question": "Can I buy the course as a present for someone?",
+      "answer": "Yes. In that case, when you register for the course, please provide us with the email address of the person you want to receive the gift, and they will receive an authorization letter and access to their personal account."
+    },
+    {
+      "question": "If I don't like the course, can I get my money back?",
+      "answer": "Yes, you can. You do not run any risks. If the course doesn't meet your expectations within the first 14 days of purchase, we'll give you a full refund on your card, no questions asked. Just email our support at <a>{{email}}</a>."
+    }
+  ],
 
-    "manager_intro": "Kayla Parker — Customer Happiness Manager",
-    "customer_support_message": "Our care and customer support team is ready to help at any time. If you have any questions, just email <a>{{email}}</a>.",
+  "manager_intro": "Kayla Parker — Customer Happiness Manager",
+  "customer_support_message": "Our care and customer support team is ready to help at any time. If you have any questions, just email <a>{{email}}</a>.",
 
-    "save_your_seat": "Save your seat right now with a special price",
-    "your_email": "Your Email",
-    "terms_of_service": "I agree with the terms of the <refund>Refund Policies</refund>, <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy>.",
-    "start_practicing": "<strong>Start practicing immediately</strong> after filling out the form and paying. Hurry up to buy a course at a low price while the special offer is still valid.",
-    "money_back_guarantee": "<strong>14 days money back guarantee:</strong> if the course does not meet your expectations within the first fourteen days after purchase, we will refund the full price no questions asked. Simply send an email to support at <email>{{support_email}}</email>.",
+  "save_your_seat": "Save your seat right now with a special price",
+  "your_email": "Your Email",
+  "terms_of_service": "I agree with the terms of the <refund>Refund Policies</refund>, <terms>Terms of Service</terms>, <privacy>Privacy Policy</privacy>.",
+  "start_practicing": "<strong>Start practicing immediately</strong> after filling out the form and paying. Hurry up to buy a course at a low price while the special offer is still valid.",
+  "money_back_guarantee": "<strong>14 days money back guarantee:</strong> if the course does not meet your expectations within the first fourteen days after purchase, we will refund the full price no questions asked. Simply send an email to support at <email>{{support_email}}</email>.",
+  "must_be_valid_email": "Must be a valid email",
+
+  "unlock_special_offer": "Wait! Unlock Special Limited-Time Offer!",
+  "course_at_discount": "Before you complete your purchase, grab these exclusive courses at a huge discount!",
+  "add_to_order": "Add to order",
+  "total": "Total",
+
+  "reviews_landing_3": "Reviews",
+
+  "nav": {
+    "courses": "courses",
+    "about": "about us",
+    "faq": "faq",
+    "jobs": "job",
+    "support": "support center"
+  },
+
+  "search": "Search",
+  "dashboard": "Dashboard",
+  "home": "Home",
+  "logout": "Logout",
+  "login": "Login",
+  "contact_us": "Contact Us",
+  "unlock_your_potential": "Unlock Your Potential with {{brand_name}}",
+  "live_with_total_mind": "Live with Total Mind, Body, Soul Balance",
+  "get_unlimited_access": "Get <span>unlimited access</span> to bite-sized lessons.",
+  "join_now": "Join Now",
+  "trusted_by": "Trusted by",
+  "members": "50,000+ Members",
+  "top_trending_courses": "Top Trending Courses",
+  "top_courses": "Top Courses at Your Fingertips. Learn Hands-On, Connect with Experts, and Elevate Your Mind, Body, and Soul through Knowledge, Skills, and Growth.",
+  "buy": "Buy",
+  "words_from_users": "Words From Our Happy Users",
+  "user_reviews": {
+    "1": {
+      "message": "I’ve transformed my career and connected with others who share my interests. It all started with a memory improvement course, and the results—better focus and clarity—motivated me to dive deeper into brain function. Now, I feel more confident and empowered in both my personal and professional life."
+    },
+    "2": {
+      "message": "I’ve transformed my career and connected with others who share my interests. It all started with a memory improvement course, and the results—better focus and clarity—motivated me to dive deeper into brain function. Now, I feel more confident and empowered in both my personal and professional life."
+    },
+    "3": {
+      "message": "Joining this platform sparked a huge shift in how I approach learning. I began with a creativity course and quickly noticed how it opened up new ways of thinking. Since then, I’ve been exploring more topics and finding real value in every step. It’s been a game-changer for my mindset."
+    },
+    "4": {
+      "message": "What started as casual curiosity has turned into a personal growth journey. The emotional intelligence course helped me understand myself and others more deeply. I now navigate relationships with more ease and purpose, and that’s something I never thought a course could offer."
+    },
+    "5": {
+      "message": "After years of feeling stuck in old habits, I took a leap and joined a mindset training. That one choice helped me reset how I approach challenges. I’ve gained clarity, motivation, and a supportive community that keeps me growing. It’s honestly been life-changing."
+    }
+  },
+  "popular_authors": "Popular Authors",
+  "become_an_author": "Become An Author",
+  "join_brand": "<span>Join {{brand_name}}</span> and share your expertise as an Author!",
+  "learn_from_creatives": "There are millions of people out there who want to learn from creatives like you. If you love to teach and share what you know, {{brand_name}} is a unique place to do just that.",
+  "teach_course": "Teach a Course",
+  "easy_steps_to_get_started": "Easy Steps to Get Started",
+  "get_started_steps": [
+    {
+      "title": "Find Your Perfect Course",
+      "description": "Explore our courses and find the perfect fit for you."
+    },
+    {
+      "title": "Book your course today!",
+      "description": "Book your course today and take the first step."
+    },
+    {
+      "title": "Learn at your own pace",
+      "description": "With unlimited access, you can watch courses as many times as you need."
+    }
+  ],
+
+  "see_all_courses_by_categories": "See All Courses by Categories",
+  "faqTitle": "Frequently Asked Questions",
+  "generalFaqTitle": "General",
+  "pricingFaqTitle": "Pricng & Payment",
+  "general_faqs": [
+    {
+      "id": 1,
+      "question": "What are {{brand_name}} online courses?",
+      "answers": [
+        "{{brand_name}}'s courses are designed to help you cultivate inner peace and personal growth through practical, hands-on learning. Each course combines engaging video lessons with complementary materials, guiding you step by step to develop mindfulness skills you can apply in daily life. You'll also have the opportunity to share your progress, connect with instructors, and engage with a supportive community of like-minded learners."
+      ]
+    },
+    {
+      "id": 2,
+      "question": "When do the courses start and when do they finish?",
+      "answers": [
+        "All courses are 100% online, so once they're published, courses start and finish whenever you want. You set the pace of the class. You can go back to review what interests you most and skip what you already know, ask questions, answers questions, and more."
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Which course is right for me?",
+      "answers": [
+        "{{brand_name}} offers 100+ online courses covering a range of topics, from meditation and stress management to mindful movement and self-awareness. Designed for both beginners and experienced practitioners, our courses provide accessible, practical guidance to help you integrate mindfulness into your daily life. With new classes added regularly, you can deepen your practice, discover new techniques, and cultivate lasting well-being."
+      ]
+    }
+  ],
+  "pricing_faqs": [
+    {
+      "id": 1,
+      "question": "Will I be charged taxes?",
+      "answers": [
+        "Depending on where you live, you may be charged taxes in addition to your annual membership price. If tax applies, you will see it stated separately on your emailed invoice. Tax rates are calculated based on your location or the billing information you provided at the time of purchase.",
+        "Should you have any additional questions about taxes you were charged, please contact our support at <a>{{email}}</a>."
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Can I get a refund?",
+      "answers": [
+        "At {{brand_name}}, our mission is to provide you with a unique and enriching educational experience. However, if you decide not to continue, we offer a refund for your first-time purchase.",
+        "If you have any questions, feel free to contact us at <a>{{email}}</a>. We're happy to help!"
+      ]
+    }
+  ],
+
+  "showLessText": "Show Less",
+  "showMoreText": "Show More",
+  "faqTitleShort": "FAQ",
+  "enterLanguage": "Enter language",
+  "enterCountry": "Enter country",
+  "languageLabel": "Language",
+  "Country": "Country",
+  "refundPolicies": "Refund Policies",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "copyright": "© {{year}} All Rights Reserved by {{name}}",
+
+  "cancellation_refund_policies": "Cancellation & Refund Policies",
+
+  "openAccessNow": "OPEN ACCESS NOW",
+
+  "keepPageOpen": "Keep this page opened. Your order isn’t finished.",
+  "continueWatchVideo": "Continue to Watch This Video",
+  "freeAccessMessage": "7 days of free access to our 50+ top courses",
+  "subscriptionMessage": "Including access to our bestsellers in Yoga, Dance, Singing, Massage, and Brain Exercises. Try it for free, then if you like it, it's {{price}} per month.",
+
+  "subscriptionAgreement": "By clicking the checkbox, I accept Subscription Terms and I agree to automatic payments.",
+  "continueToCourse": "CONTINUE TO COURSE",
+  "exclusiveOpportunity": "Exclusive one-time opportunity",
+  "points": {
+    "1": "<b>Unlimited access to all our top courses</b> aimed at enhancing health, emotional well-being, relationships, and self-realization",
+    "2": "More than <b>10 new courses every month</b>",
+    "3": "Access to private social network, where you can <b>connect, share wisdom, and grow with fellow members</b>"
+  },
+  "transformationMessage": "Your life-changing transformation begins with {{brand_name}} Membership",
+
+  "growthPathMessage": "Here's what your personal growth path could look like...",
+  "unlockMessage": "After unlocking {{courseTitle}}, continue your transformation with other empowering programs:",
+
+  "danceTherapy": "Dance therapy",
+  "danceManifest": "Dance out your emotions and manifest your dreams through dance:",
+  "danceCourseDescription": "An online course on how to learn to dance beautifully and master your body, work through stress, internal blocks, and how to heal your psychological state through movement. The author of the course is an international class coach with 15 years of experience, a choreographer, professional dancer, and psychologist.",
+
+  "freeTrialText": "Try it for free for 7 days, then <span>{{price}} per month.</span> Charged automatically. Cancel anytime.",
+
+  "guaranteed": "100% Guaranteed:",
+  "cancelTrialText": "Feel free to cancel your trial for any reason, completely obligation-free.",
+  "whyActNow": "Why act now:",
+  "specialOfferText": "you have unlocked a special offer only available on this page. You don’t have to say YES, you only have to say MAYBE. Maybe it’s your chance to change everything inside. And it’s definitely your mission to chart your best, most rewarding path.",
+  "membershipTitle": "Introducing {{brand_name}} Membership",
+  "membershipSubtitle": "Your life-changing transformation begins with {{brand_name}} Membership",
+  "membershipDescription1": "In today’s fast-paced world, taking time to focus on yourself isn’t just beneficial, it’s essential. Engaging in self-care and introspection is crucial for maintaining mental balance and emotional well-being. It helps you navigate life’s challenges with greater resilience and harness your full potential.",
+  "membershipDescription2": "At {{brand_name}}, we believe in empowering you with the tools to turn inward, explore your capabilities, and cultivate a state of mind that fosters growth and fulfillment.",
+
+  "whatYouGetTitle": "What you get",
+  "programsTitle": "100+ programs in 7 categories",
+  "communityTitle": "Community",
+  "communityDescription": "Access to {{brand_name}} private social network, where you can connect, share wisdom, and grow",
+  "brandValuesTitle": "{{brand_name}} embodies the core values and principles that resonate deeply with our community of users and authors.",
+  "brandValuesDescription": "Our commitment lies in curating only the finest content and partnering with exceptional writers. Our users stand out as the most insightful, reflective, and accomplished individuals. By intertwining these three key elements-outstanding content, eminent authors, and an enlightened user base-we foster the most robust community of fulfilled individuals. And without a doubt, you are an essential part of this thriving community.",
+
+  "categoriesBadge": [
+    "Brain",
+    "Meditations",
+    "Massage",
+    "Dances",
+    "Singing",
+    "Fitness & Health",
+    "Relationship"
+  ],
+
+  "successStories": "176,405 success stories",
+  "journeyMessage": "Are you ready to start your own journey to success? Join our big family!",
+  "feedbacks": {
+    "1": {
+      "message": "I was looking for something to help me refocus, and I stumbled upon {{brand_name}} almost by accident. I started with a creativity and focus course, and it was like flipping a switch. Not only did my productivity improve, but I also started meeting others who shared my interests. That inspired me to dig even deeper. I ended up unlocking the full platform and haven’t looked back."
+    },
+    "2": {
+      "message": "I used to feel stuck, like I wasn’t using my potential. Then I found {{brand_name}}, and everything changed. The first course I tried focused on cognitive health, and it really worked. I felt sharper, more focused, and genuinely more curious. I upgraded to the full platform to explore more topics, and it’s been such a rewarding journey."
+    },
+    "3": {
+      "message": "Honestly, I never expected online learning to impact me this much. I joined {{brand_name}} out of curiosity, took a course on motivation, and soon after, my entire outlook started to shift. I began exploring new career paths and even made a few meaningful connections along the way. Getting full access was the best decision—I’ve been growing nonstop since."
+    },
+    "4": {
+      "message": "When I started using {{brand_name}}, I just wanted to improve my concentration. But the changes went way beyond that. The courses helped me think differently, and as I evolved, I started connecting with people on the same wavelength. Eventually, I subscribed to the full platform because I saw how much it was helping me grow."
+    },
+    "5": {
+      "message": "I started with a mindset course at {{brand_name}} while juggling work and burnout. The impact was immediate—my focus improved, and I felt a new sense of purpose. It led me to reconsider my career direction. The full platform has been a constant source of motivation and knowledge ever since."
+    },
+    "6": {
+      "message": "What really stood out to me was how practical the lessons on {{brand_name}} were. After the first course on memory and focus, I saw real improvements. I wasn’t just learning—I was changing. I didn’t hesitate to upgrade once I realized how much more the platform had to offer."
+    },
+    "7": {
+      "message": "The courses on {{brand_name}} helped me reconnect with my curiosity. I took one on learning speed and memory, and to my surprise, it actually made studying fun again. I began to notice similar thinkers entering my life, which pushed me to explore more. Subscribing to the full version felt like the natural next step."
+    }
+  },
+
+  "trials_activation_faq": [
+    {
+      "id": 1,
+      "question": "What's included in the subscription?",
+      "answers": [
+        "As a {{brand_name}} member, you get unlimited access to all courses anytime, anywhere for as long as your subscription is active.",
+        "Plus, you'll join an exclusive community, networking and participating in new and upcoming courses, weekly online events with our top authors."
+      ]
+    },
+    {
+      "id": 2,
+      "question": "How to pay for the subscription?",
+      "answers": [
+        "When purchasing a course on our platform you can also add a free 7-day or 30-day trial period to your order for all our courses and events, which ends with an automatic subscription payment for the first month of use. Thereafter, the subscription will be charged on a monthly basis. You can cancel your subscription at any time in personal account or by contacting our Support Team."
+      ]
+    },
+    {
+      "id": 3,
+      "question": "How do I cancel or get a refund If I'm not satisfied?",
+      "answers": [
+        "You can unsubscribe at any time that's convenient for you. To cancel your subscription, go to the 'Settings and subscription' section in your personal account and click the 'Cancel subscription' button."
+      ]
+    }
+  ],
+
+  "popup_message": "Think that {{trial_days}} days is not enough?",
+  "free_trial": "days free trial",
+  "begin_journey": "BEGIN MY {{trial_days}}-DAY SACRED JOURNEY",
+  "pause_for": "PAUSE FOR {{trial_days}}-DAYS",
+  "skip_offer": "SKIP THIS ONE TIME OFFER",
+
+  "thank_you": "Thank You for Your Trust!",
+  "purchase_message": "You've Just purchased",
+  "access_message": "Access to the",
+  "trial_access_message": "{{trial_days}} day trial access to 50+ self-development courses.",
+  "trial_message": "Test various courses and select ones suitable for you. After {{trial_days}} days, your card will be automatically billed for the next month. If needed, cancel future charges at personal account.",
+  "login_text": "Your login",
+  "password_text": "Your password",
+
+  "email_support_message_new": "We've sent you the login and password via email and SMS. You might want to take a screenshot to ensure you don't lose them. If you haven't received the email, please check your spam folder or reach out to our support immediately: <a>{{email}}</a>",
+  "course_dashboard_message": "Now is the perfect time to head to the course dashboard!",
+  "go_to_course": "GO TO COURSE",
+
+  "thank_you_message": "Thank You! Please Let Us Know About You to Tailor Your Experience",
+  "continue": "CONTINUE",
+  "terms_confirmation": "By clicking the \"Continue\" button, I confirm that I agree to the terms and conditions of the <a>Privacy Policy</a>",
+
+  "order_incomplete_message": "Your order is not complete yet. Keep this page opened",
+  "order_almost_complete": "Your Order is Almost Complete!",
+  "order_instructions": "Please re-enter your email for accuracy and provide your phone number for secure account access.",
+  "email_verification_prompt": "Please double-check Is this the right email?",
+  "confirm_email_phone_button": "CONFIRM EMAIL AND PHONE",
+  "confirm_email_button": "CONFIRM EMAIL",
+  "validation_error_message": "Your email addresses do not match.",
+  "validation_okay_button": "OKAY",
+
+  "enter_email": "Enter your email",
+  "confirm_email": "Confirm your email",
+  "enter_phone": "Enter your phone",
+
+  "your_first_name": "Your First Name",
+  "your_last_name": "Your Last Name",
+  "country": "Country",
+  "your_age": "Your Age",
+  "Male": "Male",
+  "Female": "Female",
+  "Other": "Other",
+
+  "payment_successful": "Payment successful!",
+  "payment_failed": "Payment failed!",
+
+  "age_range": { "value": "under 18", "label": "under 18" },
+
+  "users": "Users",
+  "positive_reviews": "Positive reviews",
+  "sale": "Sale",
+  "enjoy_course": "Enjoy <span>this course</span> and <span>100 others unlimitedly.</span>",
+
+  "about_author": "About the Author",
+  "content": "Content",
+  "proceed_to_checkout": "PROCEED TO CHECKOUT",
+  "country_code_label": "Country Code",
+  "see_all_courses": "See All Courses",
+  "confirm_cancellation": "Confirm Cancellation",
+  "accept_offer": "ACCEPT OFFER",
+  "still_cancel": "STILL CANCEL",
+  "keep_subscription": "KEEP SUBSCRIPTION",
+  "cancel_subscription": "CANCEL SUBSCRIPTION",
+  "per_month": "per month",
+  "per": "per",
+  "days": "days",
+  "any_three_courses": "any three courses",
+  "effective_date": "Effective Date: May 4, 2023",
+
+  "errors": {
+    "email_required": "Email is required",
     "must_be_valid_email": "Must be a valid email",
+    "must_agree_terms": "You must agree to the terms",
+    "first_name_required": "First name is required",
+    "first_name_min": "First name must be at least 2 characters",
+    "first_name_max": "First name must be at most 50 characters",
+    "first_name_invalid": "First name cannot contain numbers",
+    "last_name_required": "Last name is required",
+    "last_name_min": "Last name must be at least 2 characters",
+    "last_name_max": "Last name must be at most 50 characters",
+    "last_name_invalid": "Last name cannot contain numbers",
+    "location_required": "Country is required",
+    "age_required": "Age is required",
+    "gender_required": "Gender is required",
+    "feedback_required": "Feedback is required"
+  },
 
-    "unlock_special_offer": "Wait! Unlock Special Limited-Time Offer!",
-    "course_at_discount": "Before you complete your purchase, grab these exclusive courses at a huge discount!",
-    "add_to_order": "Add to order",
-    "total": "Total",
-
-    "reviews_landing_3": "Reviews",
-
-    "nav": {
-        "courses": "courses",
-        "about": "about us",
-        "faq": "faq",
-        "jobs": "job",
-        "support": "support center"
+  "privacyPolicies": [
+    {
+      "title": "Who We Are and What This Policy Covers",
+      "description": "At Performance EdTech LLC. (\"{{brand_name}}\", \"we\", \"us\"), we recognize that privacy is very important and value your privacy. In this Privacy Policy (\"Policy\"), we describe how we collect, use, and disclose personal information that we obtain about our customers and users of our website (including {{brand_name}}.com) (\"Sites\"), our mobile application (the \"App\"), and the services available through our Site (collectively, the Site, the App, and the services available therein are the \"Services\"). Below we explain how we collect, use, and share information about you, along with the choices that you have with respect to that information.<br/><br/>Applicable Terms<br/><br/>Your use of our Services, and any dispute over privacy, is subject to this Policy, the respective terms of use (the \"Terms\"), between you and {{brand_name}}, such as our Terms of Service and any other relevant agreements. The applicable Terms are incorporated by reference into this Policy, including their applicable limitations on liability and the resolution of disputes. By disclosing your personal information to us or using our Services, you understand and agree that {{brand_name}} may collect, use, and disclose your personal information in accordance with this Policy and the applicable Terms."
     },
+    {
+      "title": "Information We Collect",
+      "description": "We generally collect information in the following ways: if and when you provide information directly to us, automatically through our Services, and from third-party sources. Let's go over the information that we collect below.<br/><br/>Information You Provide to Us<br/><br/>The amount and type of information that we collect depends on how you interact with our Services. Here are some examples:<br/><ul> <li> Basic Account Information: While you can browse parts of our website without registering, we ask you to sign up for a {{brand_name}}.com account to access certain parts of the Services (e.g., to have access to one of our courses). When you sign up for a {{brand_name}}.com account, we may ask you for basic personal information such as your email address, first name, and last name, phone number. We may also allow you to submit additional voluntary account information, such as a profile picture, your bio, or country/city you're located in. You can also sign up to receive email newsletters and promotional offers from us by submitting your email address, phone number.<br> </li> <li> Profile Information: If you have an account with us, certain of your profile information will be used for your profile. For example, your username, profile picture, and self-reported location of residence are part of that public profile, along with any other information you choose to put into your public profile, such as your bio. So please keep that in mind when deciding what information you would like to include.<br> </li> <li> User Content: The content that you create and submit (e.g., images, comments) through the Services will be visible to registered users, such as authors of the courses and other users. We maintain a copy of such content and may append other information to it, such as comments and ratings from authors or peers. If you choose to engage in discussion, blogs, or similar features and submit comments, ratings, or other content, we maintain a copy of this content. You may remove your content by contacting us at <a>{{email}}</a>. We may also collect certain information metadata associated with your content. Certain public user content may also be viewable by other website visitors and registered users of the Services.<br> </li> <li> Communications with Us: You may also provide us information when you respond to surveys, communicate with us by email, mail, chat, phone, or otherwise regarding the Services or a support question. We collect and maintain a record of your contact details, communications and our responses.<br> </li> <li> Other Information We Collect Regarding Your Usage of Our Services: We may also collect information about your use of our Services, such as your order history and purchases. We may also collect certain personal information about you from third parties, such as ratings, comments or grades provided by authors.<br> </li> <li> Authors Accounts: If you are an author and use the Site or the App, we collect personal information from you, including your name, profile picture, and bio, as well as content you provide, such as comments and ratings of users or other content that you submit to us. <br><br> </li> </ul>Information We Collect Automatically<br/><br/>We may also collect personal information about how you use the Services (e.g., using cookies and pixel tags), such as IP address, advertising ID, location information, browser type, device type, domain name, the website that led you to our Services, the website to which you go after leaving our Services, the dates and times you access our Services, and the links you click and your other activities within the Services. We may also use pixels in HTML emails to understand if individuals read the emails we send to them (\"Usage Data\"). We may combine this information with other information that we have collected about you, including, where applicable, your name and other personal information. (For more information, see the Cookies and Tracking Information section below.)"
+    },
+    {
+      "title": "How and Why We Use Information",
+      "description": "Purposes for Using Information<br/><br/>We use information about you as mentioned above and for the purposes listed below:<br/><br/><ul> <li> To provide and maintain our Services—for example, to set up and maintain your account; to host your profile; to fulfil your purchases; to authenticate users; to perform technical operations, such as updating software; and for other customer service and support related purposes<br> </li> <li> To provide you with the information or services that you have requested; to communicate with you about your use of our Services, to respond to your inquiries, and for other customer service purposes<br> </li> <li> To further develop and improve our Services—for example, by adding new features that we think our users will enjoy or will help them to create and manage their profiles more efficiently<br> </li> <li> To communicate with you, for example through an email, about newsletters, offers and promotions offered by {{brand_name}} and others we think will be of interest to you, solicit your feedback, or keep you up to date on {{brand_name}} and our products<br> </li> <li> To monitor and analyze trends and better understand how users interact with our Services, which helps us improve our Services and make them easier to use<br> </li> <li> To monitor and prevent any problems with our Services, protect the security of our Services, detect and prevent fraudulent transactions and other illegal activities, fight spam, and protect the rights and property of {{brand_name}} and others<br> </li> <li> To personalize your experience using our Services, provide content recommendations, and target our marketing messages to groups of our users<br> </li> <li> To conduct audits and assessments of our business operations, security controls, financial controls, records and information management program, and otherwise relating to the administration of our general business, accounting, record keeping and legal functions. These purposes are based on our legitimate interest in operating our business and maintaining adequate internal records and safeguards.<br> </li> <li> To protect our business operations and secure our network and information technology assets and services; to prevent and detect fraud, unauthorized activities, access and other misconduct; where we believe necessary to investigate, prevent or take action regarding suspected violations of our Terms and other agreements, as well as fraud, illegal activities and other situations involving potential threats to the rights or safety of any person or third party; and as necessary to defend {{brand_name}}'s legal interests and rights.<br> </li> <li> To comply with the law or legal proceedings, including responding to subpoenas, court orders, and other lawful requests by regulators and law enforcement, or to national security or law enforcement disclosure requirements.<br> </li> <li> We may also use your personal information for other purposes, where you have consented.<br> </li> <li> We may also use aggregate and deidentified information for various research, development, product improvement, analytics and other purposes. <br><br> </li> </ul>How We Disclose Information<br/><br/>We may disclose information about you as spelled out below:<br/><br/><ul> <li> Subsidiaries and Affiliates: With our affiliated companies whose use and disclosure of such personal information is subject to this Policy.<br> </li> <li> Service Providers: We may share information about you with our third-party service providers who need to know information about you in order to provide their services on our behalf, or to provide their services to you or your site. This group includes, for example, vendors that help us provide our Services to you (like auditors, advisors, consultants, customer service and/or support providers, payment providers that process your credit and debit card information, fraud prevention services that allow us to analyze fraudulent payment transactions, postal and email delivery services that help us stay in touch with you, customer chat and email support services that help us communicate with you, our hosting providers, and those that assist us with our marketing efforts (e.g. by providing tools for identifying a specific marketing target group or improving our marketing campaigns), those that help us understand and enhance our Services (like analytics providers), and companies that make products available on our websites, who may need information about you in order to, for example, provide technical or other support services to you.<br> </li> <li> Third Parties: With third parties that provide advertising, campaign measurement, online and/or mobile analytics and related services. These third parties may receive or access browsing history and/or other data about your use of the Sites, in order to help us better reach individuals with relevant ads, measure our ad campaigns and/or to better understand how individuals interact with our Sites over time and across devices.<br> </li> <li> Legal Requests: We may disclose information to comply with the law or legal proceedings, for example, in response to a subpoena, court order, or other governmental request.<br> </li> <li> To Protect Rights, Property, and Others: We may disclose information about you when we believe in good faith that disclosure is reasonably necessary to protect the property or rights of {{brand_name}}, third parties, and/or others, and/or as evidence in litigation in which we are involved<br> </li> <li> Business Transfers: In connection with any actual or contemplated merger, sale of company assets, or acquisition of all or a portion of our business by another company, or in the unlikely event that {{brand_name}} goes out of business or enters bankruptcy, user information would likely be one of the assets that is transferred or acquired by a third party. <br><br> </li> </ul>Aggregated and De-identified Data: We may share aggregate or de-identified information with third parties for research, marketing, advertising, analytics and/or other purposes."
+    },
+    {
+      "title": "Cookies and Tracking Information",
+      "description": "We and our third-party providers use cookies, clear GIFs/pixel tags, JavaScript, local storage, log files, and other mechanisms to automatically collect and record information about your browsing activities and use of the Sites and other Services.We may combine this \"usage data\" with other personal information we collect about you. We use this usage data to understand how our Services are used, track bugs and errors, provide and improve our Services, verify account credentials, allow logins, track sessions, prevent fraud, and protect our Services, as well as for targeted marketing and advertising, to personalize content and for analytics purposes.<br/><br/>Cookies<br/><br/>Cookies are alphanumeric identifiers that we transfer to your computer's hard drive through your web browser for record-keeping purposes.Some cookies allow us to make it easier for you to navigate our Site, while others are used to enable a faster log-in process or to allow us to track your activities while using our Site.Most web browsers automatically accept cookies, but if you prefer, you can edit your browser options to block them in the future.The Help portion of the toolbar on most browsers will tell you how to prevent your computer from accepting new cookies, how to have the browser notify you when you receive a new cookie, or how to disable cookies altogether.Some of the Services may not work properly if you disable cookies.<br/><br/>Pixel Tags<br/><br/>Pixel tags are tiny graphics with a unique identifier, similar in function to cookies.In contrast to cookies, which are stored on your computer's hard drive, clear GIFs are embedded invisibly on web pages.We may use pixel tags (also referred to as web beacons, web bugs, or clear GIFs) in connection with our Services to, among other things, help us manage ads and content, and compile statistics about usage of our Services.We may also use pixel tags in HTML emails to our customers to help us track email response rates, identify when our emails are viewed, and track whether our emails are forwarded.<br/><br/>You can block or disable cookies for the device and browser you are using, through your browser settings; however, certain features on our Sites may not be available or function properly if you block or disable cookies.Our Sites currently do not respond to \"do not track\" signals."
+    },
+    {
+      "title": "Interest Based Advertising",
+      "description": "We may work with third-party ad networks, channel partners, measurement services, and others (\"third-party ad companies\") to display advertising on our Services and to manage our advertising on third-party sites and online services.We and these third-party ad companies may use cookies, pixel tags, and other tools to collect activity information on our Services (as well as on third-party sites and services), as well as IP address, device ID, cookie and advertising IDs, other identifiers, and general location information.We and these third-party ad companies use this information to provide you with more relevant ads and content and to improve and evaluate such ads and content. **<br/><br/>Ad Choices<br/><br/>You can learn more about the information collection practices and \"opt-out\" procedures of many third-party ad companies by visiting <a href=\"https://www.networkadvertising.org/optout_nonppii.asp\">networkadvertising.org/optout_nonppii.asp</a>.Opting out of participating ad networks does not opt you out of being served advertising.You may continue to receive generic or \"contextual\" ads on our Services.You may also continue to receive targeted ads on other websites from companies that do not participate in the above programs."
+    },
+    {
+      "title": "Third-Party Sites and Services",
+      "description": "Our Services may link to other websites or online services (including those operated by our parent, affiliates, or others) that are not covered by this Policy. Any access to and use of such linked websites is not governed by this Policy, but instead is governed by the privacy policies of those third-party websites. We are not responsible for the information practices of such third-party websites.<br/><br/>In this section we describe the choices you have regarding our collection, use and handling of your personal information."
+    },
+    {
+      "title": "Stripe",
+      "description": "We use Stripe for payment, analytics, and other business services. Stripe collects identifying information about the devices that connect to its services. Stripe uses this information to operate and improve the services it provides to us, including for fraud detection. You can learn more about Stripe and read its privacy policy at <a href=\"https://stripe.com/privacy\">https://stripe.com/privacy</a>."
+    },
+    {
+      "title": "Your Rights",
+      "description": "Access and Update Information: You may access, update, and delete certain of your personal information by accessing and adjusting your account settings or closing your account. You may also contact us using the information in the How to Reach Us section below to make an access, correction or other privacy request. Please note that we may maintain copies of information that you have updated, modified or deleted, in our business records and in the normal course of our business operations, as permitted or required by applicable law. Further, we may take reasonable steps to verify your identity before granting such access or making corrections.<br/><br/>Marketing Communications: You may opt out of receiving email marketing communications from us by using the unsubscribe link in any such email we send to you. Please note that we may still send you transactional emails, such as emails related to your account."
+    },
+    {
+      "title": "Children",
+      "description": "Our Services are not targeted and directed at children under thirteen years of age (13) and we do not knowingly collect any personal information from a child under 13. If you believe we have inadvertently collected personal information about a child, please contact us and we will take steps to delete this information."
+    },
+    {
+      "title": "How to Reach Us",
+      "description": "If you have a question about this Policy, or you would like to contact us about privacy, please contact us at <a>{{email}}</a>. {{brand_name}}'s (Performance EdTech LLC 's) physical address is 447 Broadway, 2nd Floor, #1389, New York, New York 10013."
+    },
+    {
+      "title": "Changes to This Policy",
+      "description": "This Policy is current as of the Effective Date set forth above. We may change this Policy from time to time, so please be sure to check back periodically. We will post any changes to this Policy on our Services. If we make any changes to this Policy that materially affect our practices with regard to the personal information we have previously collected from you, we will endeavor to provide you with notice in advance of such change by highlighting the change on our Services."
+    }
+  ],
 
-    "search": "Search",
+  "refundPolicy": [
+    {
+      "title": "Courses",
+      "description": "You can cancel, change or refund any course for any reason within 14 days of purchase."
+    },
+    {
+      "title": "Refund Request Guidelines",
+      "description": "All courses have a full refund deadline of 14 days from the purchase date. All subscriptions are non-refundable.<br/><br/>Any refund fees can be transferred to another course by contacting the Support team by emailing <a>{{email}}</a>.<br/><br/>Cancellations received after the 14-day period will not be eligible for a refund.<br/><br/>If you are eligible for a refund, your refund will be processed within 1-14 days and will be credited back to your original form of payment. Please note that some banks may take longer. If you don't receive your refund within this time frame, please give your bank a call.<br/><br/>We kindly ask you not to use any other way to get your refund, for example, chargebacks. In this case, the chargeback will be processed on our part with the providing of all data, including proof of service provided on our part and the correspondence between the platform and the user.<br/><br/>The refund period in case of chargeback opening is up to 50 working days."
+    },
+    {
+      "title": "Cancellation Request Guidelines",
+      "description": "To cancel a COURSE, please inform us by emailing <a>{{email}}</a>.<br/><br/>To cancel a SUBSCRIPTION, you can manage it by emailing <a>{{email}}</a>.<br/><br/>You will receive a confirmation email from our Support team within 48 hours after the first request sent.<br/><br/>In case of waiting for a response from the support service for more than 48 hours, the date of the subscription cancellation request will be considered the date of your actual first request."
+    }
+  ],
+
+  "mainTerms": {
+    "title": "Terms of Service",
+    "description": "These terms of service (\"terms\") are a legal contract between Performance EdTech LLC. (\"{{brand_name}}\", \"us\", \"our\", \"we\") and you (collectively, \"everyone\") and govern your use of all the text, data, information, software, graphics, photographs, class materials, samples, templates, and more (all of which we refer to as \"materials\") that we and our affiliates may make available to you, as well as any services (\"services\") we may provide through any of our websites (all of which are referred to in these terms as this \"website\").<br/><br/>Read these terms carefully before browsing this website. Using this website indicates that you have both read and accept these terms. You cannot use this website if you do not accept these terms.<br/><br/>Note: These terms contain a dispute resolution and arbitration provision, including a class action waiver that affects your rights under these terms and with respect to disputes you may have with the company. You may opt out of the binding individual arbitration and class action waiver as provided below."
+  },
+
+  "terms_of_services": [
+    {
+      "title": "Changes",
+      "description": "We may alter the Materials and Services we offer you and/or choose to modify, suspend or discontinue this Website at any time and without notifying you. We may also change, update, add or remove provisions (collectively, \"modifications\") of these Terms from time to time. Because everyone benefits from clarity, we promise to inform you of any material modifications to these Terms by posting them on this Website and, if you have registered with us, by describing the modifications to these Terms in an email that we will send to the address that you provided during registration. To be sure we properly reach your email inbox, we just ask that you let us know if your preferred email address changes at any time after your registration.<br/><br/>If you object to any such modifications, your sole recourse shall be to cease using this Website. Continued use of this Website following notice of any such modifications indicates you acknowledge and agree to be bound by the modifications. Also, please know that these Terms may be superseded by expressly-designated legal notices or terms located on particular pages of this Website. These expressly-designated legal notices or terms are incorporated into these Terms and supersede the provision(s) of these Terms that are designated as being superseded."
+    },
+    {
+      "title": "General use",
+      "description": "We invite you to use this Website for individual, personal and non-commercial purposes (\"Permitted Purposes\") — enjoy!<br/><br/>In these Terms we are granting you a limited, personal, non-exclusive and non-transferable license to use and to display the Materials for the Permitted Purposes; your right to use the Materials is conditioned on your compliance with these Terms. You have no other rights in this Website or any Materials and you may not modify, edit, copy, reproduce, create derivative works of, reverse engineer, alter, enhance or in any way exploit any of this Website or Materials in any manner. If you make copies of any of this Website while engaging in Permitted Purposes then we ask that you be sure to keep on the copies all of our copyright and other proprietary notices as they appear on this Website.<br/><br/>Unfortunately, if you breach any of these Terms the above license will terminate automatically and you must immediately destroy any downloaded or printed Materials (and any copies thereof)."
+    },
+    {
+      "title": "Using this website and the website's services",
+      "description": "We appreciate you visiting {{brand_name}}! You're welcome to visit much of this Website without registering with us.<br/><br/>However, in order to access certain password-restricted areas of this Website (such as class content or User Submissions (defined below)) and to use certain Services and Materials offered on and through this Website, you must successfully register an account with us. You also acknowledge and agree to comply with our policies at all times while using Services and Materials, which policies are available on our website and may be updated by us from time to time.<br/><br/>PASSWORD RESTRICTED AREAS OF THIS WEBSITE.<br/>If you want an account with us, you must submit the following information through the account registration page on this Website:<br/>A working email address;<br/>First and last name; and<br/>Preferred username and password.<br/><br/>You may also provide additional, optional information so that we can provide you a more customized experience when using this Website. Once you submit the required registration information, we alone will determine whether or not to approve your proposed account. For so long as you use the account, you agree to provide true, accurate, current, and complete information which can be accomplished by logging into your account and making relevant changes directly or contacting us using the below contact information and we can make the changes for you. If you forget your password, let us know and we will send a password update to your provided email address.<br/><br/>You are responsible for complying with these Terms when you access this Website, whether directly or through any account that you may set up through or on this Website. Because it is your account, it is your job to obtain and maintain all equipment and services needed for access to and use of This Website as well as pay related charges. It is also your responsibility to maintain the confidentiality of your password(s), including any password of a third-party site that we may allow you to use to access this Website. Should you believe your password or security for This Website has been breached in any way, you must immediately notify us."
+    },
+    {
+      "title": "Payments",
+      "description": "You agree to pay all applicable fees related to your use of this Website and our Services which are described fully on our payment page, which will be available during open enrollment of a class.<br/><br/>We may suspend or terminate your account and/or access to our Services and this Website if your payment is late and/or your offered payment method (e.g., credit card or PayPal account) cannot be processed or is declined or revoked.<br/><br/>By providing a payment method, you expressly authorize us to charge the applicable fees on said payment method as well as taxes and other charges incurred thereto.<br/><br/>We understand that you might cancel your account, but please know that we will not provide any refund(s) unless your refund request is received on or before the 14th day of the Service for which you are requesting a refund. Refund policies for any of the Services are subject to change. Please see our Refund policy.<br/><br/>We may change our fees at any time. If applicable, we may give you advance notice of the fee changes. If you don't agree with the fee changes, you can cancel your Account by contacting us at <a>{{email}}</a> and stop using the Services."
+    },
+    {
+      "title": "Subscriptions",
+      "description": "The subscription is provided for a specific fee for a specified duration in accordance with the terms of the corresponding plan. The customer is entitled to unlimited access to all published {{brand_name}} courses until the end of the paid subscription period.<br/><br/>Upon the expiration of the free trial period and/or upon subscription payment, the customer will be automatically enrolled in the subscription service with the option of automatic renewal. By accepting the terms of this Agreement, the customer gives their consent for the automatic deduction of the full subscription cost for the upcoming term in advance on the expiration date of the previous subscription period. The subscription fee will be automatically deducted at the beginning of each billing cycle until the customer cancels it."
+    },
+    {
+      "title": "Privacy policy",
+      "description": "We respect the information that you provide to us and want to be sure you fully understand exactly how we use that information, so please review our Privacy Policy."
+    },
+    {
+      "title": "Links to third-party sites",
+      "description": "We sometimes provide links on this Website to third-party websites. If you use these links, you will leave this Website. We are not obligated to review any third-party websites that you link to from this Website, we do not control any of the third-party websites, and we are not responsible for any of the third-party websites (or the products, services, or content available through any of them). Thus, we do not endorse or make any representations about such third-party websites, any information, software, products, services, or materials found there or any results that may be obtained from using them. If you decide to access any of the third-party websites linked to from this Website, you do this entirely at your own risk and you must follow the privacy policies and terms and conditions for those third-party websites."
+    },
+    {
+      "title": "User submissions",
+      "description": "Certain areas of this Website (e.g., peer groups, learning paths, and projects) may permit you to submit, post, upload or otherwise make available feedback, comments, information, data, text, software, messages, photos, videos, graphics, audio or other content or materials (each, a \"User Submission\"). You agree that you are solely responsible for all of your User Submissions and that any such User Submission is considered both non-confidential and non-proprietary. Further, we do not guarantee that you will be able to edit or delete any User Submission you have submitted.<br/><br/>By submitting any User Submission, you are promising us that:<br/><ul> <li> You own all rights in your User Submissions (including, without limitation, all rights to the reproduction and display of your User Submissions) or, alternatively, you have acquired all necessary rights in your User Submissions to enable you to grant to us the rights in your User Submissions as described in these Terms;<br> </li> <li> You have paid and will pay in full all license fees, clearance fees, and other financial obligations, of any kind, arising from any use or commercial exploitation of your User Submissions;<br> </li> <li> Your User Submissions do not infringe the copyright, trademark, patent, trade secret, or other intellectual property rights, privacy rights, or any other legal or moral rights of any third party;<br> </li> <li> You voluntarily agree to waive all \"moral rights\" that you may have in your User Submission;<br> </li> <li> Any information contained in your User Submission is not known by you to be false, inaccurate, or misleading;<br> </li> <li> Your User Submission does not violate any law (including, but not limited to, those governing export control, consumer protection, unfair competition, anti-discrimination, or false advertising);<br> </li> <li> Your User Submission is not, and may not reasonably be considered to be, defamatory, libelous, hateful, racially, ethnically, religiously, or otherwise biased or offensive, unlawfully threatening, or unlawfully harassing to any individual, partnership, or corporation, vulgar, pornographic, obscene, or invasive of another's privacy;<br> </li> <li> You were not and will not be compensated or granted any consideration by any third party for submitting your User Submission;<br> </li> <li> Your User Submission does not incorporate materials from a third-party website, or addresses, email addresses, contact information, or phone numbers (other than your own);<br> </li> <li> Your User Submission does not contain any viruses, worms, spyware, adware, or other potentially damaging programs or files;<br> </li> <li> Your User Submission does not contain any information that you consider confidential, proprietary, or personal; and<br> </li> <li> Your User Submission does not contain or constitute any unsolicited or unauthorized advertising, promotional materials, junk mail, spam, chain letters, pyramid schemes, or any other form of solicitation. <br><br> </li> </ul>By submitting a User Submission, you grant to us an irrevocable, perpetual, transferable, non-exclusive, fully-paid, worldwide, royalty-free license (sublicensable through multiple tiers) to:<br/><ul> <li> Use, distribute, reproduce, modify, adapt, publish, translate, publicly perform, and publicly display your User Submissions (or any modification thereto), in whole or in part, in any format or medium now known or later developed;<br> </li> <li> Use (and permit others to use) your User Submission in any manner and for any purpose (including, without limitation, commercial purposes) that we deem appropriate in our sole discretion (including, without limitation, to incorporate your User Submission or any modification thereto, in whole or in part, into any technology, product, or service);<br> </li> <li> Display advertisements in connection with your User Submissions and to use your User Submissions for advertising and promotional purposes. <br><br> </li> </ul>We may, but are not obligated to, pre-screen User Submissions or monitor any area of this Website through which User Submissions may be submitted. We are not required to host, display, or distribute any User Submissions on or through this Website and may remove at any time or refuse any User Submissions for any reason. We are not responsible for any loss, theft, or damage of any kind to any User Submissions. Further, you agree that we may freely disclose your User Submission to any third party absent any obligation of confidence on the part of the recipient.<br/><br/>By operating our Services, we do not represent or imply that we endorse the User Submissions posted on this Website, or that we believe any such User Submissions to be accurate, useful, or non-harmful. You are responsible for taking precautions as necessary to protect yourself and your computer systems from harmful or destructive content."
+    },
+    {
+      "title": "Unauthorized activities",
+      "description": "To be clear, we authorize your use of this Website only for Permitted Purposes.<br/>Any other use of this Website beyond the Permitted Purposes is prohibited and, therefore, constitutes unauthorized use of this Website.<br/>This is because as between you and us, all rights in this Website remain our property.<br/><br/>Unauthorized use of this Website may result in violation of various USA and international copyright laws.<br/>Unless you have written permission from us stating otherwise, you are not authorized to use this Website in any of the following ways (these are examples only and the list below is not a complete list of everything that you are not permitted to do):<br/><ul> <li> For any public or commercial purpose which includes use of this Website on another site or through a networked computer environment;<br> </li> <li> In a manner that modifies, publicly displays, publicly performs, reproduces or distributes any of this Website;<br> </li> <li> In a manner that violates any local, state, national, foreign, or international statute, regulation, rule, order, treaty, or other law;<br> </li> <li> To stalk, harass, or harm another individual;<br> </li> <li> To impersonate any person or entity or otherwise misrepresent your affiliation with a person or entity;<br> </li> <li> To interfere with or disrupt this Website or servers or networks connected to this Website;<br> </li> <li> To use any data mining, robots, or similar data gathering or extraction methods in connection with this Website; or<br> </li> <li> Attempt to gain unauthorized access to any portion of this Website or any other accounts, computer systems, or networks connected to this Website, whether through hacking, password mining, or any other means. <br><br> </li> </ul>You agree to hire attorneys to defend us if you violate these Terms and that violation results in a problem for us.<br/>You also agree to pay any damages that we may end up having to pay as a result of your violation.<br/>You alone are responsible for any violation of these Terms by you.<br/>We reserve the right to assume the exclusive defense and control of any matter otherwise subject to indemnification by you and, in such case, you agree to cooperate with our defense of such claim."
+    },
+    {
+      "title": "Proprietary rights",
+      "description": "The {{brand_name}} name and logos are trademarks and service marks that belong to us.Other trademarks, names, and logos on this Website are the property of their respective owners.<br/><br/>Unless otherwise specified in these Terms, all Materials, including the arrangement of them on this Website, are our sole property, Copyright © 2023.All rights not expressly granted herein are reserved.Except as otherwise required or limited by applicable law, any reproduction, distribution, modification, retransmission, or publication of any copyrighted material is strictly prohibited without the express written consent of the copyright owner or license."
+    },
+    {
+      "title": "Intellectual property infringement",
+      "description": "We have a policy of removing User Submissions that violate intellectual property rights of others, suspending access to this Website (or any portion thereof) to any user who uses this Website in violation of someone's intellectual property rights, and/or terminating in appropriate circumstances the account of any user who uses this Website in violation of someone's intellectual property rights.<br/><br/>Submitting a DMCA Notification<br/><br/>We have implemented procedures for receiving written notification of claimed copyright infringement and for processing such claims in accordance with such law. If you believe your copyright or other intellectual property right is being infringed by a user of this Website, please provide written notice to our Agent for notice of claims of infringement:<br/><br/>Attn: {{brand_name}} DMCA<br/>Agent Email: <a>{{email}}</a><br/><br/>To be sure the matter is handled immediately, your written notice must:<br/><ul> <li>Contain your physical or electronic signature;<br/> </li> <li>Identify the copyrighted work or other intellectual property alleged to have been infringed;<br/> </li> <li>Identify the allegedly infringing material in a sufficiently precise manner to allow us to locate that material;<br/> </li> <li>Contain adequate information by which we can contact you (including postal address, telephone number, and e-mail address);<br/> </li> <li>Contain a statement that you have a good faith belief that use of the copyrighted material or other intellectual property is not authorized by the owner, the owner's agent or the law;<br/> </li> <li>Contain a statement that the information in the written notice is accurate; and<br/> </li> <li>Contain a statement, under penalty of perjury, that you are authorized to act on behalf of the copyright or other intellectual property right owner.<br/><br/> </li> </ul>Unless the notice pertains to copyright or other intellectual property infringement, the Agent will be unable to address the listed concern.<br/><br/>Submitting a DMCA Counter-Notification<br/><br/>We will notify you that we have removed or disabled access to copyright-protected material that you provided, if such removal is pursuant to a validly received DMCA take-down notice. In response, you may provide our Agent with a written counter-notification that includes the following information:<br/><br/><ul> <li>Your physical or electronic signature;<br/> </li> <li>Identification of the material that has been removed or to which access has been disabled, and the location at which the material appeared before it was removed or access to it was disabled;<br/> </li> <li>A statement from you under the penalty of perjury, that you have a good faith belief that the material was removed or disabled as a result of a mistake or misidentification of the material to be removed or disabled;<br/> </li> <li>Your name, physical address and telephone number, and a statement that you consent to the jurisdiction of a court for the judicial district in which your physical address is located, or if your physical address is outside of USA, for any judicial district in which we may be located, and that you will accept service of process from the person who provided notification of allegedly infringing material or an agent of such person.<br/><br/> </li> </ul>Termination of Repeat Infringers<br/><br/>We reserve the right, in our sole discretion, to terminate the account or access of any user of this Website or Service who is the subject of repeated DMCA or other infringement notifications."
+    },
+    {
+      "title": "Disclaimer of warranties",
+      "description": "THIS WEBSITE IS PROVIDED \"AS IS\" AND \"WITH ALL FAULTS\" AND THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THIS WEBSITE IS WITH YOU.<br/><br/>WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND (EXPRESS, IMPLIED OR STATUTORY) WITH RESPECT TO THIS WEBSITE, WHICH INCLUDES BUT IS NOT LIMITED TO, ANY IMPLIED OR STATUTORY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR USE OR PURPOSE, TITLE, AND NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS.<br/><br/>NEITHER WE AS THE PLATFORM NOR THE AUTHOR SHALL BE HELD RESPONSIBLE FOR ANY POTENTIAL INJURIES THAT THE USER MAY SUSTAIN DURING PRACTICAL ACTIVITIES.<br/><br/>THIS MEANS THAT WE DO NOT PROMISE YOU THAT THE WEBSITE IS FREE OF PROBLEMS. Without limiting the generality of the foregoing, we make no warranty that this Website will meet your requirements or that this Website will be uninterrupted, timely, secure, or error-free or that defects in this Website will be corrected. We make no warranty as to the results that may be obtained from the use of this Website or as to the accuracy or reliability of any information obtained through this Website. No advice or information, whether oral or written, obtained by you through this Website or from us or our subsidiaries/other affiliated companies shall create any warranty. We disclaim all equitable indemnities. Our Services may contain content that is offensive, indecent, or otherwise objectionable. We disclaim any responsibility for any harm resulting from your use of our Services, or from any downloading by you of content posted on the Website."
+    },
+    {
+      "title": "Limitation of liability",
+      "description": "WE SHALL NOT BE LIABLE TO YOU FOR ANY DAMAGES RESULTING FROM YOUR DISPLAYING, COPYING, OR DOWNLOADING ANY MATERIALS TO OR FROM THIS WEBSITE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL WE BE LIABLE TO YOU FOR ANY INDIRECT, EXTRAORDINARY, EXEMPLARY, PUNITIVE, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF DATA, REVENUE, PROFITS, USE OR OTHER ECONOMIC ADVANTAGE) HOWEVER ARISING, EVEN IF WE KNOW THERE IS A POSSIBILITY OF SUCH DAMAGE. IN NO EVENT WILL COMPANY'S LIABILITY EXCEED THE GREATER OF $100 AND THE AMOUNTS YOU PAY THE COMPANY FOR USE OF, OR IN CONNECTION WITH, THE SITE."
+    },
+    {
+      "title": "Indemnification",
+      "description": "You agree to indemnify and hold us and our contractors, licensors, and ours and their respective directors, officers, employees, and agents harmless from and against any and all claims and expenses, including attorneys' fees, arising out of your use of the Site, the Services or the Materials, your violation of this Agreement, your violation of any of our policies, or your violation of the rights of another, including but not limited to intellectual property or other proprietary rights."
+    },
+    {
+      "title": "Local laws; export control",
+      "description": "We control and operate this Website from our headquarters in USA and the entirety of this Website may not be appropriate or available for use in other locations. If you use this Website outside USA, you are solely responsible for following applicable local laws."
+    },
+    {
+      "title": "Feedback",
+      "description": "Any submissions by you to us (e.g., comments, questions, suggestions, materials, survey responses, testimonials, reviews — collectively, \"Feedback\") through any communication whatsoever (e.g., call, fax, email) will be treated as both non-confidential and non-proprietary. Except as prohibited by applicable law, you hereby assign all right, title, and interest in, and we are free to use, without any attribution or compensation to you, any ideas, know-how, concepts, techniques, or other intellectual property and proprietary rights contained in the Feedback, whether or not patentable, for any purpose whatsoever, including but not limited to, developing, manufacturing, having manufactured, licensing, marketing, and selling, directly or indirectly, products and services using such Feedback. Where the foregoing assignment is prohibited by law, you hereby grant us an exclusive, transferable, worldwide, royalty-free, fully paid up license (including the right to sublicense) to use and exploit all Feedback as we may determine in our sole discretion. Notwithstanding the foregoing, you understand and agree that we are not obligated to use, display, reproduce, or distribute any such ideas, know-how, concepts, or techniques contained in the Feedback, and you have no right to compel such use, display, reproduction, or distribution."
+    },
+    {
+      "title": "Dispute resolution and arbitration; class action waiver",
+      "description": "Please Read This Provision Carefully. It Affects Your Legal Rights.<br/><br/>This Provision facilitates the prompt and efficient resolution of any dispute (e.g., claim or controversy), whether based in contract, statute, regulation, ordinance, tort — including, but not limited to, fraud, misrepresentation, fraudulent inducement, or negligence — or any other legal or equitable theory, and includes the validity, enforceability or scope of this Provision (with the exception of the enforceability of the Class Action Waiver clause below) that may arise between you and us. Effectively, then, \"dispute\" is given the broadest meaning enforceable by law and includes any claims against other parties relating to services or products provided or billed to you (such as our licensors, suppliers, dealers or third-party vendors) whenever you also assert claims against us in the same proceeding.<br/><br/>This Provision provides that all disputes between you and us shall be resolved by binding arbitration because acceptance of These Terms constitutes a waiver of your right to litigation claims and all opportunity to be heard by a judge or jury. To be clear, there is no judge or jury in arbitration, and court review of an arbitration award is limited. The arbitrator must follow these Terms and can award the same damages and relief as a court (including attorney's fees). You may, however, opt out of this Provision which means you would have a right or opportunity to bring claims in a court, before a judge or jury, and/or to participate in or be represented in a case filed in court by others (including, but not limited to, class actions). EVERYONE AGREES THAT, EXCEPT AS PROVIDED BELOW, ANY AND ALL DISPUTES, AS DEFINED ABOVE, WHETHER PRESENTLY IN EXISTENCE OR BASED ON ACTS OR OMISSIONS IN THE PAST OR IN THE FUTURE, WILL BE RESOLVED EXCLUSIVELY AND FINALLY BY BINDING ARBITRATION RATHER THAN IN COURT IN ACCORDANCE WITH THIS PROVISION.<br/><br/>Pre-Arbitration Claim Resolution<br/><br/>For all Disputes, whether pursued in court or arbitration, you must first give us an opportunity to resolve the Dispute which is first done by emailing us at <a>{{email}}</a> the following information: (1) Your name, (2) Your address, (3) A written description of your Claim, and (4) A description of the specific relief you seek. If we do not resolve the Dispute within 45 days after receiving your notification, then you may pursue your Dispute in arbitration in USA.<br/><br/>Class Action Waiver<br/><br/>Except as otherwise provided in this Provision, the arbitrator may not consolidate more than one person's claims, and may not otherwise preside over any form of a class or representative proceeding or claims (such as a class action, consolidated action, representative action, or private attorney general action) unless both you and we specifically agree to do so in writing following initiation of the arbitration. If you choose to pursue your Dispute in court by opting out of the Arbitration Provision, as specified above, this Class Action Waiver will not apply to you. Neither you, nor any other user of this Website can be a class representative, class member, or otherwise participate in a class, consolidated, or representative proceeding without having complied with the opt-out requirements above.<br/><br/>No Judge or Jury in Arbitration<br/><br/>Arbitration does not involve a judge or jury. You understand and agree that by entering into these Terms you and we are each giving up the right to a jury trial or a trial before a judge in a public court. In the absence of this Provision, you and we might otherwise have had a right or opportunity to bring disputes in a court, before a judge or jury, and/or to participate or be represented in a case filed in court by others (including class actions). Except as otherwise provided below, those rights are waived. Other rights that you would have if you went to court (e.g., the rights to both appeal and certain types of discovery) may be more limited or may also be waived.<br/><br/>Severability<br/><br/>If any clause within this Provision (other than the Class Action Waiver clause above) is found to be illegal or unenforceable, that clause will be severed from this Provision whose remainder will be given full force and effect. If the Class Action Waiver clause is found to be illegal or unenforceable, this entire Provision will be unenforceable and the dispute will be decided by a court.<br/><br/>Continuation<br/><br/>This Provision shall survive the termination of your account with us or our affiliates and your discontinued use of this Website. Notwithstanding any provision in these Terms to the contrary, we agree that if we make any change to this Provision (other than a change to the Notice Address), you may reject any such change and require us to adhere to the present language in this Provision if a dispute between us arises."
+    },
+    {
+      "title": "Language",
+      "description": "Everyone has expressly required that these Terms and all documents and notices relating thereto be drafted in the English language. We may translate these terms into other languages. In the event of a conflict between a translated version of these Terms of Service and the English version, the English version will control."
+    },
+    {
+      "title": "General",
+      "description": "If we feel that you are not complying with these Terms, we will tell you and may provide you with recommended necessary corrective action(s).<br/><br/>However, certain violations of these Terms, as determined by us, may require immediate termination of your access to this Website without prior notice to you. The USA law, without regard to the choice or conflicts of law provisions, will govern these Terms. Foreign laws do not apply. Except for disputes subject to arbitration as described above, any disputes relating to these Terms or this Website will be heard in the courts located in the USA.<br/><br/>If any of these Terms are deemed inconsistent with applicable law, then such term(s) shall be interpreted to reflect the intentions of the parties, and no other terms will be modified. By choosing not to enforce any of these Terms, we are not waiving our rights.<br/><br/>These Terms are the entire agreement between you and us and, therefore, supersede all prior or contemporaneous negotiations, discussions, or agreements between everyone about this Website. The proprietary rights, disclaimer of warranties, representations made by you, indemnities, limitations of liability, and general provisions shall survive any termination of these Terms."
+    },
+    {
+      "title": "Contact Us",
+      "description": "If you have any questions about these Terms or otherwise need to contact us for any reason, you can reach us at<br/><br/>{{brand_name}} support<br/><a>{{email}}</a><br/><br/>Performance EdTech LLC<br/>447 Broadway, 2nd Floor, #1389<br/>New York, New York 10013"
+    }
+  ],
+  "mainTermsSupport": {
+    "breadCrumb": "Support",
+    "title": "Welcome to the {{brand_name}} Support Center: We're Here to Help You Thrive on Your Learning Journey",
+    "description": "Your satisfaction and success are our top priorities. Our dedicated Support Center is designed to provide you with the assistance you need as you explore our diverse range of courses and transform your mind, body, and soul."
+  },
+  "faqTitleSupport": "Find Answers to Your Questions",
+  "supportFaqs": [
+    {
+      "title": "I've bought a course but I can't access it",
+      "description": "Upon purchasing a course from {{brand_name}}.com, your login credentials are displayed on a web page immediately after the transaction. In addition, we send a duplicate of this information to your registered email address.<br/><br/> <ol><li> <strong>Check Your Inbox</strong>: Inspect your main inbox for an email from {{brand_name}}.com.<br/><br/></li><li> <strong>Check Your Spam Folder</strong>: If you don't see the email in your main inbox, it may have been marked as spam. Review your spam or junk folder for an email from us.<br/><br/></li><li> <strong>Email Address Typo</strong>: If you still can't find the email, it's possible that there was a typo or error in the email address you provided during the purchase. This could prevent our communication from reaching you.<br/><br/></li></ol> In the event that you can't locate the email or if there was a typographical error in your email address, please don't worry. We're here to help you restore your course access swiftly.<br/><br/> Contact us directly at <a>{{ email }}</a>, detailing your issue. Our responsive team will assist you in retrieving your access credentials as soon as possible.<br/><br/> Remember, your learning journey is our priority, and we're committed to making your experience with {{brand_name}}.com as smooth and fulfilling as possible.<br/><br/>"
+    },
+    {
+      "title": "Can I get a refund if I'm not satisfied with the course?",
+      "description": "Absolutely. At {{brand_name}}.com, we understand that every course might not meet everyone's expectations. Therefore, we have a 100% satisfaction guarantee policy.<br/><br/> If you find that the course does not align with your learning goals or expectations within the first 14 days following your purchase, we offer a full refund. We believe in the value of our courses and your right to the best possible learning experience.<br/><br/> To request a refund:<br/><br/> <ol><li>Email Us</strong>: Send an email to <a>{{ email }}</a> detailing your refund request. Please include your purchase details and the reason for dissatisfaction if possible – your feedback helps us improve.<br/><br/></li><li> Wait for Confirmation</strong>: Our Customer Support Team will process your request promptly and issue a full refund.<br/><br/></li></ol> Remember, your satisfaction is our top priority at {{brand_name}}.com. We're committed to delivering quality learning experiences that meet your needs and exceed your expectations.<br/><br/>"
+    },
+    {
+      "title": "How long do I have access to the course?",
+      "description": "Unlimited time, whenever you want. You can take your time and take lessons when it suits you and at the most convenient time."
+    },
+    {
+      "title": "When does the course start?",
+      "description": "After payment and registration, you will receive an email with an access link and a password to enter your personal account, where all the course materials will already be located."
+    },
+    {
+      "title": "How do I access the course?",
+      "description": "After payment and registration, you will receive an email with an access link and a password to enter your personal account, where all the course materials will already be located."
+    },
+    {
+      "title": "How to pay for the course?",
+      "description": "The course can be paid for with absolutely any bank card Visa, MasterCard, Maestro, Visa Electron."
+    },
+    {
+      "title": "How to pay for the subscription?",
+      "description": "When purchasing a course on our platform you can also add a free 7-day trial period to your order for all our courses and events, which ends with an automatic subscription payment for the first month of use. Thereafter, the subscription will be charged on a monthly basis. You can cancel your subscription at any time in personal account or by contacting our Support Team."
+    },
+    {
+      "title": "After the trial period of the subscription, money was debited for renewal. How to return?",
+      "description": "By making a payment on our website, you enter into an offer agreement with us. Section 2 of this agreement describes in detail the procedure and conditions for registration and further payment of a subscription. When you voluntarily activate a trial period, you also agree that auto payment will be activated and that at the end of the trial period you will be automatically charged. And this will continue until you cancel your subscription at any time on the site or by writing to us. According to our refund policy, subscription fees are non-refundable after the end of the trial period.By making a payment on our website, you enter into an offer agreement with us. Section 2 of this agreement describes in detail the procedure and conditions for registration and further payment of a subscription. When you voluntarily activate a trial period, you also agree that auto payment will be activated and that at the end of the trial period you will be automatically charged. And this will continue until you cancel your subscription at any time on the site or by writing to us. According to our refund policy, subscription fees are non-refundable after the end of the trial period. <termsLink>Terms of Service</<termsLink>"
+    },
+    {
+      "title": "Can I buy a course as a gift?",
+      "description": "Yes. To do this, when registering for the course, indicate the email address of the person to whom the gift is intended and he will receive an authorization email and access to his personal account."
+    },
+    {
+      "title": "How can I cancel my subscription?",
+      "description": "You can cancel your subscription inside your {{brand_name}} customer dashboard or send us a message to <a>{{email}}</a> and we'll help you to do it."
+    }
+  ],
+  "supportFooter": {
+    "title": "Can't Find What You're Looking For?",
+    "description": "If you're unable to find the information you need within our knowledge base, don't worry! Our friendly and knowledgeable support team is always here to help. Feel free to reach out to us directly via email at <a>{{ email }}</a> with your questions, concerns, or feedback. We'll get back to you as soon as possible to ensure your experience with {{brand_name}} is exceptional.",
+    "button": "WhatsApp Message"
+  },
+  "continue_watching": "Continue Watching",
+  "go_to_course_redirect": "Go to Course",
+  "popular_courses": "Popular Courses by Categories",
+  "popular_on": "Popular on",
+  "read_more": "Read More",
+  "start_for_free": "Start for Free",
+  "hello": "Hello",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "email": "Email",
+  "enter_first_name": "Enter First Name",
+  "enter_last_name": "Enter Last Name",
+  "enter_your_email": "Enter Your Email",
+  "subscription": "Subscription",
+  "activated": "Activated",
+  "not_active": "Not Active",
+  "visible_when_you_post_comments_on_courses": "Visible when you post comments on courses",
+  "used_for_signing_into_your_account": "Used for signing into your account",
+  "upcoming_payment_month_due_on": "Upcoming payment: {{payment_per_month}} due on <span>{{payment_date}}</span>",
+  "subscription_cancel_delay_message": "Your subscription has been canceled. You will continue to have access until <span>{{payment_date}}</span>",
+  "billing": "Billing",
+  "manage_billing": "Manage Billing",
+  "used_to_manage_your_stripe_account": "Used to manage your Stripe account",
+  "Account": "Account",
+  "merge_with_google": "Merge with Google",
+  "after_merging_google": "After merging with Google, you'll be able to access your account through Google",
+  "activate_subscription": "Activate the subscription for {{payment_per_month}} per month",
+  "brand_name_subscription_grant_message": "{{brand_name}} subscription grants access to all existing and future 100+ courses on intellectual development, physical wellness, relationship building, productivity enhancement and other areas.",
+  "upload_photo": "Upload Photo",
+  "cancel_subscription_settings": "Cancel Subscription",
+  "save": "Save",
+
+  "congratulations": "Congratulations!",
+  "reached_your_goal": "You've reached your goal",
+  "claim_your_gift": "Claim Your Gift",
+  "banner_days": "Days",
+
+  "yoga_practitioner": "Yoga practitioner",
+  "right_yoga_pose": "Right yoga pose",
+  "get_started_today": "Get Started Today!",
+  "start_with_free_trial": "Start with our {{trial_days}}-Day Free Trial.",
+  "then_price_per_month": "then {{price}}/month",
+
+  "course_of_the_week": "Course of the week",
+  "course_of_the_week_image": "Course of the week image",
+
+  "popular_courses_by_categories": "Popular Courses by Categories",
+
+  "trial_popup": {
+    "course_unlocked": "{{course_title}} Unlocked",
+    "top_programs_label": "100+ Top Programs: ",
+    "top_programs_desc": "Diverse, elite learning.",
+    "new_courses_label": "New Courses Weekly: ",
+    "new_courses_desc": "Fresh engaging content.",
+    "community_label": "Passionate Community: ",
+    "community_desc": "Connect and grow.",
+    "trial_starts_today": "Your Trial Starts Today!",
+    "explore_courses": "Explore courses & live events – Free Trial Starts Today!",
+    "day_reminder": "Day {{trial_days}} Reminder via Email",
+    "reminder_desc": "We'll remind you that your free trial is ending soon.",
+    "subscription_begins": "Day {{trial_days}} - Your New Subscription Begins!",
+    "subscription_desc": "You'll keep all features unlocked during the trial at {{price}}, unless you cancel.",
+    "start_free_trial": "START {{trial_days}}-DAY FREE TRIAL",
+    "user_review": "Lately, my life feels like a musical-I sing no matter my mood. I never expected it to be such a great stress reliever, but now it's my go-to way to unwind after work. It eases exhaustion, lifts my spirits, and even burns calories!"
+  },
+
+  "sidebar": {
     "dashboard": "Dashboard",
-    "home": "Home",
+    "support": "Support",
+    "settings_and_subscription": "Settings & Subscription",
     "logout": "Logout",
-    "login": "Login",
-    "contact_us": "Contact Us",
-    "unlock_your_potential": "Unlock Your Potential with {{brand_name}}",
-    "live_with_total_mind": "Live with Total Mind, Body, Soul Balance",
-    "get_unlimited_access": "Get <span>unlimited access</span> to bite-sized lessons.",
-    "join_now": "Join Now",
-    "trusted_by": "Trusted by",
-    "members": "50,000+ Members",
-    "top_trending_courses": "Top Trending Courses",
-    "top_courses": "Top Courses at Your Fingertips. Learn Hands-On, Connect with Experts, and Elevate Your Mind, Body, and Soul through Knowledge, Skills, and Growth.",
-    "buy": "Buy",
-    "words_from_users": "Words From Our Happy Users",
-    "user_reviews": {
-        "1": {
-            "message": "I’ve transformed my career and connected with others who share my interests. It all started with a memory improvement course, and the results—better focus and clarity—motivated me to dive deeper into brain function. Now, I feel more confident and empowered in both my personal and professional life."
-        },
-        "2": {
-            "message": "I’ve transformed my career and connected with others who share my interests. It all started with a memory improvement course, and the results—better focus and clarity—motivated me to dive deeper into brain function. Now, I feel more confident and empowered in both my personal and professional life."
-        },
-        "3": {
-            "message": "Joining this platform sparked a huge shift in how I approach learning. I began with a creativity course and quickly noticed how it opened up new ways of thinking. Since then, I’ve been exploring more topics and finding real value in every step. It’s been a game-changer for my mindset."
-        },
-        "4": {
-            "message": "What started as casual curiosity has turned into a personal growth journey. The emotional intelligence course helped me understand myself and others more deeply. I now navigate relationships with more ease and purpose, and that’s something I never thought a course could offer."
-        },
-        "5": {
-            "message": "After years of feeling stuck in old habits, I took a leap and joined a mindset training. That one choice helped me reset how I approach challenges. I’ve gained clarity, motivation, and a supportive community that keeps me growing. It’s honestly been life-changing."
-        }
-    },
-    "popular_authors": "Popular Authors",
-    "become_an_author": "Become An Author",
-    "join_brand": "<span>Join {{brand_name}}</span> and share your expertise as an Author!",
-    "learn_from_creatives": "There are millions of people out there who want to learn from creatives like you. If you love to teach and share what you know, {{brand_name}} is a unique place to do just that.",
-    "teach_course": "Teach a Course",
-    "easy_steps_to_get_started": "Easy Steps to Get Started",
-    "get_started_steps": [
-        {
-            "title": "Find Your Perfect Course",
-            "description": "Explore our courses and find the perfect fit for you."
-        },
-        {
-            "title": "Book your course today!",
-            "description": "Book your course today and take the first step."
-        },
-        {
-            "title": "Learn at your own pace",
-            "description": "With unlimited access, you can watch courses as many times as you need."
-        }
-    ],
+    "logout_confirmation_title": "Logout?",
+    "logout_confirmation_text": "You will be signed out of your account.",
+    "cancel": "Cancel"
+  },
 
-    "see_all_courses_by_categories": "See All Courses by Categories",
-    "faqTitle": "Frequently Asked Questions",
-    "generalFaqTitle": "General",
-    "pricingFaqTitle": "Pricng & Payment",
-    "general_faqs": [
-        {
-            "id": 1,
-            "question": "What are {{brand_name}} online courses?",
-            "answers": [
-                "{{brand_name}}'s courses are designed to help you cultivate inner peace and personal growth through practical, hands-on learning. Each course combines engaging video lessons with complementary materials, guiding you step by step to develop mindfulness skills you can apply in daily life. You'll also have the opportunity to share your progress, connect with instructors, and engage with a supportive community of like-minded learners."
-            ]
-        },
-        {
-            "id": 2,
-            "question": "When do the courses start and when do they finish?",
-            "answers": [
-                "All courses are 100% online, so once they're published, courses start and finish whenever you want. You set the pace of the class. You can go back to review what interests you most and skip what you already know, ask questions, answers questions, and more."
-            ]
-        },
-        {
-            "id": 3,
-            "question": "Which course is right for me?",
-            "answers": [
-                "{{brand_name}} offers 100+ online courses covering a range of topics, from meditation and stress management to mindful movement and self-awareness. Designed for both beginners and experienced practitioners, our courses provide accessible, practical guidance to help you integrate mindfulness into your daily life. With new classes added regularly, you can deepen your practice, discover new techniques, and cultivate lasting well-being."
-            ]
-        }
-    ],
-    "pricing_faqs": [
-        {
-            "id": 1,
-            "question": "Will I be charged taxes?",
-            "answers": [
-                "Depending on where you live, you may be charged taxes in addition to your annual membership price. If tax applies, you will see it stated separately on your emailed invoice. Tax rates are calculated based on your location or the billing information you provided at the time of purchase.",
-                "Should you have any additional questions about taxes you were charged, please contact our support at <a>{{email}}</a>."
-            ]
-        },
-        {
-            "id": 2,
-            "question": "Can I get a refund?",
-            "answers": [
-                "At {{brand_name}}, our mission is to provide you with a unique and enriching educational experience. However, if you decide not to continue, we offer a refund for your first-time purchase.",
-                "If you have any questions, feel free to contact us at <a>{{email}}</a>. We're happy to help!"
-            ]
-        }
-    ],
+  "close": "Close",
+  "open_access_form": {
+    "complete_form": "Complete the form to proceed with the course payment",
+    "email_placeholder": "Enter your email address",
+    "go_to_checkout": "Go To Checkout"
+  },
+  "terms_of_service_link": "By clicking \"Go To Checkout\", I confirm that I am 16 or older and accept the <refund>Refund Policies</refund>, <terms>Terms of Service</terms>, and <privacy>Privacy Policy</privacy>.",
 
-    "showLessText": "Show Less",
-    "showMoreText": "Show More",
-    "faqTitleShort": "FAQ",
-    "enterLanguage": "Enter language",
-    "enterCountry": "Enter country",
-    "languageLabel": "Language",
-    "Country": "Country",
-    "refundPolicies": "Refund Policies",
-    "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy",
-    "copyright": "© {{year}} All Rights Reserved by {{name}}",
-
-    "cancellation_refund_policies": "Cancellation & Refund Policies",
-
-    "openAccessNow": "OPEN ACCESS NOW",
-
-    "keepPageOpen": "Keep this page opened. Your order isn’t finished.",
-    "continueWatchVideo": "Continue to Watch This Video",
-    "freeAccessMessage": "7 days of free access to our 50+ top courses",
-    "subscriptionMessage": "Including access to our bestsellers in Yoga, Dance, Singing, Massage, and Brain Exercises. Try it for free, then if you like it, it's {{price}} per month.",
-
-    "subscriptionAgreement": "By clicking the checkbox, I accept Subscription Terms and I agree to automatic payments.",
-    "continueToCourse": "CONTINUE TO COURSE",
-    "exclusiveOpportunity": "Exclusive one-time opportunity",
-    "points": {
-        "1": "<b>Unlimited access to all our top courses</b> aimed at enhancing health, emotional well-being, relationships, and self-realization",
-        "2": "More than <b>10 new courses every month</b>",
-        "3": "Access to private social network, where you can <b>connect, share wisdom, and grow with fellow members</b>"
-    },
-    "transformationMessage": "Your life-changing transformation begins with {{brand_name}} Membership",
-
-    "growthPathMessage": "Here's what your personal growth path could look like...",
-    "unlockMessage": "After unlocking {{courseTitle}}, continue your transformation with other empowering programs:",
-
-    "danceTherapy": "Dance therapy",
-    "danceManifest": "Dance out your emotions and manifest your dreams through dance:",
-    "danceCourseDescription": "An online course on how to learn to dance beautifully and master your body, work through stress, internal blocks, and how to heal your psychological state through movement. The author of the course is an international class coach with 15 years of experience, a choreographer, professional dancer, and psychologist.",
-
-    "freeTrialText": "Try it for free for 7 days, then <span>{{price}} per month.</span> Charged automatically. Cancel anytime.",
-
-    "guaranteed": "100% Guaranteed:",
-    "cancelTrialText": "Feel free to cancel your trial for any reason, completely obligation-free.",
-    "whyActNow": "Why act now:",
-    "specialOfferText": "you have unlocked a special offer only available on this page. You don’t have to say YES, you only have to say MAYBE. Maybe it’s your chance to change everything inside. And it’s definitely your mission to chart your best, most rewarding path.",
-    "membershipTitle": "Introducing {{brand_name}} Membership",
-    "membershipSubtitle": "Your life-changing transformation begins with {{brand_name}} Membership",
-    "membershipDescription1": "In today’s fast-paced world, taking time to focus on yourself isn’t just beneficial, it’s essential. Engaging in self-care and introspection is crucial for maintaining mental balance and emotional well-being. It helps you navigate life’s challenges with greater resilience and harness your full potential.",
-    "membershipDescription2": "At {{brand_name}}, we believe in empowering you with the tools to turn inward, explore your capabilities, and cultivate a state of mind that fosters growth and fulfillment.",
-
-    "whatYouGetTitle": "What you get",
-    "programsTitle": "100+ programs in 7 categories",
-    "communityTitle": "Community",
-    "communityDescription": "Access to {{brand_name}} private social network, where you can connect, share wisdom, and grow",
-    "brandValuesTitle": "{{brand_name}} embodies the core values and principles that resonate deeply with our community of users and authors.",
-    "brandValuesDescription": "Our commitment lies in curating only the finest content and partnering with exceptional writers. Our users stand out as the most insightful, reflective, and accomplished individuals. By intertwining these three key elements-outstanding content, eminent authors, and an enlightened user base-we foster the most robust community of fulfilled individuals. And without a doubt, you are an essential part of this thriving community.",
-
-    "categoriesBadge": [
-        "Brain",
-        "Meditations",
-        "Massage",
-        "Dances",
-        "Singing",
-        "Fitness & Health",
-        "Relationship"
-    ],
-
-    "successStories": "176,405 success stories",
-    "journeyMessage": "Are you ready to start your own journey to success? Join our big family!",
-    "feedbacks": {
-        "1": {
-            "message": "I was looking for something to help me refocus, and I stumbled upon {{brand_name}} almost by accident. I started with a creativity and focus course, and it was like flipping a switch. Not only did my productivity improve, but I also started meeting others who shared my interests. That inspired me to dig even deeper. I ended up unlocking the full platform and haven’t looked back."
-        },
-        "2": {
-            "message": "I used to feel stuck, like I wasn’t using my potential. Then I found {{brand_name}}, and everything changed. The first course I tried focused on cognitive health, and it really worked. I felt sharper, more focused, and genuinely more curious. I upgraded to the full platform to explore more topics, and it’s been such a rewarding journey."
-        },
-        "3": {
-            "message": "Honestly, I never expected online learning to impact me this much. I joined {{brand_name}} out of curiosity, took a course on motivation, and soon after, my entire outlook started to shift. I began exploring new career paths and even made a few meaningful connections along the way. Getting full access was the best decision—I’ve been growing nonstop since."
-        },
-        "4": {
-            "message": "When I started using {{brand_name}}, I just wanted to improve my concentration. But the changes went way beyond that. The courses helped me think differently, and as I evolved, I started connecting with people on the same wavelength. Eventually, I subscribed to the full platform because I saw how much it was helping me grow."
-        },
-        "5": {
-            "message": "I started with a mindset course at {{brand_name}} while juggling work and burnout. The impact was immediate—my focus improved, and I felt a new sense of purpose. It led me to reconsider my career direction. The full platform has been a constant source of motivation and knowledge ever since."
-        },
-        "6": {
-            "message": "What really stood out to me was how practical the lessons on {{brand_name}} were. After the first course on memory and focus, I saw real improvements. I wasn’t just learning—I was changing. I didn’t hesitate to upgrade once I realized how much more the platform had to offer."
-        },
-        "7": {
-            "message": "The courses on {{brand_name}} helped me reconnect with my curiosity. I took one on learning speed and memory, and to my surprise, it actually made studying fun again. I began to notice similar thinkers entering my life, which pushed me to explore more. Subscribing to the full version felt like the natural next step."
-        }
-    },
-
-    "trials_activation_faq": [
-        {
-            "id": 1,
-            "question": "What's included in the subscription?",
-            "answers": [
-                "As a {{brand_name}} member, you get unlimited access to all courses anytime, anywhere for as long as your subscription is active.",
-                "Plus, you'll join an exclusive community, networking and participating in new and upcoming courses, weekly online events with our top authors."
-            ]
-        },
-        {
-            "id": 2,
-            "question": "How to pay for the subscription?",
-            "answers": [
-                "When purchasing a course on our platform you can also add a free 7-day or 30-day trial period to your order for all our courses and events, which ends with an automatic subscription payment for the first month of use. Thereafter, the subscription will be charged on a monthly basis. You can cancel your subscription at any time in personal account or by contacting our Support Team."
-            ]
-        },
-        {
-            "id": 3,
-            "question": "How do I cancel or get a refund If I'm not satisfied?",
-            "answers": [
-                "You can unsubscribe at any time that's convenient for you. To cancel your subscription, go to the 'Settings and subscription' section in your personal account and click the 'Cancel subscription' button."
-            ]
-        }
-    ],
-
-    "popup_message": "Think that {{trial_days}} days is not enough?",
-    "free_trial": "days free trial",
-    "begin_journey": "BEGIN MY {{trial_days}}-DAY SACRED JOURNEY",
-    "pause_for": "PAUSE FOR {{trial_days}}-DAYS",
-    "skip_offer": "SKIP THIS ONE TIME OFFER",
-
-    "thank_you": "Thank You for Your Trust!",
-    "purchase_message": "You've Just purchased",
-    "access_message": "Access to the",
-    "trial_access_message": "{{trial_days}} day trial access to 50+ self-development courses.",
-    "trial_message": "Test various courses and select ones suitable for you. After {{trial_days}} days, your card will be automatically billed for the next month. If needed, cancel future charges at personal account.",
-    "login_text": "Your login",
-    "password_text": "Your password",
-
-    "email_support_message_new": "We've sent you the login and password via email and SMS. You might want to take a screenshot to ensure you don't lose them. If you haven't received the email, please check your spam folder or reach out to our support immediately: <a>{{email}}</a>",
-    "course_dashboard_message": "Now is the perfect time to head to the course dashboard!",
-    "go_to_course": "GO TO COURSE",
-
-    "thank_you_message": "Thank You! Please Let Us Know About You to Tailor Your Experience",
-    "continue": "CONTINUE",
-    "terms_confirmation": "By clicking the \"Continue\" button, I confirm that I agree to the terms and conditions of the <a>Privacy Policy</a>",
-
-    "order_incomplete_message": "Your order is not complete yet. Keep this page opened",
-    "order_almost_complete": "Your Order is Almost Complete!",
-    "order_instructions": "Please re-enter your email for accuracy and provide your phone number for secure account access.",
-    "email_verification_prompt": "Please double-check Is this the right email?",
-    "confirm_email_phone_button": "CONFIRM EMAIL AND PHONE",
-    "confirm_email_button": "CONFIRM EMAIL",
-    "validation_error_message": "Your email addresses do not match.",
-    "validation_okay_button": "OKAY",
-
-    "enter_email": "Enter your email",
-    "confirm_email": "Confirm your email",
-    "enter_phone": "Enter your phone",
-
-    "your_first_name": "Your First Name",
-    "your_last_name": "Your Last Name",
-    "country": "Country",
-    "your_age": "Your Age",
-    "Male": "Male",
-    "Female": "Female",
-    "Other": "Other",
-
-    "payment_successful": "Payment successful!",
-    "payment_failed": "Payment failed!",
-
-    "age_range": { "value": "under 18", "label": "under 18" },
-
-    "users": "Users",
-    "positive_reviews": "Positive reviews",
-    "sale": "Sale",
-    "enjoy_course": "Enjoy <span>this course</span> and <span>100 others unlimitedly.</span>",
-
-    "about_author": "About the Author",
-    "content": "Content",
-    "proceed_to_checkout": "PROCEED TO CHECKOUT",
-    "country_code_label": "Country Code",
-    "see_all_courses": "See All Courses",
-    "confirm_cancellation": "Confirm Cancellation",
-    "accept_offer": "ACCEPT OFFER",
-    "still_cancel": "STILL CANCEL",
-    "keep_subscription": "KEEP SUBSCRIPTION",
-    "cancel_subscription": "CANCEL SUBSCRIPTION",
-    "per_month": "per month",
-    "per": "per",
-    "days": "days",
-    "any_three_courses": "any three courses",
-    "effective_date": "Effective Date: May 4, 2023",
-
-    "errors": {
-        "email_required": "Email is required",
-        "must_be_valid_email": "Must be a valid email",
-        "must_agree_terms": "You must agree to the terms",
-        "first_name_required": "First name is required",
-        "first_name_min": "First name must be at least 2 characters",
-        "first_name_max": "First name must be at most 50 characters",
-        "first_name_invalid": "First name cannot contain numbers",
-        "last_name_required": "Last name is required",
-        "last_name_min": "Last name must be at least 2 characters",
-        "last_name_max": "Last name must be at most 50 characters",
-        "last_name_invalid": "Last name cannot contain numbers",
-        "location_required": "Country is required",
-        "age_required": "Age is required",
-        "gender_required": "Gender is required",
-        "feedback_required": "Feedback is required"
-    },
-
-    "privacyPolicies": [
-        {
-            "title": "Who We Are and What This Policy Covers",
-            "description": "At Performance EdTech LLC. (\"{{brand_name}}\", \"we\", \"us\"), we recognize that privacy is very important and value your privacy. In this Privacy Policy (\"Policy\"), we describe how we collect, use, and disclose personal information that we obtain about our customers and users of our website (including {{brand_name}}.com) (\"Sites\"), our mobile application (the \"App\"), and the services available through our Site (collectively, the Site, the App, and the services available therein are the \"Services\"). Below we explain how we collect, use, and share information about you, along with the choices that you have with respect to that information.<br/><br/>Applicable Terms<br/><br/>Your use of our Services, and any dispute over privacy, is subject to this Policy, the respective terms of use (the \"Terms\"), between you and {{brand_name}}, such as our Terms of Service and any other relevant agreements. The applicable Terms are incorporated by reference into this Policy, including their applicable limitations on liability and the resolution of disputes. By disclosing your personal information to us or using our Services, you understand and agree that {{brand_name}} may collect, use, and disclose your personal information in accordance with this Policy and the applicable Terms."
-        },
-        {
-            "title": "Information We Collect",
-            "description": "We generally collect information in the following ways: if and when you provide information directly to us, automatically through our Services, and from third-party sources. Let's go over the information that we collect below.<br/><br/>Information You Provide to Us<br/><br/>The amount and type of information that we collect depends on how you interact with our Services. Here are some examples:<br/><ul> <li> Basic Account Information: While you can browse parts of our website without registering, we ask you to sign up for a {{brand_name}}.com account to access certain parts of the Services (e.g., to have access to one of our courses). When you sign up for a {{brand_name}}.com account, we may ask you for basic personal information such as your email address, first name, and last name, phone number. We may also allow you to submit additional voluntary account information, such as a profile picture, your bio, or country/city you're located in. You can also sign up to receive email newsletters and promotional offers from us by submitting your email address, phone number.<br> </li> <li> Profile Information: If you have an account with us, certain of your profile information will be used for your profile. For example, your username, profile picture, and self-reported location of residence are part of that public profile, along with any other information you choose to put into your public profile, such as your bio. So please keep that in mind when deciding what information you would like to include.<br> </li> <li> User Content: The content that you create and submit (e.g., images, comments) through the Services will be visible to registered users, such as authors of the courses and other users. We maintain a copy of such content and may append other information to it, such as comments and ratings from authors or peers. If you choose to engage in discussion, blogs, or similar features and submit comments, ratings, or other content, we maintain a copy of this content. You may remove your content by contacting us at <a>{{email}}</a>. We may also collect certain information metadata associated with your content. Certain public user content may also be viewable by other website visitors and registered users of the Services.<br> </li> <li> Communications with Us: You may also provide us information when you respond to surveys, communicate with us by email, mail, chat, phone, or otherwise regarding the Services or a support question. We collect and maintain a record of your contact details, communications and our responses.<br> </li> <li> Other Information We Collect Regarding Your Usage of Our Services: We may also collect information about your use of our Services, such as your order history and purchases. We may also collect certain personal information about you from third parties, such as ratings, comments or grades provided by authors.<br> </li> <li> Authors Accounts: If you are an author and use the Site or the App, we collect personal information from you, including your name, profile picture, and bio, as well as content you provide, such as comments and ratings of users or other content that you submit to us. <br><br> </li> </ul>Information We Collect Automatically<br/><br/>We may also collect personal information about how you use the Services (e.g., using cookies and pixel tags), such as IP address, advertising ID, location information, browser type, device type, domain name, the website that led you to our Services, the website to which you go after leaving our Services, the dates and times you access our Services, and the links you click and your other activities within the Services. We may also use pixels in HTML emails to understand if individuals read the emails we send to them (\"Usage Data\"). We may combine this information with other information that we have collected about you, including, where applicable, your name and other personal information. (For more information, see the Cookies and Tracking Information section below.)"
-        },
-        {
-            "title": "How and Why We Use Information",
-            "description": "Purposes for Using Information<br/><br/>We use information about you as mentioned above and for the purposes listed below:<br/><br/><ul> <li> To provide and maintain our Services—for example, to set up and maintain your account; to host your profile; to fulfil your purchases; to authenticate users; to perform technical operations, such as updating software; and for other customer service and support related purposes<br> </li> <li> To provide you with the information or services that you have requested; to communicate with you about your use of our Services, to respond to your inquiries, and for other customer service purposes<br> </li> <li> To further develop and improve our Services—for example, by adding new features that we think our users will enjoy or will help them to create and manage their profiles more efficiently<br> </li> <li> To communicate with you, for example through an email, about newsletters, offers and promotions offered by {{brand_name}} and others we think will be of interest to you, solicit your feedback, or keep you up to date on {{brand_name}} and our products<br> </li> <li> To monitor and analyze trends and better understand how users interact with our Services, which helps us improve our Services and make them easier to use<br> </li> <li> To monitor and prevent any problems with our Services, protect the security of our Services, detect and prevent fraudulent transactions and other illegal activities, fight spam, and protect the rights and property of {{brand_name}} and others<br> </li> <li> To personalize your experience using our Services, provide content recommendations, and target our marketing messages to groups of our users<br> </li> <li> To conduct audits and assessments of our business operations, security controls, financial controls, records and information management program, and otherwise relating to the administration of our general business, accounting, record keeping and legal functions. These purposes are based on our legitimate interest in operating our business and maintaining adequate internal records and safeguards.<br> </li> <li> To protect our business operations and secure our network and information technology assets and services; to prevent and detect fraud, unauthorized activities, access and other misconduct; where we believe necessary to investigate, prevent or take action regarding suspected violations of our Terms and other agreements, as well as fraud, illegal activities and other situations involving potential threats to the rights or safety of any person or third party; and as necessary to defend {{brand_name}}'s legal interests and rights.<br> </li> <li> To comply with the law or legal proceedings, including responding to subpoenas, court orders, and other lawful requests by regulators and law enforcement, or to national security or law enforcement disclosure requirements.<br> </li> <li> We may also use your personal information for other purposes, where you have consented.<br> </li> <li> We may also use aggregate and deidentified information for various research, development, product improvement, analytics and other purposes. <br><br> </li> </ul>How We Disclose Information<br/><br/>We may disclose information about you as spelled out below:<br/><br/><ul> <li> Subsidiaries and Affiliates: With our affiliated companies whose use and disclosure of such personal information is subject to this Policy.<br> </li> <li> Service Providers: We may share information about you with our third-party service providers who need to know information about you in order to provide their services on our behalf, or to provide their services to you or your site. This group includes, for example, vendors that help us provide our Services to you (like auditors, advisors, consultants, customer service and/or support providers, payment providers that process your credit and debit card information, fraud prevention services that allow us to analyze fraudulent payment transactions, postal and email delivery services that help us stay in touch with you, customer chat and email support services that help us communicate with you, our hosting providers, and those that assist us with our marketing efforts (e.g. by providing tools for identifying a specific marketing target group or improving our marketing campaigns), those that help us understand and enhance our Services (like analytics providers), and companies that make products available on our websites, who may need information about you in order to, for example, provide technical or other support services to you.<br> </li> <li> Third Parties: With third parties that provide advertising, campaign measurement, online and/or mobile analytics and related services. These third parties may receive or access browsing history and/or other data about your use of the Sites, in order to help us better reach individuals with relevant ads, measure our ad campaigns and/or to better understand how individuals interact with our Sites over time and across devices.<br> </li> <li> Legal Requests: We may disclose information to comply with the law or legal proceedings, for example, in response to a subpoena, court order, or other governmental request.<br> </li> <li> To Protect Rights, Property, and Others: We may disclose information about you when we believe in good faith that disclosure is reasonably necessary to protect the property or rights of {{brand_name}}, third parties, and/or others, and/or as evidence in litigation in which we are involved<br> </li> <li> Business Transfers: In connection with any actual or contemplated merger, sale of company assets, or acquisition of all or a portion of our business by another company, or in the unlikely event that {{brand_name}} goes out of business or enters bankruptcy, user information would likely be one of the assets that is transferred or acquired by a third party. <br><br> </li> </ul>Aggregated and De-identified Data: We may share aggregate or de-identified information with third parties for research, marketing, advertising, analytics and/or other purposes."
-        },
-        {
-            "title": "Cookies and Tracking Information",
-            "description": "We and our third-party providers use cookies, clear GIFs/pixel tags, JavaScript, local storage, log files, and other mechanisms to automatically collect and record information about your browsing activities and use of the Sites and other Services.We may combine this \"usage data\" with other personal information we collect about you. We use this usage data to understand how our Services are used, track bugs and errors, provide and improve our Services, verify account credentials, allow logins, track sessions, prevent fraud, and protect our Services, as well as for targeted marketing and advertising, to personalize content and for analytics purposes.<br/><br/>Cookies<br/><br/>Cookies are alphanumeric identifiers that we transfer to your computer's hard drive through your web browser for record-keeping purposes.Some cookies allow us to make it easier for you to navigate our Site, while others are used to enable a faster log-in process or to allow us to track your activities while using our Site.Most web browsers automatically accept cookies, but if you prefer, you can edit your browser options to block them in the future.The Help portion of the toolbar on most browsers will tell you how to prevent your computer from accepting new cookies, how to have the browser notify you when you receive a new cookie, or how to disable cookies altogether.Some of the Services may not work properly if you disable cookies.<br/><br/>Pixel Tags<br/><br/>Pixel tags are tiny graphics with a unique identifier, similar in function to cookies.In contrast to cookies, which are stored on your computer's hard drive, clear GIFs are embedded invisibly on web pages.We may use pixel tags (also referred to as web beacons, web bugs, or clear GIFs) in connection with our Services to, among other things, help us manage ads and content, and compile statistics about usage of our Services.We may also use pixel tags in HTML emails to our customers to help us track email response rates, identify when our emails are viewed, and track whether our emails are forwarded.<br/><br/>You can block or disable cookies for the device and browser you are using, through your browser settings; however, certain features on our Sites may not be available or function properly if you block or disable cookies.Our Sites currently do not respond to \"do not track\" signals."
-        },
-        {
-            "title": "Interest Based Advertising",
-            "description": "We may work with third-party ad networks, channel partners, measurement services, and others (\"third-party ad companies\") to display advertising on our Services and to manage our advertising on third-party sites and online services.We and these third-party ad companies may use cookies, pixel tags, and other tools to collect activity information on our Services (as well as on third-party sites and services), as well as IP address, device ID, cookie and advertising IDs, other identifiers, and general location information.We and these third-party ad companies use this information to provide you with more relevant ads and content and to improve and evaluate such ads and content. **<br/><br/>Ad Choices<br/><br/>You can learn more about the information collection practices and \"opt-out\" procedures of many third-party ad companies by visiting <a href=\"https://www.networkadvertising.org/optout_nonppii.asp\">networkadvertising.org/optout_nonppii.asp</a>.Opting out of participating ad networks does not opt you out of being served advertising.You may continue to receive generic or \"contextual\" ads on our Services.You may also continue to receive targeted ads on other websites from companies that do not participate in the above programs."
-        },
-        {
-            "title": "Third-Party Sites and Services",
-            "description": "Our Services may link to other websites or online services (including those operated by our parent, affiliates, or others) that are not covered by this Policy. Any access to and use of such linked websites is not governed by this Policy, but instead is governed by the privacy policies of those third-party websites. We are not responsible for the information practices of such third-party websites.<br/><br/>In this section we describe the choices you have regarding our collection, use and handling of your personal information."
-        },
-        {
-            "title": "Stripe",
-            "description": "We use Stripe for payment, analytics, and other business services. Stripe collects identifying information about the devices that connect to its services. Stripe uses this information to operate and improve the services it provides to us, including for fraud detection. You can learn more about Stripe and read its privacy policy at <a href=\"https://stripe.com/privacy\">https://stripe.com/privacy</a>."
-        },
-        {
-            "title": "Your Rights",
-            "description": "Access and Update Information: You may access, update, and delete certain of your personal information by accessing and adjusting your account settings or closing your account. You may also contact us using the information in the How to Reach Us section below to make an access, correction or other privacy request. Please note that we may maintain copies of information that you have updated, modified or deleted, in our business records and in the normal course of our business operations, as permitted or required by applicable law. Further, we may take reasonable steps to verify your identity before granting such access or making corrections.<br/><br/>Marketing Communications: You may opt out of receiving email marketing communications from us by using the unsubscribe link in any such email we send to you. Please note that we may still send you transactional emails, such as emails related to your account."
-        },
-        {
-            "title": "Children",
-            "description": "Our Services are not targeted and directed at children under thirteen years of age (13) and we do not knowingly collect any personal information from a child under 13. If you believe we have inadvertently collected personal information about a child, please contact us and we will take steps to delete this information."
-        },
-        {
-            "title": "How to Reach Us",
-            "description": "If you have a question about this Policy, or you would like to contact us about privacy, please contact us at <a>{{email}}</a>. {{brand_name}}'s (Performance EdTech LLC 's) physical address is 447 Broadway, 2nd Floor, #1389, New York, New York 10013."
-        },
-        {
-            "title": "Changes to This Policy",
-            "description": "This Policy is current as of the Effective Date set forth above. We may change this Policy from time to time, so please be sure to check back periodically. We will post any changes to this Policy on our Services. If we make any changes to this Policy that materially affect our practices with regard to the personal information we have previously collected from you, we will endeavor to provide you with notice in advance of such change by highlighting the change on our Services."
-        }
-    ],
-
-    "refundPolicy": [
-        {
-            "title": "Courses",
-            "description": "You can cancel, change or refund any course for any reason within 14 days of purchase."
-        },
-        {
-            "title": "Refund Request Guidelines",
-            "description": "All courses have a full refund deadline of 14 days from the purchase date. All subscriptions are non-refundable.<br/><br/>Any refund fees can be transferred to another course by contacting the Support team by emailing <a>{{email}}</a>.<br/><br/>Cancellations received after the 14-day period will not be eligible for a refund.<br/><br/>If you are eligible for a refund, your refund will be processed within 1-14 days and will be credited back to your original form of payment. Please note that some banks may take longer. If you don't receive your refund within this time frame, please give your bank a call.<br/><br/>We kindly ask you not to use any other way to get your refund, for example, chargebacks. In this case, the chargeback will be processed on our part with the providing of all data, including proof of service provided on our part and the correspondence between the platform and the user.<br/><br/>The refund period in case of chargeback opening is up to 50 working days."
-        },
-        {
-            "title": "Cancellation Request Guidelines",
-            "description": "To cancel a COURSE, please inform us by emailing <a>{{email}}</a>.<br/><br/>To cancel a SUBSCRIPTION, you can manage it by emailing <a>{{email}}</a>.<br/><br/>You will receive a confirmation email from our Support team within 48 hours after the first request sent.<br/><br/>In case of waiting for a response from the support service for more than 48 hours, the date of the subscription cancellation request will be considered the date of your actual first request."
-        }
-    ],
-
-    "mainTerms": {
-        "title": "Terms of Service",
-        "description": "These terms of service (\"terms\") are a legal contract between Performance EdTech LLC. (\"{{brand_name}}\", \"us\", \"our\", \"we\") and you (collectively, \"everyone\") and govern your use of all the text, data, information, software, graphics, photographs, class materials, samples, templates, and more (all of which we refer to as \"materials\") that we and our affiliates may make available to you, as well as any services (\"services\") we may provide through any of our websites (all of which are referred to in these terms as this \"website\").<br/><br/>Read these terms carefully before browsing this website. Using this website indicates that you have both read and accept these terms. You cannot use this website if you do not accept these terms.<br/><br/>Note: These terms contain a dispute resolution and arbitration provision, including a class action waiver that affects your rights under these terms and with respect to disputes you may have with the company. You may opt out of the binding individual arbitration and class action waiver as provided below."
-    },
-
-    "terms_of_services": [
-        {
-            "title": "Changes",
-            "description": "We may alter the Materials and Services we offer you and/or choose to modify, suspend or discontinue this Website at any time and without notifying you. We may also change, update, add or remove provisions (collectively, \"modifications\") of these Terms from time to time. Because everyone benefits from clarity, we promise to inform you of any material modifications to these Terms by posting them on this Website and, if you have registered with us, by describing the modifications to these Terms in an email that we will send to the address that you provided during registration. To be sure we properly reach your email inbox, we just ask that you let us know if your preferred email address changes at any time after your registration.<br/><br/>If you object to any such modifications, your sole recourse shall be to cease using this Website. Continued use of this Website following notice of any such modifications indicates you acknowledge and agree to be bound by the modifications. Also, please know that these Terms may be superseded by expressly-designated legal notices or terms located on particular pages of this Website. These expressly-designated legal notices or terms are incorporated into these Terms and supersede the provision(s) of these Terms that are designated as being superseded."
-        },
-        {
-            "title": "General use",
-            "description": "We invite you to use this Website for individual, personal and non-commercial purposes (\"Permitted Purposes\") — enjoy!<br/><br/>In these Terms we are granting you a limited, personal, non-exclusive and non-transferable license to use and to display the Materials for the Permitted Purposes; your right to use the Materials is conditioned on your compliance with these Terms. You have no other rights in this Website or any Materials and you may not modify, edit, copy, reproduce, create derivative works of, reverse engineer, alter, enhance or in any way exploit any of this Website or Materials in any manner. If you make copies of any of this Website while engaging in Permitted Purposes then we ask that you be sure to keep on the copies all of our copyright and other proprietary notices as they appear on this Website.<br/><br/>Unfortunately, if you breach any of these Terms the above license will terminate automatically and you must immediately destroy any downloaded or printed Materials (and any copies thereof)."
-        },
-        {
-            "title": "Using this website and the website's services",
-            "description": "We appreciate you visiting {{brand_name}}! You're welcome to visit much of this Website without registering with us.<br/><br/>However, in order to access certain password-restricted areas of this Website (such as class content or User Submissions (defined below)) and to use certain Services and Materials offered on and through this Website, you must successfully register an account with us. You also acknowledge and agree to comply with our policies at all times while using Services and Materials, which policies are available on our website and may be updated by us from time to time.<br/><br/>PASSWORD RESTRICTED AREAS OF THIS WEBSITE.<br/>If you want an account with us, you must submit the following information through the account registration page on this Website:<br/>A working email address;<br/>First and last name; and<br/>Preferred username and password.<br/><br/>You may also provide additional, optional information so that we can provide you a more customized experience when using this Website. Once you submit the required registration information, we alone will determine whether or not to approve your proposed account. For so long as you use the account, you agree to provide true, accurate, current, and complete information which can be accomplished by logging into your account and making relevant changes directly or contacting us using the below contact information and we can make the changes for you. If you forget your password, let us know and we will send a password update to your provided email address.<br/><br/>You are responsible for complying with these Terms when you access this Website, whether directly or through any account that you may set up through or on this Website. Because it is your account, it is your job to obtain and maintain all equipment and services needed for access to and use of This Website as well as pay related charges. It is also your responsibility to maintain the confidentiality of your password(s), including any password of a third-party site that we may allow you to use to access this Website. Should you believe your password or security for This Website has been breached in any way, you must immediately notify us."
-        },
-        {
-            "title": "Payments",
-            "description": "You agree to pay all applicable fees related to your use of this Website and our Services which are described fully on our payment page, which will be available during open enrollment of a class.<br/><br/>We may suspend or terminate your account and/or access to our Services and this Website if your payment is late and/or your offered payment method (e.g., credit card or PayPal account) cannot be processed or is declined or revoked.<br/><br/>By providing a payment method, you expressly authorize us to charge the applicable fees on said payment method as well as taxes and other charges incurred thereto.<br/><br/>We understand that you might cancel your account, but please know that we will not provide any refund(s) unless your refund request is received on or before the 14th day of the Service for which you are requesting a refund. Refund policies for any of the Services are subject to change. Please see our Refund policy.<br/><br/>We may change our fees at any time. If applicable, we may give you advance notice of the fee changes. If you don't agree with the fee changes, you can cancel your Account by contacting us at <a>{{email}}</a> and stop using the Services."
-        },
-        {
-            "title": "Subscriptions",
-            "description": "The subscription is provided for a specific fee for a specified duration in accordance with the terms of the corresponding plan. The customer is entitled to unlimited access to all published {{brand_name}} courses until the end of the paid subscription period.<br/><br/>Upon the expiration of the free trial period and/or upon subscription payment, the customer will be automatically enrolled in the subscription service with the option of automatic renewal. By accepting the terms of this Agreement, the customer gives their consent for the automatic deduction of the full subscription cost for the upcoming term in advance on the expiration date of the previous subscription period. The subscription fee will be automatically deducted at the beginning of each billing cycle until the customer cancels it."
-        },
-        {
-            "title": "Privacy policy",
-            "description": "We respect the information that you provide to us and want to be sure you fully understand exactly how we use that information, so please review our Privacy Policy."
-        },
-        {
-            "title": "Links to third-party sites",
-            "description": "We sometimes provide links on this Website to third-party websites. If you use these links, you will leave this Website. We are not obligated to review any third-party websites that you link to from this Website, we do not control any of the third-party websites, and we are not responsible for any of the third-party websites (or the products, services, or content available through any of them). Thus, we do not endorse or make any representations about such third-party websites, any information, software, products, services, or materials found there or any results that may be obtained from using them. If you decide to access any of the third-party websites linked to from this Website, you do this entirely at your own risk and you must follow the privacy policies and terms and conditions for those third-party websites."
-        },
-        {
-            "title": "User submissions",
-            "description": "Certain areas of this Website (e.g., peer groups, learning paths, and projects) may permit you to submit, post, upload or otherwise make available feedback, comments, information, data, text, software, messages, photos, videos, graphics, audio or other content or materials (each, a \"User Submission\"). You agree that you are solely responsible for all of your User Submissions and that any such User Submission is considered both non-confidential and non-proprietary. Further, we do not guarantee that you will be able to edit or delete any User Submission you have submitted.<br/><br/>By submitting any User Submission, you are promising us that:<br/><ul> <li> You own all rights in your User Submissions (including, without limitation, all rights to the reproduction and display of your User Submissions) or, alternatively, you have acquired all necessary rights in your User Submissions to enable you to grant to us the rights in your User Submissions as described in these Terms;<br> </li> <li> You have paid and will pay in full all license fees, clearance fees, and other financial obligations, of any kind, arising from any use or commercial exploitation of your User Submissions;<br> </li> <li> Your User Submissions do not infringe the copyright, trademark, patent, trade secret, or other intellectual property rights, privacy rights, or any other legal or moral rights of any third party;<br> </li> <li> You voluntarily agree to waive all \"moral rights\" that you may have in your User Submission;<br> </li> <li> Any information contained in your User Submission is not known by you to be false, inaccurate, or misleading;<br> </li> <li> Your User Submission does not violate any law (including, but not limited to, those governing export control, consumer protection, unfair competition, anti-discrimination, or false advertising);<br> </li> <li> Your User Submission is not, and may not reasonably be considered to be, defamatory, libelous, hateful, racially, ethnically, religiously, or otherwise biased or offensive, unlawfully threatening, or unlawfully harassing to any individual, partnership, or corporation, vulgar, pornographic, obscene, or invasive of another's privacy;<br> </li> <li> You were not and will not be compensated or granted any consideration by any third party for submitting your User Submission;<br> </li> <li> Your User Submission does not incorporate materials from a third-party website, or addresses, email addresses, contact information, or phone numbers (other than your own);<br> </li> <li> Your User Submission does not contain any viruses, worms, spyware, adware, or other potentially damaging programs or files;<br> </li> <li> Your User Submission does not contain any information that you consider confidential, proprietary, or personal; and<br> </li> <li> Your User Submission does not contain or constitute any unsolicited or unauthorized advertising, promotional materials, junk mail, spam, chain letters, pyramid schemes, or any other form of solicitation. <br><br> </li> </ul>By submitting a User Submission, you grant to us an irrevocable, perpetual, transferable, non-exclusive, fully-paid, worldwide, royalty-free license (sublicensable through multiple tiers) to:<br/><ul> <li> Use, distribute, reproduce, modify, adapt, publish, translate, publicly perform, and publicly display your User Submissions (or any modification thereto), in whole or in part, in any format or medium now known or later developed;<br> </li> <li> Use (and permit others to use) your User Submission in any manner and for any purpose (including, without limitation, commercial purposes) that we deem appropriate in our sole discretion (including, without limitation, to incorporate your User Submission or any modification thereto, in whole or in part, into any technology, product, or service);<br> </li> <li> Display advertisements in connection with your User Submissions and to use your User Submissions for advertising and promotional purposes. <br><br> </li> </ul>We may, but are not obligated to, pre-screen User Submissions or monitor any area of this Website through which User Submissions may be submitted. We are not required to host, display, or distribute any User Submissions on or through this Website and may remove at any time or refuse any User Submissions for any reason. We are not responsible for any loss, theft, or damage of any kind to any User Submissions. Further, you agree that we may freely disclose your User Submission to any third party absent any obligation of confidence on the part of the recipient.<br/><br/>By operating our Services, we do not represent or imply that we endorse the User Submissions posted on this Website, or that we believe any such User Submissions to be accurate, useful, or non-harmful. You are responsible for taking precautions as necessary to protect yourself and your computer systems from harmful or destructive content."
-        },
-        {
-            "title": "Unauthorized activities",
-            "description": "To be clear, we authorize your use of this Website only for Permitted Purposes.<br/>Any other use of this Website beyond the Permitted Purposes is prohibited and, therefore, constitutes unauthorized use of this Website.<br/>This is because as between you and us, all rights in this Website remain our property.<br/><br/>Unauthorized use of this Website may result in violation of various USA and international copyright laws.<br/>Unless you have written permission from us stating otherwise, you are not authorized to use this Website in any of the following ways (these are examples only and the list below is not a complete list of everything that you are not permitted to do):<br/><ul> <li> For any public or commercial purpose which includes use of this Website on another site or through a networked computer environment;<br> </li> <li> In a manner that modifies, publicly displays, publicly performs, reproduces or distributes any of this Website;<br> </li> <li> In a manner that violates any local, state, national, foreign, or international statute, regulation, rule, order, treaty, or other law;<br> </li> <li> To stalk, harass, or harm another individual;<br> </li> <li> To impersonate any person or entity or otherwise misrepresent your affiliation with a person or entity;<br> </li> <li> To interfere with or disrupt this Website or servers or networks connected to this Website;<br> </li> <li> To use any data mining, robots, or similar data gathering or extraction methods in connection with this Website; or<br> </li> <li> Attempt to gain unauthorized access to any portion of this Website or any other accounts, computer systems, or networks connected to this Website, whether through hacking, password mining, or any other means. <br><br> </li> </ul>You agree to hire attorneys to defend us if you violate these Terms and that violation results in a problem for us.<br/>You also agree to pay any damages that we may end up having to pay as a result of your violation.<br/>You alone are responsible for any violation of these Terms by you.<br/>We reserve the right to assume the exclusive defense and control of any matter otherwise subject to indemnification by you and, in such case, you agree to cooperate with our defense of such claim."
-        },
-        {
-            "title": "Proprietary rights",
-            "description": "The {{brand_name}} name and logos are trademarks and service marks that belong to us.Other trademarks, names, and logos on this Website are the property of their respective owners.<br/><br/>Unless otherwise specified in these Terms, all Materials, including the arrangement of them on this Website, are our sole property, Copyright © 2023.All rights not expressly granted herein are reserved.Except as otherwise required or limited by applicable law, any reproduction, distribution, modification, retransmission, or publication of any copyrighted material is strictly prohibited without the express written consent of the copyright owner or license."
-        },
-        {
-            "title": "Intellectual property infringement",
-            "description": "We have a policy of removing User Submissions that violate intellectual property rights of others, suspending access to this Website (or any portion thereof) to any user who uses this Website in violation of someone's intellectual property rights, and/or terminating in appropriate circumstances the account of any user who uses this Website in violation of someone's intellectual property rights.<br/><br/>Submitting a DMCA Notification<br/><br/>We have implemented procedures for receiving written notification of claimed copyright infringement and for processing such claims in accordance with such law. If you believe your copyright or other intellectual property right is being infringed by a user of this Website, please provide written notice to our Agent for notice of claims of infringement:<br/><br/>Attn: {{brand_name}} DMCA<br/>Agent Email: <a>{{email}}</a><br/><br/>To be sure the matter is handled immediately, your written notice must:<br/><ul> <li>Contain your physical or electronic signature;<br/> </li> <li>Identify the copyrighted work or other intellectual property alleged to have been infringed;<br/> </li> <li>Identify the allegedly infringing material in a sufficiently precise manner to allow us to locate that material;<br/> </li> <li>Contain adequate information by which we can contact you (including postal address, telephone number, and e-mail address);<br/> </li> <li>Contain a statement that you have a good faith belief that use of the copyrighted material or other intellectual property is not authorized by the owner, the owner's agent or the law;<br/> </li> <li>Contain a statement that the information in the written notice is accurate; and<br/> </li> <li>Contain a statement, under penalty of perjury, that you are authorized to act on behalf of the copyright or other intellectual property right owner.<br/><br/> </li> </ul>Unless the notice pertains to copyright or other intellectual property infringement, the Agent will be unable to address the listed concern.<br/><br/>Submitting a DMCA Counter-Notification<br/><br/>We will notify you that we have removed or disabled access to copyright-protected material that you provided, if such removal is pursuant to a validly received DMCA take-down notice. In response, you may provide our Agent with a written counter-notification that includes the following information:<br/><br/><ul> <li>Your physical or electronic signature;<br/> </li> <li>Identification of the material that has been removed or to which access has been disabled, and the location at which the material appeared before it was removed or access to it was disabled;<br/> </li> <li>A statement from you under the penalty of perjury, that you have a good faith belief that the material was removed or disabled as a result of a mistake or misidentification of the material to be removed or disabled;<br/> </li> <li>Your name, physical address and telephone number, and a statement that you consent to the jurisdiction of a court for the judicial district in which your physical address is located, or if your physical address is outside of USA, for any judicial district in which we may be located, and that you will accept service of process from the person who provided notification of allegedly infringing material or an agent of such person.<br/><br/> </li> </ul>Termination of Repeat Infringers<br/><br/>We reserve the right, in our sole discretion, to terminate the account or access of any user of this Website or Service who is the subject of repeated DMCA or other infringement notifications."
-        },
-        {
-            "title": "Disclaimer of warranties",
-            "description": "THIS WEBSITE IS PROVIDED \"AS IS\" AND \"WITH ALL FAULTS\" AND THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THIS WEBSITE IS WITH YOU.<br/><br/>WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND (EXPRESS, IMPLIED OR STATUTORY) WITH RESPECT TO THIS WEBSITE, WHICH INCLUDES BUT IS NOT LIMITED TO, ANY IMPLIED OR STATUTORY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR USE OR PURPOSE, TITLE, AND NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS.<br/><br/>NEITHER WE AS THE PLATFORM NOR THE AUTHOR SHALL BE HELD RESPONSIBLE FOR ANY POTENTIAL INJURIES THAT THE USER MAY SUSTAIN DURING PRACTICAL ACTIVITIES.<br/><br/>THIS MEANS THAT WE DO NOT PROMISE YOU THAT THE WEBSITE IS FREE OF PROBLEMS. Without limiting the generality of the foregoing, we make no warranty that this Website will meet your requirements or that this Website will be uninterrupted, timely, secure, or error-free or that defects in this Website will be corrected. We make no warranty as to the results that may be obtained from the use of this Website or as to the accuracy or reliability of any information obtained through this Website. No advice or information, whether oral or written, obtained by you through this Website or from us or our subsidiaries/other affiliated companies shall create any warranty. We disclaim all equitable indemnities. Our Services may contain content that is offensive, indecent, or otherwise objectionable. We disclaim any responsibility for any harm resulting from your use of our Services, or from any downloading by you of content posted on the Website."
-        },
-        {
-            "title": "Limitation of liability",
-            "description": "WE SHALL NOT BE LIABLE TO YOU FOR ANY DAMAGES RESULTING FROM YOUR DISPLAYING, COPYING, OR DOWNLOADING ANY MATERIALS TO OR FROM THIS WEBSITE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL WE BE LIABLE TO YOU FOR ANY INDIRECT, EXTRAORDINARY, EXEMPLARY, PUNITIVE, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF DATA, REVENUE, PROFITS, USE OR OTHER ECONOMIC ADVANTAGE) HOWEVER ARISING, EVEN IF WE KNOW THERE IS A POSSIBILITY OF SUCH DAMAGE. IN NO EVENT WILL COMPANY'S LIABILITY EXCEED THE GREATER OF $100 AND THE AMOUNTS YOU PAY THE COMPANY FOR USE OF, OR IN CONNECTION WITH, THE SITE."
-        },
-        {
-            "title": "Indemnification",
-            "description": "You agree to indemnify and hold us and our contractors, licensors, and ours and their respective directors, officers, employees, and agents harmless from and against any and all claims and expenses, including attorneys' fees, arising out of your use of the Site, the Services or the Materials, your violation of this Agreement, your violation of any of our policies, or your violation of the rights of another, including but not limited to intellectual property or other proprietary rights."
-        },
-        {
-            "title": "Local laws; export control",
-            "description": "We control and operate this Website from our headquarters in USA and the entirety of this Website may not be appropriate or available for use in other locations. If you use this Website outside USA, you are solely responsible for following applicable local laws."
-        },
-        {
-            "title": "Feedback",
-            "description": "Any submissions by you to us (e.g., comments, questions, suggestions, materials, survey responses, testimonials, reviews — collectively, \"Feedback\") through any communication whatsoever (e.g., call, fax, email) will be treated as both non-confidential and non-proprietary. Except as prohibited by applicable law, you hereby assign all right, title, and interest in, and we are free to use, without any attribution or compensation to you, any ideas, know-how, concepts, techniques, or other intellectual property and proprietary rights contained in the Feedback, whether or not patentable, for any purpose whatsoever, including but not limited to, developing, manufacturing, having manufactured, licensing, marketing, and selling, directly or indirectly, products and services using such Feedback. Where the foregoing assignment is prohibited by law, you hereby grant us an exclusive, transferable, worldwide, royalty-free, fully paid up license (including the right to sublicense) to use and exploit all Feedback as we may determine in our sole discretion. Notwithstanding the foregoing, you understand and agree that we are not obligated to use, display, reproduce, or distribute any such ideas, know-how, concepts, or techniques contained in the Feedback, and you have no right to compel such use, display, reproduction, or distribution."
-        },
-        {
-            "title": "Dispute resolution and arbitration; class action waiver",
-            "description": "Please Read This Provision Carefully. It Affects Your Legal Rights.<br/><br/>This Provision facilitates the prompt and efficient resolution of any dispute (e.g., claim or controversy), whether based in contract, statute, regulation, ordinance, tort — including, but not limited to, fraud, misrepresentation, fraudulent inducement, or negligence — or any other legal or equitable theory, and includes the validity, enforceability or scope of this Provision (with the exception of the enforceability of the Class Action Waiver clause below) that may arise between you and us. Effectively, then, \"dispute\" is given the broadest meaning enforceable by law and includes any claims against other parties relating to services or products provided or billed to you (such as our licensors, suppliers, dealers or third-party vendors) whenever you also assert claims against us in the same proceeding.<br/><br/>This Provision provides that all disputes between you and us shall be resolved by binding arbitration because acceptance of These Terms constitutes a waiver of your right to litigation claims and all opportunity to be heard by a judge or jury. To be clear, there is no judge or jury in arbitration, and court review of an arbitration award is limited. The arbitrator must follow these Terms and can award the same damages and relief as a court (including attorney's fees). You may, however, opt out of this Provision which means you would have a right or opportunity to bring claims in a court, before a judge or jury, and/or to participate in or be represented in a case filed in court by others (including, but not limited to, class actions). EVERYONE AGREES THAT, EXCEPT AS PROVIDED BELOW, ANY AND ALL DISPUTES, AS DEFINED ABOVE, WHETHER PRESENTLY IN EXISTENCE OR BASED ON ACTS OR OMISSIONS IN THE PAST OR IN THE FUTURE, WILL BE RESOLVED EXCLUSIVELY AND FINALLY BY BINDING ARBITRATION RATHER THAN IN COURT IN ACCORDANCE WITH THIS PROVISION.<br/><br/>Pre-Arbitration Claim Resolution<br/><br/>For all Disputes, whether pursued in court or arbitration, you must first give us an opportunity to resolve the Dispute which is first done by emailing us at <a>{{email}}</a> the following information: (1) Your name, (2) Your address, (3) A written description of your Claim, and (4) A description of the specific relief you seek. If we do not resolve the Dispute within 45 days after receiving your notification, then you may pursue your Dispute in arbitration in USA.<br/><br/>Class Action Waiver<br/><br/>Except as otherwise provided in this Provision, the arbitrator may not consolidate more than one person's claims, and may not otherwise preside over any form of a class or representative proceeding or claims (such as a class action, consolidated action, representative action, or private attorney general action) unless both you and we specifically agree to do so in writing following initiation of the arbitration. If you choose to pursue your Dispute in court by opting out of the Arbitration Provision, as specified above, this Class Action Waiver will not apply to you. Neither you, nor any other user of this Website can be a class representative, class member, or otherwise participate in a class, consolidated, or representative proceeding without having complied with the opt-out requirements above.<br/><br/>No Judge or Jury in Arbitration<br/><br/>Arbitration does not involve a judge or jury. You understand and agree that by entering into these Terms you and we are each giving up the right to a jury trial or a trial before a judge in a public court. In the absence of this Provision, you and we might otherwise have had a right or opportunity to bring disputes in a court, before a judge or jury, and/or to participate or be represented in a case filed in court by others (including class actions). Except as otherwise provided below, those rights are waived. Other rights that you would have if you went to court (e.g., the rights to both appeal and certain types of discovery) may be more limited or may also be waived.<br/><br/>Severability<br/><br/>If any clause within this Provision (other than the Class Action Waiver clause above) is found to be illegal or unenforceable, that clause will be severed from this Provision whose remainder will be given full force and effect. If the Class Action Waiver clause is found to be illegal or unenforceable, this entire Provision will be unenforceable and the dispute will be decided by a court.<br/><br/>Continuation<br/><br/>This Provision shall survive the termination of your account with us or our affiliates and your discontinued use of this Website. Notwithstanding any provision in these Terms to the contrary, we agree that if we make any change to this Provision (other than a change to the Notice Address), you may reject any such change and require us to adhere to the present language in this Provision if a dispute between us arises."
-        },
-        {
-            "title": "Language",
-            "description": "Everyone has expressly required that these Terms and all documents and notices relating thereto be drafted in the English language. We may translate these terms into other languages. In the event of a conflict between a translated version of these Terms of Service and the English version, the English version will control."
-        },
-        {
-            "title": "General",
-            "description": "If we feel that you are not complying with these Terms, we will tell you and may provide you with recommended necessary corrective action(s).<br/><br/>However, certain violations of these Terms, as determined by us, may require immediate termination of your access to this Website without prior notice to you. The USA law, without regard to the choice or conflicts of law provisions, will govern these Terms. Foreign laws do not apply. Except for disputes subject to arbitration as described above, any disputes relating to these Terms or this Website will be heard in the courts located in the USA.<br/><br/>If any of these Terms are deemed inconsistent with applicable law, then such term(s) shall be interpreted to reflect the intentions of the parties, and no other terms will be modified. By choosing not to enforce any of these Terms, we are not waiving our rights.<br/><br/>These Terms are the entire agreement between you and us and, therefore, supersede all prior or contemporaneous negotiations, discussions, or agreements between everyone about this Website. The proprietary rights, disclaimer of warranties, representations made by you, indemnities, limitations of liability, and general provisions shall survive any termination of these Terms."
-        },
-        {
-            "title": "Contact Us",
-            "description": "If you have any questions about these Terms or otherwise need to contact us for any reason, you can reach us at<br/><br/>{{brand_name}} support<br/><a>{{email}}</a><br/><br/>Performance EdTech LLC<br/>447 Broadway, 2nd Floor, #1389<br/>New York, New York 10013"
-        }
-    ],
-    "mainTermsSupport": {
-        "breadCrumb": "Support",
-        "title": "Welcome to the {{brand_name}} Support Center: We're Here to Help You Thrive on Your Learning Journey",
-        "description": "Your satisfaction and success are our top priorities. Our dedicated Support Center is designed to provide you with the assistance you need as you explore our diverse range of courses and transform your mind, body, and soul."
-    },
-    "faqTitleSupport": "Find Answers to Your Questions",
-    "supportFaqs": [
-        {
-            "title": "I've bought a course but I can't access it",
-            "description": "Upon purchasing a course from {{brand_name}}.com, your login credentials are displayed on a web page immediately after the transaction. In addition, we send a duplicate of this information to your registered email address.<br/><br/> <ol><li> <strong>Check Your Inbox</strong>: Inspect your main inbox for an email from {{brand_name}}.com.<br/><br/></li><li> <strong>Check Your Spam Folder</strong>: If you don't see the email in your main inbox, it may have been marked as spam. Review your spam or junk folder for an email from us.<br/><br/></li><li> <strong>Email Address Typo</strong>: If you still can't find the email, it's possible that there was a typo or error in the email address you provided during the purchase. This could prevent our communication from reaching you.<br/><br/></li></ol> In the event that you can't locate the email or if there was a typographical error in your email address, please don't worry. We're here to help you restore your course access swiftly.<br/><br/> Contact us directly at <a>{{ email }}</a>, detailing your issue. Our responsive team will assist you in retrieving your access credentials as soon as possible.<br/><br/> Remember, your learning journey is our priority, and we're committed to making your experience with {{brand_name}}.com as smooth and fulfilling as possible.<br/><br/>"
-        },
-        {
-            "title": "Can I get a refund if I'm not satisfied with the course?",
-            "description": "Absolutely. At {{brand_name}}.com, we understand that every course might not meet everyone's expectations. Therefore, we have a 100% satisfaction guarantee policy.<br/><br/> If you find that the course does not align with your learning goals or expectations within the first 14 days following your purchase, we offer a full refund. We believe in the value of our courses and your right to the best possible learning experience.<br/><br/> To request a refund:<br/><br/> <ol><li>Email Us</strong>: Send an email to <a>{{ email }}</a> detailing your refund request. Please include your purchase details and the reason for dissatisfaction if possible – your feedback helps us improve.<br/><br/></li><li> Wait for Confirmation</strong>: Our Customer Support Team will process your request promptly and issue a full refund.<br/><br/></li></ol> Remember, your satisfaction is our top priority at {{brand_name}}.com. We're committed to delivering quality learning experiences that meet your needs and exceed your expectations.<br/><br/>"
-        },
-        {
-            "title": "How long do I have access to the course?",
-            "description": "Unlimited time, whenever you want. You can take your time and take lessons when it suits you and at the most convenient time."
-        },
-        {
-            "title": "When does the course start?",
-            "description": "After payment and registration, you will receive an email with an access link and a password to enter your personal account, where all the course materials will already be located."
-        },
-        {
-            "title": "How do I access the course?",
-            "description": "After payment and registration, you will receive an email with an access link and a password to enter your personal account, where all the course materials will already be located."
-        },
-        {
-            "title": "How to pay for the course?",
-            "description": "The course can be paid for with absolutely any bank card Visa, MasterCard, Maestro, Visa Electron."
-        },
-        {
-            "title": "How to pay for the subscription?",
-            "description": "When purchasing a course on our platform you can also add a free 7-day trial period to your order for all our courses and events, which ends with an automatic subscription payment for the first month of use. Thereafter, the subscription will be charged on a monthly basis. You can cancel your subscription at any time in personal account or by contacting our Support Team."
-        },
-        {
-            "title": "After the trial period of the subscription, money was debited for renewal. How to return?",
-            "description": "By making a payment on our website, you enter into an offer agreement with us. Section 2 of this agreement describes in detail the procedure and conditions for registration and further payment of a subscription. When you voluntarily activate a trial period, you also agree that auto payment will be activated and that at the end of the trial period you will be automatically charged. And this will continue until you cancel your subscription at any time on the site or by writing to us. According to our refund policy, subscription fees are non-refundable after the end of the trial period.By making a payment on our website, you enter into an offer agreement with us. Section 2 of this agreement describes in detail the procedure and conditions for registration and further payment of a subscription. When you voluntarily activate a trial period, you also agree that auto payment will be activated and that at the end of the trial period you will be automatically charged. And this will continue until you cancel your subscription at any time on the site or by writing to us. According to our refund policy, subscription fees are non-refundable after the end of the trial period. <termsLink>Terms of Service</<termsLink>"
-        },
-        {
-            "title": "Can I buy a course as a gift?",
-            "description": "Yes. To do this, when registering for the course, indicate the email address of the person to whom the gift is intended and he will receive an authorization email and access to his personal account."
-        },
-        {
-            "title": "How can I cancel my subscription?",
-            "description": "You can cancel your subscription inside your {{brand_name}} customer dashboard or send us a message to <a>{{email}}</a> and we'll help you to do it."
-        }
-    ],
-    "supportFooter": {
-        "title": "Can't Find What You're Looking For?",
-        "description": "If you're unable to find the information you need within our knowledge base, don't worry! Our friendly and knowledgeable support team is always here to help. Feel free to reach out to us directly via email at <a>{{ email }}</a> with your questions, concerns, or feedback. We'll get back to you as soon as possible to ensure your experience with {{brand_name}} is exceptional.",
-        "button": "WhatsApp Message"
-    },
-    "continue_watching": "Continue Watching",
-    "go_to_course_redirect": "Go to Course",
-    "popular_courses": "Popular Courses by Categories",
-    "popular_on": "Popular on",
-    "read_more": "Read More",
-    "start_for_free": "Start for Free",
-    "hello": "Hello",
-    "first_name": "First Name",
-    "last_name": "Last Name",
-    "email": "Email",
-    "enter_first_name": "Enter First Name",
-    "enter_last_name": "Enter Last Name",
-    "enter_your_email": "Enter Your Email",
-    "subscription": "Subscription",
-    "activated": "Activated",
-    "not_active": "Not Active",
-    "visible_when_you_post_comments_on_courses": "Visible when you post comments on courses",
-    "used_for_signing_into_your_account": "Used for signing into your account",
-    "upcoming_payment_month_due_on": "Upcoming payment: {{payment_per_month}} due on <span>{{payment_date}}</span>",
-    "subscription_cancel_delay_message": "Your subscription has been canceled. You will continue to have access until <span>{{payment_date}}</span>",
-    "billing": "Billing",
-    "manage_billing": "Manage Billing",
-    "used_to_manage_your_stripe_account": "Used to manage your Stripe account",
-    "Account": "Account",
-    "merge_with_google": "Merge with Google",
-    "after_merging_google": "After merging with Google, you'll be able to access your account through Google",
-    "activate_subscription": "Activate the subscription for {{payment_per_month}} per month",
-    "brand_name_subscription_grant_message": "{{brand_name}} subscription grants access to all existing and future 100+ courses on intellectual development, physical wellness, relationship building, productivity enhancement and other areas.",
-    "upload_photo": "Upload Photo",
-    "cancel_subscription_settings": "Cancel Subscription",
-    "save": "Save",
-
-    "congratulations": "Congratulations!",
-    "reached_your_goal": "You've reached your goal",
-    "claim_your_gift": "Claim Your Gift",
-    "banner_days": "Days",
-
-    "yoga_practitioner": "Yoga practitioner",
-    "right_yoga_pose": "Right yoga pose",
-    "get_started_today": "Get Started Today!",
-    "start_with_free_trial": "Start with our {{trial_days}}-Day Free Trial.",
-    "then_price_per_month": "then {{price}}/month",
-
-    "course_of_the_week": "Course of the week",
-    "course_of_the_week_image": "Course of the week image",
-
-    "popular_courses_by_categories": "Popular Courses by Categories",
-
-    "trial_popup": {
-        "course_unlocked": "{{course_title}} Unlocked",
-        "top_programs_label": "100+ Top Programs: ",
-        "top_programs_desc": "Diverse, elite learning.",
-        "new_courses_label": "New Courses Weekly: ",
-        "new_courses_desc": "Fresh engaging content.",
-        "community_label": "Passionate Community: ",
-        "community_desc": "Connect and grow.",
-        "trial_starts_today": "Your Trial Starts Today!",
-        "explore_courses": "Explore courses & live events – Free Trial Starts Today!",
-        "day_reminder": "Day {{trial_days}} Reminder via Email",
-        "reminder_desc": "We'll remind you that your free trial is ending soon.",
-        "subscription_begins": "Day {{trial_days}} - Your New Subscription Begins!",
-        "subscription_desc": "You'll keep all features unlocked during the trial at {{price}}, unless you cancel.",
-        "start_free_trial": "START {{trial_days}}-DAY FREE TRIAL",
-        "user_review": "Lately, my life feels like a musical-I sing no matter my mood. I never expected it to be such a great stress reliever, but now it's my go-to way to unwind after work. It eases exhaustion, lifts my spirits, and even burns calories!"
-    },
-
-    "sidebar": {
-        "dashboard": "Dashboard",
-        "support": "Support",
-        "settings_and_subscription": "Settings & Subscription",
-        "logout": "Logout",
-        "logout_confirmation_title": "Logout?",
-        "logout_confirmation_text": "You will be signed out of your account.",
-        "cancel": "Cancel"
-    },
-
-    "close": "Close",
-    "open_access_form": {
-        "complete_form": "Complete the form to proceed with the course payment",
-        "email_placeholder": "Enter your email address",
-        "go_to_checkout": "Go To Checkout"
-    },
-    "terms_of_service_link": "By clicking \"Go To Checkout\", I confirm that I am 16 or older and accept the <refund>Refund Policies</refund>, <terms>Terms of Service</terms>, and <privacy>Privacy Policy</privacy>.",
-
-    "submitting": "Submitting...",
-    "you_are_on_a_streak": "You're on a Streak!",
-    "consistently_logging_your_goal": "Great job! You're consistently logging in and building momentum. Keep it up you're getting closer to your goal!",
-    "try_for_free": "Try for Free",
-    "proceed_to_watch": "Proceed to Watch",
-    "subscription_successful": "<success>Subscription Activated Successfully</success>",
-    "thank_you_subscription_message": "<thankyou>Thank you for subscribing to our service!</thankyou>",
-    "go_back": "Go Back",
-    "submit": "Submit",
-    "go_to_dashboard": "Go to Dashboard",
-    "results_for": "{{count}} {{plural}} for \"{{searchTerm}}\"",
-    "search_results": "Search Results",
-    "all_courses": "all Courses",
-    "result": "result",
-    "results": "results",
-    "we_recommend_it_for_you": "We recommend it for you",
-    "no_results_found": "No Results Found",
-    "selected_filters": "Selected Filters",
-    "try_brand_name_courses": "Try {{brand_name}} Courses",
-    "no_courses_found": "No courses found",
-    "Lesson": "Lesson",
-    "Lessons": "Lessons",
-    "no_lessons_available": "No lessons available",
-    "Link": "Link",
-    "download_files": "Download Files",
-    "join_the_telegram_conversation": "Join the Telegram Conversation",
-    "select_a_lesson": "Select a Lesson",
-    "no_description_available": "No description available",
-    "about_this_course": "About this Course",
-    "no_course_description_available": "No course description available",
-    "watching_now!": "Watching Now!",
-    "share_insights_experiences_and_queries_with_like_minded_people!": "Share insights, experiences, and queries with like-minded people!",
-    "comments": "Comments",
-    "loading_comments": "Loading Comments...",
-    "loading": "Loading...",
-    "redirecting": "Redirecting...",
-    "navigate_courses_by_category": "Navigate Courses by Category",
-    "please_rate_this_lesson": "Please rate this lesson",
-    "submitted": "Submitted!",
-    "training_calendar": "Training Calendar",
-    "current_streak": "Current Streak",
-    "day": "day",
-    "author_login": "Author Login",
-    "next": "Next",
-    "start_monthly_plan": "Start Monthly Plan",
-    "joyride_tour": {
-        "welcome_message": "Hey there! Welcome aboard! We're thrilled to have you here.",
-        "continue_watching_hint": "This is the course you bought. You've got lifetime access, so dive in whenever you want!",
-        "explore_categories_hint": "Explore all our courses by category. You'll find something you'll love.",
-        "top_rated_courses_hint": "Watch Top-Rated Courses, Chosen by Customers Across Categories!",
-        "support_via_menu_hint": "Got questions? We're here to help! Just click \"Support\" to reach out.",
-        "profile_avatar_hint": "Upload your profile picture here so other can see you in the comments."
-    },
-    "skip_tour": "Skip Tour",
-    "confirm_text": "Do you want to close all the tips at once?",
-    "yes": "Yes",
-    "no": "No",
-    "lifetime_subscription_activated_message": "You have successfully activated the plan <span>{{planName}}</span>.",
-    "reward_message": "Congratulations, the course has been completed!",
-    "stay_here": "Stay here",
-    "extend_trial_initial": "Explore Free for {{trial_days}} Days",
-    "decline_the_opportunity": "Not Now",
-    "video_processing": "Video processing...",
-    "video_playing_in_pip_mode": "Video playing in picture-in-picture mode",
-    "disclaimer": "{{BRAND}} is not responsible for injuries or damages from performing the exercises in this video. Practice at your own risk."
+  "submitting": "Submitting...",
+  "you_are_on_a_streak": "You're on a Streak!",
+  "consistently_logging_your_goal": "Great job! You're consistently logging in and building momentum. Keep it up you're getting closer to your goal!",
+  "try_for_free": "Try for Free",
+  "proceed_to_watch": "Proceed to Watch",
+  "subscription_successful": "<success>Subscription Activated Successfully</success>",
+  "thank_you_subscription_message": "<thankyou>Thank you for subscribing to our service!</thankyou>",
+  "go_back": "Go Back",
+  "submit": "Submit",
+  "go_to_dashboard": "Go to Dashboard",
+  "results_for": "{{count}} {{plural}} for \"{{searchTerm}}\"",
+  "search_results": "Search Results",
+  "all_courses": "all Courses",
+  "result": "result",
+  "results": "results",
+  "we_recommend_it_for_you": "We recommend it for you",
+  "no_results_found": "No Results Found",
+  "selected_filters": "Selected Filters",
+  "try_brand_name_courses": "Try {{brand_name}} Courses",
+  "no_courses_found": "No courses found",
+  "Lesson": "Lesson",
+  "Lessons": "Lessons",
+  "no_lessons_available": "No lessons available",
+  "Link": "Link",
+  "download_files": "Download Files",
+  "join_the_telegram_conversation": "Join the Telegram Conversation",
+  "select_a_lesson": "Select a Lesson",
+  "no_description_available": "No description available",
+  "about_this_course": "About this Course",
+  "no_course_description_available": "No course description available",
+  "watching_now!": "Watching Now!",
+  "share_insights_experiences_and_queries_with_like_minded_people!": "Share insights, experiences, and queries with like-minded people!",
+  "comments": "Comments",
+  "loading_comments": "Loading Comments...",
+  "loading": "Loading...",
+  "redirecting": "Redirecting...",
+  "navigate_courses_by_category": "Navigate Courses by Category",
+  "please_rate_this_lesson": "Please rate this lesson",
+  "submitted": "Submitted!",
+  "training_calendar": "Training Calendar",
+  "current_streak": "Current Streak",
+  "day": "day",
+  "author_login": "Author Login",
+  "next": "Next",
+  "start_monthly_plan": "Start Monthly Plan",
+  "joyride_tour": {
+    "welcome_message": "Hey there! Welcome aboard! We're thrilled to have you here.",
+    "continue_watching_hint": "This is the course you bought. You've got lifetime access, so dive in whenever you want!",
+    "explore_categories_hint": "Explore all our courses by category. You'll find something you'll love.",
+    "top_rated_courses_hint": "Watch Top-Rated Courses, Chosen by Customers Across Categories!",
+    "support_via_menu_hint": "Got questions? We're here to help! Just click \"Support\" to reach out.",
+    "profile_avatar_hint": "Upload your profile picture here so other can see you in the comments."
+  },
+  "skip_tour": "Skip Tour",
+  "confirm_text": "Do you want to close all the tips at once?",
+  "yes": "Yes",
+  "no": "No",
+  "lifetime_subscription_activated_message": "You have successfully activated the plan <span>{{planName}}</span>.",
+  "reward_message": "Congratulations, the course has been completed!",
+  "stay_here": "Stay here",
+  "extend_trial_initial": "Explore Free for {{trial_days}} Days",
+  "decline_the_opportunity": "Not Now",
+  "video_processing": "Video processing...",
+  "video_playing_in_pip_mode": "Video playing in picture-in-picture mode",
+  "disclaimer": "{{BRAND}} is not responsible for injuries or damages from performing the exercises in this video. Practice at your own risk."
 }

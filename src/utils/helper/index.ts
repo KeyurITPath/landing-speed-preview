@@ -19,8 +19,17 @@ const scrollToSection = (id = '') => {
 
 const decodeToken = (token = '') => {
   if (!token) return false;
-  const decoded = jwtDecode(token);
-  return { ...decoded, token };
+  try {
+    const decoded = jwtDecode(token);
+    // Check if token is expired
+    if (decoded?.exp && decoded.exp <= Date.now() / 1000) {
+      return false;
+    }
+    return { ...decoded, token };
+  } catch (error) {
+    // Invalid token
+    return false;
+  }
 };
 
 export const formatTime = (seconds: number) => {

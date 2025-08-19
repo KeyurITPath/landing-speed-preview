@@ -19,6 +19,7 @@ const client = async ({
   url = '',
   method = 'GET',
   data = {},
+  auth = {},
   cookieToken = '',
   headers = {},
   params = {},
@@ -33,15 +34,14 @@ const client = async ({
   headers?: Record<string, string>;
   params?: any;
   signal?: AbortSignal;
+  auth?: any,
   data?: {
     params?: any;
     [key: string]: unknown;
   };
   rest?: Record<string, unknown>;
 }) => {
-  let fullUrl = isServer
-    ? `${url}`
-    : `${FULL_BASE_URL}${url}`;
+  let fullUrl = isServer ? `${url}` : `${FULL_BASE_URL}${url}`;
   let token = cookieToken;
 
   const { ...restData } = data;
@@ -59,6 +59,11 @@ const client = async ({
   if (!token && typeof window !== 'undefined') {
     const tokenCookie = getTokenSync();
     token = tokenCookie || '';
+  }
+
+  if(!isEmptyObject(auth)){
+    const basicAuth = btoa(`${auth.username}:${auth.password}`);
+    headers.Authorization = `Basic ${basicAuth}`;
   }
 
   const fetchOptions: RequestInit = {

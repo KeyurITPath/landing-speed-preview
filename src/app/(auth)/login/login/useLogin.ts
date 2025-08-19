@@ -1,12 +1,5 @@
-"use client"
-import {
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+'use client';
+import { useCallback, useMemo, useState, useRef, useEffect, useContext } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@/api';
@@ -14,15 +7,19 @@ import { SERVER_URL } from '@utils/constants';
 import { loginValidation } from '@utils/validations';
 import { decodeToken } from '@/utils/helper';
 import { setActiveUI, updateUser } from '@store/features/auth.slice';
-import { useRouter } from "next/navigation";
-import { routes } from '../../../../utils/constants/routes';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/utils/constants/routes';
+import { useDomain } from '@/context/domain-provider';
+import useToast from '@/hooks/use-snackbar';
+import { AuthContext } from '@/context/auth-provider';
 
 const useLogin = () => {
   const { setToken } = useContext(AuthContext);
-  const { updateSocketOnLogin } = useSocket();
+  // const { updateSocketOnLogin } = useSocket();
 
+  const { handleToast } = useToast();
   const router = useRouter();
-
+  const domainDetails = useDomain();
   const { user }: any = useSelector(({ auth }: any) => auth);
   const { logo, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
@@ -32,9 +29,8 @@ const useLogin = () => {
   }, [logo]);
 
   const dispatch = useDispatch();
-  const { handleToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const debounceTimeoutRef = useRef(null);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
     isValid,
@@ -59,7 +55,8 @@ const useLogin = () => {
     },
   });
 
-  const handleChange = useCallback((e: any) => {
+  const handleChange = useCallback(
+    (e: any) => {
       const { name, value } = e.target;
       setFieldValue(name, value);
 
@@ -103,9 +100,8 @@ const useLogin = () => {
           const responseMessage = response?.data?.message;
           if (token) {
             const decodeData = decodeToken(token);
-
             setToken(token);
-            updateSocketOnLogin(token);
+            // updateSocketOnLogin(token);
             dispatch(
               updateUser({
                 token,
@@ -116,9 +112,7 @@ const useLogin = () => {
               })
             );
 
-            setToken(token);
-
-            if (decodeData?.is_verified) {
+            if (decodeData.is_verified) {
               router.push(routes.private.dashboard);
             } else {
               router.push(routes.public.home);
@@ -136,15 +130,7 @@ const useLogin = () => {
         setIsLoading(false);
       }
     },
-    [
-      dispatch,
-      handleToast,
-      history,
-      isLoading,
-      setToken,
-      updateSocketOnLogin,
-      user,
-    ]
+    [dispatch, handleToast, isLoading, router, setToken, user]
   );
 
   // Cleanup timeout on unmount
@@ -206,6 +192,7 @@ const useLogin = () => {
     LOGO_URL,
     logo_width,
     logo_height,
+    router,
   };
 };
 
