@@ -12,7 +12,6 @@ import sidebarSlice from './features/sidebar-slice';
 import courseDetailsSlice from './features/course-details.slice';
 import widgetScriptSlice from './features/widget-script.slice';
 import trialsActivationSlice from './features/trials-activation.slice';
-// import other slices here
 
 export function makeStore() {
   return configureStore({

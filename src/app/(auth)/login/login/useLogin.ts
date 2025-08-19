@@ -1,3 +1,4 @@
+"use client"
 import {
   useCallback,
   useContext,
@@ -8,22 +9,21 @@ import {
 } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginValidation } from '../../../../assets/utils/validations';
-import { api } from '../../../../api';
-import useToast from '../../../../hooks/useToast';
-import { decodeToken } from '../../../../assets/utils/function';
-import { setActiveUI, updateUser } from '../../../../redux/slices/auth.slice';
-import { URLS as PAGES } from '../../../../constant/urls';
-import { AuthContext } from '../../../../contexts/AuthContext';
-import useSocket from '../../../../hooks/use-socket';
+import { api } from '@/api';
 import { SERVER_URL } from '@utils/constants';
+import { loginValidation } from '@utils/validations';
+import { decodeToken } from '@/utils/helper';
+import { setActiveUI, updateUser } from '@store/features/auth.slice';
+import { useRouter } from "next/navigation";
+import { routes } from '../../../../utils/constants/routes';
 
 const useLogin = () => {
   const { setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
 
-  const { domainDetails } = useSelector(state => state.defaults);
-  const { user } = useSelector(({ auth }) => auth);
+  const router = useRouter();
+
+  const { user }: any = useSelector(({ auth }: any) => auth);
   const { logo, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
 
@@ -32,9 +32,7 @@ const useLogin = () => {
   }, [logo]);
 
   const dispatch = useDispatch();
-  const history = useNavigate();
   const { handleToast } = useToast();
-
   const [isLoading, setIsLoading] = useState(false);
   const debounceTimeoutRef = useRef(null);
 
@@ -61,8 +59,7 @@ const useLogin = () => {
     },
   });
 
-  const handleChange = useCallback(
-    e => {
+  const handleChange = useCallback((e: any) => {
       const { name, value } = e.target;
       setFieldValue(name, value);
 
@@ -85,13 +82,13 @@ const useLogin = () => {
   const handleRedirect = useCallback(
     (path = '') => {
       dispatch(setActiveUI(''));
-      history(path);
+      router.push(path);
     },
-    [history, dispatch]
+    [router, dispatch]
   );
 
   const handleLoginApi = useCallback(
-    async ({ email, password }) => {
+    async ({ email, password }: { email: string; password: string }) => {
       if (isLoading) return;
       setIsLoading(true);
       try {
@@ -122,9 +119,9 @@ const useLogin = () => {
             setToken(token);
 
             if (decodeData?.is_verified) {
-              history(PAGES.DASHBOARD.path);
+              router.push(routes.private.dashboard);
             } else {
-              history(PAGES.HOME_PAGE.path);
+              router.push(routes.public.home);
             }
             handleToast({ message: responseMessage, variant: 'success' });
           }
@@ -132,7 +129,7 @@ const useLogin = () => {
       } catch (error) {
         handleToast({
           message:
-            error?.data?.message || error?.message || 'Something went wrong.',
+            (error as any)?.data?.message || (error as any)?.message || 'Something went wrong.',
           variant: 'error',
         });
       } finally {

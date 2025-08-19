@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
-import axios from 'axios';
 
 export const getAllCountries = createAsyncThunk(
     'countries/getAllCountries',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.countries.getAllCountries(data);
+            const response = await api.countries.getAllCountries({
+                ...data,
+                signal
+            });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -40,7 +42,8 @@ export const countriesSlice = createSlice({
                 state.countries.data = result;
             })
             .addCase(getAllCountries.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                // Check if the request was cancelled
+                if (action.meta.aborted) {
                     return;
                 }
                 state.countries.isLoading = false;

@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { api } from '@/api';
 import { DOMAIN, RAPID_API_KEY } from '@utils/constants';
 import { getDomainName } from '@utils/helper';
 
 export const fetchDomainDetails = createAsyncThunk(
     'defaults/fetchDomainDetails',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.home.fetchDomainDetails(data);
+            const response = await api.home.fetchDomainDetails({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -18,9 +17,9 @@ export const fetchDomainDetails = createAsyncThunk(
 
 export const fetchDomainLogo = createAsyncThunk(
     'defaults/fetchDomainLogo',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.home.getDomainDetails(data);
+            const response = await api.home.getDomainDetails({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -30,9 +29,9 @@ export const fetchDomainLogo = createAsyncThunk(
 
 export const getAllLanguages = createAsyncThunk(
     'defaults/getAllLanguages',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.common.getAllLanguages(data);
+            const response = await api.common.getAllLanguages({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -42,20 +41,23 @@ export const getAllLanguages = createAsyncThunk(
 
 export const getIpAddress = createAsyncThunk(
     'defaults/getIpAddress',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const options = {
-                method: 'GET',
-                url: 'https://telize-v1.p.rapidapi.com/location',
-                headers: {
-                    'x-rapidapi-key': RAPID_API_KEY,
-                    'x-rapidapi-host': 'telize-v1.p.rapidapi.com'
-                }
+             const response = await fetch("https://telize-v1.p.rapidapi.com/location", {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": RAPID_API_KEY || "",
+          "x-rapidapi-host": "telize-v1.p.rapidapi.com"
+        },
+        signal,
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-            };
-            const { data } = await axios.request(options);
-            const { country_code } = data || {};
-            return country_code || 'US'; // Default to 'US' if country_code is not found
+      const data = await response.json();
+      const { country_code } = data || {};
+      return country_code || "US"; // Default to 'US' if country_code is not found
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -64,9 +66,9 @@ export const getIpAddress = createAsyncThunk(
 
 export const fetchAllAnalyticsCredentials = createAsyncThunk(
     'course/fetchAllAnalyticsCredentials',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.home.getAllAnalyticsCredentials(data);
+            const response = await api.home.getAllAnalyticsCredentials({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -76,9 +78,9 @@ export const fetchAllAnalyticsCredentials = createAsyncThunk(
 
 export const fetchAllFbAnalyticsCredentials = createAsyncThunk(
     'course/fetchAllFbAnalyticsCredentials',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.home.getAllFbAnalyticsCredentials(data);
+            const response = await api.home.getAllFbAnalyticsCredentials({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -102,7 +104,8 @@ export const initialState = {
         data: {
             domain_detail: {
                 logo_width: 120,
-                logo_height: 25
+                logo_height: 25,
+                brand_name: ''
             }
         },
         loading: false
@@ -175,10 +178,10 @@ const defaultsSlice = createSlice({
                 }
             })
             .addCase(fetchDomainDetails.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
-                state.loading = false;
+                state.domainDetails.loading = false;
                 state.domainDetails = initialState.domainDetails;
             });
 
@@ -191,7 +194,7 @@ const defaultsSlice = createSlice({
                 state.domain_logo.data = action.payload?.data || null;
             })
             .addCase(fetchDomainLogo.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.domain_logo.data = null;
@@ -212,7 +215,7 @@ const defaultsSlice = createSlice({
                 state.languages.data = result;
             })
             .addCase(getAllLanguages.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.languages.isLoading = false;
@@ -228,7 +231,7 @@ const defaultsSlice = createSlice({
                 state.country.country_code = action.payload;
             })
             .addCase(getIpAddress.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     state.country.country_code = 'US';
                     return;
                 }
@@ -246,7 +249,7 @@ const defaultsSlice = createSlice({
                     false;
             })
             .addCase(fetchAllAnalyticsCredentials.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
             });
@@ -271,10 +274,9 @@ const defaultsSlice = createSlice({
                 state.course.isFbAnalyticsCredentialsAPICalled = true;
             })
             .addCase(fetchAllFbAnalyticsCredentials.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
-                state.analyticsMetaCredentials = [];
             });
     }
 });

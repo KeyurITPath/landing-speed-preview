@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
-import axios from 'axios';
 
 export const fetchDashboardCourses = createAsyncThunk(
     'dashboard/fetchDashboardCourses',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.fetchDashboardCourses(data);
+            const response = await api.dashboard.fetchDashboardCourses({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -16,9 +15,9 @@ export const fetchDashboardCourses = createAsyncThunk(
 
 export const getAllPopularCoursesOnBrand = createAsyncThunk(
     'dashboard/getAllPopularCoursesOnBrand',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.getAllPopularCoursesOnBrand(data);
+            const response = await api.dashboard.getAllPopularCoursesOnBrand({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -28,9 +27,9 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
 
 export const getAllCourseOfTheWeek = createAsyncThunk(
     'dashboard/getAllCourseOfTheWeek',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.getAllCourseOfTheWeek(data);
+            const response = await api.dashboard.getAllCourseOfTheWeek({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -40,9 +39,9 @@ export const getAllCourseOfTheWeek = createAsyncThunk(
 
 export const fetchGiftClaimReward = createAsyncThunk(
     'dashboard/fetchGiftClaimReward',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.fetchGiftClaimReward(data);
+            const response = await api.dashboard.fetchGiftClaimReward({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -52,9 +51,9 @@ export const fetchGiftClaimReward = createAsyncThunk(
 
 export const fetchUserInteractedDates = createAsyncThunk(
     'dashboard/fetchUserInteractedDates',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.fetchUserInteractedDates(data);
+            const response = await api.dashboard.fetchUserInteractedDates({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -64,9 +63,9 @@ export const fetchUserInteractedDates = createAsyncThunk(
 
 export const getAllContinueWatchHistoryCoursesData = createAsyncThunk(
     'dashboard/getAllContinueWatchHistoryCoursesData',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.dashboard.getAllContinueWatchHistoryCoursesData(data);
+            const response = await api.dashboard.getAllContinueWatchHistoryCoursesData({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -147,7 +146,7 @@ const dashboardSlice = createSlice({
             })
 
             .addCase(fetchDashboardCourses.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.courses = initialState.courses;
@@ -173,7 +172,7 @@ const dashboardSlice = createSlice({
             })
 
             .addCase(getAllPopularCoursesOnBrand.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
@@ -194,7 +193,7 @@ const dashboardSlice = createSlice({
                 state.courseOfTheWeek.data = result?.[0] || {};
             })
             .addCase(getAllCourseOfTheWeek.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.courseOfTheWeek.loading = false;
@@ -210,7 +209,7 @@ const dashboardSlice = createSlice({
                 state.giftClaimReward.data = action.payload?.data || {};
             })
             .addCase(fetchGiftClaimReward.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.giftClaimReward.loading = false;
@@ -231,7 +230,7 @@ const dashboardSlice = createSlice({
                 state.userInteractedDates.total_login_days = total_login_days;
             })
             .addCase(fetchUserInteractedDates.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.userInteractedDates.loading = false;
@@ -255,7 +254,7 @@ const dashboardSlice = createSlice({
                 }
             })
             .addCase(getAllContinueWatchHistoryCoursesData.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.continueWatchingCourse = initialState.continueWatchingCourse;

@@ -1,12 +1,11 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
 
 export const getUserCourseProgress = createAsyncThunk(
     'courseDetails/getUserCourseProgress',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.courseDetails.getUserCourseProgress(data);
+            const response = await api.courseDetails.getUserCourseProgress({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -16,9 +15,9 @@ export const getUserCourseProgress = createAsyncThunk(
 
 export const getAllRecommendedCourses = createAsyncThunk(
     'courseDetails/getAllRecommendedCourses',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.courseDetails.getAllRecommendedCourses(data);
+            const response = await api.courseDetails.getAllRecommendedCourses({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -28,9 +27,9 @@ export const getAllRecommendedCourses = createAsyncThunk(
 
 export const getAllPopularCoursesDataByCategories = createAsyncThunk(
     'courseDetails/getAllPopularCoursesDataByCategories',
-    async (data, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, signal }) => {
         try {
-            const response = await api.courseDetails.getAllPopularCoursesDataByCategories(data);
+            const response = await api.courseDetails.getAllPopularCoursesDataByCategories({...data, signal});
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -96,7 +95,7 @@ const courseDetailsSlice = createSlice({
                 }
             })
             .addCase(getAllPopularCoursesDataByCategories.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.popularCoursesDataByCategories = initialState.popularCoursesDataByCategories;
@@ -112,7 +111,7 @@ const courseDetailsSlice = createSlice({
                 state.getUserCourseProgressApiDataForCopy.data = action?.payload?.data || {};
             })
             .addCase(getUserCourseProgress.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.getUserCourseProgress = initialState.getUserCourseProgress;
@@ -127,7 +126,7 @@ const courseDetailsSlice = createSlice({
                 state.recommendedCourses.data = action?.payload?.data || {};
             })
             .addCase(getAllRecommendedCourses.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                if (action.meta.aborted) {
                     return;
                 }
                 state.recommendedCourses = initialState.recommendedCourses;

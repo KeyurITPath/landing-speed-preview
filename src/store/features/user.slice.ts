@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
-import axios from 'axios';
 
-export const fetchUser = createAsyncThunk('user/fetchUser', async (data, { rejectWithValue }) => {
+export const fetchUser = createAsyncThunk('user/fetchUser', async (data: any, { rejectWithValue, signal }) => {
     try {
-        const response = await api.user.get(data);
+        const response = await api.user.get({ ...data, signal });
         return response?.data;
     } catch (error) {
         return rejectWithValue(error);
@@ -32,7 +31,7 @@ const userSlice = createSlice({
                 const clone = { ...action.payload?.data };
                 if (clone?.subscription_purchase_histories?.length) {
                     clone.subscription_purchase_histories = clone.subscription_purchase_histories.map(
-                        (item) => {
+                        (item: any) => {
                             return {
                                 ...item,
                                 subscription_plan: {
@@ -47,7 +46,8 @@ const userSlice = createSlice({
                 state.failed = false;
             })
             .addCase(fetchUser.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                // Check if the request was cancelled
+                if (action.meta.aborted) {
                     return;
                 }
                 state.failed = true;

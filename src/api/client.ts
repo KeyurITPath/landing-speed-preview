@@ -25,6 +25,7 @@ const client = async ({
   headers = {},
   params = {},
   isServer = false,
+  signal,
   ...rest
 }: {
   method: string;
@@ -33,6 +34,7 @@ const client = async ({
   isServer?: boolean;
   headers?: Record<string, string>;
   params?: any;
+  signal?: AbortSignal;
   data?: {
     params?: any;
     [key: string]: unknown;
@@ -68,7 +70,7 @@ const client = async ({
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
-
+    ...(signal && { signal }),
     credentials: 'include',
     ...rest,
   };

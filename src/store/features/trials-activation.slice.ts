@@ -1,15 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
-import axios from 'axios';
 
 export const fetchTrialActivation = createAsyncThunk(
     'trialsActivation/fetchTrialActivation',
     async (
-        data: { [x: string]: any; params: any; },
-        { rejectWithValue }
+        data: { [x: string]: any; params?: any; } = {},
+        { rejectWithValue, signal }
     ) => {
         try {
-            const response = await api.trialsActivation.fetchTrialActivation(data) as { data?: { data?: any } };
+            const response = await api.trialsActivation.fetchTrialActivation({ ...data, signal }) as { data?: { data?: any } };
             return response?.data?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -27,6 +26,7 @@ export const initialState = {
 const trialsActivationSlice = createSlice({
     name: 'trialsActivation',
     initialState,
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchTrialActivation.pending, (state) => {
@@ -40,11 +40,12 @@ const trialsActivationSlice = createSlice({
                 state.trialsActivation.data = result;
             })
             .addCase(fetchTrialActivation.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                // Check if the request was cancelled
+                if (action.meta.aborted) {
                     return;
                 }
                 state.trialsActivation.loading = false;
-                state.trialsActivation.data = initialState.trialsActivation;
+                state.trialsActivation.data = initialState.trialsActivation.data;
             });
     }
 });

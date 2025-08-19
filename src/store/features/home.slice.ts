@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
-import axios from 'axios';
 
 export const fetchHomeCourses = createAsyncThunk(
     'home/fetchHomeCourses',
-    async (data, { rejectWithValue }) => {
+    async (data: any = {}, { rejectWithValue, signal }) => {
         try {
-            const response = await api.home.fetchHomeCourses(data);
+            const response = await api.home.fetchHomeCourses({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -16,10 +15,10 @@ export const fetchHomeCourses = createAsyncThunk(
 
 export const getAllPopularCoursesOnBrand = createAsyncThunk(
     'courseCategories/getAllPopularCoursesOnBrand',
-    async (data, { rejectWithValue }) => {
+    async (data: any = {}, { rejectWithValue, signal }) => {
         try {
             console.log("Fetching popular courses for brand:", data);
-            const response = await api.home.getAllPopularCoursesOnBrand(data);
+            const response = await api.home.getAllPopularCoursesOnBrand({ ...data, signal });
             return response?.data;
         } catch (error) {
             return rejectWithValue(error);
@@ -80,7 +79,8 @@ const homeSlice = createSlice({
             })
 
             .addCase(fetchHomeCourses.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                // Check if the request was cancelled
+                if (action.meta.aborted) {
                     return;
                 }
                 state.courses = initialState.courses;
@@ -106,7 +106,8 @@ const homeSlice = createSlice({
             })
 
             .addCase(getAllPopularCoursesOnBrand.rejected, (state, action) => {
-                if (axios.isCancel(action.payload)) {
+                // Check if the request was cancelled
+                if (action.meta.aborted) {
                     return;
                 }
                 state.popularCoursesOnBrand = initialState.popularCoursesOnBrand;
