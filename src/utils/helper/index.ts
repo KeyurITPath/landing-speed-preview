@@ -269,3 +269,11 @@ export const videoURL = (url = '') => {
     if (!url) return '';
     return url.startsWith('http://') || url.startsWith('https://') ? url : SERVER_URL + url;
 };
+
+export const arrayToKeyValueObject = (array = []) => {
+    if (!array.length) return {};
+    return array.reduce((acc, item) => {
+        acc[item] = item;
+        return acc;
+    }, {});
+};

@@ -7,13 +7,8 @@ import { isEmptyArray } from '@utils/helper';
 import { useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
 
-const CourseCard = ({ useHomeDetails }) => {
-    const {
-        POPULAR_BRAND_COURSES_DATA,
-        isPopularBrandCoursesDataLoading,
-        isBecomeAMemberWithVerified,
-        handleStartFree
-    } = useHomeDetails;
+const CourseCard = ({ POPULAR_BRAND_COURSES_DATA, isPopularBrandCoursesDataLoading, isBecomeAMemberWithVerified, handleStartFree }) => {
+
 
     const skeletonArray = Array.from({ length: 8 });
     const t = useTranslations();

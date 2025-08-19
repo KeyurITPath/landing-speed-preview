@@ -27,6 +27,7 @@
       "@assets/*": ["./src/assets/*"],
       "@api/*": ["./src/api/*"],
       "@store/*": ["./src/store/*"],
+      "@services/*": ["./src/services/*"],
       "@configs/*": ["./src/configs/*"],
       "@layouts/*": ["./src/layouts/*"]
     }

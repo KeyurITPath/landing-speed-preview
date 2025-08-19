@@ -1,56 +1,50 @@
-"use client"
 import React, { lazy } from 'react';
-import { Stack, Typography, Button } from '@mui/material';
-import useHome from './useHome';
+import ClientSection from './ClientSection';
+import { fetchAllCourseCategories, fetchHomeCoursesData, fetchPopularCourses } from '@services/course-service';
+import { DOMAIN } from '@utils/constants';
 
-// // Lazy load below-the-fold components
-const UserReviews = lazy(() => import('../../components/user-reviews'));
-// const Faqs = lazy(() => import('../../components/faqs'));
-const BecomeAuthor = lazy(() => import('../../components/become-author'));
-const GetStartedSteps = lazy(() => import('../../components/get-started-steps'));
-// const CoursesByCategory = lazy(() => import('./components/courses-by-category'));
 
-// // Critical above-the-fold components (loaded immediately)
-import TopTrendingCourses from '../../components/top-trending-courses';
+const Home = async () => {
 
-// // Popups (lazy loaded as they're conditional)
-// const SuccessPaymentPopup = lazy(() => import('../../components/success-payment-popup'));
-// const FailedPaymentPopup = lazy(() => import('../../components/failed-payment-popup'));
-// const TrialPopup = lazy(() => import('../../components/trial-popup'));
-const JoinCourse = lazy(() => import('../../components/join-course'));
+        const popularCourses = await fetchPopularCourses({
+            params: {
+                language_id: 1,
+                domain: DOMAIN,
+            },
+            headers: {
+                'req-from': "in"
+            }
+        });
 
-const Home = () => {
-    const useHomeDetails = useHome();
-    // const { isPaymentFailed, isPaymentSuccess, isBecomeAMemberWithVerified, shouldOfferTrials } = useHomeDetails;
+    const homeCourses = await fetchHomeCoursesData({
+                params: {
+                     language_id: 1,
+                domain: DOMAIN,
+                },
+                headers: {
+                    'req-from': "in"
+                }
+            });
+
+    const courseCategories = await fetchAllCourseCategories({
+                params: { language_id:1 },
+                headers: {
+                    'req-from': "in"
+                }
+            }, 1);
+
+
+    const homeData = {
+        isPopularBrandCoursesDataLoading:false,
+        isBecomeAMemberWithVerified: false,
+        POPULAR_BRAND_COURSES_DATA: popularCourses,
+        COURSES_DATA: homeCourses,
+        CATEGORIES_BADGE: courseCategories
+    };
 
     return (
         <React.Fragment>
-            <Stack
-                spacing={{ xs: 4, sm: 10 }}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    my: { xs: 0 }
-                }}
-            >
-                {/* Above-the-fold content loaded immediately */}
-                <JoinCourse />
-              <TopTrendingCourses {...{ useHomeDetails }} />
-
-                {/* Below-the-fold content lazy loaded */}
-                <UserReviews />
-                <GetStartedSteps />
-                {/* <CoursesByCategory {...{ useHomeDetails }} /> */}
-                {/* <Faqs /> */}
-                <BecomeAuthor />
-            </Stack>
-
-            {/* Conditional popups - lazy loaded */}
-            {/* {(isBecomeAMemberWithVerified || shouldOfferTrials) && <TrialPopup {...{ dashboardData: useHomeDetails }} />}
-            {isPaymentSuccess && <SuccessPaymentPopup open={isPaymentSuccess} />}
-            {isPaymentFailed && <FailedPaymentPopup open={isPaymentFailed} />} */}
+            <ClientSection homeData={{...homeData}} />
         </React.Fragment>
     );
 };

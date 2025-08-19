@@ -4,10 +4,14 @@ import CourseCard from '@components/course-card';
 import { scrollToSection } from '@utils/helper';
 import { useTranslations } from 'next-intl';
 
-const TopTrendingCourses = ({ useHomeDetails }) => {
+const TopTrendingCourses = ({homeData}) => {
 
-    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+    const { isPopularBrandCoursesDataLoading, isBecomeAMemberWithVerified, POPULAR_BRAND_COURSES_DATA } = homeData;
+
+    // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+    const isMobile = false; // This also needs to be handle how to manage that in SSR
     const t = useTranslations();
+
 
     return (
         <>
@@ -27,7 +31,12 @@ const TopTrendingCourses = ({ useHomeDetails }) => {
                         </Stack>
                     </Stack>
 
-                    <CourseCard {...{ useHomeDetails }} />
+                    <CourseCard
+                        isPopularBrandCoursesDataLoading={isPopularBrandCoursesDataLoading}
+                        isBecomeAMemberWithVerified={isBecomeAMemberWithVerified}
+                        handleStartFree={() => {}}
+                        POPULAR_BRAND_COURSES_DATA={POPULAR_BRAND_COURSES_DATA}
+                    />
 
                     <Stack
                         sx={{
