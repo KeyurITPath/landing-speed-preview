@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { routes } from '@/utils/constants/routes';
 import createMiddleware from 'next-intl/middleware';
 
-
 const PUBLIC_ROUTES = Object.values(routes.public);
 const AUTH_ROUTES = Object.values(routes.auth);
 const PROTECTED_ROUTES = Object.values(routes.private).filter(
@@ -34,7 +33,9 @@ export function middleware(request: NextRequest) {
 
   // --- 2. Auth pages: redirect to /dashboard if already logged in
   if (AUTH_ROUTES.includes(pathname) && isTokenValid) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(
+      new URL(routes.private.dashboard, request.url)
+    );
   }
 
   // --- 3. Protected routes
@@ -43,7 +44,7 @@ export function middleware(request: NextRequest) {
   );
 
   if (isProtected && !isTokenValid) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL(routes.auth.login, request.url));
   }
 
   // --- 4. Everything else
@@ -51,18 +52,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Protect all routes except:
-     * - static files
-     * - public
-     * - auth
-     */
-    '/((?!_next/static|_next/image|favicon.ico|api).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
 };
 
 export default createMiddleware({
   locales: ['en', 'es', 'fr'],
-  defaultLocale: 'en'
+  defaultLocale: 'en',
 });

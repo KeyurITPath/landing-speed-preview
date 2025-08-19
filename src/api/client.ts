@@ -1,16 +1,11 @@
-import { API, SERVER } from '../configs/env';
-import {
-  isNotEmptyObject,
-  apiAsyncHandler,
-  getTokenSync,
-} from '@/utils/helper';
-import { ERROR_MESSAGES } from '../utils/constants';
+import { ERROR_MESSAGES, SERVER_URL } from '../utils/constants';
+import { apiAsyncHandler, getTokenSync, isEmptyObject } from '../utils/helper';
 
-const BASE_URL = API.URL;
+const BASE_URL = SERVER_URL;
 const DEFAULT_PREFIX = '/api';
 const FULL_BASE_URL = `${BASE_URL}${DEFAULT_PREFIX}`;
 
-const FULL_SERVER_URL = `${SERVER.URL}${DEFAULT_PREFIX}`;
+const FULL_SERVER_URL = `${SERVER_URL}${DEFAULT_PREFIX}`;
 
 export const METHODS = {
   POST: 'post',
@@ -52,7 +47,7 @@ const client = async ({
   const { ...restData } = data;
 
   // Handle query params
-  if (isNotEmptyObject(params)) {
+  if (!isEmptyObject(params)) {
     const queryParams = Object.fromEntries(
       Object.entries(params).map(([key, value]) => [key, String(value)])
     );
@@ -107,7 +102,7 @@ const client = async ({
         };
       }
     },
-    error => {
+    (error: any) => {
       throw error;
     }
   );

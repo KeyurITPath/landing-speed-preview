@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const metadata = {
   title: 'Account | Architecture',
   description: 'Account layout for the Project Architecture Next.js Template',
