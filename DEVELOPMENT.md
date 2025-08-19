@@ -1,9 +1,3 @@
-# Development Setup Documentation
-
-This project is configured with ESLint, Prettier, and Husky for code quality and consistency.
-
-## Tools Configured
-
 ### ESLint
 
 - **Purpose**: Code linting and error detection
@@ -22,14 +16,6 @@ This project is configured with ESLint, Prettier, and Husky for code quality and
   - `npm run prettier` - Check code formatting
   - `npm run prettier:fix` - Fix formatting issues
   - `npm run format` - Run both Prettier and ESLint fixes
-
-### Husky
-
-- **Purpose**: Git hooks for pre-commit validation
-- **Config**: `.husky/` directory
-- **Hooks**:
-  - `pre-commit`: Runs lint-staged
-  - `commit-msg`: Validates commit message format
 
 ### Lint-staged
 
@@ -96,8 +82,6 @@ The project includes VS Code settings for:
 - `.prettierrc` - Prettier configuration
 - `.prettierignore` - Files to ignore for Prettier
 - `eslint.config.mjs` - ESLint configuration
-- `.husky/pre-commit` - Pre-commit hook script
-- `.husky/commit-msg` - Commit message validation
 - `.vscode/settings.json` - VS Code workspace settings
 - `.vscode/extensions.json` - Recommended extensions
 - `package.json` - Scripts and lint-staged configuration

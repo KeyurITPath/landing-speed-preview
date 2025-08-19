@@ -11,7 +11,6 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "format": "prettier --write . && next lint --fix",
-    "prepare": "husky",
     "dev:development": "dotenv -e .env.development -- next dev --turbopack",
     "dev:staging": "dotenv -e .env.staging -- next dev --turbopack",
     "dev:production": "dotenv -e .env.production -- next dev --turbopack"
@@ -58,21 +57,11 @@
     "eslint-config-next": "15.3.4",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
-    "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "postcss": "^8.5.6",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.6.1",
     "typescript": "^5"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css,scss}": [
-      "prettier --write"
-    ]
   }
 }
