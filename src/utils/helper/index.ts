@@ -1,6 +1,11 @@
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { LOCAL_STORAGE_KEY, SECRET_KEY, SERVER_URL } from '@utils/constants';
 import moment from 'moment';
+
+interface CustomJwtPayload extends JwtPayload {
+  token: string;
+  [key: string]: any;
+}
 
 const isFunction = (fn: any) => typeof fn === 'function';
 
@@ -17,7 +22,7 @@ const scrollToSection = (id = '') => {
   }
 };
 
-const decodeToken = (token = '') => {
+const decodeToken = (token = ''): CustomJwtPayload | false => {
   if (!token) return false;
   try {
     const decoded = jwtDecode(token);

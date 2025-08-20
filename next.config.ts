@@ -4,6 +4,10 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const nextConfig: NextConfig = {
   /* config options here */
 
+  images: {
+    domains: ["staging-api.eduelle.com", "api.eduelle.com"], // whitelist this domain
+  },
+
   typescript: {
     ignoreBuildErrors: true, // Ignore TypeScript errors during build
   },

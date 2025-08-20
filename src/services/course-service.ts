@@ -3,6 +3,7 @@ import { formatCurrency, isEmptyArray, videoURL } from '@utils/helper';
 import {
   DOMAIN,
   POPUPS_CATEGORIES,
+  RAPID_API_KEY,
   SERVER_URL,
   TIMEZONE,
   USER_ROLE,
@@ -165,47 +166,72 @@ export async function fetchAllCourseCategories(data, language_id) {
   }
 }
 
-
 export async function fetchCourseForLanding(data) {
-    try{
-            const response = await api.home.course(data);
-            const courseData = response?.data?.data;
-            const isDiscountedPrice = courseData?.discountPrices?.length !== 0;
+  try {
+    const response = await api.home.course(data);
+    const courseData = response?.data?.data;
+    const isDiscountedPrice = courseData?.discountPrices?.length !== 0;
 
-                let APIResponseData = courseData;
+    let APIResponseData = courseData;
 
-                if (isDiscountedPrice) {
-                    const course_prices = courseData?.course?.course_prices?.map(({ ...rest }) => {
-                        const { amount, stripe_price_id, currency } =
-                            courseData?.discountPrices?.[0] || {};
+    if (isDiscountedPrice) {
+      const course_prices = courseData?.course?.course_prices?.map(
+        ({ ...rest }) => {
+          const { amount, stripe_price_id, currency } =
+            courseData?.discountPrices?.[0] || {};
 
-                        return { ...rest, stripe_price_id, price: amount, currency };
-                    });
+          return { ...rest, stripe_price_id, price: amount, currency };
+        }
+      );
 
-                    APIResponseData = { ...courseData, course: { ...courseData?.course, course_prices } };
-                } else {
-                    APIResponseData = courseData;
-                }
-
-                const APIResponseLanguageId = courseData?.landing_page_translations[0]?.language_id;
-
-                const APIResponseCoursePriceData = APIResponseData?.course?.course_prices?.filter(
-                    ({ language_id }) => language_id === APIResponseLanguageId
-                );
-
-                APIResponseData = {
-                    ...APIResponseData,
-                    course: {
-                        ...APIResponseData?.course,
-                        course_prices: APIResponseCoursePriceData
-                    }
-                };
-                const defaultCoursePrice = APIResponseData?.course?.course_prices?.find(
-                    ({ language_id }) => language_id === APIResponseLanguageId
-                );
-            return {data: APIResponseData, defaultCoursePrice: defaultCoursePrice};
-    }catch (error) {
-        console.error('Error fetching course for landing:', error);
+      APIResponseData = {
+        ...courseData,
+        course: { ...courseData?.course, course_prices },
+      };
+    } else {
+      APIResponseData = courseData;
     }
 
+    const APIResponseLanguageId =
+      courseData?.landing_page_translations[0]?.language_id;
+
+    const APIResponseCoursePriceData =
+      APIResponseData?.course?.course_prices?.filter(
+        ({ language_id }) => language_id === APIResponseLanguageId
+      );
+
+    APIResponseData = {
+      ...APIResponseData,
+      course: {
+        ...APIResponseData?.course,
+        course_prices: APIResponseCoursePriceData,
+      },
+    };
+    const defaultCoursePrice = APIResponseData?.course?.course_prices?.find(
+      ({ language_id }) => language_id === APIResponseLanguageId
+    );
+    return { data: APIResponseData, defaultCoursePrice: defaultCoursePrice };
+  } catch (error) {
+    console.error('Error fetching course for landing:', error);
+  }
+}
+
+export async function fetchCountryCodeHandler() {
+  try {
+    const response = await fetch('https://telize-v1.p.rapidapi.com/location', {
+      method: 'GET',
+      cache: 'default',
+      headers: {
+        'x-rapidapi-key': RAPID_API_KEY || '',
+        'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
+      },
+    });
+
+    const data = await response.json();
+
+    const { country_code } = data || {};
+    return country_code || 'US'; // Default to 'US' if country_code is not found
+  } catch (error) {
+    console.error('Error fetching ip or country for landing:', error);
+  }
 }

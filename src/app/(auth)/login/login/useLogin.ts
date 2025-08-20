@@ -20,6 +20,7 @@ const useLogin = () => {
   const { handleToast } = useToast();
   const router = useRouter();
   const domainDetails = useDomain();
+
   const { user }: any = useSelector(({ auth }: any) => auth);
   const { logo, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};

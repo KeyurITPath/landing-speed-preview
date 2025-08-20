@@ -1,20 +1,32 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import ClientSection from './ClientSection';
 import {
   fetchAllCourseCategories,
+  fetchCountryCodeHandler,
   fetchHomeCoursesData,
   fetchPopularCourses,
 } from '@services/course-service';
 import { DOMAIN } from '@utils/constants';
+import { cookies } from "next/headers";
+import { decodeToken } from '../../utils/helper';
 
 const Home = async () => {
+
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("token")?.value; // read cookie "token"
+
+  const user = decodeToken(token);
+
+  const country_code = await fetchCountryCodeHandler();
+
   const popularCourses = await fetchPopularCourses({
     params: {
       language_id: 1,
       domain: DOMAIN,
+      ...(user?.id && { user_id: user?.id })
     },
     headers: {
-      'req-from': 'in',
+      'req-from': country_code,
     },
   });
 
@@ -22,17 +34,20 @@ const Home = async () => {
     params: {
       language_id: 1,
       domain: DOMAIN,
+      ...(user?.id && { user_id: user?.id })
     },
     headers: {
-      'req-from': 'in',
+      'req-from': country_code,
     },
   });
 
   const courseCategories = await fetchAllCourseCategories(
     {
-      params: { language_id: 1 },
+      params: {
+        language_id: 1,
+      },
       headers: {
-        'req-from': 'in',
+        'req-from': country_code,
       },
     },
     1
