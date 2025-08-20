@@ -32,7 +32,14 @@ const nextConfig: NextConfig = {
 
   // app router tree shaking and optimization
   experimental: {
-    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    optimizePackageImports: [
+      '@mui/material',
+      '@mui/icons-material',
+      'react-icons',
+      '@emotion/styled',
+      '@emotion/react',
+      '@emotion/cache',
+    ],
   },
 };
 

@@ -12,7 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ICONS } from '@assets/icons';
 import { IMAGES } from '@assets/images';
-import Image from '../../shared/image';
+import Image from '@/shared/image';
 
 import UserSlider from '../user-slider';
 import { USER_REVIEW_IMAGES } from '@assets/images';
