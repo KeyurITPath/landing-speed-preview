@@ -1,22 +1,25 @@
-import {
-  Container,
-  Stack,
-  Typography,
-  Box,
-  Grid,
-  useMediaQuery,
-} from '@mui/material';
+import { Container, Stack, Typography, Box, Grid, styled } from '@mui/material';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ICONS } from '@assets/icons';
 import { linearGradients } from '../../theme/color';
 import RenderCard from '@components/course-card/components/render-card';
-
 import RenderCardLoading from '@components/course-card/components/render-card-loading';
 import { arrayToKeyValueObject } from '@utils/helper';
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
+
+const CustomStack = styled(Stack)(({ theme }) => ({
+  [theme.breakpoints.up('sm')]: {
+    ':hover': {
+      background: linearGradients.primary,
+      border: `1px solid ${linearGradients.primary}`,
+      '& .category-text': {
+        color: 'white',
+      },
+    },
+  },
+}));
 
 const CoursesByCategory = ({
   homeData,
@@ -33,22 +36,7 @@ const CoursesByCategory = ({
 
   const skeletonArray = Array.from({ length: 8 });
   const t = useTranslations();
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const { isLoggedIn } = useSelector(({ auth }) => auth);
-
-  const hoverStyles = useMemo(() => {
-    return isMobile
-      ? {}
-      : {
-          ':hover': {
-            background: linearGradients.primary,
-            border: `1px solid ${linearGradients.primary}`,
-            '& .category-text': {
-              color: 'white',
-            },
-          },
-        };
-  }, [isMobile]);
 
   return (
     <Container maxWidth='lg' id='courses-by-category'>
@@ -74,7 +62,7 @@ const CoursesByCategory = ({
         >
           {CATEGORIES_BADGE.map((category, index) => {
             return (
-              <Stack
+              <CustomStack
                 key={index}
                 sx={{
                   px: { xs: 1, sm: 2 },
@@ -85,7 +73,6 @@ const CoursesByCategory = ({
                     : '1px solid #BBBBBB80',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease-in-out',
-                  ...hoverStyles,
                 }}
                 onClick={() => filterCategoryHandler(category?.id)}
               >
@@ -103,7 +90,7 @@ const CoursesByCategory = ({
                 >
                   {category?.name || ''}
                 </Typography>
-              </Stack>
+              </CustomStack>
             );
           })}
         </Stack>
@@ -113,14 +100,14 @@ const CoursesByCategory = ({
             position: 'relative',
             width: '100%',
           }}
-          spacing={isMobile ? 0 : 1}
+          spacing={{ xs: 0, sm: 1 }}
         >
           <Stack
             direction='row'
             sx={{
               alignItems: 'center',
               justifyContent: 'flex-end',
-              display: isMobile ? 'none' : 'flex',
+              display: { xs: 'none', sm: 'flex' },
             }}
           >
             <Box

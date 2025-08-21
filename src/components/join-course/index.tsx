@@ -3,8 +3,7 @@ import {
   Container,
   Grid,
   Stack,
-  Typography,
-  useMediaQuery,
+  Typography
 } from '@mui/material';
 import { keyframes } from '@emotion/react';
 import CustomButton from '@shared/button';
@@ -49,8 +48,7 @@ const MEMBER_AVATARS = [
 
 const JoinCourse = ({ domainDetails }: any) => {
   const t = useTranslations();
-  const router = useRouter()
-  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+  const router = useRouter();
 
   const DOMAIN_DETAILS = {
     BRAND_NAME: domainDetails?.data?.domain_detail?.brand_name || 'Eduelle',
@@ -58,8 +56,6 @@ const JoinCourse = ({ domainDetails }: any) => {
 
   const { isLoggedIn } = useSelector(({ auth }: any) => auth);
   // const { handleRedirect } = useLocation()
-
-  // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const quadruplicatedImages = useMemo(() =>
     [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES],
@@ -141,7 +137,7 @@ const JoinCourse = ({ domainDetails }: any) => {
                   {isLoggedIn ? (
                     <CustomButton
                       variant='gradient'
-                      size={isMobile ? 'medium' : 'large'}
+                      size='medium'
                       sx={{
                         borderRadius: '8px',
                         fontSize: { xs: '14px', sm: '16px' },
@@ -153,7 +149,7 @@ const JoinCourse = ({ domainDetails }: any) => {
                   ) : (
                     <CustomButton
                       variant='gradient'
-                      size={isMobile ? 'medium' : 'large'}
+                      size='medium'
                       sx={{
                         borderRadius: '8px',
                         fontSize: { xs: '14px', sm: '16px' },

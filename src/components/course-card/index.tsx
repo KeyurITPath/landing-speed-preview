@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import RenderCard from './components/render-card';
@@ -12,11 +12,10 @@ const CourseCard = ({
   isPopularBrandCoursesDataLoading,
   isBecomeAMemberWithVerified,
   handleStartFree,
-}) => {
+}: any) => {
   const skeletonArray = Array.from({ length: 8 });
   const t = useTranslations();
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
-  const { isLoggedIn } = useSelector(({ auth }) => auth);
+  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
   const showSkeleton =
     isPopularBrandCoursesDataLoading ||
@@ -54,7 +53,7 @@ const CourseCard = ({
 
   return (
     <Stack>
-      {isMobile ? (
+      <Stack sx={{ display: { xs: 'flex', sm: 'none' } }}>
         <Swiper
           modules={[Navigation, Pagination]}
           slidesPerView={1.3}
@@ -92,28 +91,31 @@ const CourseCard = ({
                 ))
               : NoCourses}
         </Swiper>
-      ) : (
-        <Grid container spacing={2.5}>
-          {showSkeleton
-            ? skeletonArray.map((_, index) => (
+      </Stack>
+      <Grid
+        sx={{ display: { xs: 'none', sm: 'flex' } }}
+        container
+        spacing={2.5}
+      >
+        {showSkeleton
+          ? skeletonArray.map((_, index) => (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+                <RenderCardLoading />
+              </Grid>
+            ))
+          : hasCourses
+            ? POPULAR_BRAND_COURSES_DATA.map((course, index) => (
                 <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-                  <RenderCardLoading />
+                  <RenderCard
+                    course={course}
+                    isBecomeAMemberWithVerified={isBecomeAMemberWithVerified}
+                    handleStartFree={handleStartFree}
+                    isLoggedIn={isLoggedIn}
+                  />
                 </Grid>
               ))
-            : hasCourses
-              ? POPULAR_BRAND_COURSES_DATA.map((course, index) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-                    <RenderCard
-                      course={course}
-                      isBecomeAMemberWithVerified={isBecomeAMemberWithVerified}
-                      handleStartFree={handleStartFree}
-                      isLoggedIn={isLoggedIn}
-                    />
-                  </Grid>
-                ))
-              : NoCourses}
-        </Grid>
-      )}
+            : NoCourses}
+      </Grid>
     </Stack>
   );
 };

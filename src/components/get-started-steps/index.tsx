@@ -3,8 +3,7 @@ import {
   Container,
   Grid,
   Stack,
-  Typography,
-  useMediaQuery,
+  Typography
 } from '@mui/material';
 import { primaryNew } from '../../theme/color';
 import NextImage from 'next/image';
@@ -32,8 +31,6 @@ const GetStartedSteps = () => {
       description: 'get_started_steps.2.description',
     },
   ];
-
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const t = useTranslations();
 
   return (
@@ -139,15 +136,10 @@ const GetStartedSteps = () => {
                               width: { xs: '50px', sm: '70px' },
                             }}
                           >
-                            {}
-                            <NextImage
+                            <NextImage width={26} height={26}
                               loading='eager'
                               src={image}
                               alt={`Step ${index + 1}`}
-                              style={{
-                                width: isMobile ? 20 : 28,
-                                height: isMobile ? 20 : 28,
-                              }}
                             />
                           </Box>
                         </Stack>

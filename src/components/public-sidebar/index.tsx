@@ -6,9 +6,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
-  Theme,
-  Typography,
-  useMediaQuery,
+  Typography
 } from '@mui/material';
 import React from 'react';
 import { ICONS } from '@/assets/icons';
@@ -29,8 +27,6 @@ const Sidebar = ({
   const t = useTranslations();
 
   const router = useRouter();
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-
   return (
     <Drawer
       anchor={'right'}
@@ -91,13 +87,11 @@ const Sidebar = ({
             </ListItem>
           </>
         ) : (
-          mdDown && (
             <>
-              <ListItem onClick={() => router.push(routes.auth.login)}>
+              <ListItem sx={{display: {xs: 'block', md: 'none'}}} onClick={() => router.push(routes.auth.login)}>
                 <ListItemText primary={toCapitalCase(t('login'))} />
               </ListItem>
             </>
-          )
         )}
       </Stack>
       <Stack p={2} spacing={1}>

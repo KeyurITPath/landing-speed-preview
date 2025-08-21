@@ -3,20 +3,17 @@ import {
   Container,
   Grid,
   Stack,
-  Typography,
-  useMediaQuery,
+  Typography
 } from '@mui/material';
 import CustomButton from '@shared/button';
 import { AUTHOR_URL } from '@utils/constants';
 import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
 import { BECOME_AUTHOR_IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 const BecomeAuthor = ({ domainDetails }: any) => {
-  const t = useTranslations();
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  const t = useTranslations()
 
   const BECOME_AUTHORS = [
     BECOME_AUTHOR_IMAGES.becomeAuthor1,
@@ -33,10 +30,13 @@ const BecomeAuthor = ({ domainDetails }: any) => {
     <Box
       sx={{
         width: '100%',
-        ...(!isMobile && { backgroundColor: 'primary.background' }),
-        ...(!isMobile && {
-          borderTopRightRadius: { sm: '200px', md: '400px' },
-        }),
+        backgroundColor: {
+          sm: 'primary.background',
+        },
+        borderTopRightRadius: {
+          sm: '200px',
+          md: '400px',
+        },
         py: { xs: 2, md: 6 },
         flexDirection: { xs: 'column', md: 'row' },
         alignItems: 'center',
@@ -136,7 +136,7 @@ const BecomeAuthor = ({ domainDetails }: any) => {
                 >
                   <CustomButton
                     variant='gradient'
-                    size={isMobile ? 'medium' : 'large'}
+                    size={'medium'}
                     sx={{
                       borderRadius: '8px',
                       fontSize: { xs: '14px', sm: '16px' },
@@ -149,7 +149,7 @@ const BecomeAuthor = ({ domainDetails }: any) => {
                   </CustomButton>
                   <CustomButton
                     variant='gradient'
-                    size={isMobile ? 'medium' : 'large'}
+                    size={'medium'}
                     sx={{
                       borderRadius: '8px',
                       fontSize: { xs: '14px', sm: '16px' },

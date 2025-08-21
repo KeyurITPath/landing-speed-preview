@@ -1,9 +1,10 @@
+"use client";
 import { useEffect, useRef, useState } from 'react';
 import videojs from 'video.js';
 import Hls from 'hls.js';
 import 'video.js/dist/video-js.css';
 import './video-player.css';
-import { IconButton, Skeleton, useMediaQuery } from '@mui/material';
+import { IconButton, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import { ICONS } from '@assets/icons';
 import Image from 'next/image';
 
@@ -27,7 +28,8 @@ const VideoPlayer = ({
   const currentTimeRef = useRef(0);
   const isPlayingRef = useRef(false);
   const hlsRef = useRef(null);
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (!playerRef.current) {
@@ -374,7 +376,7 @@ const VideoPlayer = ({
       {/* PiP Close Button */}
       {pipMode && (
         <IconButton
-          style={{
+          sx={{
             position: 'absolute',
             top: '10px',
             right: '10px',

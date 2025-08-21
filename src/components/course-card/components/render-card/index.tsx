@@ -125,7 +125,6 @@ const RenderCard = ({
           <Stack direction='row' alignItems='center' spacing={1}>
             {' '}
             <Avatar
-              loading='lazy'
               alt={name}
               src={avatar}
               sx={{

@@ -1,18 +1,15 @@
-import { Container, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import CustomButton from '@shared/button';
 import CourseCard from '@components/course-card';
 import { scrollToSection } from '@utils/helper';
 import { useTranslations } from 'next-intl';
 
-const TopTrendingCourses = ({ homeData }) => {
+const TopTrendingCourses = ({ homeData }: any) => {
   const {
     isPopularBrandCoursesDataLoading,
     isBecomeAMemberWithVerified,
     POPULAR_BRAND_COURSES_DATA,
   } = homeData;
-
-  // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const isMobile = false; // This also needs to be handle how to manage that in SSR
   const t = useTranslations();
 
   return (
@@ -53,7 +50,7 @@ const TopTrendingCourses = ({ homeData }) => {
           >
             <CustomButton
               variant='gradient'
-              size={isMobile ? 'medium' : 'large'}
+              size='large'
               sx={{
                 borderRadius: '8px',
                 fontSize: { xs: '14px', sm: '16px' },

@@ -9,6 +9,7 @@ import {
   styled,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import moment from 'moment';
 import { SERVER_URL } from '@utils/constants';
@@ -77,7 +78,8 @@ const Footer = ({
   const pathname = usePathname();
   const isCoursePage = pathname === routes.public.search;
 
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const LOGO_URL = useMemo(() => {
     return logo ? SERVER_URL + logo : null;
