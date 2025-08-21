@@ -183,12 +183,12 @@ const apiAsyncHandler = async (apiCall: any, handleError: any) => {
   }
 };
 
-const getPersistReducerState = (reducer: string) => {
-  const persistedData = localStorage.getItem(`persist:${LOCAL_STORAGE_KEY}`);
+const getStoredReducerState = (reducer: string) => {
+  const persistedData = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (persistedData) {
     try {
       const state = JSON.parse(persistedData);
-      return JSON.parse(state[reducer]);
+      return state[reducer] || null;
     } catch (error) {
       logError(error);
       return null;
@@ -371,7 +371,7 @@ export {
   resolveUrl,
   getRandomImage,
   apiAsyncHandler,
-  getPersistReducerState,
+  getStoredReducerState,
   logError,
   isEmptyArray,
   capitalizeEachLetter,

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Container,
-  Rating,
-  Stack,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Container, Rating, Stack, Typography } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ICONS } from '@assets/icons';
@@ -23,7 +16,6 @@ const UserSlider = dynamic(() => import('../user-slider'), {
 });
 
 const UserReviews = () => {
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const t = useTranslations();
 
   const USER_REVIEWS = [
@@ -120,7 +112,7 @@ const UserReviews = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             gap: { xs: 2, sm: 2, md: 0 },
-                            width: isMobile ? '100%' : '80%',
+                            width: { xs: '100%', sm: '80%' },
                             margin: '0 auto',
                             pb: 4,
                           }}
@@ -211,15 +203,13 @@ const UserReviews = () => {
                             borderRadius={2}
                             containerSx={{
                               width: '35%',
-                              order: 2,
-                              ...(isMobile && {
-                                maxWidth: '150px',
-                                zIndex: 2,
-                                position: 'relative',
-                                top: 60,
-                                left: 0,
-                                alignSelf: 'flex-start',
-                              }),
+                              order: { xs: 1, md: 1 },
+                              maxWidth: { xs: '150px', md: 'unset' },
+                              zIndex: { xs: 2, md: 1 },
+                              position: { xs: 'relative'},
+                              top: { xs: '75px', md: 0 },
+                              left: { xs: 0, md: 'unset' },
+                              alignSelf: { xs: 'flex-start', md: 'unset' },
                             }}
                           />
                         </Stack>
@@ -229,18 +219,22 @@ const UserReviews = () => {
                 )}
               </Box>
             </Swiper>
-            <div
+            <Box
               className='swiper-button-prev user-reviews-swiper-button-prev'
-              style={{ visibility: isMobile ? 'hidden' : 'visible' }}
+              sx={{
+                visibility: { xs: 'hidden', md: 'visible' },
+              }}
             >
               <ICONS.KeyboardArrowLeft size={32} />
-            </div>
-            <div
+            </Box>
+            <Box
               className='swiper-button-next user-reviews-swiper-button-next'
-              style={{ visibility: isMobile ? 'hidden' : 'visible' }}
+              sx={{
+                visibility: { xs: 'hidden', md: 'visible' },
+              }}
             >
               <ICONS.KeyboardArrowRight size={32} />
-            </div>
+            </Box>
           </Box>
         </Stack>
       </Container>

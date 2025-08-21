@@ -1,4 +1,5 @@
-import Image from "next/image";
+import { Box } from '@mui/material';
+import Image from 'next/image';
 
 export default function CustomImage({
   src,
@@ -11,17 +12,17 @@ export default function CustomImage({
   alt: string;
   aspectRatio?: string;
   borderRadius?: number;
-  containerSx?: React.CSSProperties;
+  containerSx?: any;
 }) {
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
+    <Box
+      sx={{
+        position: 'relative',
+        width: '100%',
         ...containerSx,
-        aspectRatio: aspectRatio ?? "auto",
+        aspectRatio: aspectRatio ?? 'auto',
         borderRadius: borderRadius ? `${borderRadius * 4}px` : undefined, // matches MUI spacing scale
-        overflow: "hidden",
+        overflow: 'hidden',
       }}
     >
       <Image
@@ -29,9 +30,9 @@ export default function CustomImage({
         alt={alt}
         fill
         style={{
-          objectFit: "cover",
+          objectFit: 'cover',
         }}
       />
-    </div>
+    </Box>
   );
 }

@@ -38,9 +38,7 @@ import widgetScriptSlice, {
 import trialsActivationSlice, {
   initialState as trialsActivationInitialState,
 } from './features/trials-activation.slice';
-import { LOCAL_STORAGE_KEY } from '@/utils/constants';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
+import { localStorageMiddleware } from './middleware/localStorage.middleware';
 
 export const reducers = combineReducers({
   auth: authSlice,
@@ -87,55 +85,14 @@ export const rootReducer = (state: any, action: any) => {
   return reducers(state, action);
 };
 
-const persistConfig = {
-  key: LOCAL_STORAGE_KEY,
-  storage,
-  whitelist: ['defaults', 'auth'],
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      immutableCheck: true,
       serializableCheck: {
-        ignoredActions: [
-          'persist/PERSIST',
-          'persist/REHYDRATE',
-          'persist/PAUSE',
-          'persist/FLUSH',
-          'persist/PURGE',
-          'persist/REGISTER',
-        ],
-        // Ignore the payload of rejected actions to prevent
-        // serialization errors from axios error objects
         ignoredActionsPaths: ['payload', 'error'],
         ignoredPaths: ['register'],
-        // Custom function to ignore rejected async thunk actions
-        isSerializable: (value: any, location: any) => {
-          // Convert location to string for checking
-          const locationStr = Array.isArray(location)
-            ? location.join('.')
-            : String(location || '');
-
-          // Ignore serialization check for rejected action payloads
-          if (
-            locationStr.includes('rejected') &&
-            locationStr.includes('payload')
-          ) {
-            return true;
-          }
-          // Ignore axios errors and canceled errors
-          if (value && (value.name === 'CanceledError' || value.isAxiosError)) {
-            return true;
-          }
-          return true;
-        },
       },
-    }),
+    }).concat(localStorageMiddleware),
 });
-
-export const persistor = persistStore(store);

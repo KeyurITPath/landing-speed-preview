@@ -1,8 +1,8 @@
 'use client';
 
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from './store';
+import { store } from './store';
+import LocalStorageLoader from '@/components/LocalStorageLoader';
 
 export default function ReduxProvider({
   children,
@@ -11,7 +11,9 @@ export default function ReduxProvider({
 }) {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>{children}</PersistGate>
+      <LocalStorageLoader>
+        {children}
+      </LocalStorageLoader>
     </Provider>
   );
 }

@@ -14,7 +14,6 @@ import {
   InputAdornment,
   Stack,
   Typography,
-  useMediaQuery,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -45,8 +44,6 @@ const Header = ({ domainDetails }: any) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const smDown = useMediaQuery(theme => theme.breakpoints.down('sm'));
-  const mdDown = useMediaQuery(theme => theme.breakpoints.down('md'));
   const [logoutState, logoutOpen, logoutClose] = useToggleState();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -155,130 +152,98 @@ const Header = ({ domainDetails }: any) => {
                   justifyContent: 'flex-end',
                 }}
               >
-                {smDown ? (
-                  <IconButton onClick={() => router.push(routes.public.search)}>
-                    <ICONS.SEARCH size={22} />
-                  </IconButton>
-                ) : (
-                  <Button
-                    onClick={() => router.push(routes.public.search)}
-                    variant='contained'
-                    sx={{
-                      width: { xs: '100%', sm: 400 },
-                      justifyContent: 'flex-start',
-                      textTransform: 'none',
-                      borderRadius: '33px',
-                      boxShadow: 'none',
-                      bgcolor: '#f5f5f5',
+                <IconButton
+                  sx={{
+                    display: { xs: 'block', sm: 'none' }
+                  }}
+                  onClick={() => router.push(routes.public.search)}
+                >
+                  <ICONS.SEARCH size={22} />
+                </IconButton>
+                <Button variant='contained'
+                  onClick={() => router.push(routes.public.search)}
+                  sx={{
+                    display: { xs: 'none', sm: 'flex' },
+                    width: { xs: '100%', sm: 400 },
+                    justifyContent: 'flex-start',
+                    textTransform: 'none',
+                    borderRadius: '33px',
+                    boxShadow: 'none',
+                    bgcolor: '#f5f5f5',
+                    border: 'none',
+                    px: 2,
+                    py: '6px',
+                    '&:hover': {
+                      bgcolor: '#f5f5f5!important',
                       border: 'none',
-                      px: 2,
-                      py: '6px',
-                      '&:hover': {
-                        bgcolor: '#f5f5f5!important',
-                        border: 'none',
-                        boxShadow: 'none',
-                      },
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      flex: 1,
+                      color: '#808080',
+                      fontSize: 16,
+                      textAlign: 'left',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      fontWeight: 400,
                     }}
                   >
-                    <Box
-                      sx={{
-                        flex: 1,
-                        color: '#808080',
-                        fontSize: 16,
-                        textAlign: 'left',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        fontWeight: 400
+                    {t('search')}
+                  </Box>
+
+                  <InputAdornment
+                    position='end'
+                    sx={{ ml: 1, color: '#808080', fontSize: 20 }}
+                  >
+                    <ICONS.SEARCH size={22} />
+                  </InputAdornment>
+                </Button>
+
+                <IconButton
+                  sx={{ display: { xs: 'block', md: 'none' } }}
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  <ICONS.Menu size={22} />
+                </IconButton>
+                <>
+                  <Stack
+                    direction='row'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    ml={0.5}
+                    gap={{ xs: 1, sm: 1, md: 3 }}
+                    spacing={{ xs: 1, sm: 1, md: 3 }}
+                    display={{ xs: 'none', md: 'flex' }}
+                  >
+                    <Link
+                      href='#'
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: neutral[900],
+                        textDecoration: 'none',
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
                       }}
+                      onClick={() => handleNavClick('courses-by-category')}
                     >
-                      {t('search')}
-                    </Box>
-
-                    <InputAdornment
-                      position='end'
-                      sx={{ ml: 1, color: '#808080', fontSize: 20 }}
-                    >
-                      <ICONS.SEARCH size={22} />
-                    </InputAdornment>
-                  </Button>
-                )}
-
-                {mdDown ? (
-                  <IconButton onClick={() => setDrawerOpen(true)}>
-                    <ICONS.Menu size={22} />
-                  </IconButton>
-                ) : (
-                  <>
-                    <Stack
-                      direction='row'
-                      justifyContent='space-between'
-                      alignItems='center'
-                      ml={0.5}
-                      gap={{ xs: 1, sm: 1, md: 3 }}
-                      spacing={{ xs: 1, sm: 1, md: 3 }}
-                    >
-                      <Link
-                        href='#'
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 400,
-                          color: neutral[900],
-                          textDecoration: 'none',
-                          '&:hover': {
-                            textDecoration: 'underline',
-                          },
-                        }}
-                        onClick={() => handleNavClick('courses-by-category')}
-                      >
-                        {toCapitalCase(t(`nav.courses`))}
-                      </Link>
-                    </Stack>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 2,
-                      }}
-                    >
-                      {isLoggedIn ? (
-                        <>
-                          <Box
-                            sx={{
-                              gap: 2,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            {user?.is_verified &&
-                              pathname !== routes.public.home && (
-                                <CustomButton
-                                  sx={{
-                                    ml: { xs: 0, sm: 2 },
-                                  }}
-                                  variant='gradient'
-                                  onClick={() =>
-                                    router.push(routes.private.dashboard)
-                                  }
-                                >
-                                  {t('dashboard')}
-                                </CustomButton>
-                              )}
-
-                            <CustomButton
-                              sx={{ ml: { xs: 0, sm: 2 } }}
-                              variant='gradient'
-                              onClick={() =>
-                                typeof logoutOpen === 'function' &&
-                                logoutOpen(true)
-                              }
-                            >
-                              {t('logout')}
-                            </CustomButton>
-                          </Box>
-                        </>
-                      ) : (
+                      {toCapitalCase(t(`nav.courses`))}
+                    </Link>
+                  </Stack>
+                  <Box
+                    sx={{
+                      alignItems: 'center',
+                      gap: 2,
+                      display: { xs: 'none', sm: 'flex' },
+                    }}
+                  >
+                    {isLoggedIn ? (
+                      <>
                         <Box
                           sx={{
                             gap: 2,
@@ -287,18 +252,44 @@ const Header = ({ domainDetails }: any) => {
                             justifyContent: 'center',
                           }}
                         >
+                          {user?.is_verified &&
+                            pathname !== routes.public.home && (
+                              <CustomButton
+                                sx={{
+                                  ml: { xs: 0, sm: 2 }
+                                }}
+                                variant='gradient'
+                                onClick={() =>
+                                  router.push(routes.private.dashboard)
+                                }
+                              >
+                                {t('dashboard')}
+                              </CustomButton>
+                            )}
+
                           <CustomButton
                             sx={{ ml: { xs: 0, sm: 2 } }}
                             variant='gradient'
-                            onClick={() => router.push(routes.auth.login)}
+                            onClick={() =>
+                              typeof logoutOpen === 'function' &&
+                              logoutOpen(true)
+                            }
                           >
-                            {t('login')}
+                            {t('logout')}
                           </CustomButton>
                         </Box>
-                      )}
-                    </Box>
-                  </>
-                )}
+                      </>
+                    ) : (
+                        <CustomButton
+                          sx={{ ml: { xs: 0, sm: 2 } }}
+                          variant='gradient'
+                          onClick={() => router.push(routes.auth.login)}
+                        >
+                          {t('login')}
+                        </CustomButton>
+                    )}
+                  </Box>
+                </>
               </Box>
             </Stack>
           </Box>

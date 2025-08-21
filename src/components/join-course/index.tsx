@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Container,
   Grid,
@@ -22,6 +21,7 @@ import { useTranslations } from 'next-intl';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { routes } from '../../utils/constants/routes';
+import { useMemo } from 'react';
 
 // import useLocation from '../../../../hooks/use-location';
 
@@ -61,10 +61,20 @@ const JoinCourse = ({ domainDetails }: any) => {
 
   // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const quadruplicatedImages = [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES]
+  const quadruplicatedImages = useMemo(() =>
+    [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES],
+    []
+  );
 
-  const leftColumnImages = quadruplicatedImages.filter((_, i) => i % 2 === 0);
-  const rightColumnImages = quadruplicatedImages.filter((_, i) => i % 2 !== 0);
+  const leftColumnImages = useMemo(() =>
+    quadruplicatedImages.filter((_, i) => i % 2 === 0),
+    [quadruplicatedImages]
+  );
+
+  const rightColumnImages = useMemo(() =>
+    quadruplicatedImages.filter((_, i) => i % 2 !== 0),
+    [quadruplicatedImages]
+  );
 
   // Animation starts immediately on component mount
 
@@ -160,23 +170,20 @@ const JoinCourse = ({ domainDetails }: any) => {
                   spacing={{ xs: 1, sm: 2 }}
                 >
                   <Stack direction='row' sx={{ position: 'relative' }}>
-                    {MEMBER_AVATARS?.map((memberImg, index) => (
-                      <Avatar
-                        key={index}
-                        src={
-                          typeof memberImg === 'string'
-                            ? memberImg
-                            : memberImg.src
-                        }
-                        alt={`member-${index}`}
-                        sx={{
-                          width: { xs: 42, sm: 48 },
-                          height: { xs: 42, sm: 48 },
-                          marginLeft: index === 0 ? 0 : '-14px',
-                          zIndex: 1,
-                        }}
-                      />
-                    ))}
+                      {MEMBER_AVATARS?.map((memberImg, index) => (
+                        <Image width={45} height={45}
+                          key={index}
+                          src={memberImg}
+                          alt={`member-${index}`}
+                          style={{
+                            borderRadius: '50%',
+                            width: '45px',
+                            height: '45px',
+                            marginLeft: index === 0 ? 0 : '-14px',
+                            zIndex: 1,
+                          }}
+                        />
+                      ))}
                   </Stack>
                   <Stack>
                     <Typography
@@ -228,6 +235,8 @@ const JoinCourse = ({ domainDetails }: any) => {
                           width: '100%',
                           willChange: 'transform',
                           transform: 'translate3d(0,0,0)',
+                          containIntrinsicSize: '230px 3000px',
+                          contentVisibility: 'auto',
                         }}
                       >
                         {leftColumnImages.map((item, index) => (
@@ -243,7 +252,11 @@ const JoinCourse = ({ domainDetails }: any) => {
                             <Image
                               src={item}
                               alt={`join-course-${index}`}
-                              loading={index < 4 ? 'eager' : 'lazy'}
+                              width={185}
+                              height={250}
+                              priority={index < 3}
+                              loading={index < 3 ? 'eager' : 'lazy'}
+                              fetchPriority={index < 2 ? 'high' : 'auto'}
                               style={{
                                 borderRadius: '14px',
                                 width: '100%',
@@ -278,6 +291,8 @@ const JoinCourse = ({ domainDetails }: any) => {
                           width: '100%',
                           transform: 'translate3d(0, -10%, 0)',
                           willChange: 'transform',
+                          containIntrinsicSize: '230px 3000px',
+                          contentVisibility: 'auto',
                         }}
                       >
                         {rightColumnImages.map((item, index) => (
@@ -293,7 +308,11 @@ const JoinCourse = ({ domainDetails }: any) => {
                             <Image
                               src={item}
                               alt={`join-course-alt-${index}`}
-                              loading={index < 4 ? 'eager' : 'lazy'}
+                              width={185}
+                              height={250}
+                              priority={index < 3}
+                              loading={index < 3 ? 'eager' : 'lazy'}
+                              fetchPriority={index < 2 ? 'high' : 'auto'}
                               style={{
                                 borderRadius: '14px',
                                 width: '100%',
