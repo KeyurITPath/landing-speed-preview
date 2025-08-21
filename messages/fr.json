@@ -84,7 +84,7 @@
   "logout": "Se déconnecter",
   "login": "Se connecter",
   "contact_us": "Contactez-nous",
-  "unlock_your_potential": "Déverrouillez votre potentiel avec {{brand_name}}",
+  "unlock_your_potential": "Déverrouillez votre potentiel avec {brand_name}",
   "live_with_total_mind": "Vivre avec l'équilibre total de l'esprit, du corps et de l'âme",
   "get_unlimited_access": "Obtenez <span >un accès illimité</span> à des leçons concises.",
   "join_now": "Rejoignez-nous maintenant",
@@ -113,8 +113,8 @@
   },
   "popular_authors": "Auteurs Populaires",
   "become_an_author": "Devenir un auteur",
-  "join_brand": "<span>Rejoignez {{brand_name}}</span> et partagez votre expertise en tant qu'auteur!",
-  "learn_from_creatives": "Il y a des millions de personnes là-bas qui veulent apprendre de créatifs comme vous. Si vous aimez enseigner et partager ce que vous savez, {{brand_name}} est un endroit unique pour le faire.",
+  "join_brand": "<span>Rejoignez {brand_name}</span> et partagez votre expertise en tant qu'auteur!",
+  "learn_from_creatives": "Il y a des millions de personnes là-bas qui veulent apprendre de créatifs comme vous. Si vous aimez enseigner et partager ce que vous savez, {brand_name} est un endroit unique pour le faire.",
   "teach_course": "Enseigner un Cours",
   "easy_steps_to_get_started": "Étapes faciles pour commencer",
   "get_started_steps": [
@@ -139,9 +139,9 @@
   "general_faqs": [
     {
       "id": 1,
-      "question": "Que sont les cours en ligne de {{brand_name}} ?",
+      "question": "Que sont les cours en ligne de {brand_name} ?",
       "answers": [
-        "Les cours de {{brand_name}} sont conçus pour vous aider à cultiver la paix intérieure et le développement personnel grâce à un apprentissage pratique et concret. Chaque cours combine des leçons vidéo engageantes avec des matériaux complémentaires, vous guidant étape par étape pour développer des compétences en pleine conscience que vous pouvez appliquer dans la vie quotidienne. Vous aurez également la possibilité de partager vos progrès, de vous connecter avec les instructeurs et de participer à une communauté de soutien d'apprenants partageant les mêmes idées."
+        "Les cours de {brand_name} sont conçus pour vous aider à cultiver la paix intérieure et le développement personnel grâce à un apprentissage pratique et concret. Chaque cours combine des leçons vidéo engageantes avec des matériaux complémentaires, vous guidant étape par étape pour développer des compétences en pleine conscience que vous pouvez appliquer dans la vie quotidienne. Vous aurez également la possibilité de partager vos progrès, de vous connecter avec les instructeurs et de participer à une communauté de soutien d'apprenants partageant les mêmes idées."
       ]
     },
     {
@@ -155,7 +155,7 @@
       "id": 3,
       "question": "Quel cours est fait pour moi ?",
       "answers": [
-        "{{brand_name}} propose plus de 100 cours en ligne couvrant une gamme de sujets, de la méditation et la gestion du stress à la pleine conscience du mouvement et la connaissance de soi. Conçus pour les débutants comme pour les pratiquants expérimentés, nos cours offrent des conseils pratiques et accessibles pour vous aider à intégrer la pleine conscience dans votre vie quotidienne. De nouvelles classes sont ajoutées régulièrement, vous permettant d'approfondir votre pratique, de découvrir de nouvelles techniques et de cultiver un bien-être durable."
+        "{brand_name} propose plus de 100 cours en ligne couvrant une gamme de sujets, de la méditation et la gestion du stress à la pleine conscience du mouvement et la connaissance de soi. Conçus pour les débutants comme pour les pratiquants expérimentés, nos cours offrent des conseils pratiques et accessibles pour vous aider à intégrer la pleine conscience dans votre vie quotidienne. De nouvelles classes sont ajoutées régulièrement, vous permettant d'approfondir votre pratique, de découvrir de nouvelles techniques et de cultiver un bien-être durable."
       ]
     }
   ],
@@ -165,15 +165,15 @@
       "question": "Est-ce que je serai facturé des taxes ?",
       "answers": [
         "En fonction de votre lieu de résidence, des taxes peuvent vous être facturées en plus du prix de l'adhésion annuelle. Si des taxes s'appliquent, elles seront indiquées séparément sur votre facture envoyée par e-mail. Les taux de taxes sont calculés en fonction de votre emplacement ou des informations de facturation que vous avez fournies lors de l'achat.",
-        "Si vous avez des questions supplémentaires sur les taxes qui vous ont été facturées, veuillez contacter notre support à <a>{{email}}</a>."
+        "Si vous avez des questions supplémentaires sur les taxes qui vous ont été facturées, veuillez contacter notre support à <a>{email}</a>."
       ]
     },
     {
       "id": 2,
       "question": "Puis-je obtenir un remboursement ?",
       "answers": [
-        "Chez {{brand_name}}, notre mission est de vous offrir une expérience éducative unique et enrichissante. Cependant, si vous décidez de ne pas continuer, nous offrons un remboursement pour votre premier achat.",
-        "Si vous avez des questions, n'hésitez pas à nous contacter à <a>{{email}}</a>. Nous serons ravis de vous aider !"
+        "Chez {brand_name}, notre mission est de vous offrir une expérience éducative unique et enrichissante. Cependant, si vous décidez de ne pas continuer, nous offrons un remboursement pour votre premier achat.",
+        "Si vous avez des questions, n'hésitez pas à nous contacter à <a>{email}</a>. Nous serons ravis de vous aider !"
       ]
     }
   ],

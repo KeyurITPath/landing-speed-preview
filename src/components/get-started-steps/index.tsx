@@ -7,7 +7,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { primaryNew } from '../../theme/color';
-import Image from '@shared/image';
 import NextImage from 'next/image';
 import { GET_STARTED_IMAGE, IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
@@ -57,15 +56,19 @@ const GetStartedSteps = () => {
           sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}
         >
           <Grid size={{ xs: 12, sm: 5 }}>
-            <Image
-              src={GET_STARTED_IMAGE.src}
+            <NextImage
+              src={GET_STARTED_IMAGE}
               alt='Get started'
-              aspectRatio='5/7'
-              containerSx={{
+              width={310} // required for NextImage
+              height={420} // required for NextImage
+              style={{
                 width: '100%',
                 height: '100%',
-                maxHeight: { xs: '200px', sm: '420px' },
-                maxWidth: { xs: '100%', sm: '310px' },
+                maxHeight: '420px',
+                maxWidth: '310px',
+                borderRadius: '10px',
+                objectFit: 'cover', // mimic aspectRatio
+                aspectRatio: '5 / 7', // if you want strict aspect ratio
               }}
             />
           </Grid>

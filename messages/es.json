@@ -84,7 +84,7 @@
   "logout": "Cerrar sesión",
   "login": "Iniciar sesión",
   "contact_us": "Contáctanos",
-  "unlock_your_potential": "Desbloquea tu potencial con {{brand_name}}",
+  "unlock_your_potential": "Desbloquea tu potencial con {brand_name}",
   "live_with_total_mind": "Vivir con el equilibrio total de la mente, el cuerpo y el alma",
   "get_unlimited_access": "Obtén <span>acceso ilimitado</span> a lecciones breves.",
   "join_now": "Únete ahora",
@@ -113,8 +113,8 @@
   },
   "popular_authors": "Autores Populares",
   "become_an_author": "Conviértete en un autor",
-  "join_brand": "<span>¡Únete a {{brand_name}}<span> y comparte tu experiencia como autor!",
-  "learn_from_creatives": "Hay millones de personas allá afuera que quieren aprender de creativos como tú. Si te gusta enseñar y compartir lo que sabes, {{brand_name}} es un lugar único para hacerlo.",
+  "join_brand": "<span>¡Únete a {brand_name}<span> y comparte tu experiencia como autor!",
+  "learn_from_creatives": "Hay millones de personas allá afuera que quieren aprender de creativos como tú. Si te gusta enseñar y compartir lo que sabes, {brand_name} es un lugar único para hacerlo.",
   "teach_course": "Enseñar un Curso",
   "easy_steps_to_get_started": "Pasos fáciles para comenzar",
   "get_started_steps": [
@@ -140,9 +140,9 @@
   "general_faqs": [
     {
       "id": 1,
-      "question": "¿Qué son los cursos en línea de {{brand_name}}?",
+      "question": "¿Qué son los cursos en línea de {brand_name}?",
       "answers": [
-        "Los cursos de {{brand_name}} están diseñados para ayudarte a cultivar la paz interior y el crecimiento personal a través de un aprendizaje práctico y práctico. Cada curso combina lecciones en video interesantes con materiales complementarios, guiándote paso a paso para desarrollar habilidades de atención plena que puedes aplicar en la vida diaria. También tendrás la oportunidad de compartir tu progreso, conectar con los instructores y participar en una comunidad de apoyo de estudiantes con ideas afines."
+        "Los cursos de {brand_name} están diseñados para ayudarte a cultivar la paz interior y el crecimiento personal a través de un aprendizaje práctico y práctico. Cada curso combina lecciones en video interesantes con materiales complementarios, guiándote paso a paso para desarrollar habilidades de atención plena que puedes aplicar en la vida diaria. También tendrás la oportunidad de compartir tu progreso, conectar con los instructores y participar en una comunidad de apoyo de estudiantes con ideas afines."
       ]
     },
     {
@@ -156,7 +156,7 @@
       "id": 3,
       "question": "¿Qué curso es adecuado para mí?",
       "answers": [
-        "{{brand_name}} ofrece más de 100 cursos en línea que cubren una variedad de temas, desde meditación y manejo del estrés hasta movimiento consciente y autoconocimiento. Diseñados tanto para principiantes como para practicantes experimentados, nuestros cursos ofrecen orientación accesible y práctica para ayudarte a integrar la atención plena en tu vida diaria. Con nuevas clases agregadas regularmente, puedes profundizar en tu práctica, descubrir nuevas técnicas y cultivar el bienestar duradero."
+        "{brand_name} ofrece más de 100 cursos en línea que cubren una variedad de temas, desde meditación y manejo del estrés hasta movimiento consciente y autoconocimiento. Diseñados tanto para principiantes como para practicantes experimentados, nuestros cursos ofrecen orientación accesible y práctica para ayudarte a integrar la atención plena en tu vida diaria. Con nuevas clases agregadas regularmente, puedes profundizar en tu práctica, descubrir nuevas técnicas y cultivar el bienestar duradero."
       ]
     }
   ],
@@ -166,15 +166,15 @@
       "question": "¿Se me cobrarán impuestos?",
       "answers": [
         "Dependiendo de dónde vivas, es posible que te cobren impuestos además del precio anual de la membresía. Si se aplica un impuesto, lo verás indicado por separado en la factura enviada por correo electrónico. Las tasas de impuestos se calculan en función de tu ubicación o la información de facturación que proporcionaste al momento de la compra.",
-        "Si tienes alguna pregunta adicional sobre los impuestos que se te cobraron, por favor contacta a nuestro soporte en <a>{{email}}</a>."
+        "Si tienes alguna pregunta adicional sobre los impuestos que se te cobraron, por favor contacta a nuestro soporte en <a>{email}</a>."
       ]
     },
     {
       "id": 2,
       "question": "¿Puedo obtener un reembolso?",
       "answers": [
-        "En {{brand_name}}, nuestra misión es ofrecerte una experiencia educativa única y enriquecedora. Sin embargo, si decides no continuar, ofrecemos un reembolso por tu primera compra.",
-        "Si tienes alguna pregunta, no dudes en contactarnos en <a>{{email}}</a>. ¡Estamos encantados de ayudarte!"
+        "En {brand_name}, nuestra misión es ofrecerte una experiencia educativa única y enriquecedora. Sin embargo, si decides no continuar, ofrecemos un reembolso por tu primera compra.",
+        "Si tienes alguna pregunta, no dudes en contactarnos en <a>{email}</a>. ¡Estamos encantados de ayudarte!"
       ]
     }
   ],

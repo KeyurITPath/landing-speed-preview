@@ -6,15 +6,15 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import Image from '@shared/image';
 import CustomButton from '@shared/button';
-// import { AUTHOR_URL } from '@utils/constants';
-// import { useSelector } from 'react-redux';
+import { AUTHOR_URL } from '@utils/constants';
+import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { BECOME_AUTHOR_IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
-const BecomeAuthor = () => {
+const BecomeAuthor = ({ domainDetails }: any) => {
   const t = useTranslations();
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
@@ -24,13 +24,10 @@ const BecomeAuthor = () => {
     BECOME_AUTHOR_IMAGES.becomeAuthor3,
   ];
 
-  // const { domainDetails } = useSelector((state) => state.defaults);
-  // const DOMAIN_DETAILS = useMemo(() => {
-  //     const clone = { ...domainDetails };
-  //     return {
-  //         BRAND_NAME: clone?.data?.domain_detail?.brand_name || ''
-  //     };
-  // }, [domainDetails]);
+  const DOMAIN_DETAILS = {
+    BRAND_NAME: domainDetails?.data?.domain_detail?.brand_name || '',
+    SUPPORT_MAIL: domainDetails?.data?.domain_detail?.email || '',
+  };
 
   return (
     <Box
@@ -61,10 +58,12 @@ const BecomeAuthor = () => {
               <Grid container spacing={2}>
                 <Grid size={{ xs: 7 }}>
                   <Image
-                    src={BECOME_AUTHORS[0].src}
+                    src={BECOME_AUTHORS[0]}
                     alt='Become Author'
-                    aspectRatio='5/6'
-                    containerSx={{
+                    width={320}
+                    height={380}
+                    style={{
+                      aspectRatio: '5/6',
                       width: '100%',
                       height: '100%',
                       maxWidth: '320px',
@@ -74,20 +73,24 @@ const BecomeAuthor = () => {
                 <Grid size={{ xs: 5 }}>
                   <Stack spacing={2}>
                     <Image
-                      src={BECOME_AUTHORS[1].src}
+                      src={BECOME_AUTHORS[1]}
                       alt='Become Author'
-                      aspectRatio='10/9'
-                      containerSx={{
+                      width={200}
+                       height={180}
+                      style={{
+                        aspectRatio: '10/9',
                         width: '100%',
                         height: '100%',
                         maxWidth: '200px',
                       }}
                     />
                     <Image
-                      src={BECOME_AUTHORS[2].src}
+                      src={BECOME_AUTHORS[2]}
                       alt='Become Author'
-                      aspectRatio='10/9'
-                      containerSx={{
+                      width={200}
+                      height={180}
+                      style={{
+                        aspectRatio: '10/9',
                         width: '100%',
                         height: '100%',
                         maxWidth: '200px',
@@ -110,19 +113,17 @@ const BecomeAuthor = () => {
                   {t('become_an_author')}
                 </Typography>
                 <Typography sx={{ xs: 14, sm: 16 }}>
-                  {/* <Trans
-                                        i18nKey="join_brand"
-                                        values={{ brand_name: DOMAIN_DETAILS.BRAND_NAME }}
-                                        components={{
-                                            span: <span style={{ color: '#304BE0' }} />
-                                        }}
-                                    /> */}
+                  {t.rich('join_brand', {
+                    brand_name: DOMAIN_DETAILS.BRAND_NAME,
+                    span: chunk => (
+                      <span style={{ color: '#304BE0' }}>{chunk}</span>
+                    ),
+                  })}
                 </Typography>
                 <Typography sx={{ xs: 14, sm: 16 }}>
-                  {/* <Trans
-                                        i18nKey="learn_from_creatives"
-                                        values={{ brand_name: DOMAIN_DETAILS.BRAND_NAME }}
-                                    /> */}
+                  {t.rich('learn_from_creatives', {
+                    brand_name: DOMAIN_DETAILS.BRAND_NAME,
+                  })}
                 </Typography>
 
                 <Stack
@@ -153,13 +154,9 @@ const BecomeAuthor = () => {
                       borderRadius: '8px',
                       fontSize: { xs: '14px', sm: '16px' },
                     }}
-                    // onClick={() => {
-                    //     window.open(
-                    //         AUTHOR_URL,
-                    //         '_blank',
-                    //         'noopener,noreferrer'
-                    //     );
-                    // }}
+                    onClick={() => {
+                      window.open(AUTHOR_URL, '_blank', 'noopener,noreferrer');
+                    }}
                   >
                     {t('author_login')}
                   </CustomButton>

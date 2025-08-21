@@ -12,11 +12,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ICONS } from '@assets/icons';
 import { IMAGES } from '@assets/images';
-import Image from '@/shared/image';
-
-import UserSlider from '../user-slider';
+import NextImage from 'next/image';
+import dynamic from 'next/dynamic';
 import { USER_REVIEW_IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
+import CustomImage from '../custom-image';
+
+const UserSlider = dynamic(() => import('../user-slider'), {
+  ssr: false,
+});
 
 const UserReviews = () => {
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -150,18 +154,11 @@ const UserReviews = () => {
                                   aspectRatio: '1/1',
                                 }}
                               >
-                                <Image
+                                <NextImage
+                                  width={40}
+                                  height={32}
                                   src={IMAGES.doubleQuotes.src}
                                   alt={name}
-                                  sx={{
-                                    objectFit: 'cover',
-                                    height: {
-                                      xs: 'auto',
-                                      sm: 32,
-                                    },
-                                    width: { xs: 20, sm: 40 },
-                                  }}
-                                  disableBgColor={true}
                                 />
                               </Stack>
                               <Rating
@@ -207,25 +204,21 @@ const UserReviews = () => {
                               {name}
                             </Typography>
                           </Stack>
-                          <Image
-                            src={image.src}
+                          <CustomImage
+                            src={image}
                             alt='coursesBanner'
                             aspectRatio='4/5'
                             borderRadius={2}
                             containerSx={{
-                              width: {
-                                xs: '100%',
-                                sm: '100%',
-                                md: '35%',
-                              },
-                              order: { xs: 1, sm: 1, md: 2 },
+                              width: '35%',
+                              order: 2,
                               ...(isMobile && {
-                                maxWidth: '150px !important',
+                                maxWidth: '150px',
                                 zIndex: 2,
-                                position: 'relative !important',
+                                position: 'relative',
                                 top: 60,
                                 left: 0,
-                                alignSelf: 'flex-start !important',
+                                alignSelf: 'flex-start',
                               }),
                             }}
                           />

@@ -235,3 +235,33 @@ export async function fetchCountryCodeHandler() {
     console.error('Error fetching ip or country for landing:', error);
   }
 }
+
+
+export const fetchDomainDetails = async () => {
+  try {
+    const response = await api.home.fetchDomainDetails({
+      params: { name: DOMAIN },
+    });
+    return response?.data || {};
+  } catch (error) {
+    console.error('Error fetching domain details:', error);
+  }
+};
+
+export const fetchAllLanguages = async () => {
+  try {
+    const response = await api.common.getAllLanguages({});
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching all languages:', error);
+  }
+}
+
+export const fetchAllCountries = async () => {
+  try {
+    const response = await api.countries.getAllCountries({});
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching all countries:', error);
+  }
+};

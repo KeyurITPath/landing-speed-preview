@@ -25,6 +25,7 @@ const Image = ({
 }: ImageProps) => {
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <Stack
       sx={{
@@ -65,7 +66,8 @@ const Image = ({
         onLoad={() => {
           setIsLoaded(true);
         }}
-        onError={() => {
+        onError={(error) => {
+          console.log('error', error)
           setHasError(true);
         }}
         {...props}

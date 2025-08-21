@@ -12,7 +12,7 @@ import arrow1 from './arrow-1.png';
 import meditation from './meditation.png';
 import laptopAccount from './laptop-account.png';
 import bookClockOutline from './book-clock-outline.png';
-import doubleQuotes from '../../assets/images/double-quotes.png';
+import doubleQuotes from '../images/double-quotes.png';
 
 import author1 from './author-images/author-(1).jpg';
 import author2 from './author-images/author-(2).jpg';

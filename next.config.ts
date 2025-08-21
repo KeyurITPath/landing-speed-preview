@@ -5,7 +5,19 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
-    domains: ["staging-api.eduelle.com", "api.eduelle.com"], // whitelist this domain
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'staging-api.eduelle.com',
+        port: '', // keep empty unless you have a custom port
+        pathname: '/**', // allow all image paths
+      },
+      {
+        protocol: 'https',
+        hostname: 'stagingcoursemarketplace2025.s3.amazonaws.com',
+        pathname: '/**', // allow all paths
+      },
+    ],
   },
 
   typescript: {

@@ -3,12 +3,13 @@ import ClientSection from './ClientSection';
 import {
   fetchAllCourseCategories,
   fetchCountryCodeHandler,
+  fetchDomainDetails,
   fetchHomeCoursesData,
   fetchPopularCourses,
 } from '@services/course-service';
 import { DOMAIN } from '@utils/constants';
 import { cookies } from "next/headers";
-import { decodeToken } from '../../utils/helper';
+import { decodeToken } from '@/utils/helper';
 
 const Home = async () => {
 
@@ -19,11 +20,13 @@ const Home = async () => {
 
   const country_code = await fetchCountryCodeHandler();
 
+  const domainDetails = await fetchDomainDetails();
+
   const popularCourses = await fetchPopularCourses({
     params: {
       language_id: 1,
       domain: DOMAIN,
-      ...(user?.id && { user_id: user?.id })
+      ...(user && { user_id: user?.id })
     },
     headers: {
       'req-from': country_code,
@@ -34,7 +37,7 @@ const Home = async () => {
     params: {
       language_id: 1,
       domain: DOMAIN,
-      ...(user?.id && { user_id: user?.id })
+      ...(user && { user_id: user?.id })
     },
     headers: {
       'req-from': country_code,
@@ -63,7 +66,7 @@ const Home = async () => {
 
   return (
     <React.Fragment>
-      <ClientSection homeData={{ ...homeData }} />
+      <ClientSection domainDetails={domainDetails} homeData={{ ...homeData }} />
     </React.Fragment>
   );
 };

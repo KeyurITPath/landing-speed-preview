@@ -17,9 +17,11 @@ import CustomButton from '@shared/button';
 import { scrollToSection } from '@utils/helper';
 // import { useSelector } from 'react-redux';
 import { JOIN_COURSE_IMAGES, MEMBER_AVATAR_IMAGES } from '../../assets/images';
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { routes } from '../../utils/constants/routes';
 
 // import useLocation from '../../../../hooks/use-location';
 
@@ -45,64 +47,28 @@ const MEMBER_AVATARS = [
   MEMBER_AVATAR_IMAGES.memberAvatar5,
 ];
 
-const JoinCourse = () => {
+const JoinCourse = ({ domainDetails }: any) => {
   const t = useTranslations();
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [startAnimation, setStartAnimation] = useState(false);
+  const router = useRouter()
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
 
-  const loadedImagesCount = useRef(0);
-  const totalExpectedImages = useRef(0);
+  const DOMAIN_DETAILS = {
+    BRAND_NAME: domainDetails?.data?.domain_detail?.brand_name || 'Eduelle',
+  };
 
-  // const { domainDetails } = useSelector((state) => state.defaults);
-  // const DOMAIN_DETAILS = useMemo(() => {
-  //     const clone = { ...domainDetails };
-  //     return {
-  //         BRAND_NAME: clone?.data?.domain_detail?.brand_name || ''
-  //     };
-  // }, [domainDetails]);
-
-  // const { isLoggedIn } = useSelector(({ auth }) => auth);
+  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
   // const { handleRedirect } = useLocation()
 
-  const hasImages = Array.isArray(JOIN_COURSES) && JOIN_COURSES.length > 0;
   // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const quadruplicatedImages = hasImages
-    ? [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES]
-    : [];
+  const quadruplicatedImages = [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES]
 
   const leftColumnImages = quadruplicatedImages.filter((_, i) => i % 2 === 0);
   const rightColumnImages = quadruplicatedImages.filter((_, i) => i % 2 !== 0);
 
-  useEffect(() => {
-    if (hasImages) {
-      totalExpectedImages.current =
-        leftColumnImages.length + rightColumnImages.length;
-    }
-  }, [hasImages, leftColumnImages.length, rightColumnImages.length]);
+  // Animation starts immediately on component mount
 
-  // Removed useEffect for isMobile, as useMediaQuery is now used directly
-
-  const handleImageLoad = () => {
-    loadedImagesCount.current += 1;
-    if (loadedImagesCount.current >= Math.min(4, totalExpectedImages.current)) {
-      setImagesLoaded(true);
-    }
-  };
-
-  useEffect(() => {
-    if (imagesLoaded) {
-      const timer = setTimeout(() => {
-        setStartAnimation(true);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [imagesLoaded]);
-
-  const animationDuration = hasImages
-    ? Math.max(40, JOIN_COURSES.length * 5)
-    : 0;
+  const animationDuration = Math.max(40, JOIN_COURSES.length * 5);
 
   return (
     <Box
@@ -135,29 +101,24 @@ const JoinCourse = () => {
                 mx={{ xs: 'auto', sm: 0 }}
                 my={{ xs: 2, sm: 0 }}
               >
-                {/* <Typography sx={{ xs: 14, sm: 18 }}>
-                                    <span style={{ color: '#304BE0' }}>
-                                        {t('unlock_your_potential', {
-                                            brand_name: DOMAIN_DETAILS.BRAND_NAME
-                                        })}
-                                    </span>{' '}
-                                </Typography> */}
+                <Typography sx={{ xs: 14, sm: 18 }}>
+                  <span style={{ color: '#304BE0' }}>
+                    {t('unlock_your_potential', {
+                      brand_name: DOMAIN_DETAILS.BRAND_NAME,
+                    })}
+                  </span>{' '}
+                </Typography>
                 <Typography variant='h3'>
                   {t('live_with_total_mind')}
                 </Typography>
-
-                <Typography sx={{ xs: 16, sm: 18 }}>
-                  {/* {t('get_unlimited_access')} */}
-                  {/* <Trans
-                                        i18nKey="get_unlimited_access"
-                                        components={{
-                                            span: (
-                                                <span
-                                                    style={{ fontWeight: 600, color: '#304BE0' }}
-                                                />
-                                            )
-                                        }}
-                                    /> */}
+                <Typography sx={{ fontSize: { xs: 16, sm: 18 } }}>
+                  {t.rich('get_unlimited_access', {
+                    span: chunks => (
+                      <span style={{ fontWeight: 600, color: '#304BE0' }}>
+                        {chunks}
+                      </span>
+                    ),
+                  })}
                 </Typography>
 
                 <Stack
@@ -167,8 +128,7 @@ const JoinCourse = () => {
                     alignItems: 'flex-start',
                   }}
                 >
-                  {/* {isLoggedIn ? ( */}
-                  {false ? (
+                  {isLoggedIn ? (
                     <CustomButton
                       variant='gradient'
                       size={isMobile ? 'medium' : 'large'}
@@ -176,7 +136,7 @@ const JoinCourse = () => {
                         borderRadius: '8px',
                         fontSize: { xs: '14px', sm: '16px' },
                       }}
-                      // onClick={() => handleRedirect(URLS.DASHBOARD.path)}
+                      onClick={() => router.push(routes.private.dashboard)}
                     >
                       {t('dashboard')}
                     </CustomButton>
@@ -244,12 +204,9 @@ const JoinCourse = () => {
                   overflow: 'hidden',
                   height: '500px',
                   width: '100%',
-                  opacity: imagesLoaded ? 1 : 0.1,
-                  transition: 'opacity 0.8s ease-in',
                   position: 'relative',
                 }}
               >
-                {hasImages && (
                   <>
                     <Box
                       sx={{
@@ -263,9 +220,7 @@ const JoinCourse = () => {
                     >
                       <Box
                         sx={{
-                          animation: startAnimation
-                            ? `${scrollAnimation} ${animationDuration}s linear infinite`
-                            : 'none',
+                          animation: `${scrollAnimation} ${animationDuration}s linear infinite`,
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '16px',
@@ -297,7 +252,6 @@ const JoinCourse = () => {
                                 objectFit: 'cover',
                                 display: 'block',
                               }}
-                              onLoad={handleImageLoad}
                             />
                           </Box>
                         ))}
@@ -316,9 +270,7 @@ const JoinCourse = () => {
                     >
                       <Box
                         sx={{
-                          animation: startAnimation
-                            ? `${scrollAnimation} ${animationDuration + 5}s linear infinite`
-                            : 'none',
+                          animation: `${scrollAnimation} ${animationDuration + 5}s linear infinite`,
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '16px',
@@ -349,14 +301,12 @@ const JoinCourse = () => {
                                 objectFit: 'cover',
                                 display: 'block',
                               }}
-                              onLoad={handleImageLoad}
                             />
                           </Box>
                         ))}
                       </Box>
                     </Box>
                   </>
-                )}
               </Box>
             </Grid>
           </Grid>

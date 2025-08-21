@@ -2,7 +2,9 @@
 
 import { createContext, useState, useEffect, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
-import { decodeToken } from "@/utils/helper";
+import { decodeToken, isTokenActive } from "@/utils/helper";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../store/features/auth.slice";
 
 interface AuthContextProps {
   user: any | null;
@@ -18,14 +20,20 @@ export const AuthContext = createContext<AuthContextProps>({
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any | null>(null);
+  const dispatch = useDispatch();
 
     // Load token from cookie on mount
   useEffect(() => {
     const storedToken = Cookies.get("token") || null;
     if (storedToken) {
       setUser(decodeToken(storedToken));
+      dispatch(updateUser({
+        activeUI: '',
+        isLoggedIn: isTokenActive(storedToken),
+        ...decodeToken(storedToken),
+      }))
     }
-  }, []);
+  }, [dispatch]);
 
     // Save token + update user
   const setToken = useCallback((newToken: string | null) => {

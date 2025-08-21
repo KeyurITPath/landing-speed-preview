@@ -7,7 +7,7 @@ const useToggleState = (initialState = false) => {
     setState(false);
   };
 
-  const open = data => {
+  const open = (data: any) => {
     setState(data || true);
   };
 
@@ -16,10 +16,6 @@ const useToggleState = (initialState = false) => {
   };
 
   const hookData = [state, open, close, toggle];
-  hookData.state = state;
-  hookData.open = open;
-  hookData.close = close;
-  hookData.toggle = toggle;
   return hookData;
 };
 

@@ -84,7 +84,7 @@
   "logout": "Logout",
   "login": "Login",
   "contact_us": "Contact Us",
-  "unlock_your_potential": "Unlock Your Potential with {{brand_name}}",
+  "unlock_your_potential": "Unlock Your Potential with {brand_name}",
   "live_with_total_mind": "Live with Total Mind, Body, Soul Balance",
   "get_unlimited_access": "Get <span>unlimited access</span> to bite-sized lessons.",
   "join_now": "Join Now",
@@ -113,8 +113,8 @@
   },
   "popular_authors": "Popular Authors",
   "become_an_author": "Become An Author",
-  "join_brand": "<span>Join {{brand_name}}</span> and share your expertise as an Author!",
-  "learn_from_creatives": "There are millions of people out there who want to learn from creatives like you. If you love to teach and share what you know, {{brand_name}} is a unique place to do just that.",
+  "join_brand": "<span>Join {brand_name}</span> and share your expertise as an Author!",
+  "learn_from_creatives": "There are millions of people out there who want to learn from creatives like you. If you love to teach and share what you know, {brand_name} is a unique place to do just that.",
   "teach_course": "Teach a Course",
   "easy_steps_to_get_started": "Easy Steps to Get Started",
   "get_started_steps": [
@@ -139,9 +139,9 @@
   "general_faqs": [
     {
       "id": 1,
-      "question": "What are {{brand_name}} online courses?",
+      "question": "What are {brand_name} online courses?",
       "answers": [
-        "{{brand_name}}'s courses are designed to help you cultivate inner peace and personal growth through practical, hands-on learning. Each course combines engaging video lessons with complementary materials, guiding you step by step to develop mindfulness skills you can apply in daily life. You'll also have the opportunity to share your progress, connect with instructors, and engage with a supportive community of like-minded learners."
+        "{brand_name}'s courses are designed to help you cultivate inner peace and personal growth through practical, hands-on learning. Each course combines engaging video lessons with complementary materials, guiding you step by step to develop mindfulness skills you can apply in daily life. You'll also have the opportunity to share your progress, connect with instructors, and engage with a supportive community of like-minded learners."
       ]
     },
     {
@@ -155,7 +155,7 @@
       "id": 3,
       "question": "Which course is right for me?",
       "answers": [
-        "{{brand_name}} offers 100+ online courses covering a range of topics, from meditation and stress management to mindful movement and self-awareness. Designed for both beginners and experienced practitioners, our courses provide accessible, practical guidance to help you integrate mindfulness into your daily life. With new classes added regularly, you can deepen your practice, discover new techniques, and cultivate lasting well-being."
+        "{brand_name} offers 100+ online courses covering a range of topics, from meditation and stress management to mindful movement and self-awareness. Designed for both beginners and experienced practitioners, our courses provide accessible, practical guidance to help you integrate mindfulness into your daily life. With new classes added regularly, you can deepen your practice, discover new techniques, and cultivate lasting well-being."
       ]
     }
   ],
@@ -165,15 +165,15 @@
       "question": "Will I be charged taxes?",
       "answers": [
         "Depending on where you live, you may be charged taxes in addition to your annual membership price. If tax applies, you will see it stated separately on your emailed invoice. Tax rates are calculated based on your location or the billing information you provided at the time of purchase.",
-        "Should you have any additional questions about taxes you were charged, please contact our support at <a>{{email}}</a>."
+        "Should you have any additional questions about taxes you were charged, please contact our support at <a>{email}</a>."
       ]
     },
     {
       "id": 2,
       "question": "Can I get a refund?",
       "answers": [
-        "At {{brand_name}}, our mission is to provide you with a unique and enriching educational experience. However, if you decide not to continue, we offer a refund for your first-time purchase.",
-        "If you have any questions, feel free to contact us at <a>{{email}}</a>. We're happy to help!"
+        "At {brand_name}, our mission is to provide you with a unique and enriching educational experience. However, if you decide not to continue, we offer a refund for your first-time purchase.",
+        "If you have any questions, feel free to contact us at <a>{email}</a>. We're happy to help!"
       ]
     }
   ],

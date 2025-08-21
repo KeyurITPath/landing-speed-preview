@@ -1,21 +1,22 @@
 'use client';
 import React, { lazy } from 'react';
 import { Stack } from '@mui/material';
-
 // // Lazy load below-the-fold components
-const UserReviews = lazy(() => import('../../components/user-reviews'));
-// const Faqs = lazy(() => import('../../components/faqs'));
-const BecomeAuthor = lazy(() => import('../../components/become-author'));
+const UserReviews = lazy(() => import('@/components/user-reviews'));
+const Faqs = lazy(() => import('@/components/faqs'));
+const BecomeAuthor = lazy(() => import('@/components/become-author'));
 const GetStartedSteps = lazy(
-  () => import('../../components/get-started-steps')
+  () => import('@/components/get-started-steps')
 );
-const CoursesByCategory = lazy(
-  () => import('../../components/courses-by-category')
-);
+const CoursesByCategory = dynamic(() => import('@/components/courses-by-category'), {
+  ssr: false,
+});
+
 
 // // Critical above-the-fold components (loaded immediately)
 import TopTrendingCourses from '../../components/top-trending-courses';
 import useHome from './useHome';
+import dynamic from 'next/dynamic';
 
 // // Popups (lazy loaded as they're conditional)
 // const SuccessPaymentPopup = lazy(() => import('../../components/success-payment-popup'));
@@ -23,7 +24,7 @@ import useHome from './useHome';
 // const TrialPopup = lazy(() => import('../../components/trial-popup'));
 const JoinCourse = lazy(() => import('../../components/join-course'));
 
-const ClientSection = ({ homeData }) => {
+const ClientSection = ({ homeData, domainDetails }: any) => {
   // const { isPaymentFailed, isPaymentSuccess, isBecomeAMemberWithVerified, shouldOfferTrials } = useHomeDetails;
   const { handleStartFree, filterCategoryHandler } = useHome();
 
@@ -40,7 +41,7 @@ const ClientSection = ({ homeData }) => {
         }}
       >
         {/* Above-the-fold content loaded immediately */}
-        <JoinCourse />
+        <JoinCourse domainDetails={domainDetails} />
         <TopTrendingCourses homeData={{ ...homeData }} />
 
         {/* Below-the-fold content lazy loaded */}
@@ -49,8 +50,8 @@ const ClientSection = ({ homeData }) => {
         <CoursesByCategory
           {...{ homeData, handleStartFree, filterCategoryHandler }}
         />
-        {/* <Faqs /> */}
-        <BecomeAuthor />
+        <Faqs domainDetails={domainDetails} />
+        <BecomeAuthor domainDetails={domainDetails}  />
       </Stack>
 
       {/* Conditional popups - lazy loaded */}

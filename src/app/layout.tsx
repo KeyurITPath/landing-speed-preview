@@ -1,6 +1,9 @@
 import type { Viewport } from 'next';
 import { Rubik } from 'next/font/google';
 import './globals.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import ThemeRegistry from './ThemeRegistry';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { NextIntlClientProvider } from 'next-intl';

@@ -7,13 +7,12 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { ICONS } from '@assets/icons';
-
 import { INSTRUCTORS } from '@assets/images';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 
 const UserSlider = () => {
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -104,7 +103,6 @@ const UserSlider = () => {
               {INSTRUCTOR_IMAGES?.map((img, index) => (
                 <SwiperSlide key={index}>
                   <Box pb={4}>
-                    {}
                     <Image
                       loading='lazy'
                       src={img}
