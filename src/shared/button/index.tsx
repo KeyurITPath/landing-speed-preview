@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { CircularProgress, Button as MuiButton, useTheme } from '@mui/material';
+import { CircularProgress, Button as MuiButton } from '@mui/material';
 import { linearGradients } from '../../theme/color';
 
 import { ButtonProps as MuiButtonProps } from '@mui/material';
@@ -25,7 +25,6 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
     },
     ref
   ) => {
-    const theme = useTheme();
     const isGradient = variant === 'gradient';
     const isDisabled = loading || disabled;
 
@@ -53,7 +52,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         sx={{
           ...(isGradient && {
             background: linearGradients.primary,
-            color: theme.palette.common.white,
+            color: '#ffffff',
             borderRadius: 0.8,
             position: 'relative',
             ':hover': {

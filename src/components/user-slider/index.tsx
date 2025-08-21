@@ -6,7 +6,6 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { ICONS } from '@assets/icons';
 import { INSTRUCTORS } from '@assets/images';
@@ -16,10 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 
 const UserSlider = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), {
-    noSsr: true,
-  });
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const t = useTranslations();
 
   const INSTRUCTOR_IMAGES = [

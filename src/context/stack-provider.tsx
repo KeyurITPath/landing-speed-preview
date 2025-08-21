@@ -1,6 +1,6 @@
 "use client";
 
-import { IconButton, styled, useMediaQuery, useTheme } from '@mui/material';
+import { IconButton, styled, useMediaQuery } from '@mui/material';
 import { closeSnackbar, MaterialDesignContent, SnackbarProvider } from "notistack";
 import { ICONS } from '@/assets/icons';
 
@@ -19,10 +19,7 @@ const StyledVariant = styled(MaterialDesignContent)(({ theme }) => ({
 
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
 
-    const theme = useTheme();
-    const matchUpSm = useMediaQuery(theme.breakpoints.up('sm'), {
-        noSsr: true
-    });
+    const matchUpSm = useMediaQuery(theme => theme.breakpoints.up('sm'));
 
     return (
         <SnackbarProvider
