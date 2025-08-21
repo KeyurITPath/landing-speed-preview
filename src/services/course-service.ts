@@ -8,6 +8,8 @@ import {
   TIMEZONE,
   USER_ROLE,
 } from '@utils/constants';
+import { cookies } from 'next/headers';
+import { getCountryFromServer } from '@/utils/cookies';
 
 export async function fetchPopularCourses(data) {
   try {
@@ -218,6 +220,15 @@ export async function fetchCourseForLanding(data) {
 
 export async function fetchCountryCodeHandler() {
   try {
+    // First check if country code exists in cookies
+    const cookieStore = await cookies();
+    const countryFromCookie = getCountryFromServer(cookieStore);
+
+    if (countryFromCookie) {
+      return countryFromCookie;
+    }
+
+    // If not in cookie, fetch from IP
     const response = await fetch('https://telize-v1.p.rapidapi.com/location', {
       method: 'GET',
       cache: 'default',
@@ -228,11 +239,18 @@ export async function fetchCountryCodeHandler() {
     });
 
     const data = await response.json();
-
     const { country_code } = data || {};
-    return country_code || 'US'; // Default to 'US' if country_code is not found
+
+    // Store the fetched country code in cookie for next time
+    if (country_code) {
+      // Note: We can't set cookies in server components, but we'll set it in client-side
+      return country_code;
+    }
+
+    return 'US'; // Default fallback
   } catch (error) {
     console.error('Error fetching ip or country for landing:', error);
+    return 'US'; // Return default on error
   }
 }
 

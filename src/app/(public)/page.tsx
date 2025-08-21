@@ -7,16 +7,19 @@ import {
   fetchHomeCoursesData,
   fetchPopularCourses,
 } from '@services/course-service';
+import { LanguageService } from '@/services/language-service';
 import { DOMAIN } from '@utils/constants';
 import { cookies } from "next/headers";
 import { decodeToken } from '@/utils/helper';
 
 const Home = async () => {
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("token")?.value; // read cookie "token"
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value; // read cookie "token"
 
   const user = decodeToken(token);
+
+  const language_id = await LanguageService.getEffectiveLanguageId();
 
   const country_code = await fetchCountryCodeHandler();
 
@@ -24,7 +27,7 @@ const Home = async () => {
 
   const popularCourses = await fetchPopularCourses({
     params: {
-      language_id: 1,
+      language_id,
       domain: DOMAIN,
       ...(user && { user_id: user?.id })
     },
@@ -35,7 +38,7 @@ const Home = async () => {
 
   const homeCourses = await fetchHomeCoursesData({
     params: {
-      language_id: 1,
+      language_id,
       domain: DOMAIN,
       ...(user && { user_id: user?.id })
     },
@@ -47,13 +50,13 @@ const Home = async () => {
   const courseCategories = await fetchAllCourseCategories(
     {
       params: {
-        language_id: 1,
+        language_id,
       },
       headers: {
         'req-from': country_code,
       },
     },
-    1
+    language_id
   );
 
   const homeData = {
@@ -66,7 +69,12 @@ const Home = async () => {
 
   return (
     <React.Fragment>
-      <ClientSection domainDetails={domainDetails} homeData={{ ...homeData }} />
+      <ClientSection
+        domainDetails={domainDetails}
+        homeData={{ ...homeData }}
+        serverLanguageId={language_id}
+        serverCountryCode={country_code}
+      />
     </React.Fragment>
   );
 };

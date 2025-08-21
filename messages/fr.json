@@ -188,7 +188,7 @@
   "refundPolicies": "Politiques de remboursement",
   "termsOfService": "Conditions de service",
   "privacyPolicy": "Politique de confidentialité",
-  "copyright": "© {{year}} Tous droits réservés par {{name}}",
+  "copyright": "© {year} Tous droits réservés par {name}",
 
   "cancellation_refund_policies": "Politiques d'annulation et de remboursement",
 

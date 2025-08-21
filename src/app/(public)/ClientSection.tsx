@@ -1,6 +1,7 @@
 'use client';
 import React, { lazy } from 'react';
 import { Stack } from '@mui/material';
+import { useCookieSync } from '@/hooks/use-cookie-sync';
 // // Lazy load below-the-fold components
 const UserReviews = lazy(() => import('@/components/user-reviews'));
 const Faqs = lazy(() => import('@/components/faqs'));
@@ -24,7 +25,10 @@ import dynamic from 'next/dynamic';
 // const TrialPopup = lazy(() => import('../../components/trial-popup'));
 const JoinCourse = lazy(() => import('../../components/join-course'));
 
-const ClientSection = ({ homeData, domainDetails }: any) => {
+const ClientSection = ({ homeData, domainDetails, serverLanguageId, serverCountryCode, serverLanguages }: any) => {
+  // Sync cookies with server-side values
+  useCookieSync(serverLanguageId, serverCountryCode, serverLanguages);
+
   // const { isPaymentFailed, isPaymentSuccess, isBecomeAMemberWithVerified, shouldOfferTrials } = useHomeDetails;
   const { handleStartFree, filterCategoryHandler } = useHome();
 

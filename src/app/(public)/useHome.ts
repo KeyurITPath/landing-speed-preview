@@ -23,12 +23,14 @@ import {
   videoURL,
 } from '@utils/helper';
 import { getAllCourseCategories } from '@store/features/course-categories.slice';
-// import useQueryParams from '../../hooks/use-query-params';
-// import { useNavigate } from 'react-router-dom';
 import useToggleState from '@hooks/use-toggle-state';
 import { fetchCategories, fetchTrialPopups } from '@store/features/popup.slice';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const useHome = () => {
+
+  const router = useRouter();
+
   const [fetchHomeCoursesData] = useDispatchWithAbort(fetchHomeCourses);
   const [fetchAllCourseCategories] = useDispatchWithAbort(
     getAllCourseCategories
@@ -39,22 +41,22 @@ const useHome = () => {
   const [fetchCategoriesData] = useDispatchWithAbort(fetchCategories);
   const [fetchTrialPopupsData] = useDispatchWithAbort(fetchTrialPopups);
 
-  // const history = useNavigate();
-  const [trialPopupState, trialPopupOpen, trialPopupClose] = useToggleState({});
-  const { isLoggedIn, user } = useSelector(({ auth }) => auth);
+  const [trialPopupState, trialPopupOpen, trialPopupClose] = useToggleState();
+  const { isLoggedIn, user } = useSelector(({ auth }: any) => auth);
 
   const {
     trialPopups: { data: trialPopupsData },
     categories,
-  } = useSelector(state => state.popup);
+  } = useSelector((state: any) => state.popup);
 
   const {
     language: { id: language_id },
     country,
-  } = useSelector(state => state.defaults);
+  } = useSelector((state: any) => state.defaults);
 
-  console.log('get default language_id', language_id);
   const { country_code } = country || {};
+
+  console.log('>>>>>>>>>>>>>>>', country_code)
 
   const {
     courses: {
@@ -67,11 +69,11 @@ const useHome = () => {
       loading: popularCoursesOnBrandLoading,
       pagination: popularCoursesOnBrandParams,
     },
-  } = useSelector(({ home }) => home);
+  } = useSelector(({ home }: any) => home);
 
   const {
     courseCategories: { data: courseCategoriesData },
-  } = useSelector(({ courseCategories }) => courseCategories);
+  } = useSelector(({ courseCategories }: any) => courseCategories);
 
   const filterCategory = useMemo(() => {
     return !isEmptyArray(params?.course_categories)
@@ -84,18 +86,15 @@ const useHome = () => {
   }, [user]);
 
   const dispatch = useDispatch();
-  // const [queryParams] = useQueryParams();
+  const queryParams = useSearchParams();
 
   const isPaymentSuccess = useMemo(() => {
-    return false;
-    // }, [queryParams]);
-  }, []);
+    return queryParams?.get('payment') === 'success';
+  }, [queryParams]);
 
   const isPaymentFailed = useMemo(() => {
-    // return queryParams?.payment === 'failed';
-    return false;
-    // }, [queryParams]);
-  }, []);
+    return queryParams?.get('payment') === 'failed';
+  }, [queryParams]);
 
   const isBecomeAMemberWithVerified = useMemo(() => {
     if (!user) return false;
@@ -122,8 +121,8 @@ const useHome = () => {
     if (courseCategoriesData && isEmptyArray(courseCategoriesData)) return [];
 
     return courseCategoriesData
-      ?.filter(category => category?.language?.id === language_id)
-      ?.map(category => {
+      ?.filter((category: any) => category?.language?.id === language_id)
+      ?.map((category: any) => {
         return {
           id: category?.id,
           name: category?.name,
@@ -134,7 +133,7 @@ const useHome = () => {
   const homePageCoursesData = useMemo(() => {
     if (courseData && isEmptyArray(courseData)) return [];
 
-    return courseData?.map(course => {
+    return courseData?.map((course: any) => {
       const { id, course_categories, landing_pages } = course || {};
       const {
         title,
@@ -171,8 +170,8 @@ const useHome = () => {
         id,
         title,
         category: course_categories
-          ?.filter(category => category?.language_id === course_language_id)
-          ?.map(item => item?.category?.name)
+          ?.filter((category: any) => category?.language_id === course_language_id)
+          ?.map((item: any) => item?.category?.name)
           ?.join(' , '),
         image: videoURL(course_image),
         instructor: {
@@ -190,7 +189,7 @@ const useHome = () => {
   const popularCoursesOnBrandData = useMemo(() => {
     if (!popularCoursesOnBrand?.length) return [];
 
-    return popularCoursesOnBrand.map(course => {
+    return popularCoursesOnBrand.map((course: any) => {
       // Destructure top-level fields
       const {
         id,
@@ -258,14 +257,14 @@ const useHome = () => {
   }, [popularCoursesOnBrand]);
 
   const updatePagination = useCallback(
-    newParams => {
+    (newParams: any) => {
       dispatch(handlePagination({ ...params, ...newParams }));
     },
     [dispatch, params]
   );
 
   const filterCategoryHandler = useCallback(
-    category_id => {
+    (category_id: any) => {
       updatePagination({
         ...params,
         course_categories: params?.course_categories?.includes(category_id)
@@ -367,7 +366,7 @@ const useHome = () => {
     if (isBecomeAMemberWithVerified && categories?.data?.length) {
       // Find category IDs once
       const trialPopupsCategoryId = categories.data.find(
-        ({ slug }) => slug === POPUPS_CATEGORIES.trial_popups
+        ({ slug }: any) => slug === POPUPS_CATEGORIES.trial_popups
       )?.id;
 
       if (trialPopupsCategoryId && isEmptyObject(trialPopupsData)) {
@@ -390,15 +389,14 @@ const useHome = () => {
   }, [dispatch]);
 
   const handleRedirect = useCallback(
-    path => {
-      // history(path);
+    (path: string) => {
+      router.push(path);
     },
-    // [history]
-    []
+    [router]
   );
 
   const handleStartFree = useCallback(
-    (id, title) => {
+    (id: string, title: string) => {
       trialPopupOpen({
         open: true,
         course_id: id,

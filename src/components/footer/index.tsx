@@ -1,10 +1,10 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
+  Container,
   Grid,
-  Link,
   Stack,
   styled,
   Typography,
@@ -20,6 +20,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { toCapitalCase } from '@/utils/helper';
 import FormControl from '@/shared/inputs/form-control';
+import Link from 'next/link';
+import { setLanguageCookie, setCountryCookie } from '@/utils/cookies';
+import {
+  changeLanguageAction,
+  changeCountryAction,
+} from '@/app/actions/language';
 
 const Logo = styled(Typography)(({ theme }) => ({
   [`${theme.breakpoints.down('md')}`]: {
@@ -40,24 +46,36 @@ const LogoImage = styled(Image)(({ theme }) => ({
   },
 }));
 
-const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
+const NavLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+}));
+
+const Footer = ({
+  domainDetails,
+  country_code,
+  languages,
+  countries,
+  language_id,
+}: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const t = useTranslations();
-  const { language, country } = useSelector(({ defaults }: any) => defaults);
 
   const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
   const { logo, email, legal_name, brand_name, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
 
-  const [activeLanguage, setActiveLanguage] = useState(languages?.[0]?.id);
-  const [activeCountry, setActiveCountry] = useState('');
+  // Initialize with first available language to ensure SSR compatibility
+  const [activeLanguage, setActiveLanguage] = useState(language_id);
+  const [activeCountry, setActiveCountry] = useState(country_code);
 
   const pathname = usePathname();
   const isCoursePage = pathname === routes.public.search;
-
-  const mdDown = useMediaQuery(theme => theme.breakpoints.down('md'));
 
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
@@ -81,24 +99,76 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
     return country_code || '';
   }, [country_code]);
 
-  const LOGO_WIDTH = useMemo(() => {
-    return logo_width || null;
-  }, [logo_width]);
+  const getLanguageFlag = useCallback((languageCode: any) => {
+    const lowerName = (languageCode || '').toLowerCase();
+    if (lowerName.includes('en')) {
+      return IMAGES.englishFlag;
+    } else if (lowerName.includes('es')) {
+      return IMAGES.spanishFlag;
+    } else if (lowerName.includes('fr')) {
+      return IMAGES.frenchFlag;
+    } else return '';
+  }, []);
 
-  const LOGO_HEIGHT = useMemo(() => {
-    return logo_height || null;
-  }, [logo_height]);
+  // Memoize current language for better performance
+  const currentLanguage = useMemo(() => {
+    return languages?.find((language: any) => language?.id === activeLanguage);
+  }, [languages, activeLanguage]);
+
+  // Memoize language options for better performance
+  const languageOptions = useMemo(() => {
+    return languages
+      ?.map((language: any) => ({
+        label: toCapitalCase(language?.name) || '',
+        value: language?.id,
+        icon: (
+          <Image
+            src={getLanguageFlag(language?.code)}
+            alt='language_flag'
+            width={20}
+            height={20}
+          />
+        ),
+      }))
+      ?.filter((item: any) => item.value !== activeLanguage);
+  }, [languages, activeLanguage, getLanguageFlag]);
+
+  const ALLOWED_LANGUAGE_PATHS = [
+    routes.public.home,
+    routes.private.dashboard,
+    routes.private.settings_and_subscription,
+  ];
+
+  // Memoize whether to show language selector based on pathname
+  const shouldShowLanguageSelector = useMemo(() => {
+    return ALLOWED_LANGUAGE_PATHS.includes(pathname);
+  }, [pathname]);
 
   const chooseCountryHandler = useCallback(
-    (event: any) => {
+    async (event: any) => {
       const { value } = event.target;
       setActiveCountry(value);
       if (value) {
+        // Set in Redux store for immediate UI feedback
         dispatch(setCountry({ country_code: value }));
-        window.location.reload();
+
+        // Use server action to set cookie properly
+        const formData = new FormData();
+        formData.append('countryCode', value);
+        formData.append('currentPath', pathname);
+
+        try {
+          await changeCountryAction(formData);
+        } catch (error) {
+          // Fallback: set cookie on client-side and reload
+          setCountryCookie(value);
+          setTimeout(() => {
+            window.location.replace(window.location.href);
+          }, 50);
+        }
       }
     },
-    [dispatch]
+    [dispatch, pathname]
   );
 
   const handleRedirect = useCallback(
@@ -108,55 +178,41 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
     [router]
   );
 
-  useEffect(() => {
-    setActiveLanguage(language?.id || languages?.[0]?.id);
-  }, [language, languages]);
-
-  useEffect(() => {
-    if (COUNTRY_CODE) {
-      setActiveCountry(COUNTRY_CODE);
-    }
-  }, [countries, COUNTRY_CODE]);
-
   const chooseLanguageHandler = useCallback(
-    (event: any) => {
+    async (event: any) => {
       const selectedLanguageId = event.target?.value;
       const selectedLanguage = languages?.find(
         (lang: any) => lang.id === selectedLanguageId
       );
 
       if (selectedLanguage) {
-        const selectedLanguageCode = selectedLanguage?.code;
         setActiveLanguage(selectedLanguageId);
-        // i18n.changeLanguage(selectedLanguageCode);
+
+        // Set in Redux store for immediate UI feedback
         dispatch(setLanguage({ id: selectedLanguageId }));
+
+        // Use server action to set cookie properly
+        const formData = new FormData();
+        formData.append('languageId', String(selectedLanguageId));
+        formData.append('currentPath', pathname);
+
+        try {
+          await changeLanguageAction(formData);
+        } catch (error) {
+          setLanguageCookie(selectedLanguageId);
+          setTimeout(() => {
+            window.location.replace(window.location.href);
+          }, 50);
+        }
       }
     },
-    [languages, setActiveLanguage, dispatch]
+    [languages, setActiveLanguage, dispatch, pathname]
   );
 
   const FOOTER_LINKS = [
     { href: '/refund-policies', label: t('refundPolicies') },
     { href: '/terms-of-service', label: t('termsOfService') },
     { href: '/privacy-policy', label: t('privacyPolicy') },
-  ];
-
-  const getLanguageFlag = useCallback((languageCode: any) => {
-    const lowerName = (languageCode || '').toLowerCase();
-    if (lowerName.includes('en')) {
-      return IMAGES.englishFlag;
-    } else if (lowerName.includes('es')) {
-      return IMAGES.spanishFlag;
-    } else if (lowerName.includes('fr')) {
-      return IMAGES.frenchFlag;
-    }
-    return null;
-  }, []);
-
-  const ALLOWED_LANGUAGE_PATHS = [
-    routes.public.home,
-    routes.private.dashboard,
-    routes.private.settings_and_subscription,
   ];
 
   const EXCLUDED_PATHS = [
@@ -170,16 +226,17 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
     routes.public.redirecting_page,
   ];
 
-  // const shouldShowCountryDropdown = useMemo(() => {
-  //     const isHomePage = pathname === URLS.HOME_PAGE.path;
-  //     const isAllowedCoursePage = !!isCoursePage && !EXCLUDED_PATHS.includes(pathname);
+  const shouldShowCountryDropdown = useMemo(() => {
+    const isHomePage = pathname === routes.public.home;
+    const isAllowedCoursePage =
+      !!isCoursePage && !EXCLUDED_PATHS.includes(pathname);
 
-  //     return isHomePage || isAllowedCoursePage;
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pathname, isCoursePage]);
+    return isHomePage || isAllowedCoursePage;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, isCoursePage]);
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ width: '100%' }}>
       <Stack
         id='footer'
         sx={{
@@ -258,102 +315,65 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                         </Box>
                       </Grid>
 
-                      {/* {ALLOWED_LANGUAGE_PATHS.includes(location.pathname) && (
-                                                <Grid size={{ xs: 12 }}>
-                                                    <FormControl
-                                                        label={t('languageLabel')}
-                                                        placeholder={t('enterLanguage')}
-                                                        name="language"
-                                                        handleChange={chooseLanguageHandler}
-                                                        value={toCapitalCase(
-                                                            languages?.find(
-                                                                (language) =>
-                                                                    language?.id === activeLanguage
-                                                            )?.name || ''
-                                                        )}
-                                                        renderSelectedValue={(selected) => (
-                                                            <Box
-                                                                sx={{
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    gap: 1
-                                                                }}
-                                                            >
-                                                                <img
-                                                                    src={getLanguageFlag(
-                                                                        languages?.find(
-                                                                            (language) =>
-                                                                                language?.id ===
-                                                                                activeLanguage
-                                                                        )?.code
-                                                                    )}
-                                                                    alt="language_flag"
-                                                                    style={{
-                                                                        width: 20,
-                                                                        height: 20
-                                                                    }}
-                                                                />
-                                                                {selected}
-                                                            </Box>
-                                                        )}
-                                                        options={languages
-                                                            ?.map((language) => ({
-                                                                label:
-                                                                    toCapitalCase(language?.name) ||
-                                                                    '',
-                                                                value: language?.id,
-                                                                icon: (
-                                                                    <img
-                                                                        src={getLanguageFlag(
-                                                                            language?.code
-                                                                        )}
-                                                                        alt="language_flag"
-                                                                        style={{
-                                                                            width: 20,
-                                                                            height: 20
-                                                                        }}
-                                                                    />
-                                                                )
-                                                            }))
-                                                            ?.filter(
-                                                                (item) =>
-                                                                    item.value !== activeLanguage
-                                                            )}
-                                                        size="small"
-                                                        type="select"
-                                                        sx={{
-                                                            zIndex: '1 !important',
-                                                            width: { xs: 200, sm: 220 }
-                                                        }}
-                                                    />
-                                                </Grid>
-                                            )} */}
-                      {/* {shouldShowCountryDropdown && (
-                                                <Grid size={{ xs: 12 }}>
-                                                    <FormControl
-                                                        sx={{
-                                                            zIndex: '1 !important',
-                                                            width: { xs: 200, sm: 220 }
-                                                        }}
-                                                        {...{
-                                                            label: t('Country'),
-                                                            placeholder: t('enterCountry'),
-                                                            name: 'country',
-                                                            handleChange: chooseCountryHandler,
-                                                            value: activeCountry || '',
-                                                            options: countries?.map((country) => ({
-                                                                label:
-                                                                    toCapitalCase(country?.name) ||
-                                                                    '',
-                                                                value: country?.iso_code,
-                                                                id: country?.iso_code
-                                                            })),
-                                                            size: 'small',
-                                                            type: 'autocomplete'
-                                                        }}
-                                                    />
-                                                </Grid>
-                                            )} */}
+                      {shouldShowLanguageSelector && (
+                        <Grid size={{ xs: 12 }}>
+                          <FormControl
+                            label={t('languageLabel')}
+                            placeholder={t('enterLanguage')}
+                            name='language'
+                            handleChange={chooseLanguageHandler}
+                            value={toCapitalCase(currentLanguage?.name || '')}
+                            renderSelectedValue={(selected: any) => (
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 1,
+                                }}
+                              >
+                                <Image
+                                  width={20}
+                                  height={20}
+                                  src={getLanguageFlag(currentLanguage?.code)}
+                                  alt='language_flag'
+                                />
+                                {selected}
+                              </Box>
+                            )}
+                            options={languageOptions}
+                            size='small'
+                            type='select'
+                            sx={{
+                              zIndex: '1 !important',
+                              width: { xs: 200, sm: 220 },
+                            }}
+                          />
+                        </Grid>
+                      )}
+                      {shouldShowCountryDropdown && (
+                        <Grid size={{ xs: 12 }}>
+                          <FormControl
+                            sx={{
+                              zIndex: '1 !important',
+                              width: { xs: 200, sm: 220 },
+                            }}
+                            {...{
+                              label: t('Country'),
+                              placeholder: t('enterCountry'),
+                              name: 'country',
+                              handleChange: chooseCountryHandler,
+                              value: activeCountry || '',
+                              options: countries?.map((country: any) => ({
+                                label: toCapitalCase(country?.name) || '',
+                                value: country?.iso_code,
+                                id: country?.iso_code,
+                              })),
+                              size: 'small',
+                              type: 'autocomplete',
+                            }}
+                          />
+                        </Grid>
+                      )}
                       {COUNTRY_CODE && (
                         <Grid size={{ xs: 12 }}>
                           <Typography
@@ -390,7 +410,7 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                       >
                         {t('contact_us')}:{' '}
                       </Typography>
-                      <Link
+                      <NavLink
                         sx={{
                           fontSize: { xs: 16, sm: 20 },
                           mt: {
@@ -401,10 +421,9 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                           lineHeight: '28px',
                         }}
                         href={`mailto:${SUPPORT_MAIL}`}
-                        underline='hover'
                       >
                         {SUPPORT_MAIL}
-                      </Link>
+                      </NavLink>
                     </Box>
                   </Grid>
                 </Grid>
@@ -417,10 +436,10 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                 >
                   <Grid size={{ xs: 12, sm: 6 }}>
                     <Stack
-                      width={mdDown ? '100%' : 'auto'}
+                      width={{ xs: '100%', md: 'auto' }}
                       direction={'row'}
                       spacing={{ xs: 0.5, sm: 1 }}
-                      alignItems={mdDown ? 'center' : 'flex-start'}
+                      alignItems={{ xs: 'center', md: 'flex-start' }}
                       sx={{
                         '& > a': {
                           fontSize: { xs: 13, sm: 16 },
@@ -433,34 +452,31 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                         },
                       }}
                     >
-                      {/* {FOOTER_LINKS?.map((link, index) => (
-                                                <Box
-                                                    key={index}
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: 1
-                                                    }}
-                                                >
-                                                    {index > 0 && (
-                                                        <Typography color="text.secondary">
-                                                            •
-                                                        </Typography>
-                                                    )}
-                                                    <Link
-                                                        sx={{
-                                                            fontSize: { xs: 13, sm: 16 },
-                                                            whiteSpace: 'nowrap'
-                                                        }}
-                                                        href={link.href}
-                                                        underline="hover"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        {link.label}
-                                                    </Link>
-                                                </Box>
-                                            ))} */}
+                      {FOOTER_LINKS?.map((link, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                          }}
+                        >
+                          {index > 0 && (
+                            <Typography color='text.secondary'>•</Typography>
+                          )}
+                          <NavLink
+                            sx={{
+                              fontSize: { xs: 13, sm: 16 },
+                              whiteSpace: 'nowrap',
+                            }}
+                            href={link.href}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            {link.label}
+                          </NavLink>
+                        </Box>
+                      ))}
                     </Stack>
                   </Grid>
                   <Grid size={{ xs: 12, sm: 6 }}>
@@ -468,12 +484,12 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
                       fontSize={{ xs: 13, sm: 16 }}
                       mt={{ xs: 1, sm: 0 }}
                       color='text.secondary'
-                      textAlign={mdDown ? 'flex-start' : 'right'}
+                      textAlign={{ xs: 'left', md: 'right' }}
                     >
-                      {/* {t('copyright', {
-                                                year: moment().format('YYYY'),
-                                                name: LEGAL_NAME
-                                            })} */}
+                      {t('copyright', {
+                        year: moment().format('YYYY'),
+                        name: LEGAL_NAME,
+                      })}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -482,7 +498,7 @@ const Footer = ({ domainDetails, country_code, languages, countries }: any) => {
           </Grid>
         </Box>
       </Stack>
-    </>
+    </Container>
   );
 };
 export default Footer;

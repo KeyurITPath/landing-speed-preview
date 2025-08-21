@@ -3,7 +3,8 @@ import { DOMAIN } from '@/utils/constants';
 import Header from '@/components/header';
 import { Box } from '@mui/material';
 import Footer from '@/components/footer';
-import { fetchAllCountries, fetchAllLanguages, fetchCountryCodeHandler } from '@/services/course-service';
+import { fetchAllCountries, fetchCountryCodeHandler } from '@/services/course-service';
+import { LanguageService } from '@/services/language-service';
 
 export async function generateMetadata() {
   const response = await api.home.fetchDomainDetails({
@@ -44,9 +45,9 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   // IP address with country code
   const country_code = await fetchCountryCodeHandler();
 
-  // languages
-  const langResponse = await fetchAllLanguages();
-  const languages = langResponse?.data?.result || [];
+  // Get language_id and languages using the simple service
+  const language_id = await LanguageService.getEffectiveLanguageId();
+  const languages = await LanguageService.getLanguages();
 
   // countries
   const countriesResponse = await fetchAllCountries();
@@ -55,7 +56,10 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   return <Box sx={{ width: '100%' }}>
     <Header domainDetails={domain} />
     {children}
-    <Footer domainDetails={domain} {...{ country_code, languages, countries }} />
+    <Footer
+      domainDetails={domain}
+      {...{ country_code, languages, countries, language_id }}
+    />
   </Box>;
 };
 export default PublicLayout;
