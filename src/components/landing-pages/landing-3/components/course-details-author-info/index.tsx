@@ -1,13 +1,13 @@
-import { Avatar, Box, Grid, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Grid2, Stack, Typography } from '@mui/material';
 import { SERVER_URL } from '@utils/constants';
 import { useTranslations } from 'next-intl';
 
 const CourseDetailsForAuthorInfo = ({ data, course }) => {
     const t = useTranslations();
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         color="primary.typography"
                         fontWeight={500}
@@ -15,8 +15,8 @@ const CourseDetailsForAuthorInfo = ({ data, course }) => {
                     >
                         {t('about_author')}
                     </Typography>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 12 }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -58,9 +58,9 @@ const CourseDetailsForAuthorInfo = ({ data, course }) => {
                             />
                         </Stack>
                     </Box>
-                </Grid>
-            </Grid>
-        </Grid>
+                </Grid2>
+            </Grid2>
+        </Grid2>
     );
 };
 

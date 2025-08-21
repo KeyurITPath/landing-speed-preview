@@ -29,7 +29,9 @@ const VideoPlayer = ({
   const isPlayingRef = useRef(false);
   const hlsRef = useRef(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), {
+    noSsr: true
+  });
 
   useEffect(() => {
     if (!playerRef.current) {

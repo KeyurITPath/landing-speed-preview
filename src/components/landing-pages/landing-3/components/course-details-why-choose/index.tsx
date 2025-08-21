@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 const CourseDetailsForWhyChoose = ({ data }) => {
@@ -20,9 +20,9 @@ const CourseDetailsForWhyChoose = ({ data }) => {
     }, [data?.choose_this_course]);
     const t = useTranslations();
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         color="primary.typography"
                         fontWeight={500}
@@ -30,8 +30,8 @@ const CourseDetailsForWhyChoose = ({ data }) => {
                     >
                         {data?.choose_course_heading}
                     </Typography>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 12 }}>
                     <Box
                         ref={textRef}
                         sx={{
@@ -84,9 +84,9 @@ const CourseDetailsForWhyChoose = ({ data }) => {
                             {showFullText ? t('showLessText') : t('showMoreText')}
                         </Button>
                     )}
-                </Grid>
-            </Grid>
-        </Grid>
+                </Grid2>
+            </Grid2>
+        </Grid2>
     );
 };
 

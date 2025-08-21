@@ -1,7 +1,7 @@
 import {
   Box,
   Container,
-  Grid,
+  Grid2,
   Stack,
   Typography
 } from '@mui/material';
@@ -85,14 +85,14 @@ const JoinCourse = ({ domainDetails }: any) => {
         alignItems: 'center',
       }}
     >
-      <Container maxWidth='lg' component={Grid} container>
-        <Grid size={{ xs: 12 }}>
-          <Grid
+      <Container maxWidth='lg' component={Grid2} container>
+        <Grid2 size={{ xs: 12 }}>
+          <Grid2
             container
             spacing={2}
             sx={{ display: 'flex', flexDirection: { xs: 'row', sm: 'row' } }}
           >
-            <Grid
+            <Grid2
               size={{ xs: 12, sm: 7 }}
               sx={{
                 display: 'flex',
@@ -197,9 +197,9 @@ const JoinCourse = ({ domainDetails }: any) => {
                   </Stack>
                 </Stack>
               </Stack>
-            </Grid>
+            </Grid2>
 
-            <Grid size={{ xs: 12, sm: 5 }}>
+            <Grid2 size={{ xs: 12, sm: 5 }}>
               <Box
                 sx={{
                   display: 'flex',
@@ -323,9 +323,9 @@ const JoinCourse = ({ domainDetails }: any) => {
                     </Box>
                   </>
               </Box>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       </Container>
     </Box>
   );

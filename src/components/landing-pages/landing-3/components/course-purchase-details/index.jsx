@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Box, Chip, Grid2, Stack, Typography } from '@mui/material';
 import { ICONS } from '@assets/icons';
 import CustomButton from '@shared/button';
 import { formatCurrency } from '@utils/helper';
@@ -73,12 +73,12 @@ const CoursePurchaseDetails = ({
     }, [data, t]);
 
     return (
-        <Grid
+        <Grid2
             container
             spacing={2}
             sx={!isMobile && { position: 'sticky', top: 48, left: 0, zIndex: 9 }}
         >
-            <Grid size={{ xs: 12 }}>
+            <Grid2 size={{ xs: 12 }}>
                 <Box
                     sx={{
                         border: '1px solid var(--Blue, #304BE0)',
@@ -88,15 +88,15 @@ const CoursePurchaseDetails = ({
                     }}
                     p={3}
                 >
-                    <Grid container spacing={2}>
-                        <Grid size={{ xs: 12 }}>
-                            <Grid
+                    <Grid2 container spacing={2}>
+                        <Grid2 size={{ xs: 12 }}>
+                            <Grid2
                                 container
                                 spacing={2}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                             >
                                 {shouldShowPriceDetails && (
-                                    <Grid size={{ xs: 8, md: 7 }}>
+                                    <Grid2 size={{ xs: 8, md: 7 }}>
                                         <Box
                                             gap={2}
                                             sx={{
@@ -153,9 +153,9 @@ const CoursePurchaseDetails = ({
                                                 </Box>
                                             )}
                                         </Typography>
-                                    </Grid>
+                                    </Grid2>
                                 )}
-                                <Grid
+                                <Grid2
                                     size={{
                                         xs: shouldExpandGrid ? 12 : 4,
                                         md: shouldExpandGrid ? 12 : 5
@@ -192,10 +192,10 @@ const CoursePurchaseDetails = ({
                                               ? t('try_for_free')
                                               : t('buy')}
                                     </CustomButton>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid size={{ xs: 12 }}>
+                                </Grid2>
+                            </Grid2>
+                        </Grid2>
+                        <Grid2 size={{ xs: 12 }}>
                             <Typography fontSize={12} color="primary.typography">
                                 {/* <Trans
                                     i18nKey="enjoy_course"
@@ -203,11 +203,11 @@ const CoursePurchaseDetails = ({
                                 /> */}
                                 {/* {t("enjoy_course")} */}
                             </Typography>
-                        </Grid>
-                    </Grid>
+                        </Grid2>
+                    </Grid2>
                 </Box>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
+            </Grid2>
+            <Grid2 size={{ xs: 12 }}>
                 <Stack spacing={2} mt={1}>
                     {details?.map((item, index) => {
                         return (
@@ -220,8 +220,8 @@ const CoursePurchaseDetails = ({
                         );
                     })}
                 </Stack>
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 

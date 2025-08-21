@@ -17,7 +17,9 @@ import { Navigation, Pagination } from "swiper/modules";
 
 const UserSlider = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), {
+    noSsr: true,
+  });
   const t = useTranslations();
 
   const INSTRUCTOR_IMAGES = [

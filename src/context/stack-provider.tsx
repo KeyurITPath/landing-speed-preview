@@ -20,7 +20,9 @@ const StyledVariant = styled(MaterialDesignContent)(({ theme }) => ({
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
 
     const theme = useTheme();
-    const matchUpSm = useMediaQuery(theme.breakpoints.up('sm'));
+    const matchUpSm = useMediaQuery(theme.breakpoints.up('sm'), {
+        noSsr: true
+    });
 
     return (
         <SnackbarProvider

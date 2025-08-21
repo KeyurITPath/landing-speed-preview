@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid2, Typography } from '@mui/material';
 import VideoPlayer from '@shared/video-player';
 import CoursePurchaseDetails from '../course-purchase-details';
 import { videoURL } from '@utils/helper';
@@ -10,9 +10,9 @@ const CourseDetails = ({ data, course, videoContainerRef, videoPlayerOptions, pi
     const t  = useTranslations();
 
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         color="primary.typography"
                         sx={{
@@ -22,14 +22,14 @@ const CourseDetails = ({ data, course, videoContainerRef, videoPlayerOptions, pi
                     >
                         {data?.header || ''}
                     </Typography>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography sx={{ fontSize: { xs: 14 } }} color="primary.typography">
                         {t('author')}:{' '}
                         <span style={{ fontWeight: 500 }}>{course?.user?.name || '-'}</span>
                     </Typography>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 12 }}>
                     {!is_video_processed ? (
                         <Typography
                             variant="body1"
@@ -103,8 +103,8 @@ const CourseDetails = ({ data, course, videoContainerRef, videoPlayerOptions, pi
                             />
                         )}
                     </Box>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         fontWeight={400}
                         fontSize={{ xs: 16 }}
@@ -124,14 +124,14 @@ const CourseDetails = ({ data, course, videoContainerRef, videoPlayerOptions, pi
                             whiteSpace: 'break-spaces'
                         }}
                     />
-                </Grid>
+                </Grid2>
                 {Boolean(isMobile) && (
-                    <Grid size={{ xs: 12 }}>
+                    <Grid2 size={{ xs: 12 }}>
                         <CoursePurchaseDetails {...{ landingData }} />
-                    </Grid>
+                    </Grid2>
                 )}
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 

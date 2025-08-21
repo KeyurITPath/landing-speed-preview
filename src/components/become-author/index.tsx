@@ -1,7 +1,7 @@
 import {
   Box,
   Container,
-  Grid,
+  Grid2,
   Stack,
   Typography
 } from '@mui/material';
@@ -44,9 +44,9 @@ const BecomeAuthor = ({ domainDetails }: any) => {
       }}
       id='about'
     >
-      <Container maxWidth='lg' component={Grid} container>
-        <Grid size={{ xs: 12 }}>
-          <Grid
+      <Container maxWidth='lg' component={Grid2} container>
+        <Grid2 size={{ xs: 12 }}>
+          <Grid2
             container
             spacing={2}
             sx={{
@@ -54,9 +54,9 @@ const BecomeAuthor = ({ domainDetails }: any) => {
               flexDirection: { xs: 'column-reverse', sm: 'row' },
             }}
           >
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 7 }}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
+              <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 7 }}>
                   <Image
                     src={BECOME_AUTHORS[0]}
                     alt='Become Author'
@@ -69,8 +69,8 @@ const BecomeAuthor = ({ domainDetails }: any) => {
                       maxWidth: '320px',
                     }}
                   />
-                </Grid>
-                <Grid size={{ xs: 5 }}>
+                </Grid2>
+                <Grid2 size={{ xs: 5 }}>
                   <Stack spacing={2}>
                     <Image
                       src={BECOME_AUTHORS[1]}
@@ -97,11 +97,11 @@ const BecomeAuthor = ({ domainDetails }: any) => {
                       }}
                     />
                   </Stack>
-                </Grid>
-              </Grid>
-            </Grid>
+                </Grid2>
+              </Grid2>
+            </Grid2>
 
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <Stack
                 spacing={3}
                 pl={{ xs: 0, sm: 3, md: 5 }}
@@ -162,9 +162,9 @@ const BecomeAuthor = ({ domainDetails }: any) => {
                   </CustomButton>
                 </Stack>
               </Stack>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Grid2>
+          </Grid2>
+        </Grid2>
       </Container>
     </Box>
   );

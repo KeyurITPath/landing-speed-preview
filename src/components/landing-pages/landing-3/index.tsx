@@ -1,5 +1,5 @@
 "use client"
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container, Grid2 } from '@mui/material';
 import CourseDetails from './components/course-details';
 import CoursePurchaseDetails from './components/course-purchase-details';
 import CourseReviews from './components/course-reviews';
@@ -63,12 +63,12 @@ const Landing3 = ({ landingData }) => {
             <Container
                 maxWidth="lg"
                 sx={{ my: 6 }}
-                component={Grid}
+                component={Grid2}
                 container
                 spacing={{ xs: 4, md: 6, xl: 12 }}
             >
-                <Grid size={{ xs: 12, md: 7 }}>
-                    <Grid container spacing={4}>
+                <Grid2 size={{ xs: 12, md: 7 }}>
+                    <Grid2 container spacing={4}>
                         <CourseDetails {...{ data:translatedData, course:data?.course, isMobile:false, videoContainerRef, videoPlayerOptions, pipMode, closePipMode }} />
                         <CourseReviews {...{ data:translatedData }} />
                         <CourseDetailsForWillYouNeed {...{ data:translatedData }} />
@@ -76,12 +76,12 @@ const Landing3 = ({ landingData }) => {
                         <CourseDetailsForAuthorInfo {...{ data:translatedData, course:data?.course }} />
                         <CourseDetailsForContentInfo {...{ data:translatedData }} />
                         <CourseDetailsForFAQ {...{ BRAND_NAME:"", SUPPORT_MAIL:"support@example.com" }} />
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
                 {!isMobile && (
-                    <Grid size={{ xs: 12, md: 5 }}>
+                    <Grid2 size={{ xs: 12, md: 5 }}>
                         <CoursePurchaseDetails {...{ course:data?.course, data:translatedData, handleProceedToWatch: () => {}, handleStartFree: () => {}, isBecomeAMemberWithVerified:false, isBecomeVerifiedAndSubscribed:false, isUserPurchasedCourse:false, isMobile:false }} />
-                    </Grid>
+                    </Grid2>
                 )}
             </Container>
             {Boolean(isVisibleBuyBtn) && (

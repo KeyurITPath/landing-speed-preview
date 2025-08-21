@@ -1,4 +1,4 @@
-import { Container, Stack, Typography, Box, Grid, styled } from '@mui/material';
+import { Container, Stack, Typography, Box, Grid2, styled } from '@mui/material';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ICONS } from '@assets/icons';
@@ -183,7 +183,7 @@ const CoursesByCategory = ({
                   </SwiperSlide>
                 ))
               ) : (
-                <Grid size={{ xs: 12 }}>
+                <Grid2 size={{ xs: 12 }}>
                   <Box
                     sx={{
                       display: 'flex',
@@ -205,7 +205,7 @@ const CoursesByCategory = ({
                       {t('no_courses_found')}
                     </Typography>
                   </Box>
-                </Grid>
+                </Grid2>
               )}
             </Swiper>
           </Box>

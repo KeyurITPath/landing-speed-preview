@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import RenderCard from './components/render-card';
@@ -26,7 +26,7 @@ const CourseCard = ({
     Array.isArray(POPULAR_BRAND_COURSES_DATA);
 
   const NoCourses = (
-    <Grid size={{ xs: 12 }}>
+    <Grid2 size={{ xs: 12 }}>
       <Box
         sx={{
           display: 'flex',
@@ -48,7 +48,7 @@ const CourseCard = ({
           {t('no_courses_found')}
         </Typography>
       </Box>
-    </Grid>
+    </Grid2>
   );
 
   return (
@@ -69,15 +69,15 @@ const CourseCard = ({
           {showSkeleton
             ? skeletonArray.map((_, index) => (
                 <SwiperSlide key={index}>
-                  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                  <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
                     <RenderCardLoading />
-                  </Grid>
+                  </Grid2>
                 </SwiperSlide>
               ))
             : hasCourses
               ? POPULAR_BRAND_COURSES_DATA.map((course, index) => (
                   <SwiperSlide key={index}>
-                    <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ pb: 4 }}>
+                    <Grid2 size={{ xs: 12, sm: 6, md: 3 }} sx={{ pb: 4 }}>
                       <RenderCard
                         course={course}
                         isBecomeAMemberWithVerified={
@@ -86,36 +86,36 @@ const CourseCard = ({
                         handleStartFree={handleStartFree}
                         isLoggedIn={isLoggedIn}
                       />
-                    </Grid>
+                    </Grid2>
                   </SwiperSlide>
                 ))
               : NoCourses}
         </Swiper>
       </Stack>
-      <Grid
+      <Grid2
         sx={{ display: { xs: 'none', sm: 'flex' } }}
         container
         spacing={2.5}
       >
         {showSkeleton
           ? skeletonArray.map((_, index) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+              <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                 <RenderCardLoading />
-              </Grid>
+              </Grid2>
             ))
           : hasCourses
             ? POPULAR_BRAND_COURSES_DATA.map((course, index) => (
-                <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+                <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                   <RenderCard
                     course={course}
                     isBecomeAMemberWithVerified={isBecomeAMemberWithVerified}
                     handleStartFree={handleStartFree}
                     isLoggedIn={isLoggedIn}
                   />
-                </Grid>
+                </Grid2>
               ))
             : NoCourses}
-      </Grid>
+      </Grid2>
     </Stack>
   );
 };

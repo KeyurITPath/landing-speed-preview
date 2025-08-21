@@ -7,7 +7,7 @@ import {
     AccordionSummary as MuiAccordionSummary,
     Typography,
     AccordionDetails as MuiAccordionDetails,
-    Grid
+    Grid2
 } from '@mui/material';
 import CustomButton from '@shared/button';
 import { ICONS } from '@assets/icons';
@@ -105,9 +105,9 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
     }, []);
 
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         sx={{
                             fontSize: { xs: 26, sm: 28 },
@@ -117,10 +117,10 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
                     >
                         {t('faqTitle')}
                     </Typography>
-                </Grid>
+                </Grid2>
 
                 {/* General FAQs */}
-                <Grid size={{ xs: 12 }}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         fontSize={{ xs: 16, sm: 16 }}
                         fontWeight={500}
@@ -128,11 +128,11 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
                     >
                         {GENERAL_FAQ_TITLE}
                     </Typography>
-                    <Grid container spacing={2}>
+                    <Grid2 container spacing={2}>
                         {/* {GENERAL_FAQS?.map(({ id, question, answers }, index) => {
                             const isExpanded = expanded.general_faq.includes(id);
                             return (
-                                <Grid size={{ xs: 12 }} key={id}>
+                                <Grid2 size={{ xs: 12 }} key={id}>
                                     <Accordion
                                         expanded={isExpanded}
                                         onChange={() => handleChange('general_faq', id)}
@@ -173,14 +173,14 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
                                             ))}
                                         </AccordionDetails>
                                     </Accordion>
-                                </Grid>
+                                </Grid2>
                             );
                         })} */}
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
 
                 {/* Pricing FAQs */}
-                <Grid size={{ xs: 12 }}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography
                         fontSize={{ xs: 16, sm: 16 }}
                         fontWeight={500}
@@ -188,11 +188,11 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
                     >
                         {PRICING_FAQ_TITLE}
                     </Typography>
-                    <Grid container spacing={2}>
+                    <Grid2 container spacing={2}>
                         {/* {PRICING_FAQS?.map(({ id, question, answers }, index) => {
                             const isExpanded = expanded.pricing_faq.includes(id);
                             return (
-                                <Grid size={{ xs: 12 }} key={id}>
+                                <Grid2 size={{ xs: 12 }} key={id}>
                                     <Accordion
                                         expanded={isExpanded}
                                         onChange={() => handleChange('pricing_faq', id)}
@@ -233,13 +233,13 @@ const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }) => {
                                             ))}
                                         </AccordionDetails>
                                     </Accordion>
-                                </Grid>
+                                </Grid2>
                             );
                         })} */}
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+        </Grid2>
     );
 };
 

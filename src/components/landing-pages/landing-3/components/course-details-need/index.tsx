@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 
 const CourseDetailsForWillYouNeed = ({ data }) => {
     return (
         <React.Fragment>
-            <Grid size={{ xs: 12 }}>
-                <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }}>
+            <Grid2 size={{ xs: 12 }}>
+                <Grid2 container spacing={2}>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             color="primary.typography"
                             fontWeight={500}
@@ -14,8 +14,8 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                         >
                             {data?.need_for_the_course_label || ''}
                         </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
+                    </Grid2>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             whiteSpace="break-spaces"
                             fontWeight={400}
@@ -24,8 +24,8 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                         >
                             {data?.need_for_the_course || ''}
                         </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
+                    </Grid2>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             fontWeight={400}
                             fontSize={16}
@@ -45,12 +45,12 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                                 whiteSpace: 'break-spaces'
                             }}
                         />
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-                <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }}>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+            <Grid2 size={{ xs: 12 }}>
+                <Grid2 container spacing={2}>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             whiteSpace="break-spaces"
                             color="primary.typography"
@@ -59,8 +59,8 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                         >
                             {data?.nc_header_2_title || ''}
                         </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
+                    </Grid2>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             fontWeight={400}
                             fontSize={16}
@@ -80,8 +80,8 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                                 whiteSpace: 'break-spaces'
                             }}
                         />
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
+                    </Grid2>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             fontWeight={400}
                             fontSize={16}
@@ -101,9 +101,9 @@ const CourseDetailsForWillYouNeed = ({ data }) => {
                                 whiteSpace: 'break-spaces'
                             }}
                         />
-                    </Grid>
-                </Grid>
-            </Grid>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
         </React.Fragment>
     );
 };

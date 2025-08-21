@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Avatar, Box, Grid, Typography, styled } from '@mui/material';
+import { Avatar, Box, Grid2, Typography, styled } from '@mui/material';
 import { ICONS } from '@assets/icons';
 import { warning } from '../../../../../theme/color';
 import { videoURL } from '@utils/helper';
@@ -31,11 +31,11 @@ const CourseReviews = ({ data }) => {
     }, [data, t]);
 
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={4}>
-                <Grid size={{ xs: 12 }}>
-                    <Grid container spacing={2}>
-                        <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={4}>
+                <Grid2 size={{ xs: 12 }}>
+                    <Grid2 container spacing={2}>
+                        <Grid2 size={{ xs: 12 }}>
                             <Typography
                                 sx={{
                                     fontSize: { xs: 26, sm: 28 },
@@ -45,10 +45,10 @@ const CourseReviews = ({ data }) => {
                             >
                                 {t('reviews_landing_3')}
                             </Typography>
-                        </Grid>
+                        </Grid2>
                         {reviewDetails?.map((item, index) => {
                             return (
-                                <Grid size={item?.mainSx || { xs: 12, sm: 6 }} key={index}>
+                                <Grid2 size={item?.mainSx || { xs: 12, sm: 6 }} key={index}>
                                     <Box gap={2} sx={{ display: 'flex', alignItems: 'center' }}>
                                         <item.icon
                                             style={{ color: '#304BE0', width: 22, height: 22 }}
@@ -60,13 +60,13 @@ const CourseReviews = ({ data }) => {
                                             {item?.label}
                                         </Typography>
                                     </Box>
-                                </Grid>
+                                </Grid2>
                             );
                         })}
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
                 {Boolean(data?.comments?.length) && (
-                    <Grid size={{ xs: 12 }}>
+                    <Grid2 size={{ xs: 12 }}>
                         <Box
                             sx={{
                                 border: '0.6px solid var(--Light-grey, #BBBBBB)',
@@ -75,11 +75,11 @@ const CourseReviews = ({ data }) => {
                                 backgroundColor: '#F5F7FF'
                             }}
                         >
-                            <Grid container>
+                            <Grid2 container>
                                 {data?.comments?.map((review, index) => {
                                     const isLast = index === data.comments.length - 1;
                                     return (
-                                        <Grid
+                                        <Grid2
                                             size={{ xs: 12 }}
                                             key={index}
                                             sx={{
@@ -88,8 +88,8 @@ const CourseReviews = ({ data }) => {
                                                     : '0.6px solid var(--Light-grey, #BBBBBB)'
                                             }}
                                         >
-                                            <Grid container spacing={2} p={4}>
-                                                <Grid size={{ xs: 12 }}>
+                                            <Grid2 container spacing={2} p={4}>
+                                                <Grid2 size={{ xs: 12 }}>
                                                     <StarRating>
                                                         {[...Array(5)].map((_, index) => (
                                                             <ICONS.STAR
@@ -103,16 +103,16 @@ const CourseReviews = ({ data }) => {
                                                             />
                                                         ))}
                                                     </StarRating>
-                                                </Grid>
-                                                <Grid size={{ xs: 12 }}>
+                                                </Grid2>
+                                                <Grid2 size={{ xs: 12 }}>
                                                     <Typography
                                                         color="primary.typography"
                                                         sx={{ fontSize: 16, color: '#0E0E0E' }}
                                                     >
                                                         {review.comment_text}
                                                     </Typography>
-                                                </Grid>
-                                                <Grid
+                                                </Grid2>
+                                                <Grid2
                                                     size={{ xs: 12 }}
                                                     sx={{
                                                         display: 'flex',
@@ -134,17 +134,17 @@ const CourseReviews = ({ data }) => {
                                                     >
                                                         {review.name}
                                                     </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
+                                                </Grid2>
+                                            </Grid2>
+                                        </Grid2>
                                     );
                                 })}
-                            </Grid>
+                            </Grid2>
                         </Box>
-                    </Grid>
+                    </Grid2>
                 )}
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 

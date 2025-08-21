@@ -1,7 +1,7 @@
 import {
   Box,
   Container,
-  Grid,
+  Grid2,
   Stack,
   Typography
 } from '@mui/material';
@@ -47,12 +47,12 @@ const GetStartedSteps = () => {
           {t('easy_steps_to_get_started')}
         </Typography>
 
-        <Grid
+        <Grid2
           container
           spacing={2}
           sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}
         >
-          <Grid size={{ xs: 12, sm: 5 }}>
+          <Grid2 size={{ xs: 12, sm: 5 }}>
             <NextImage
               src={GET_STARTED_IMAGE}
               alt='Get started'
@@ -68,8 +68,8 @@ const GetStartedSteps = () => {
                 aspectRatio: '5 / 7', // if you want strict aspect ratio
               }}
             />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 7 }}>
+          </Grid2>
+          <Grid2 size={{ xs: 12, sm: 7 }}>
             <Stack
               spacing={{ xs: 2, sm: 4 }}
               sx={{
@@ -172,8 +172,8 @@ const GetStartedSteps = () => {
                 }
               )}
             </Stack>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Stack>
     </Container>
   );

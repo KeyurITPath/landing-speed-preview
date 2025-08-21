@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid2 } from '@mui/material';
 import { AUTH_SIDE_IMAGE } from '@assets/images';
 import Image from 'next/image';
 import RenderComponent from './render-component';
@@ -7,7 +7,7 @@ import RenderComponent from './render-component';
 const LoginWith2FA = () => {
   return (
     <React.Fragment>
-      <Grid
+      <Grid2
         container
         spacing={2}
         sx={{
@@ -17,7 +17,7 @@ const LoginWith2FA = () => {
           justifyContent: 'center',
         }}
       >
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid2 size={{ xs: 12, md: 5 }}>
           <Image
             loading='eager'
             alt='login-visual'
@@ -26,13 +26,13 @@ const LoginWith2FA = () => {
             height={0}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
-        </Grid>
-        <Grid size={{ xs: 12, md: 7 }}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 7 }}>
           <Container maxWidth='sm'>
             <RenderComponent />
           </Container>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </React.Fragment>
   );
 };

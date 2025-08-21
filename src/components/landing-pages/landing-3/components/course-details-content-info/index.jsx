@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { ICONS } from '@assets/icons';
 import { useTranslations } from 'next-intl';
 
@@ -16,10 +16,10 @@ const CourseDetailsForContentInfo = ({ data }) => {
     }, [data?.landing_page_lessons]);
 
     return (
-        <Grid size={{ xs: 12 }}>
-            <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                    <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
+                    <Grid2 size={{ xs: 12 }}>
                         <Typography
                             sx={{
                                 fontSize: { xs: 26, sm: 28 },
@@ -29,10 +29,10 @@ const CourseDetailsForContentInfo = ({ data }) => {
                         >
                             {t('content')}
                         </Typography>
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
                 {Boolean(academicPlan?.length) && (
-                    <Grid size={{ xs: 12 }}>
+                    <Grid2 size={{ xs: 12 }}>
                         <Box
                             sx={{
                                 border: '0.6px solid var(--Light-grey, #BBBBBB)',
@@ -41,12 +41,12 @@ const CourseDetailsForContentInfo = ({ data }) => {
                                 backgroundColor: '#F5F7FF'
                             }}
                         >
-                            <Grid container>
+                            <Grid2 container>
                                 {academicPlan?.map((module, index) => {
                                     const isLast = index === academicPlan?.length - 1;
 
                                     return (
-                                        <Grid
+                                        <Grid2
                                             size={{ xs: 12 }}
                                             key={index}
                                             sx={{
@@ -55,8 +55,8 @@ const CourseDetailsForContentInfo = ({ data }) => {
                                                     : '0.6px solid var(--Light-grey, #BBBBBB)'
                                             }}
                                         >
-                                            <Grid container spacing={2} p={4}>
-                                                <Grid size={{ xs: 12, sm: 5 }}>
+                                            <Grid2 container spacing={2} p={4}>
+                                                <Grid2 size={{ xs: 12, sm: 5 }}>
                                                     <Typography
                                                         fontWeight={500}
                                                         fontSize={16}
@@ -64,8 +64,8 @@ const CourseDetailsForContentInfo = ({ data }) => {
                                                     >
                                                         {module?.title}
                                                     </Typography>
-                                                </Grid>
-                                                <Grid size={{ xs: 12, sm: 7 }}>
+                                                </Grid2>
+                                                <Grid2 size={{ xs: 12, sm: 7 }}>
                                                     <Box>
                                                         {module?.description
                                                             .split('\n')
@@ -101,17 +101,17 @@ const CourseDetailsForContentInfo = ({ data }) => {
                                                                 </Stack>
                                                             ))}
                                                     </Box>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
+                                                </Grid2>
+                                            </Grid2>
+                                        </Grid2>
                                     );
                                 })}
-                            </Grid>
+                            </Grid2>
                         </Box>
-                    </Grid>
+                    </Grid2>
                 )}
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 

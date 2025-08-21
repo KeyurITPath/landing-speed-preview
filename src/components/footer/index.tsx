@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Container,
-  Grid,
+  Grid2,
   Stack,
   styled,
   Typography,
@@ -79,7 +79,9 @@ const Footer = ({
   const isCoursePage = pathname === routes.public.search;
 
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'), {
+      noSsr: true,
+    });
 
   const LOGO_URL = useMemo(() => {
     return logo ? SERVER_URL + logo : null;
@@ -257,8 +259,8 @@ const Footer = ({
             px: { xs: 0, sm: 4 },
           }}
         >
-          <Grid size={{ xs: 12 }}>
-            <Grid
+          <Grid2 size={{ xs: 12 }}>
+            <Grid2
               container
               spacing={{ xs: 2, sm: 6 }}
               pt={{ xs: 2, sm: 6 }}
@@ -266,11 +268,11 @@ const Footer = ({
               pr={{ xs: 2, sm: 0 }}
               pl={{ xs: 2, sm: 0 }}
             >
-              <Grid size={{ xs: 12 }}>
-                <Grid container spacing={2}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <Grid container spacing={2}>
-                      <Grid size={{ xs: 12 }}>
+              <Grid2 size={{ xs: 12 }}>
+                <Grid2 container spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
+                    <Grid2 container spacing={2}>
+                      <Grid2 size={{ xs: 12 }}>
                         <Box
                           sx={{
                             display: 'flex',
@@ -315,10 +317,10 @@ const Footer = ({
                             )
                           )}
                         </Box>
-                      </Grid>
+                      </Grid2>
 
                       {shouldShowLanguageSelector && (
-                        <Grid size={{ xs: 12 }}>
+                        <Grid2 size={{ xs: 12 }}>
                           <FormControl
                             label={t('languageLabel')}
                             placeholder={t('enterLanguage')}
@@ -350,10 +352,10 @@ const Footer = ({
                               width: { xs: 200, sm: 220 },
                             }}
                           />
-                        </Grid>
+                        </Grid2>
                       )}
                       {shouldShowCountryDropdown && (
-                        <Grid size={{ xs: 12 }}>
+                        <Grid2 size={{ xs: 12 }}>
                           <FormControl
                             sx={{
                               zIndex: '1 !important',
@@ -374,10 +376,10 @@ const Footer = ({
                               type: 'autocomplete',
                             }}
                           />
-                        </Grid>
+                        </Grid2>
                       )}
                       {COUNTRY_CODE && (
-                        <Grid size={{ xs: 12 }}>
+                        <Grid2 size={{ xs: 12 }}>
                           <Typography
                             sx={{
                               color: '#304BE0',
@@ -389,11 +391,11 @@ const Footer = ({
                               {COUNTRY_CODE}
                             </span>
                           </Typography>
-                        </Grid>
+                        </Grid2>
                       )}
-                    </Grid>
-                  </Grid>
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                    </Grid2>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Box
                       width={'100%'}
                       sx={{
@@ -427,16 +429,16 @@ const Footer = ({
                         {SUPPORT_MAIL}
                       </NavLink>
                     </Box>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Grid
+                  </Grid2>
+                </Grid2>
+              </Grid2>
+              <Grid2 size={{ xs: 12 }}>
+                <Grid2
                   container
                   spacing={{ xs: 6, sm: 12 }}
                   sx={{ flexDirection: { xs: 'column-reverse', sm: 'row' } }}
                 >
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Stack
                       width={{ xs: '100%', md: 'auto' }}
                       direction={'row'}
@@ -480,8 +482,8 @@ const Footer = ({
                         </Box>
                       ))}
                     </Stack>
-                  </Grid>
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography
                       fontSize={{ xs: 13, sm: 16 }}
                       mt={{ xs: 1, sm: 0 }}
@@ -493,11 +495,11 @@ const Footer = ({
                         name: LEGAL_NAME,
                       })}
                     </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+                  </Grid2>
+                </Grid2>
+              </Grid2>
+            </Grid2>
+          </Grid2>
         </Box>
       </Stack>
     </Container>
