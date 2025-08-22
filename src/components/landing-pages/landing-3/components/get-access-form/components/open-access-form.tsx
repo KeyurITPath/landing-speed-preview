@@ -105,7 +105,8 @@ const OpenAccessForm = ({
     const { origin, pathname } = window.location;
 
     if (registerUserData) {
-      success_url = `${origin}${routes.public.redirecting_page}?redirection-page=${routes.private.dashboard}&payment=success&type=purchase_course`;
+      success_url = `${origin}${routes.private.dashboard}?payment=success&type=purchase_course`;
+      // success_url = `${origin}${routes.public.redirecting_page}?redirection-page=${routes.private.dashboard}&payment=success&type=purchase_course`;
     }
 
     const cancel_url = `${origin}${pathname}?payment=failed`;
