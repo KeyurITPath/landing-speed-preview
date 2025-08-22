@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid2, Typography } from '@mui/material';
 
-const CourseDetailsForWillYouNeed = ({ data }) => {
+const CourseDetailsForWillYouNeed = ({ landingData }: any) => {
+    const { data } = landingData;
     return (
         <React.Fragment>
             <Grid2 size={{ xs: 12 }}>

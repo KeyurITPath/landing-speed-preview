@@ -168,10 +168,10 @@ export async function fetchAllCourseCategories(data, language_id) {
   }
 }
 
-export async function fetchCourseForLanding(data) {
+export async function fetchCourseForLanding(data: any) {
   try {
     const response = await api.home.course(data);
-    const courseData = response?.data?.data;
+    const courseData = response?.data?.data || {};
     const isDiscountedPrice = courseData?.discountPrices?.length !== 0;
 
     let APIResponseData = courseData;
@@ -199,7 +199,7 @@ export async function fetchCourseForLanding(data) {
 
     const APIResponseCoursePriceData =
       APIResponseData?.course?.course_prices?.filter(
-        ({ language_id }) => language_id === APIResponseLanguageId
+        ({ language_id }: any) => language_id === APIResponseLanguageId
       );
 
     APIResponseData = {
@@ -210,7 +210,7 @@ export async function fetchCourseForLanding(data) {
       },
     };
     const defaultCoursePrice = APIResponseData?.course?.course_prices?.find(
-      ({ language_id }) => language_id === APIResponseLanguageId
+      ({ language_id }: any) => language_id === APIResponseLanguageId
     );
     return { data: APIResponseData, defaultCoursePrice: defaultCoursePrice };
   } catch (error) {
@@ -254,7 +254,6 @@ export async function fetchCountryCodeHandler() {
   }
 }
 
-
 export const fetchDomainDetails = async () => {
   try {
     const response = await api.home.fetchDomainDetails({
@@ -273,7 +272,7 @@ export const fetchAllLanguages = async () => {
   } catch (error) {
     console.error('Error fetching all languages:', error);
   }
-}
+};
 
 export const fetchAllCountries = async () => {
   try {
@@ -281,5 +280,45 @@ export const fetchAllCountries = async () => {
     return response?.data;
   } catch (error) {
     console.error('Error fetching all countries:', error);
+  }
+};
+
+export const fetchAllUpSales = async (data: any) => {
+  try {
+    const response = await api.home.getAllUpSales(data);
+    return response?.data?.data || [];
+  } catch (error) {
+    console.error('Error fetching all up sales:', error);
+  }
+};
+
+export const fetchAllFbAnalyticsCredentials = async (params: any) => {
+  try {
+    const response = await api.home.getAllFbAnalyticsCredentials(params);
+    const data = await response.data;
+    return {
+      analyticsMetaCredentials: data?.data || [],
+    };
+  } catch (error) {
+    console.error('Error fetching all Facebook analytics credentials:', error);
+  }
+};
+
+export const fetchTrialPopups = async (data: any) => {
+  try {
+    const response = await api.popup.get(data);
+    return response?.data?.data || {};
+  } catch (error) {
+    console.error('Error fetching trial popups:', error);
+  }
+};
+
+export const fetchCategories = async (params: any) => {
+  try {
+    const response = await api.popup.getCategories(params);
+    const data = await response?.data?.data;
+    return data?.result || [];
+  } catch (error) {
+    console.error('Error fetching popup categories:', error);
   }
 };

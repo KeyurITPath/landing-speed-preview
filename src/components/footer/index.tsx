@@ -133,16 +133,16 @@ const Footer = ({
       ?.filter((item: any) => item.value !== activeLanguage);
   }, [languages, activeLanguage, getLanguageFlag]);
 
-  const ALLOWED_LANGUAGE_PATHS = [
+  const ALLOWED_LANGUAGE_PATHS = useMemo(() => [
     routes.public.home,
     routes.private.dashboard,
     routes.private.settings_and_subscription,
-  ];
+  ], []);
 
   // Memoize whether to show language selector based on pathname
   const shouldShowLanguageSelector = useMemo(() => {
     return ALLOWED_LANGUAGE_PATHS.includes(pathname);
-  }, [pathname]);
+  }, [ALLOWED_LANGUAGE_PATHS, pathname]);
 
   const chooseCountryHandler = useCallback(
     async (event: any) => {

@@ -39,7 +39,7 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
                 <IconButton
                     aria-label="Close"
                     size="small"
-                    sx={{ color: theme.palette.common.white, fontSize: 22 }}
+                    sx={{ color: '#ffffff', fontSize: 22 }}
                     onClick={() => closeSnackbar(snackbarId)}
                 >
                     <ICONS.CloseCircleOutline />

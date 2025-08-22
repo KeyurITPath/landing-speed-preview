@@ -21,6 +21,6 @@ export const routes = {
   private: {
     dashboard: '/dashboard',
     settings_and_subscription: '/settings-and-subscription',
-    course_details: '/course-details',
+    course_details: '/course-details/:slug',
   },
 };

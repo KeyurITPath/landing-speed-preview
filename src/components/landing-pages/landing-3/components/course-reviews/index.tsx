@@ -4,14 +4,15 @@ import { ICONS } from '@assets/icons';
 import { warning } from '../../../../../theme/color';
 import { videoURL } from '@utils/helper';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 const StarRating = styled(Box)({
     display: 'flex',
     alignItems: 'center'
 });
 
-const CourseReviews = ({ data }) => {
-    console.log("CourseReviews data", data);
+const CourseReviews = ({ landingData }: any) => {
+    const { data } = landingData;
     const t = useTranslations();
     const reviewDetails = useMemo(() => {
         return [
@@ -76,7 +77,7 @@ const CourseReviews = ({ data }) => {
                             }}
                         >
                             <Grid2 container>
-                                {data?.comments?.map((review, index) => {
+                                {data?.comments?.map((review: any, index: number) => {
                                     const isLast = index === data.comments.length - 1;
                                     return (
                                         <Grid2
@@ -120,10 +121,14 @@ const CourseReviews = ({ data }) => {
                                                         alignItems: 'center'
                                                     }}
                                                 >
-                                                    <Avatar loading="lazy"
-                                                        sx={{ width: 50, height: 50 }}
+                                                    <Image
+                                                        loading="lazy" width={50} height={50}
                                                         alt="Reviewer"
                                                         src={videoURL(review?.pic || '')}
+                                                        style={{
+                                                            borderRadius: '50%',
+                                                            objectFit: 'cover',
+                                                        }}
                                                     />
                                                     <Typography
                                                         color="primary.typography"

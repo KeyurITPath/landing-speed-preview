@@ -1,26 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { isEmptyObject } from '@utils/helper';
+import { useDispatch } from 'react-redux';
 
-const useAccessPlan = ({data}) => {
-    const loading = false;
-
-    const [activeLandingPage, setActiveLandingPage] = useState({});
-
+const useAccessPlan = ({ course, otherData }) => {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (data?.landing_name && !isEmptyObject(data?.landing_name)) {
-            setActiveLandingPage(data?.landing_name);
-        }
-    }, [data, setActiveLandingPage]);
-
     return {
-        loading,
-        course: data?.course || {},
-        activeLandingPage,
+        data: otherData,
         dispatch,
-        course_id: data?.course?.id
+        course_id: course?.id || '',
     };
 };
 

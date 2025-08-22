@@ -375,11 +375,11 @@ export const api = {
       }),
   },
   token: {
-    getToken: ({ data, ...configs }: any) =>
+    getToken: ({ params, ...configs }: any) =>
       client({
         url: '/subscription-token',
         method: 'GET',
-        data,
+        params,
         ...configs,
       }),
   },

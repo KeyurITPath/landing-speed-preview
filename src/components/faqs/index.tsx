@@ -23,7 +23,7 @@ const StyledLink = styled(Link)(() => ({
   },
 }));
 
-const Accordion = styled(props => (
+const Accordion = styled((props: any) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
   [`&.${accordionSummaryClasses.expanded}`]: {
@@ -53,19 +53,13 @@ const AccordionSummary = styled(({ expanded, ...props }: any) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transition: 'background-color 0.2s ease-in-out',
+            transition: 'transform 0.2s ease-in-out, background-color 0.2s ease-in-out',
+            ...(expanded && {
+              transform: 'rotate(180deg)',
+            }),
           }}
         >
-          <Stack
-            sx={{
-              transition: 'transform 0.2s ease-in-out',
-              ...(expanded && {
-                transform: 'rotate(180deg)',
-              }),
-            }}
-          >
-            <ICONS.AngleDown />
-          </Stack>
+          <ICONS.AngleDown />
         </Box>
       }
       {...props}
@@ -99,7 +93,10 @@ const Faqs = ({ domainDetails }: any) => {
 
   const messages = useMessages();
 
-  const [expanded, setExpanded] = useState({
+  const [expanded, setExpanded] = useState<{
+    general_faq: string[];
+    pricing_faq: string[];
+  }>({
     general_faq: [],
     pricing_faq: [],
   });
