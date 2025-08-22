@@ -38,7 +38,7 @@ import {
 import { api } from '@/api';
 import { updateUser } from '@/store/features/auth.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-import { fetchAllUpSales, fetchCourse } from '@/store/features/course.slice';
+import { fetchAllUpSales } from '@/store/features/course.slice';
 // useSocket
 
 let globalPipValue = false;
@@ -285,7 +285,7 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
       if (fetchAllUpSalesData) {
         fetchAllUpSalesData({
           params: {
-            course_id: course?.course_id,
+            course_id: course?.id,
             currency_id: currency?.id,
             language_id: otherData?.data?.language_id,
           },

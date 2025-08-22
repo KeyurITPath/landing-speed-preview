@@ -1,8 +1,9 @@
 import React from 'react'
+import CommonLandingUIOneAndTwo from '../common-landing-UI'
 
 const Landing2 = ({ landingData }: any) => {
   return (
-    <div>Landing2</div>
+    <CommonLandingUIOneAndTwo {...{ landingData }} />
   )
 }
 

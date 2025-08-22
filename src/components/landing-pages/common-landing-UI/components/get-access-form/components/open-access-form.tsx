@@ -1,6 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import {
   Checkbox,
+  Divider,
   FormControlLabel,
   Stack,
   Typography,
@@ -9,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import CustomButton from '@/shared/button';
-import { decodeToken, isEmptyObject } from '@/utils/helper';
+import { decodeToken, formatCurrency, isEmptyObject } from '@/utils/helper';
 import { openAccessNowValidation } from '@/utils/validations';
 import FormControl from '@/shared/inputs/form-control';
 import { api } from '@/api';
@@ -21,13 +22,11 @@ import { DOMAIN } from '@/utils/constants';
 import { routes } from '@/utils/constants/routes';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-
 // import useSocket from '@/hooks/use-socket';
+import Link from 'next/link';
 
 const TermsLink = styled(Link)(() => ({
-  color: '#304BE0',
+  color: 'black',
   textDecorationColor: 'black',
   ':hover': {
     opacity: 0.7,
@@ -35,21 +34,16 @@ const TermsLink = styled(Link)(() => ({
 }));
 
 const OpenAccessForm = ({
+  landingData,
   courseData,
+  setActiveForm,
   utm_source,
-  activeLandingPage,
-  domainName,
   utmData,
+  queryParams,
+  isCourseUpsaleCoursesAvailable,
 }: any) => {
   const { user, setToken } = useContext(AuthContext);
   // const { updateSocketOnLogin } = useSocket();
-
-  const searchParams = useSearchParams();
-
-  const params: Record<string, string> = {};
-  searchParams.forEach((value, key) => {
-    params[key] = value;
-  });
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -57,13 +51,13 @@ const OpenAccessForm = ({
   const { data: languagesData } = languages || {};
 
   const dispatch = useDispatch();
-  const t = useTranslations();
 
   const initialValues = {
     email: user?.email || '',
     isAgreeTerms: Boolean(utm_source),
   };
-  const isLanding3LangPage = activeLandingPage === 'landing3';
+
+  const t = useTranslations();
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
@@ -87,8 +81,8 @@ const OpenAccessForm = ({
 
     if (token) {
       setToken(token);
-      // updateSocketOnLogin(token);
       registerUserData = decodeToken(token);
+      // updateSocketOnLogin(token);
       dispatch(
         updateUser({
           token,
@@ -100,35 +94,41 @@ const OpenAccessForm = ({
     }
 
     // gtm.ecommerce.add_to_cart();
+    if (!isCourseUpsaleCoursesAvailable) {
+      let success_url = '';
+      const { origin, pathname } = window.location;
+      if (registerUserData?.is_verified) {
+        success_url = `${origin}${pathname}?payment=success`;
+      } else {
+        sessionStorage.setItem('hasSalesFlowAccess', true);
+        const queryString = new URLSearchParams(queryParams).toString();
+        success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+      }
 
-    let success_url = '';
-    const { origin, pathname } = window.location;
+      const cancel_url = `${origin}${pathname}?payment=failed`;
 
-    if (registerUserData) {
-      success_url = `${origin}${routes.public.redirecting_page}?redirection-page=${routes.private.dashboard}&payment=success&type=purchase_course`;
-    }
+      const data = {
+        stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
+        selected_upsale_price_ids: [],
+        user_id: registerUserData?.id,
+        final_url: course?.slug,
+        success_url,
+        cancel_url,
+        domain: DOMAIN,
+        ...queryParams,
+      };
 
-    const cancel_url = `${origin}${pathname}?payment=failed`;
-    const data = {
-      stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
-      selected_upsale_price_ids: [],
-      user_id: registerUserData?.id,
-      success_url,
-      cancel_url,
-      is_purchase_from_landing_3: isLanding3LangPage && true,
-      domain: isLanding3LangPage ? domainName : DOMAIN,
-      final_url: course?.slug,
-      ...params
-    };
-
-    const resOrderCheckout = await api.getAccess.orderCheckout({ data });
-
-    if (resOrderCheckout?.data?.data?.checkoutUrl) {
-      // pixel.initial_checkout({
-      //     content_ids: [],
-      //     ...(!isEmptyObject(utmData) ? { utmData } : {})
-      // });
-      window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
+      const resOrderCheckout = await api.getAccess.orderCheckout({ data });
+      if (resOrderCheckout?.data?.data?.checkoutUrl) {
+        // await pixel.initial_checkout({
+        //     userId: registerUserData?.id,
+        //     content_ids: [],
+        //     ...(!isEmptyObject(utmData) ? { utmData } : {})
+        // });
+        window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
+      }
+    } else {
+      setActiveForm('checkout-form');
     }
   });
 
@@ -142,50 +142,74 @@ const OpenAccessForm = ({
 
   const isAgreeTermsError = touched?.isAgreeTerms && errors?.isAgreeTerms;
 
+  const coursePrice = useMemo(() => {
+    const defaultPrice = courseData?.course_prices?.[0];
+    const amount = defaultPrice?.price;
+    const currencyCode = defaultPrice?.currency?.name;
+
+    return formatCurrency(amount, currencyCode);
+  }, [courseData?.course_prices]);
+
   return (
-    <Stack sx={{ gap: { xs: 2.5, sm: 7 } }}>
+    <Stack sx={{ gap: { xs: 2.5, sm: 4 } }}>
+      <Typography variant='h5' sx={{ color: 'common.black', fontWeight: 500 }}>
+        {t('save_your_seat')}
+      </Typography>
+      <Divider
+        sx={{
+          borderStyle: 'dashed',
+          borderColor: '#dfdfdf',
+        }}
+      />
       <Stack
         sx={{
-          flexDirection: 'column',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: { xs: 2.5, sm: 7 },
+          minHeight: 35,
+          gap: 2,
         }}
       >
         <Typography
-          variant='h4'
-          sx={{ color: 'initial.black', fontWeight: 700 }}
-          textAlign={'center'}
+          variant='body1'
+          sx={{ color: 'common.black', fontWeight: 500 }}
         >
-          {t('open_access_form.complete_form')}
+          {landingData?.header}
         </Typography>
-
-        <Stack component='form' sx={{ gap: 2.5 }} onSubmit={handleSubmit}>
-          <Stack sx={{ gap: { xs: 2.5, sm: 7 } }} alignItems={'center'}>
-            <FormControl
-              {...{ handleBlur, handleChange }}
-              label={t('your_email')}
-              placeholder={t('open_access_form.email_placeholder')}
-              name='email'
-              fullWidth
-              error={touched?.email && errors?.email}
-              value={values?.email}
-            />
-            <CustomButton
-              {...{ loading }}
-              size='large'
-              type='submit'
-              variant='gradient'
-              sx={{ height: 60, width: { xs: '100%', sm: 300 } }}
-            >
-              {t('open_access_form.go_to_checkout')}
-            </CustomButton>
-          </Stack>
+        <Typography
+          variant='body1'
+          sx={{ color: 'common.black', fontWeight: 500, textWrap: 'nowrap' }}
+        >
+          {coursePrice}
+        </Typography>
+      </Stack>
+      <Divider
+        sx={{
+          borderStyle: 'dashed',
+          borderColor: '#dfdfdf',
+        }}
+      />
+      <Typography
+        variant='body1'
+        sx={{ color: 'common.black', fontWeight: 500, textAlign: 'right' }}
+      >
+        {t('total')}: {coursePrice}
+      </Typography>
+      <Stack component='form' sx={{ gap: 2.5 }} onSubmit={handleSubmit}>
+        <Stack sx={{ gap: 1.5 }}>
+          <FormControl
+            {...{ handleBlur, handleChange }}
+            label={t('your_email')}
+            placeholder='example@mail.com'
+            name='email'
+            error={touched?.email && errors?.email}
+            value={values?.email}
+          />
           <FormControlLabel
             sx={{ alignItems: 'start' }}
             control={
               <Checkbox
                 size='small'
-                color='primaryNew'
                 name='isAgreeTerms'
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -198,10 +222,10 @@ const OpenAccessForm = ({
                 variant='body2'
                 sx={{ color: isAgreeTermsError ? 'error.main' : 'black' }}
               >
-                {t.rich('terms_of_service_link', {
+                {t.rich('terms_of_service', {
                   refund: chunks => (
                     <TermsLink
-                      href={routes.public.refund_policies}
+                      href='/refund-policies'
                       target='_blank'
                       rel='noopener noreferrer'
                     >
@@ -210,7 +234,7 @@ const OpenAccessForm = ({
                   ),
                   terms: chunks => (
                     <TermsLink
-                      href={routes.public.terms_of_service}
+                      href='/terms-of-service'
                       target='_blank'
                       rel='noopener noreferrer'
                     >
@@ -219,7 +243,7 @@ const OpenAccessForm = ({
                   ),
                   privacy: chunks => (
                     <TermsLink
-                      href={routes.public.privacy_policy}
+                      href='/privacy-policy'
                       target='_blank'
                       rel='noopener noreferrer'
                     >
@@ -231,6 +255,9 @@ const OpenAccessForm = ({
             }
           />
         </Stack>
+        <CustomButton {...{ loading }} size='large' type='submit'>
+          {t('openAccessNow')}
+        </CustomButton>
       </Stack>
     </Stack>
   );
