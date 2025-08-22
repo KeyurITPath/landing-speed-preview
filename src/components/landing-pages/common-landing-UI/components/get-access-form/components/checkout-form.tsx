@@ -283,14 +283,13 @@ const CheckoutForm = ({
                   <Stack sx={{ gap: 0.4, position: 'relative' }}>
                     <Image
                       width={165}
-                      height={74}
+                      height={92}
                       src={image}
                       alt={title}
                       style={{
                         objectFit: 'cover',
                         aspectRatio: '16/9',
                         borderRadius: '8px',
-                        height: '100%',
                         width: '100%',
                       }}
                     />
