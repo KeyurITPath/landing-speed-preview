@@ -84,7 +84,7 @@ const DOMAIN = 'https://staging.eduelle.com';
 
 const AUTHOR_URL = process.env.NEXT_PUBLIC_REDIRECT_ADMIN_URL;
 
-const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || null;
+const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b';
 
 const AGE_RANGE = [
   { value: '19-25', label: '19-25' },
