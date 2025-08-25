@@ -9,7 +9,6 @@ export const LANGUAGES_COOKIE = 'languages';
 // Cookie options
 const COOKIE_OPTIONS = {
   expires: 365, // 1 year
-  path: '/',
   sameSite: 'lax' as const,
   secure: false, // Force false for localhost development
 };
@@ -98,7 +97,6 @@ export const getCountryFromServer = (cookieStore: any): string | null => {
 export const setLanguageOnServer = (cookieStore: any, languageId: number | string) => {
   cookieStore.set(LANGUAGE_COOKIE, String(languageId), {
     maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
-    path: '/',
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
@@ -110,7 +108,6 @@ export const setLanguageOnServer = (cookieStore: any, languageId: number | strin
 export const setCountryOnServer = (cookieStore: any, countryCode: string) => {
   cookieStore.set(COUNTRY_COOKIE, countryCode, {
     maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
-    path: '/',
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
@@ -136,7 +133,6 @@ export const setLanguagesOnServer = (cookieStore: any, languages: any[]) => {
     const languagesJson = JSON.stringify(languages);
     cookieStore.set(LANGUAGES_COOKIE, languagesJson, {
       maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
-      path: '/',
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });

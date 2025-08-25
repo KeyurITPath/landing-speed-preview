@@ -19,7 +19,6 @@ export async function POST() {
     // Set cookies to expire (delete them)
     response.cookies.set('token', '', {
       expires: new Date(0),
-      path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -27,7 +26,6 @@ export async function POST() {
 
     response.cookies.set('refreshToken', '', {
       expires: new Date(0),
-      path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -35,12 +33,10 @@ export async function POST() {
 
     response.cookies.set('user', '', {
       expires: new Date(0),
-      path: '/',
     });
 
     response.cookies.set('session', '', {
       expires: new Date(0),
-      path: '/',
     });
 
     return response;

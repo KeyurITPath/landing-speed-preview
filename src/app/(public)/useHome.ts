@@ -56,8 +56,6 @@ const useHome = () => {
 
   const { country_code } = country || {};
 
-  console.log('>>>>>>>>>>>>>>>', country_code)
-
   const {
     courses: {
       data: courseData,

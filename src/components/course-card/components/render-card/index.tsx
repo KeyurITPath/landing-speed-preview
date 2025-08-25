@@ -34,7 +34,6 @@ const RenderCard = ({
   const { avatar, name } = instructor || {};
   const t = useTranslations();
 
-  // console.log('RenderCard', course);
   return (
     <Card
       sx={{

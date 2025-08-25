@@ -44,7 +44,6 @@ import { fetchAllUpSales } from '@/store/features/course.slice';
 let globalPipValue = false;
 
 const useLanding = ({ activeLandingPage, ...otherData }: any) => {
-  console.log('otherData', otherData);
 
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(

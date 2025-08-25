@@ -3,7 +3,7 @@ import { DOMAIN } from '@/utils/constants';
 import Header from '@/components/header';
 import { Box } from '@mui/material';
 import Footer from '@/components/footer';
-import { fetchAllCountries, fetchCountryCodeHandler } from '@/services/course-service';
+import { fetchAllCountries } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
 
 export async function generateMetadata() {
@@ -43,7 +43,9 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const domain = (await response?.data) || {};
 
   // IP address with country code
-  const country_code = await fetchCountryCodeHandler();
+  const countryResponse = await api.home.countryCode({});
+  const { country_code } = await countryResponse.data;
+
 
   // Get language_id and languages using the simple service
   const language_id = await LanguageService.getEffectiveLanguageId();

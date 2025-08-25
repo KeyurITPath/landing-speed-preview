@@ -25,7 +25,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Load token from cookie on mount
   useEffect(() => {
     const storedToken = Cookies.get("token") || null;
-    console.log('storedToken', storedToken)
     if (storedToken) {
       setUser(decodeToken(storedToken));
       dispatch(updateUser({

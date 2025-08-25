@@ -23,7 +23,7 @@ export class LanguageService {
 
       return freshLanguages;
     } catch (error) {
-      console.error('Error fetching languages:', error);
+
       return [];
     }
   }
@@ -51,7 +51,7 @@ export class LanguageService {
       const cookieStore = await cookies();
       setLanguagesOnServer(cookieStore, languages);
     } catch (error) {
-      console.warn('Failed to cache languages:', error);
+
     }
   }
 }

@@ -15,7 +15,6 @@ export async function changeLanguageAction(formData: FormData) {
 
   cookieStore.set(LANGUAGE_COOKIE, languageId, {
     maxAge: 365 * 24 * 60 * 60, // 1 year
-    path: '/',
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     httpOnly: false, // Allow client-side access
@@ -46,10 +45,21 @@ export async function changeCountryAction(formData: FormData) {
   // Set the country cookie on server-side
   cookieStore.set(COUNTRY_COOKIE, countryCode, {
     maxAge: 365 * 24 * 60 * 60, // 1 year
-    path: '/',
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     httpOnly: false, // Allow client-side access
   });
   redirect(currentPath);
+}
+
+export async function changeCountryCodeAction(countryCode: string) {
+  const cookieStore = await cookies();
+
+  // Set the country cookie on server-side
+  cookieStore.set(COUNTRY_COOKIE, countryCode, {
+    maxAge: 365 * 24 * 60 * 60, // 1 year
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: false, // Allow client-side access
+  });
 }

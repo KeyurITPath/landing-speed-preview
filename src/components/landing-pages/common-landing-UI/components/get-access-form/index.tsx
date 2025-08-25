@@ -24,7 +24,6 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
   const queryParams = useSearchParams();
   const { upSaleCourses } = useSelector(({ course }: any) => course);
 
-  console.log('upSaleCourses', upSaleCourses)
 
   const isCourseUpsaleCoursesAvailable = useMemo(() => {
     return Boolean(upSaleCourses?.length > 0);

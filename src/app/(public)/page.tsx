@@ -24,6 +24,7 @@ const Home = async () => {
   const country_code = await fetchCountryCodeHandler();
 
   const domainDetails = await fetchDomainDetails();
+  console.log('country_code3', country_code)
 
   const popularCourses = await fetchPopularCourses({
     params: {

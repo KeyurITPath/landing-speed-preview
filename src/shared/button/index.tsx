@@ -5,9 +5,10 @@ import { linearGradients } from '../../theme/color';
 import { ButtonProps as MuiButtonProps } from '@mui/material';
 
 interface CustomButtonProps extends Omit<MuiButtonProps, 'variant'> {
-  loading?: boolean;
+  loading?: boolean | undefined;
   isShowCloseIconBorder?: boolean;
   variant?: MuiButtonProps['variant'] | 'gradient';
+  disabled?: boolean | undefined;
 }
 
 const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(

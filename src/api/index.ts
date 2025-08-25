@@ -60,6 +60,14 @@ export const api = {
       }),
   },
   home: {
+    countryCode: ({ ...configs }: any) =>
+      client({
+        url: `/api/countryCode`,
+        method: METHODS.GET,
+        isServer: true,
+        cache: 'no-store',
+        ...configs,
+      }),
     course: ({ params, ...configs }: any) =>
       client({
         url: `/landingPageDetails`,

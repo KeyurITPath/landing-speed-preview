@@ -3,10 +3,13 @@ import { DOMAIN } from '@utils/constants';
 import { cookies } from 'next/headers';
 import MainLanding from './MainLanding';
 import { api } from '@/api';
+import { COUNTRY_COOKIE } from '@/utils/cookies';
 
 const Landing = async ({ params, searchParams }: any) => {
-  const cookieStore = cookies();
-  const countryCode = (await cookieStore).get('country_code')?.value;
+
+  const countryResponse = await api.home.countryCode({});
+  const { country_code } = await countryResponse.data;
+
   const slug = await params;
   const discountCode = await searchParams;
 
@@ -21,7 +24,7 @@ const Landing = async ({ params, searchParams }: any) => {
       domain: DOMAIN,
     },
     headers: {
-      'req-from': countryCode,
+      'req-from': country_code,
     },
   });
 

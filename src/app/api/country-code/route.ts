@@ -1,0 +1,40 @@
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+import { COUNTRY_COOKIE } from '@/utils/cookies';
+import { fetchCountryCodeHandler } from '@/services/course-service';
+
+export async function GET() {
+  try {
+    const country_code = await fetchCountryCodeHandler();
+
+    if (!country_code) {
+      return NextResponse.json({
+        success: false,
+        message: 'Could not determine country code'
+      });
+    }
+
+    // Set the cookie
+    const cookieStore = await cookies();
+    cookieStore.set({
+      name: COUNTRY_COOKIE,
+      value: country_code,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return NextResponse.json({
+      success: true,
+      country_code
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'Error setting country code'
+    }, {
+      status: 500
+    });
+  }
+}

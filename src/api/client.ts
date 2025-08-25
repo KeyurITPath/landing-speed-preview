@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES, SERVER_URL } from '../utils/constants';
+import { ERROR_MESSAGES, SERVER_URL, OWN_URL } from '../utils/constants';
 import { apiAsyncHandler, getTokenSync, isEmptyObject } from '../utils/helper';
 
 const BASE_URL = SERVER_URL;
@@ -41,7 +41,7 @@ const client = async ({
   };
   rest?: Record<string, unknown>;
 }) => {
-  let fullUrl = isServer ? `${url}` : `${FULL_BASE_URL}${url}`;
+  let fullUrl = isServer ? `${OWN_URL}${url}` : `${FULL_BASE_URL}${url}`;
   let token = cookieToken;
 
   const { ...restData } = data;

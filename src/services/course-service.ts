@@ -240,14 +240,7 @@ export async function fetchCountryCodeHandler() {
 
     const data = await response.json();
     const { country_code } = data || {};
-
-    // Store the fetched country code in cookie for next time
-    if (country_code) {
-      // Note: We can't set cookies in server components, but we'll set it in client-side
-      return country_code;
-    }
-
-    return 'US'; // Default fallback
+    return country_code || 'US';
   } catch (error) {
     console.error('Error fetching ip or country for landing:', error);
     return 'US'; // Return default on error
