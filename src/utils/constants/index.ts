@@ -74,7 +74,7 @@ const ASPECT_RATIO = {
 const SOCKET_URL =
   process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
 const SERVER_URL = 'https://staging-api.eduelle.com';
-const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'http://192.168.1.59:3000';
+const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'http://54.193.35.97:3000';
 // const SERVER_URL = 'https://api.eduelle.com';
 // const SERVER_URL = 'https://api-coursemarketplace-dev.project-demo.info';
 
