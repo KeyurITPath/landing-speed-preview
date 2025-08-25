@@ -16,15 +16,15 @@ import OneTimeOpportunity from './components/one-time-opportunity';
 import WhatYouGet from './components/what-you-get';
 import Marquees from './components/marquees';
 import Faqs from './components/faqs';
-import CustomButton from '../../../shared/button';
-import LandingLayoutContainer from '../../../shared/landing-layout-container';
-import VideoPlayer from '../../../shared/video-player';
-import { formatCurrency, videoURL } from '../../../utils/helper';
-import { initial, linearGradients } from '../../../theme/color';
-import { OVERRIDE } from '../../../theme/basic';
+import CustomButton from '@/shared/button';
+import LandingLayoutContainer from '@/shared/landing-layout-container';
+import VideoPlayer from '@/shared/video-player';
+import { formatCurrency, videoURL } from '@/utils/helper';
+import { initial, linearGradients } from '@/theme/color';
+import { OVERRIDE } from '@/theme/basic';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-// import SalesPopups from '../../components/sales-popups';
+import SalesPopups from '@/components/sales-popups';
 
 const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
   const {
@@ -339,15 +339,15 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
       </LandingLayoutContainer>
 
       {/* Sales popups */}
-      {/* <SalesPopups
-                {...{ handleWarningSuccess }}
+      <SalesPopups
+                {...{ handleWarningSuccess, country_code }}
                 open={popupsState}
                 onClose={popupsClose}
                 rootHandleCancel={onPopupCancel}
                 rootHandleSuccess={onPopupSuccess}
                 isMobile={isMobile}
                 monthlySubscriptionData={monthlySubscriptionData}
-            /> */}
+            />
     </>
   );
 };
