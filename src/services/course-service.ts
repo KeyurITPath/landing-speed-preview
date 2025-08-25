@@ -223,7 +223,7 @@ export async function fetchCountryCodeHandler() {
     // First check if country code exists in cookies
     const cookieStore = await cookies();
     const countryFromCookie = getCountryFromServer(cookieStore);
-
+    console.log('countryFromCookie', countryFromCookie)
     if (countryFromCookie) {
       return countryFromCookie;
     }
@@ -239,6 +239,7 @@ export async function fetchCountryCodeHandler() {
     });
 
     const data = await response.json();
+    console.log('data', data)
     const { country_code } = data || {};
     return country_code || 'US';
   } catch (error) {
