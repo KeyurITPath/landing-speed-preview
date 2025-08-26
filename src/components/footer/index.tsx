@@ -60,6 +60,7 @@ const Footer = ({
   languages,
   countries,
   language_id,
+  isHidePadding,
 }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -135,11 +136,14 @@ const Footer = ({
       ?.filter((item: any) => item.value !== activeLanguage);
   }, [languages, activeLanguage, getLanguageFlag]);
 
-  const ALLOWED_LANGUAGE_PATHS = useMemo(() => [
-    routes.public.home,
-    routes.private.dashboard,
-    routes.private.settings_and_subscription,
-  ], []);
+  const ALLOWED_LANGUAGE_PATHS = useMemo(
+    () => [
+      routes.public.home,
+      routes.private.dashboard,
+      routes.private.settings_and_subscription,
+    ],
+    []
+  );
 
   // Memoize whether to show language selector based on pathname
   const shouldShowLanguageSelector = useMemo(() => {
@@ -238,7 +242,27 @@ const Footer = ({
   }, [pathname, isCoursePage]);
 
   return (
-    <Container maxWidth='lg' sx={{ width: '100%' }}>
+    <Container
+      {...{
+        ...(!isHidePadding
+          ? {
+              maxWidth: 'lg',
+            }
+          : {
+             maxWidth: 'xl',
+          }),
+      }}
+      sx={{
+        width: '100%',
+        ...(isHidePadding
+          ? {
+              maxWidth: '100%!important',
+              pl: '0px!important',
+              pr: '0px!important',
+            }
+          : {}),
+      }}
+    >
       <Stack
         id='footer'
         sx={{

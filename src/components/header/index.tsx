@@ -64,7 +64,7 @@ const Header = ({ domainDetails }: any) => {
     if (typeof logoutClose === 'function') {
       logoutClose(false);
     }
-    location.reload();
+    router.refresh();
   };
 
   return (
