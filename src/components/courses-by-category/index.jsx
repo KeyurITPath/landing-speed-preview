@@ -25,12 +25,12 @@ const CoursesByCategory = ({
   homeData,
   handleStartFree,
   filterCategoryHandler,
+  COURSES_DATA,
+  courseDataLoading,
+  filterCategory
 }) => {
   const {
-    COURSES_DATA,
     CATEGORIES_BADGE,
-    filterCategory,
-    isCoursesDataLoading,
     isBecomeAMemberWithVerified,
   } = homeData;
 
@@ -159,7 +159,7 @@ const CoursesByCategory = ({
                 },
               }}
             >
-              {isCoursesDataLoading ? (
+              {courseDataLoading ? (
                 skeletonArray?.map((_, index) => (
                   <SwiperSlide key={index}>
                     <Box pb={{ xs: 4, sm: 4 }}>

@@ -405,7 +405,7 @@ const useHome = () => {
   );
   return {
     COURSES_DATA: homePageCoursesData,
-    isCoursesDataLoading: courseDataLoading,
+    courseDataLoading,
     POPULAR_BRAND_COURSES_DATA: popularCoursesOnBrandData,
     isPopularBrandCoursesDataLoading: popularCoursesOnBrandLoading,
     dispatch,

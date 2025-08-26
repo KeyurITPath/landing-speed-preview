@@ -30,7 +30,7 @@ const ClientSection = ({ homeData, domainDetails, serverLanguageId, serverCountr
   useCookieSync(serverLanguageId, serverCountryCode, serverLanguages);
 
   // const { isPaymentFailed, isPaymentSuccess, isBecomeAMemberWithVerified, shouldOfferTrials } = useHomeDetails;
-  const { handleStartFree, filterCategoryHandler } = useHome();
+  const { handleStartFree, filterCategoryHandler, COURSES_DATA, courseDataLoading, filterCategory } = useHome();
 
   return (
     <React.Fragment>
@@ -52,7 +52,7 @@ const ClientSection = ({ homeData, domainDetails, serverLanguageId, serverCountr
         <UserReviews />
         <GetStartedSteps />
         <CoursesByCategory
-          {...{ homeData, handleStartFree, filterCategoryHandler }}
+          {...{ homeData, handleStartFree, filterCategoryHandler, COURSES_DATA, courseDataLoading, filterCategory }}
         />
         <Faqs domainDetails={domainDetails} />
         <BecomeAuthor domainDetails={domainDetails}  />
