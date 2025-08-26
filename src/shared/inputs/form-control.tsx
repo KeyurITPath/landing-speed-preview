@@ -25,6 +25,7 @@ const FormControl = React.memo(
     listIcon = false,
     renderSelectedValue,
     mainSx,
+    helperText,
     ...props
   }: any) => {
     const isError = Boolean(error);
@@ -101,7 +102,11 @@ const FormControl = React.memo(
           />
         )}
 
-        {isError && <FormHelperText id={name}>{error}</FormHelperText>}
+        {(isError || helperText) && (
+          <FormHelperText id={name}>
+            {isError ? error : helperText}
+          </FormHelperText>
+        )}
       </MuiFormControl>
     );
   }

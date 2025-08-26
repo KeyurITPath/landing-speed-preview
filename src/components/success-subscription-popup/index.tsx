@@ -34,7 +34,7 @@ const SuccessSubscriptionPopup = ({ open }: any) => {
   const handleClose = async () => {
     const response = await api.token.getToken({
       params: {
-        userId: user?.id,
+        userId: user?.id || '',
       },
     });
     if (response?.data) {

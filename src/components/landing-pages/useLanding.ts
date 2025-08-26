@@ -140,7 +140,7 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   const fetchSubscribedToken = useCallback(async () => {
     const response = await api.token.getToken({
       params: {
-        userId: user?.id,
+        userId: user?.id || '',
       },
     });
     if (response?.data) {

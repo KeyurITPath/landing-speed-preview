@@ -271,6 +271,7 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
 
 const Sidebar = ({ open, onClose, lgUp, user, domainDetails }: any) => {
   const { sidebar } = useSidebar({ onClose, user });
+  console.log('sidebar', sidebar)
   return (
     <Drawer
       anchor='left'

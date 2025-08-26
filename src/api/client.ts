@@ -1,5 +1,5 @@
-import { ERROR_MESSAGES, SERVER_URL, OWN_URL } from '../utils/constants';
-import { apiAsyncHandler, getTokenSync, isEmptyObject } from '../utils/helper';
+import { ERROR_MESSAGES, SERVER_URL, OWN_URL } from '@/utils/constants';
+import { apiAsyncHandler, getTokenSync, isEmptyObject } from '@/utils/helper';
 
 const BASE_URL = SERVER_URL;
 const DEFAULT_PREFIX = '/api';
@@ -78,7 +78,8 @@ const client = async ({
     ...rest,
   };
 
-  if (restData && method !== METHODS.GET) {
+  // Only add body for non-GET/HEAD requests
+  if (restData && ![METHODS.GET, METHODS.HEAD].includes(method.toLowerCase())) {
     fetchOptions.body = JSON.stringify(restData);
   }
 
@@ -92,9 +93,7 @@ const client = async ({
       if (res.ok) {
         return { status: res?.status, data: responseType };
       } else {
-        const { data, error } = responseType || {};
-        const status: number = error?.status;
-
+        const status: number = responseType?.status;
         const message =
           ERROR_MESSAGES[String(status) as keyof typeof ERROR_MESSAGES] ||
           ERROR_MESSAGES.common;
@@ -103,7 +102,7 @@ const client = async ({
           status,
           message,
           data,
-          apiError: error || {},
+          apiError: responseType || {},
         };
       }
     },
