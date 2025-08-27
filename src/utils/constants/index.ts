@@ -75,6 +75,7 @@ const SOCKET_URL =
   process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
 const SERVER_URL = 'https://staging-api.eduelle.com';
 const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'http://54.193.35.97:3000';
+const TOLSTOY_COMMENT_LAST_KEY = process.env.NEXT_PUBLIC_TOLSTOY_COMMENT_LAST_KEY || '0a1efdadd65f4ca5bb691ae23284ad68'
 // const SERVER_URL = 'https://api.eduelle.com';
 // const SERVER_URL = 'https://api-coursemarketplace-dev.project-demo.info';
 
@@ -189,4 +190,5 @@ export {
   TRIAL_ACTIVATION_METHODS,
   AUTHOR_URL,
   OWN_URL,
+  TOLSTOY_COMMENT_LAST_KEY
 };

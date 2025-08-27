@@ -34,7 +34,7 @@ const client = async ({
   headers?: Record<string, string>;
   params?: any;
   signal?: AbortSignal;
-  auth?: any,
+  auth?: any;
   data?: {
     params?: any;
     [key: string]: unknown;
@@ -47,11 +47,12 @@ const client = async ({
   const { ...restData } = data;
 
   // Handle query params
+  // Handle query params
   if (!isEmptyObject(params)) {
-    const queryParams = Object.fromEntries(
-      Object.entries(params).map(([key, value]) => [key, String(value)])
-    );
-    const queryString = new URLSearchParams(queryParams).toString();
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${value}`) // no encoding here
+      .join('&');
+
     fullUrl += `?${queryString}`;
   }
 
@@ -61,7 +62,7 @@ const client = async ({
     token = tokenCookie || '';
   }
 
-  if(!isEmptyObject(auth)){
+  if (!isEmptyObject(auth)) {
     const basicAuth = btoa(`${auth.username}:${auth.password}`);
     headers.Authorization = `Basic ${basicAuth}`;
   }
