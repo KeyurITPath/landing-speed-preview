@@ -10,7 +10,7 @@ import { updateUser } from '@/store/features/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { AuthContext } from '@/context/auth-provider';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const LifetimeAccess = ({
   handleCancel,
@@ -27,7 +27,7 @@ const LifetimeAccess = ({
   const t = useTranslations();
   const { user } = useSelector(({ auth }: any) => auth);
   const dispatch = useDispatch();
-  //  const { updateSocketOnLogin } = useSocket()
+  const { updateSocketOnLogin } = useSocket();
   const { setToken } = useContext(AuthContext);
 
   const [onSuccess, loading] = useAsyncOperation(async () => {
@@ -52,7 +52,7 @@ const LifetimeAccess = ({
 
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({

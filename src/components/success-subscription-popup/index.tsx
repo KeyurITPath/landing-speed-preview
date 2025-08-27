@@ -7,7 +7,9 @@ import { api } from '@/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { decodeToken } from '@/utils/helper';
 import { updateUser } from '@/store/features/auth.slice';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
+import { AuthContext } from '@/context/auth-provider';
+import { useContext } from 'react';
 
 const StyledSuccessText = styled('span')(() => ({
   color: '#51AA4F',
@@ -28,7 +30,9 @@ const SuccessSubscriptionPopup = ({ open }: any) => {
   const dispatch = useDispatch();
   const t = useTranslations();
 
-  // const { updateSocketOnLogin } = useSocket();
+  const { setToken } = useContext(AuthContext);
+
+  const { updateSocketOnLogin } = useSocket();
   const { user } = useSelector(({ auth }: any) => auth);
 
   const handleClose = async () => {
@@ -40,7 +44,8 @@ const SuccessSubscriptionPopup = ({ open }: any) => {
     if (response?.data) {
       const token = response?.data?.data;
       const registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
+      setToken(token);
       dispatch(
         updateUser({
           activeUI: '',

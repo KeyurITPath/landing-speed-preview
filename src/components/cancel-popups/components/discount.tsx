@@ -13,7 +13,7 @@ import cookies from 'js-cookie';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { AuthContext } from '@/context/auth-provider';
 import { useContext } from 'react';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const Discount = ({
   handleCancel,
@@ -30,7 +30,7 @@ const Discount = ({
   const { user } = useSelector(({ auth }: any) => auth);
   const dispatch = useDispatch();
   const { setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const t = useTranslations();
   const country_code = cookies.get('country_code');
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
@@ -79,7 +79,7 @@ const Discount = ({
       let registerUserData = {};
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({

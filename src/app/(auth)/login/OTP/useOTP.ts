@@ -1,19 +1,15 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import useToast from '@/hooks/use-snackbar';
 import { api } from '@/api';
 import { DOMAIN } from '@/utils/constants';
 import { otpValidationSchema } from '@/utils/validations';
-import { decodeToken } from '@/utils/helper';
 import { useRouter } from 'next/navigation';
-import { resetOTPKey, setActiveUI, updateUser } from '@/store/features/auth.slice';
+import { resetOTPKey, setActiveUI } from '@/store/features/auth.slice';
 import { routes } from '@/utils/constants/routes';
-// import useSocket from '../../../../hooks/use-socket';
 
 const useOTP = () => {
-  // const { updateSocketOnLogin } = useSocket();
-
   const [remainingTime, setRemainingTime] = useState(45);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);

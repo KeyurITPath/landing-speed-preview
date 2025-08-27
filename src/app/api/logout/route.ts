@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+// CORS headers configuration
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*', // Replace with your specific origin in production
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST() {
   try {
     // Get cookies
@@ -13,7 +25,10 @@ export async function POST() {
     // Clear server-side cookies
     const response = NextResponse.json(
       { message: 'Logged out successfully' },
-      { status: 200 }
+      {
+        status: 200,
+        headers: corsHeaders
+      }
     );
 
     // Set cookies to expire (delete them)

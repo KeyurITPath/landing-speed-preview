@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICONS } from '@/assets/icons';
 import useAsyncOperation from '@/hooks/use-async-operation';
@@ -14,10 +14,12 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { TRIAL_ACTIVATION_METHODS } from '@/utils/constants';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchSubscriptionWithDiscount } from '@/store/features/popup.slice';
-// useSocket
+import useSocket from '@/hooks/use-socket';
+import { AuthContext } from '@/context/auth-provider';
 
 const useTrialPopup = ({ trialPopupClose, trialPopupState }: any) => {
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
+  const { setToken } = useContext(AuthContext);
 
   const [fetchSubscriptionWithDiscountData] = useDispatchWithAbort(
     fetchSubscriptionWithDiscount
@@ -202,7 +204,8 @@ const useTrialPopup = ({ trialPopupClose, trialPopupState }: any) => {
 
     if (token) {
       registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
+      setToken(token);
       dispatch(
         updateUser({
           activeUI: '',
@@ -243,7 +246,8 @@ const useTrialPopup = ({ trialPopupClose, trialPopupState }: any) => {
     if (hasActiveSubscription) return;
     if (token) {
       registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
+      setToken(token);
       dispatch(
         updateUser({
           activeUI: '',

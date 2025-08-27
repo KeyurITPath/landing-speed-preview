@@ -3,6 +3,18 @@ import { NextResponse } from 'next/server';
 import { COUNTRY_COOKIE } from '@/utils/cookies';
 import { fetchCountryCodeHandler } from '@/services/course-service';
 
+// CORS headers configuration
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*', // Replace with your specific origin in production
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function GET() {
   try {
     const country_code = await fetchCountryCodeHandler();
@@ -27,7 +39,8 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      country_code
+      country_code,
+     headers: corsHeaders
     });
   } catch (error) {
     return NextResponse.json({

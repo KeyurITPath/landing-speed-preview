@@ -25,6 +25,7 @@
     "@mui/system": "^6.5.0",
     "@mui/x-date-pickers": "^7.29.4",
     "@reduxjs/toolkit": "^2.8.2",
+    "@vimeo/player": "^2.29.3",
     "countries-list": "^3.1.1",
     "formik": "^2.4.6",
     "hls.js": "^1.6.2",
@@ -43,6 +44,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-redux": "^9.2.0",
     "simplebar-react": "^3.3.2",
+    "socket.io-client": "^4.8.1",
     "swiper": "^11.2.10",
     "video.js": "^8.19.1",
     "yup": "^1.7.0"
@@ -53,6 +55,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/vimeo__player": "^2.18.3",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
     "dotenv-cli": "^8.0.0",

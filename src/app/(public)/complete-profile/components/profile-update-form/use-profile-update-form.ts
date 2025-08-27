@@ -13,13 +13,13 @@ import { routes } from '@/utils/constants/routes';
 import { decodeToken, decrypt } from '@/utils/helper';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
-// import useSocket from '../../../../hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 import { fetchUser } from '@/store/features/user.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 
 const useProfileUpdateForm = () => {
   const { user, setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
 
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
   const { data: userData } = useSelector(({ user }: any) => user);
@@ -67,7 +67,7 @@ const useProfileUpdateForm = () => {
       const token = response?.data?.data?.token;
       if (token) {
         setToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
       }
       const decodeData = decodeToken(token);
       dispatch(

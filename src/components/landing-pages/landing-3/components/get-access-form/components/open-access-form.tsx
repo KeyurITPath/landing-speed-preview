@@ -23,8 +23,7 @@ import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const TermsLink = styled(Link)(() => ({
   color: '#304BE0',
@@ -42,7 +41,7 @@ const OpenAccessForm = ({
   utmData,
 }: any) => {
   const { user, setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
 
   const searchParams = useSearchParams();
 
@@ -87,7 +86,7 @@ const OpenAccessForm = ({
 
     if (token) {
       setToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
       registerUserData = decodeToken(token);
       dispatch(
         updateUser({

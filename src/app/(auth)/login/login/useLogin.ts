@@ -12,10 +12,11 @@ import { routes } from '@/utils/constants/routes';
 import { useDomain } from '@/context/domain-provider';
 import useToast from '@/hooks/use-snackbar';
 import { AuthContext } from '@/context/auth-provider';
+import useSocket from '@/hooks/use-socket';
 
 const useLogin = () => {
   const { setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
 
   const { handleToast } = useToast();
   const router = useRouter();
@@ -102,7 +103,7 @@ const useLogin = () => {
           if (token) {
             const decodeData = decodeToken(token);
             setToken(token);
-            // updateSocketOnLogin(token);
+            updateSocketOnLogin(token);
             dispatch(
               updateUser({
                 token,

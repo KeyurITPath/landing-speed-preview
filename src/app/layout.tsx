@@ -12,6 +12,7 @@ import ToastProvider from '@/context/stack-provider';
 import AuthProvider from '@/context/auth-provider';
 import { api } from '@/api';
 import { DOMAIN } from '@/utils/constants';
+import { SocketProvider } from '@/context/socket-context';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -68,9 +69,11 @@ export default async function RootLayout(
           <NextIntlClientProvider>
             <AppRouterCacheProvider>
               <ThemeRegistry>
-                <ToastProvider>
-                  <AuthProvider>{children}</AuthProvider>
-                </ToastProvider>
+                <SocketProvider>
+                  <ToastProvider>
+                    <AuthProvider>{children}</AuthProvider>
+                  </ToastProvider>
+                </SocketProvider>
               </ThemeRegistry>
             </AppRouterCacheProvider>
           </NextIntlClientProvider>

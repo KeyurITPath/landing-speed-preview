@@ -1,16 +1,16 @@
 import { useTranslations } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { TRIAL_ACTIVATION_METHODS } from '../../../utils/constants';
+import { TRIAL_ACTIVATION_METHODS } from '@/utils/constants';
 import { useContext, useMemo } from 'react';
 import { Box, Stack, styled, Typography } from '@mui/material';
-import { error } from '../../../theme/color';
-import CustomButton from '../../../shared/button';
-import useAsyncOperation from '../../../hooks/use-async-operation';
-import { api } from '../../../api';
-import { decodeToken, getSubscriptionPayload } from '../../../utils/helper';
-import { updateUser } from '../../../store/features/auth.slice';
-import { AuthContext } from '../../../context/auth-provider';
-// import useSocket from '../../../hooks/use-socket';
+import { error } from '@/theme/color';
+import CustomButton from '@/shared/button';
+import useAsyncOperation from '@/hooks/use-async-operation';
+import { api } from '@/api';
+import { decodeToken, getSubscriptionPayload } from '@/utils/helper';
+import { updateUser } from '@/store/features/auth.slice';
+import { AuthContext } from '@/context/auth-provider';
+import useSocket from '@/hooks/use-socket';
 
 const StyledBox = styled(Box, {
   shouldForwardProp: prop => prop !== 'src',
@@ -41,7 +41,7 @@ const ExtendTrialInitial = ({
   const { setToken } = useContext(AuthContext);
   const t = useTranslations();
   const dispatch = useDispatch();
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const { user } = useSelector(({ auth }: any) => auth);
 
   const [onSuccess, loading] = useAsyncOperation(async () => {
@@ -69,7 +69,7 @@ const ExtendTrialInitial = ({
       if (token) {
         registerUserData = decodeToken(token);
         setToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         dispatch(
           updateUser({
             activeUI: '',

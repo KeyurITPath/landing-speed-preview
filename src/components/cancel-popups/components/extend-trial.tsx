@@ -12,7 +12,7 @@ import { AuthContext } from '@/context/auth-provider';
 import { useContext } from 'react';
 import { fetchUser } from '@/store/features/user.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 import cookies from 'js-cookie';
 
 const ExtendTrial = ({
@@ -26,7 +26,7 @@ const ExtendTrial = ({
   slug,
 }: any) => {
   const { user } = useSelector(({ auth }: any) => auth);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const dispatch = useDispatch();
   const country_code = cookies.get('country_code');
   const { setToken } = useContext(AuthContext);
@@ -78,7 +78,7 @@ const ExtendTrial = ({
       let registerUserData = {};
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({

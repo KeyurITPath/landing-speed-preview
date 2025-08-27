@@ -1,18 +1,18 @@
 import { Box, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
-import { IMAGES } from '../../../assets/images';
-import CustomButton from '../../../shared/button';
-import useCountdownTimer from '../../../hooks/use-countdown-timer';
-import useAsyncOperation from '../../../hooks/use-async-operation';
-import { api } from '../../../api';
+import { IMAGES } from '@/assets/images';
+import CustomButton from '@/shared/button';
+import useCountdownTimer from '@/hooks/use-countdown-timer';
+import useAsyncOperation from '@/hooks/use-async-operation';
+import { api } from '@/api';
 import { useTranslations } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { TRIAL_ACTIVATION_METHODS } from '../../../utils/constants';
-import { decodeToken, getSubscriptionPayload } from '../../../utils/helper';
-import { updateUser } from '../../../store/features/auth.slice';
-import { AuthContext } from '../../../context/auth-provider';
+import { TRIAL_ACTIVATION_METHODS } from '@/utils/constants';
+import { decodeToken, getSubscriptionPayload } from '@/utils/helper';
+import { updateUser } from '@/store/features/auth.slice';
+import { AuthContext } from '@/context/auth-provider';
 import { useContext } from 'react';
-// import useSocket from '../../../hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const ExtendTrial = ({
     handleCancel,
@@ -26,7 +26,7 @@ const ExtendTrial = ({
     header
 }: any) => {
     const dispatch = useDispatch();
-    // const { updateSocketOnLogin } = useSocket();
+    const { updateSocketOnLogin } = useSocket();
     const { setToken } = useContext(AuthContext);
     const { user } = useSelector(({ auth }: any) => auth);
 
@@ -58,7 +58,7 @@ const ExtendTrial = ({
 
             if (token) {
                 registerUserData = decodeToken(token);
-                // updateSocketOnLogin(token);
+                updateSocketOnLogin(token);
                 setToken(token);
                 dispatch(
                     updateUser({

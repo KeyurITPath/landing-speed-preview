@@ -40,7 +40,7 @@ import { useMediaQuery } from '@mui/material';
 import { routes } from '@/utils/constants/routes';
 import { AuthContext } from '@/context/auth-provider';
 // import { pixel } from '../../assets/utils/pixel';
-// import useSocket from '../../hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const useSettingAndSubscription = ({
   language_id,
@@ -48,7 +48,7 @@ const useSettingAndSubscription = ({
   user,
   domainDetails,
 }: any) => {
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const [fetchData] = useDispatchWithAbort(fetchUser);
   const { setToken } = useContext(AuthContext);
   const [fetchCancelDelayPopupsData] = useDispatchWithAbort(
@@ -424,7 +424,7 @@ const useSettingAndSubscription = ({
         const token = response?.data?.data;
         const registerUserData = decodeToken(token);
         setToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         dispatch(
           updateUser({
             activeUI: '',
@@ -438,7 +438,7 @@ const useSettingAndSubscription = ({
     } finally {
       setIsSubscriptionLoader(false);
     }
-  }, [user, setToken, dispatch]);
+  }, [user, setToken, updateSocketOnLogin, dispatch]);
 
   useEffect(() => {
     if (!userData?.subscription_purchase_histories?.length) {
@@ -604,7 +604,7 @@ const useSettingAndSubscription = ({
 
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({
@@ -882,7 +882,7 @@ const useSettingAndSubscription = ({
 
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({

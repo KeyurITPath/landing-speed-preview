@@ -22,7 +22,7 @@ import { DOMAIN } from '@/utils/constants';
 import { routes } from '@/utils/constants/routes';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 import Link from 'next/link';
 
 const TermsLink = styled(Link)(() => ({
@@ -43,7 +43,7 @@ const OpenAccessForm = ({
   isCourseUpsaleCoursesAvailable,
 }: any) => {
   const { user, setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -82,7 +82,7 @@ const OpenAccessForm = ({
     if (token) {
       setToken(token);
       registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
       dispatch(
         updateUser({
           token,

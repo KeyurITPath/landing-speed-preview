@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from '@mui/material';
 import momentTimezone from 'moment-timezone';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,12 +39,14 @@ import { api } from '@/api';
 import { updateUser } from '@/store/features/auth.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchAllUpSales } from '@/store/features/course.slice';
-// useSocket
+import useSocket from '@/hooks/use-socket';
+import { AuthContext } from '@/context/auth-provider';
 
 let globalPipValue = false;
 
 const useLanding = ({ activeLandingPage, ...otherData }: any) => {
 
+  const { updateSocketOnLogin } = useSocket();
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(
     fetchAllAnalyticsCredentials
@@ -109,6 +111,8 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   const [pipModeClosed, setPipModeClosed] = useState(false);
   const [activeForm, setActiveForm] = useState('access-form');
 
+  const { setToken } = useContext(AuthContext);
+
   useEffect(() => {
     dispatch(resetCourse());
     return () => {
@@ -146,7 +150,8 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
     if (response?.data) {
       const token = response?.data?.data;
       const registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      setToken(token)
+      updateSocketOnLogin(token);
       dispatch(
         updateUser({
           activeUI: '',
@@ -155,7 +160,7 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
         })
       );
     }
-  }, [dispatch, user]);
+  }, [dispatch, setToken, updateSocketOnLogin, user]);
 
   const subscriptionEndDate = user?.subscription_end_date
     ? momentTimezone(user?.subscription_end_date).tz(TIMEZONE)

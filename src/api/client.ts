@@ -5,6 +5,12 @@ const BASE_URL = SERVER_URL;
 const DEFAULT_PREFIX = '/api';
 const FULL_BASE_URL = `${BASE_URL}${DEFAULT_PREFIX}`;
 
+// Enable CORS credentials
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Credentials': 'true',
+};
+
 export const METHODS = {
   POST: 'post',
   GET: 'get',
@@ -21,7 +27,7 @@ const client = async ({
   data = {},
   auth = {},
   cookieToken = '',
-  headers = {},
+  headers = defaultHeaders,
   params = {},
   isServer = false,
   signal,

@@ -49,7 +49,7 @@ import {
   setLanguage,
 } from '@/store/features/defaults.slice';
 import { AuthContext } from '@/context/auth-provider';
-// import useSocket from '@/hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const useDashboard = ({
   language_id,
@@ -58,7 +58,7 @@ const useDashboard = ({
   country_code,
 }: any) => {
   const { setToken } = useContext(AuthContext);
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const [fetchDashboardCoursesData] = useDispatchWithAbort(
     fetchDashboardCourses
   );
@@ -405,7 +405,7 @@ const useDashboard = ({
     if (response?.data) {
       const token = response?.data?.data;
       const registerUserData = decodeToken(token);
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
       setToken(token);
       dispatch(
         updateUser({
@@ -468,7 +468,7 @@ const useDashboard = ({
   ]);
 
   useEffect(() => {
-    if (country_code && user?.id) {
+    if (country_code && user?.id && fetchUserData) {
       fetchUserData({
         params: {
           user_id: user?.id,
@@ -630,7 +630,7 @@ const useDashboard = ({
     let registerUserData = {};
 
     if (token) {
-      // updateSocketOnLogin(token);
+      updateSocketOnLogin(token);
       setToken(token);
       registerUserData = decodeToken(token);
       dispatch(

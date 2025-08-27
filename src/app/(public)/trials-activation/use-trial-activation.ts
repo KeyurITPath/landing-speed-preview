@@ -24,14 +24,14 @@ import {
   isEmptyObject,
 } from '../../../utils/helper';
 import { updateUser } from '../../../store/features/auth.slice';
-// import useSocket from '../../hooks/use-socket';
+import useSocket from '@/hooks/use-socket';
 
 const useTrialActivation = ({ domainDetails, country_code }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const router = useRouter();
   const queryParams = useSearchParams();
 
-  // const { updateSocketOnLogin } = useSocket();
+  const { updateSocketOnLogin } = useSocket();
   const dispatch = useDispatch();
 
   const [popupsState, popupsOpen, popupsClose] = useToggleState();
@@ -142,7 +142,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
         let registerUserData = {};
         if (token) {
           registerUserData = decodeToken(token);
-          // updateSocketOnLogin(token);
+          updateSocketOnLogin(token);
           setToken(token);
           dispatch(
             updateUser({
@@ -179,7 +179,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
         let registerUserData = {};
         if (token) {
           registerUserData = decodeToken(token);
-          // updateSocketOnLogin(token);
+          updateSocketOnLogin(token);
           setToken(token);
           dispatch(
             updateUser({
@@ -234,7 +234,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
       let registerUserData = {};
       if (token) {
         registerUserData = decodeToken(token);
-        // updateSocketOnLogin(token);
+        updateSocketOnLogin(token);
         setToken(token);
         dispatch(
           updateUser({
