@@ -18,6 +18,7 @@ import SuccessSubscriptionPopup from '@/components/success-subscription-popup';
 // import CancelPopups from '../../components/cancel-popups';
 import { useMemo } from 'react';
 import { linearGradients } from '@/theme/color';
+import CancelPopups from '@/components/cancel-popups';
 
 const SettingsFormContainer = styled(Stack)(({ theme }) => ({
   width: '100%',
@@ -466,6 +467,23 @@ const SettingAndSubscriptionContainer = ({
           cancelDelayBtnLoading,
           onClickCancelDelay: cancelDelayPopupClose,
         }}
+      />
+
+      {/* Cancel Popups flow */}
+      <CancelPopups
+        {...{
+          handleWarningSuccess: handleCancelPopupWarningSuccess,
+          handleSaveFeedbackFormData,
+          isMobile,
+          saveFeedBackFormData,
+          resetCancelPopup,
+          setResetCancelPopup,
+          onCancelPopupCancelLoading,
+        }}
+        open={cancelPopupsState}
+        onClose={cancelPopupsClose}
+        rootHandleCancel={onCancelPopupCancel}
+        rootHandleSuccess={onCancelPopupSuccess}
       />
 
       <SuccessSubscriptionPopup open={isSubscriptionActivated} />

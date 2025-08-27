@@ -1,6 +1,14 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import useSidebar from './use-sidebar';
-import { Avatar, Box, Drawer, List, Stack, styled, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Drawer,
+  List,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { SERVER_URL, SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '@/utils/constants';
 import { AuthContext } from '@/context/auth-provider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +22,11 @@ import Image from 'next/image';
 import { routes } from '@/utils/constants/routes';
 import NavItem from './nav-item';
 import { ICONS } from '@/assets/icons';
-import { capitalizeEachLetter, getAvatarInitials, videoURL } from '@/utils/helper';
+import {
+  capitalizeEachLetter,
+  getAvatarInitials,
+  videoURL,
+} from '@/utils/helper';
 import ConfirmationPopup from '@/components/confirmation-popup';
 
 const Logo = styled(Typography)(({ theme }) => ({
@@ -130,7 +142,9 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
                     height={LOGO_HEIGHT}
                     onClick={() =>
                       handleRedirect(
-                        isLoggedIn ? routes.private.dashboard : routes.public.home
+                        isLoggedIn
+                          ? routes.private.dashboard
+                          : routes.public.home
                       )
                     }
                   />
@@ -139,7 +153,9 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
                     <Logo
                       onClick={() =>
                         handleRedirect(
-                          isLoggedIn ? routes.private.dashboard : routes.public.home
+                          isLoggedIn
+                            ? routes.private.dashboard
+                            : routes.public.home
                         )
                       }
                     >
@@ -208,10 +224,11 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
               }}
             >
               {user?.profile_image ? (
-                <Image style={{
-                  objectFit: 'cover',
-                  borderRadius: '50%',
-                }}
+                <Image
+                  style={{
+                    objectFit: 'cover',
+                    borderRadius: '50%',
+                  }}
                   width={40}
                   height={40}
                   alt={user?.name}
@@ -254,24 +271,23 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
       </Scrollbar>
 
       <ConfirmationPopup
-                {...{
-                    open: logoutState,
-                    onClose: logoutClose,
-                    handleSubmit: handleLogout,
-                    modelTitle: t('sidebar.logout_confirmation_title'),
-                    confirmationText: t('sidebar.logout_confirmation_text'),
-                    actionLabel: t('sidebar.logout'),
-                    closeLabel: t('sidebar.cancel'),
-                    maxWidth: 'xs'
-                }}
-            />
+        {...{
+          open: logoutState,
+          onClose: logoutClose,
+          handleSubmit: handleLogout,
+          modelTitle: t('sidebar.logout_confirmation_title'),
+          confirmationText: t('sidebar.logout_confirmation_text'),
+          actionLabel: t('sidebar.logout'),
+          closeLabel: t('sidebar.cancel'),
+          maxWidth: 'xs',
+        }}
+      />
     </>
   );
 };
 
 const Sidebar = ({ open, onClose, lgUp, user, domainDetails }: any) => {
   const { sidebar } = useSidebar({ onClose, user });
-  console.log('sidebar', sidebar)
   return (
     <Drawer
       anchor='left'
