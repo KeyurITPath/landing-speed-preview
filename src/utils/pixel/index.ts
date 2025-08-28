@@ -1,5 +1,5 @@
 import { api } from "@/api";
-import { apiAsyncHandler, decodeToken, sha256Hash } from "@/utils/helper";
+import { apiAsyncHandler, decodeToken, getLocalStorage, getStoredReducerState, sha256Hash } from "@/utils/helper";
 import cookies from 'js-cookie'
 
 export const EVENTS = {
@@ -23,7 +23,9 @@ const triggerEvent = async ({
     const token = cookies.get('token');
     const user = decodeToken(token || '');
 
-    const final_url = cookies.get('final_url') || '';
+    const { course } = getStoredReducerState('defaults');
+
+    const final_url = cookies.get('final_url') || course.slug;
     const isAnalyticsCredentials = isAnalyticsCredentialsExists
         ? isAnalyticsCredentialsExists
         : cookies.get('isAnalyticsCredentialsExists');

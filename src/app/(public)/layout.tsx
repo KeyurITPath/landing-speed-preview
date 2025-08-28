@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 import Footer from '@/components/footer';
 import { fetchAllCountries, fetchCountryCodeHandler } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
+import { cookies } from 'next/headers';
+import { decodeToken, isTokenActive } from '@/utils/helper';
 
 export async function generateMetadata() {
   const response = await api.home.fetchDomainDetails({
@@ -35,7 +37,8 @@ export async function generateMetadata() {
 }
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
-
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value; // read cookie "token"
   // domain details
   const response = await api.home.fetchDomainDetails({
     params: { name: DOMAIN },
@@ -45,6 +48,12 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   // IP address with country code
   const country_code = await fetchCountryCodeHandler();
 
+  let user = {}
+  let isLoggedIn;
+  if (token) {
+    user = decodeToken(token);
+    isLoggedIn = isTokenActive(token);
+  }
 
   // Get language_id and languages using the simple service
   const language_id = await LanguageService.getEffectiveLanguageId();
@@ -55,7 +64,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const countries = countriesResponse?.data?.result || [];
 
   return <Box sx={{ width: '100%' }}>
-    <Header domainDetails={domain} />
+    <Header domainDetails={domain} user={user} isLoggedIn={isLoggedIn} />
     {children}
     <Footer
       domainDetails={domain}

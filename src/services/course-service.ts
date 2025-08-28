@@ -233,13 +233,13 @@ export async function fetchCountryCodeHandler() {
       method: 'GET',
       cache: 'default',
       headers: {
-        'x-rapidapi-key': RAPID_API_KEY || '',
+        'x-rapidapi-key': RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
         'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
       },
     });
 
     const data = await response.json();
-    console.log('data', data)
+    console.log('data-01', data)
     const { country_code } = data || {};
     return country_code || 'US';
   } catch (error) {
@@ -316,3 +316,30 @@ export const fetchCategories = async (params: any) => {
     console.error('Error fetching popup categories:', error);
   }
 };
+
+export const fetchUser = async (data: any) => {
+  try {
+    const response = await api.user.get(data);
+    const userData = response?.data?.data || {};
+
+    const clone = { ...userData };
+    if (clone?.subscription_purchase_histories?.length) {
+      clone.subscription_purchase_histories =
+        clone.subscription_purchase_histories.map((item: any) => {
+          return {
+            ...item,
+            subscription_plan: {
+              ...item.plan_data,
+              trial_days:
+                item.trial_days || item.plan_data?.trial_days || 0,
+            },
+          };
+        });
+    }
+
+    return clone
+
+  } catch (error) {
+     console.error('Error fetching user:', error);
+  }
+}

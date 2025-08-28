@@ -53,7 +53,7 @@ import { clearMetaPixelHandler, pixel } from '../../utils/pixel';
 
 let globalPipValue = false;
 
-const useLanding = ({ activeLandingPage, ...otherData }: any) => {
+const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVerified, isBecomeVerifiedAndSubscribed, ...otherData }: any) => {
   const { updateSocketOnLogin } = useSocket();
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(
@@ -80,7 +80,6 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
 
   const [trialPopupState, trialPopupOpen, trialPopupClose] = useToggleState();
 
-  const { user } = useSelector(({ auth }: any) => auth);
   const videoContainerRef = useRef(null);
 
   const domainDetails = otherData?.domainDetails || {};
@@ -176,39 +175,6 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   const subscriptionEndDate = user?.subscription_end_date
     ? momentTimezone(user?.subscription_end_date).tz(TIMEZONE)
     : null;
-
-  const isBecomeAMemberWithVerified = useMemo(() => {
-    if (!user) return false;
-
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
-
-    const isNotSubscribed = !user?.is_subscribed;
-    const isSubscriptionExpired =
-      subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime);
-
-    return isNotSubscribed || isSubscriptionExpired;
-  }, [currentTime, subscriptionEndDate, user]);
-
-  const isBecomeVerifiedAndSubscribed = useMemo(() => {
-    if (!user) return false;
-
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
-
-    const isSubscribed = !!user?.is_subscribed;
-    const isSubscriptionActive = subscriptionEndDate?.isAfter(currentTime);
-
-    return (isSubscribed && isSubscriptionActive) || user.is_lifetime === true;
-  }, [currentTime, subscriptionEndDate, user]);
 
   const isUserPurchasedCourse = useMemo(() => {
     if (!otherData?.course?.id || !userData?.user_orders) return false;
@@ -312,8 +278,7 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
           id,
           slug: landingUrl || '',
           course_title: otherData?.data?.header,
-          landing_page:
-            LANDING_PAGE[activeLandingPage as keyof typeof LANDING_PAGE],
+          landing_page: LANDING_PAGE[activeLandingPage],
         })
       );
       dispatch(setCurrency({ id: currency?.id, code: currency?.name }));
@@ -649,7 +614,6 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
     SUPPORT_MAIL,
     LEGAL_NAME,
     domainName,
-    isBecomeAMemberWithVerified,
     trialPopupState,
     trialPopupOpen,
     trialPopupClose,

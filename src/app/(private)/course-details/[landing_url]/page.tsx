@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { decodeToken } from '@/utils/helper';
+import { decodeToken, isTokenActive } from '@/utils/helper';
 import {
   fetchCountryCodeHandler,
   fetchAllCountries
@@ -9,13 +9,20 @@ import { api } from '@/api';
 import { DOMAIN } from '@/utils/constants';
 import CourseDetailContainer from './CourseDetailContainer';
 import Header from '@/components/header';
-import Footer from '../../../../components/footer';
+import Footer from '@/components/footer';
 
 const CourseDetails = async ({ params }: any) => {
   const cookieStore = await cookies();
-  const userData = decodeToken(cookieStore.get('token')?.value);
+  const token = cookieStore.get('token')?.value;
 
   const slug = await params;
+
+  let userData = {};
+  let isLoggedIn;
+  if (token) {
+    userData = decodeToken(token);
+    isLoggedIn = isTokenActive(token);
+  }
 
   // IP address with country code
   const country_code = await fetchCountryCodeHandler();
@@ -36,7 +43,7 @@ const CourseDetails = async ({ params }: any) => {
 
   return (
     <>
-      <Header domainDetails={domain} />
+      <Header domainDetails={domain} user={userData} isLoggedIn={isLoggedIn} />
       <CourseDetailContainer
         {...{
           domainDetails: domain,

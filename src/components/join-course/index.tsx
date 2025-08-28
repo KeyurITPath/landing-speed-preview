@@ -46,16 +46,13 @@ const MEMBER_AVATARS = [
   MEMBER_AVATAR_IMAGES.memberAvatar5,
 ];
 
-const JoinCourse = ({ domainDetails }: any) => {
+const JoinCourse = ({ domainDetails, isLoggedIn }: any) => {
   const t = useTranslations();
   const router = useRouter();
 
   const DOMAIN_DETAILS = {
     BRAND_NAME: domainDetails?.data?.domain_detail?.brand_name || 'Eduelle',
   };
-
-  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
-  // const { handleRedirect } = useLocation()
 
   const quadruplicatedImages = useMemo(() =>
     [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES],
@@ -73,6 +70,8 @@ const JoinCourse = ({ domainDetails }: any) => {
   );
 
   // Animation starts immediately on component mount
+
+  console.log('isLoggedIn', isLoggedIn)
 
   const animationDuration = Math.max(40, JOIN_COURSES.length * 5);
 

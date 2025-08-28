@@ -6,18 +6,24 @@ import {
   fetchDomainDetails,
   fetchHomeCoursesData,
   fetchPopularCourses,
+  fetchUser,
 } from '@services/course-service';
 import { LanguageService } from '@/services/language-service';
-import { DOMAIN } from '@utils/constants';
-import { cookies } from "next/headers";
-import { decodeToken } from '@/utils/helper';
+import { DOMAIN, TIMEZONE, USER_ROLE } from '@utils/constants';
+import { cookies } from 'next/headers';
+import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
+import momentTimezone from 'moment-timezone';
 
 const Home = async () => {
-
   const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value; // read cookie "token"
+  const token = cookieStore.get('token')?.value; // read cookie "token"
 
-  const user = decodeToken(token);
+  let user = {};
+  let isLoggedIn;
+  if (token) {
+    user = decodeToken(token);
+    isLoggedIn = isTokenActive(token);
+  }
 
   const language_id = await LanguageService.getEffectiveLanguageId();
 
@@ -25,11 +31,22 @@ const Home = async () => {
 
   const domainDetails = await fetchDomainDetails();
 
+  const userResponse = await fetchUser({
+    params: {
+      user_id: user?.id,
+      language: language_id,
+      domain: DOMAIN,
+    },
+    headers: {
+      'req-from': country_code,
+    },
+  });
+
   const popularCourses = await fetchPopularCourses({
     params: {
       language_id,
       domain: DOMAIN,
-      ...(user && { user_id: user?.id })
+      ...(user && { user_id: user?.id }),
     },
     headers: {
       'req-from': country_code,
@@ -40,7 +57,7 @@ const Home = async () => {
     params: {
       language_id,
       domain: DOMAIN,
-      ...(user && { user_id: user?.id })
+      ...(user && { user_id: user?.id }),
     },
     headers: {
       'req-from': country_code,
@@ -59,19 +76,43 @@ const Home = async () => {
     language_id
   );
 
+  const isBecomeAMemberWithVerified = () => {
+    if (!user || isEmptyObject(user)) return false;
+
+    if (
+      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
+      !user.is_verified
+    ) {
+      return false;
+    }
+
+    const currentTime = momentTimezone().tz(TIMEZONE);
+    const subscriptionEndDate = user?.subscription_end_date
+      ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
+      : null;
+
+    return (
+      !user.is_subscribed ||
+      (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
+    );
+  };
+
   const homeData = {
     isPopularBrandCoursesDataLoading: false,
-    isBecomeAMemberWithVerified: false,
+    isBecomeAMemberWithVerified: isBecomeAMemberWithVerified(),
     POPULAR_BRAND_COURSES_DATA: popularCourses,
     COURSES_DATA: homeCourses,
     CATEGORIES_BADGE: courseCategories,
+    isLoggedIn,
+    user,
+    userResponse,
   };
 
   return (
     <React.Fragment>
       <ClientSection
         domainDetails={domainDetails}
-        homeData={{ ...homeData }}
+        homeData={homeData}
         serverLanguageId={language_id}
         serverCountryCode={country_code}
       />

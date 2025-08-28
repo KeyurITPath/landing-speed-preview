@@ -9,7 +9,9 @@ const TopTrendingCourses = ({ homeData }: any) => {
     isPopularBrandCoursesDataLoading,
     isBecomeAMemberWithVerified,
     POPULAR_BRAND_COURSES_DATA,
+    isLoggedIn
   } = homeData;
+
   const t = useTranslations();
 
   return (
@@ -33,7 +35,7 @@ const TopTrendingCourses = ({ homeData }: any) => {
             </Stack>
           </Stack>
 
-          <CourseCard
+          <CourseCard isLoggedIn={isLoggedIn}
             isPopularBrandCoursesDataLoading={isPopularBrandCoursesDataLoading}
             isBecomeAMemberWithVerified={isBecomeAMemberWithVerified}
             handleStartFree={() => {}}

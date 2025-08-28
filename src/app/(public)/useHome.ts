@@ -27,7 +27,7 @@ import useToggleState from '@hooks/use-toggle-state';
 import { fetchCategories, fetchTrialPopups } from '@store/features/popup.slice';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const useHome = () => {
+const useHome = ({ user, isLoggedIn, isBecomeAMemberWithVerified }: any) => {
 
   const router = useRouter();
 
@@ -42,7 +42,6 @@ const useHome = () => {
   const [fetchTrialPopupsData] = useDispatchWithAbort(fetchTrialPopups);
 
   const [trialPopupState, trialPopupOpen, trialPopupClose] = useToggleState();
-  const { isLoggedIn, user } = useSelector(({ auth }: any) => auth);
 
   const {
     trialPopups: { data: trialPopupsData },
@@ -64,7 +63,6 @@ const useHome = () => {
     },
     popularCoursesOnBrand: {
       data: popularCoursesOnBrand,
-      loading: popularCoursesOnBrandLoading,
       pagination: popularCoursesOnBrandParams,
     },
   } = useSelector(({ home }: any) => home);
@@ -93,27 +91,6 @@ const useHome = () => {
   const isPaymentFailed = useMemo(() => {
     return queryParams?.get('payment') === 'failed';
   }, [queryParams]);
-
-  const isBecomeAMemberWithVerified = useMemo(() => {
-    if (!user) return false;
-
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
-
-    const currentTime = momentTimezone().tz(TIMEZONE);
-    const subscriptionEndDate = user?.subscription_end_date
-      ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
-      : null;
-
-    return (
-      !user.is_subscribed ||
-      (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
-    );
-  }, [user]);
 
   const CATEGORIES_BADGE = useMemo(() => {
     if (courseCategoriesData && isEmptyArray(courseCategoriesData)) return [];
@@ -407,9 +384,7 @@ const useHome = () => {
     COURSES_DATA: homePageCoursesData,
     courseDataLoading,
     POPULAR_BRAND_COURSES_DATA: popularCoursesOnBrandData,
-    isPopularBrandCoursesDataLoading: popularCoursesOnBrandLoading,
     dispatch,
-    isBecomeAMemberWithVerified,
     CATEGORIES_BADGE,
     filterCategory,
     filterCategoryHandler,

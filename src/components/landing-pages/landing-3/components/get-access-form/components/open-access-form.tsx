@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import {
   Checkbox,
   FormControlLabel,
@@ -16,7 +16,7 @@ import { api } from '@/api';
 import { AuthContext } from '@/context/auth-provider';
 // import { gtm } from '@/assets/utils/gtm';
 import useAsyncOperation from '@/hooks/use-async-operation';
-import { DOMAIN } from '@/utils/constants';
+import { DOMAIN, LANDING_PAGE } from '@/utils/constants';
 import { routes } from '@/utils/constants/routes';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
@@ -24,6 +24,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import useSocket from '@/hooks/use-socket';
 import { pixel } from '@/utils/pixel';
+import cookies from 'js-cookie';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { getAllLanguages } from '@/store/features/defaults.slice';
 
 const TermsLink = styled(Link)(() => ({
   color: '#304BE0',
@@ -44,11 +47,17 @@ const OpenAccessForm = ({
   const { updateSocketOnLogin } = useSocket();
 
   const searchParams = useSearchParams();
+  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages)
 
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
   });
+
+  const language_id = useMemo(() => {
+    return cookies.get('language_id') || courseData?.course_translations[0]?.language_id;
+  }, [courseData?.course_translations]);
+
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -62,27 +71,35 @@ const OpenAccessForm = ({
     email: user?.email || '',
     isAgreeTerms: Boolean(utm_source),
   };
-  const isLanding3LangPage = activeLandingPage === 'landing3';
+  const isLanding3LangPage = activeLandingPage.name === 'landing3';
+
+  useEffect(() => {
+    if(fetchAllLanguages){
+      fetchAllLanguages({})
+    }
+  }, [fetchAllLanguages])
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
-      (lang: any) => Number(lang.id) === Number(language?.id)
+      (lang: any) => Number(lang.id) === Number(language_id || language?.id)
     );
 
-    const res = await api.getAccess.openAccess({
-      data: {
+    const payload = {
         email: values.email,
         final_url: course?.slug,
         currency_id: currency?.id,
         domain: DOMAIN,
         user_language: selectedLanguage?.name,
         user_currency: currency?.code,
-        landing_page: course?.landing_page,
-      },
+        landing_page: LANDING_PAGE[activeLandingPage.name],
+    }
+
+    const res = await api.getAccess.openAccess({
+      data: payload,
     });
     const { token } = res?.data?.data || {};
 
-    let registerUserData = {};
+    let registerUserData;
 
     if (token) {
       setToken(token);
@@ -104,8 +121,8 @@ const OpenAccessForm = ({
     const { origin, pathname } = window.location;
 
     if (registerUserData) {
-      success_url = `${origin}${routes.private.dashboard}?payment=success&type=purchase_course`;
-      // success_url = `${origin}${routes.public.redirecting_page}?redirection-page=${routes.private.dashboard}&payment=success&type=purchase_course`;
+      // success_url = `${origin}${routes.private.dashboard}?payment=success&type=purchase_course`;
+      success_url = `${origin}${routes.public.redirecting_page}?redirection-page=${routes.private.dashboard}&payment=success&type=purchase_course`;
     }
 
     const cancel_url = `${origin}${pathname}?payment=failed`;

@@ -27,6 +27,8 @@ const GetAccessForm = ({
 }: any) => {
   const queryParams = useSearchParams();
 
+  console.log('open', open, activeForm)
+
   useEffect(() => {
     if (open && activeForm === 'access-form') {
       // gtm.ecommerce.open_cart();
@@ -36,6 +38,7 @@ const GetAccessForm = ({
       });
     }
   }, [activeForm, open, utmData]);
+
 
   return (
     <Dialog

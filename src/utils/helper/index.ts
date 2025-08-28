@@ -22,7 +22,7 @@ const scrollToSection = (id = '') => {
   }
 };
 
-const decodeToken = (token = ''): CustomJwtPayload | false => {
+const decodeToken = (token: any): CustomJwtPayload | false => {
   if (!token) return false;
   try {
     const decoded = jwtDecode(token);

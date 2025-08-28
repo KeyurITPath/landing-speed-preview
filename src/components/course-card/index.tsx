@@ -12,10 +12,10 @@ const CourseCard = ({
   isPopularBrandCoursesDataLoading,
   isBecomeAMemberWithVerified,
   handleStartFree,
+  isLoggedIn
 }: any) => {
   const skeletonArray = Array.from({ length: 8 });
   const t = useTranslations();
-  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
   const showSkeleton =
     isPopularBrandCoursesDataLoading ||

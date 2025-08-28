@@ -24,10 +24,10 @@ import ConfirmationPopup from '@components/confirmation-popup';
 import { api } from '@/api';
 import { logout } from '@/store/features/auth.slice';
 import { AuthContext } from '@/context/auth-provider';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Sidebar from '../public-sidebar';
 
-const Header = ({ domainDetails }: any) => {
+const Header = ({ domainDetails, user, isLoggedIn }: any) => {
   const t = useTranslations();
   const dispatch = useDispatch();
   const { removeToken } = useContext(AuthContext);
@@ -40,7 +40,6 @@ const Header = ({ domainDetails }: any) => {
   const LOGO_WIDTH = logo_width || null;
   const LOGO_HEIGHT = logo_height || null;
 
-  const { user, isLoggedIn } = useSelector(({ auth }: any) => auth);
   const router = useRouter();
   const pathname = usePathname();
 

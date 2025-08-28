@@ -19,7 +19,7 @@ const RenderCard = ({
   isBecomeAMemberWithVerified,
   handleStartFree,
   isLoggedIn,
-}) => {
+}: any) => {
   const {
     title,
     id,

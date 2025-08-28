@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
 import { DOMAIN, RAPID_API_KEY } from '@utils/constants';
 import { getDomainName } from '@utils/helper';
+import cookies from 'js-cookie';
 
 export const fetchDomainDetails = createAsyncThunk(
   'defaults/fetchDomainDetails',
@@ -48,7 +49,7 @@ export const getIpAddress = createAsyncThunk(
         {
           method: 'GET',
           headers: {
-            'x-rapidapi-key': RAPID_API_KEY || '',
+            'x-rapidapi-key': RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
             'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
           },
           signal,
@@ -59,9 +60,11 @@ export const getIpAddress = createAsyncThunk(
       }
 
       const data = await response.json();
+      console.log('data-02', data)
       const { country_code } = data || {};
       return country_code || 'US'; // Default to 'US' if country_code is not found
     } catch (error) {
+      console.log('error01', error)
       return rejectWithValue(error);
     }
   }
@@ -265,6 +268,7 @@ const defaultsSlice = createSlice({
     // Analytics Meta Credentials
     builder
       .addCase(fetchAllFbAnalyticsCredentials.fulfilled, (state, action) => {
+        cookies.set('analyticsMetaCredentials', JSON.stringify(action.payload?.data || []))
         state.course.analyticsMetaCredentials = action.payload?.data || [];
         let isFbAnalyticsCredentialsExists_ =
           state.course.isFbAnalyticsCredentialsExists;
