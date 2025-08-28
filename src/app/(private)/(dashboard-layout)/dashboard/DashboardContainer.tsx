@@ -7,7 +7,7 @@ import ContinueWatchingCourses from '@/components/dashboard-component/continue-w
 import CourseOfTheWeek from '@/components/dashboard-component/course-of-the-week';
 import PopularCourseOnBrand from '@/components/dashboard-component/popular-course-on-brand';
 import PopularCourseByCategories from '@/components/dashboard-component/popular-course-by-categories';
-import { isEmptyObject } from '@/utils/helper';
+import { isEmptyObject, shouldOfferTrial } from '@/utils/helper';
 import SuccessSubscriptionPopup from '@/components/success-subscription-popup';
 import SidebarCalendar from '@/components/dashboard-component/sidebar-calendar';
 import TrialPopup from '@/components/trial-popup';
@@ -18,19 +18,18 @@ const DashboardContainer = ({
   user,
   domainDetails,
   country_code,
+  isBecomeAMemberWithVerified
 }: any) => {
   const {
     isTablet,
     COURSE_OF_THE_WEEK_DATA,
     transformDataForTrialBannerTopOfThePage,
-    isBecomeAMemberWithVerified,
     startFreeTrialSubmitForTopOfTheBanner,
     isStartFreeTrialSubmitForTopOfTheBannerLoading,
     isSubscriptionActivated,
     trialPopupClose,
     trialPopupState,
     isCourseOfTheWeekDataLoading,
-    shouldOfferTrial,
     ...dashboardData
   } = useDashboard({
     language_id,
@@ -53,6 +52,8 @@ const DashboardContainer = ({
     user?.is_user_purchased_trial,
     user?.role,
   ]);
+
+  console.log('shouldShowTrialBanner', user?.role !== USER_ROLE.AUTHOR, isBecomeAMemberWithVerified, !user?.is_user_purchased_trial, transformDataForTrialBannerTopOfThePage?.status)
 
   const shouldShowCourseOfTheWeek = useMemo(
     () =>
@@ -186,7 +187,7 @@ const DashboardContainer = ({
         {!isTablet && renderSidebarCalendar()}
       </Grid2>
 
-      {(isBecomeAMemberWithVerified || shouldOfferTrial) && (
+      {(isBecomeAMemberWithVerified || shouldOfferTrial(user)) && (
         <TrialPopup
           {...{
             dashboardData: {

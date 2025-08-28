@@ -19,7 +19,6 @@ import {
   getSubscriptionPayload,
   isEmptyArray,
   isEmptyObject,
-  shouldOfferTrial,
   videoURL,
 } from '@/utils/helper';
 import { useMediaQuery } from '@mui/material';
@@ -762,8 +761,7 @@ const useDashboard = ({
     isSubscriptionActivated,
     isTablet,
     CALENDAR_DATA: userInteractedDatesData,
-    totalLoginDaysCount,
-    shouldOfferTrial: shouldOfferTrial(user)
+    totalLoginDaysCount
   };
 };
 
