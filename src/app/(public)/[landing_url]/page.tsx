@@ -4,11 +4,13 @@ import { cookies } from 'next/headers';
 import MainLanding from './MainLanding';
 import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
+import moment from 'moment';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 
 const Landing = async ({ params, searchParams }: any) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value || null;
+  const country_value = cookieStore.get('country_code')?.value || null;
 
   let user = {};
   let isLoggedIn;
@@ -36,7 +38,7 @@ const Landing = async ({ params, searchParams }: any) => {
       domain: DOMAIN,
     },
     headers: {
-      'req-from': country_code,
+      'req-from': country_value || country_code,
     },
   });
 
@@ -44,43 +46,52 @@ const Landing = async ({ params, searchParams }: any) => {
 
   const currentTime = momentTimezone().tz(TIMEZONE);
 
-  const isBecomeAMemberWithVerified = () => {
-    if (!user || isEmptyObject(user)) return false;
+const isBecomeAMemberWithVerified = () => {
+  if (!user || isEmptyObject(user)) return false;
 
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
+  if (
+    ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
+    !user.is_verified
+  ) {
+    return false;
+  }
 
-    const subscriptionEndDate = user?.subscription_end_date
-      ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
-      : null;
+  let subscriptionEndDate: moment.Moment | null = null;
 
-    return (
-      !user.is_subscribed ||
-      (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
-    );
-  };
+  if (user?.subscription_end_date) {
+    subscriptionEndDate = momentTimezone(user.subscription_end_date).tz(TIMEZONE);
+  }
 
-  const isBecomeVerifiedAndSubscribed = () => {
-    if (!user) return false;
+  return (
+    !user.is_subscribed ||
+    (subscriptionEndDate && moment.isMoment(subscriptionEndDate) && !subscriptionEndDate?.isAfter(currentTime))
+  );
+};
 
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
-    let isSubscriptionActive;
-    const subscriptionEndDate = user?.subscription_end_date;
-    const isSubscribed = !!user?.is_subscribed;
-    if (subscriptionEndDate) {
-      isSubscriptionActive = subscriptionEndDate?.isAfter(currentTime);
-    }
-    return (isSubscribed && isSubscriptionActive) || user.is_lifetime === true;
-  };
+
+ const isBecomeVerifiedAndSubscribed = () => {
+  if (!user) return false;
+
+  if (
+    ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
+    !user.is_verified
+  ) {
+    return false;
+  }
+
+  const subscriptionEndDate = user?.subscription_end_date
+    ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
+    : null;
+
+  const isSubscribed = !!user?.is_subscribed;
+
+  const isSubscriptionActive =
+    subscriptionEndDate && momentTimezone.isMoment(subscriptionEndDate)
+      ? subscriptionEndDate?.isAfter(currentTime)
+      : false;
+
+  return (isSubscribed && isSubscriptionActive) || user.is_lifetime === true;
+};
 
   const landingData = {
     data: data?.landing_page_translations?.[0] || {},
@@ -88,6 +99,9 @@ const Landing = async ({ params, searchParams }: any) => {
     course: data?.course || {},
     domainDetails: response.data?.data || {},
     user,
+    country: {
+      country_code: country_value || country_code,
+    },
     isLoggedIn,
     isBecomeAMemberWithVerified: isBecomeAMemberWithVerified(),
     isBecomeVerifiedAndSubscribed: isBecomeVerifiedAndSubscribed(),

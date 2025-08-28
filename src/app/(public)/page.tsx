@@ -13,6 +13,7 @@ import { DOMAIN, TIMEZONE, USER_ROLE } from '@utils/constants';
 import { cookies } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
+import moment from 'moment';
 
 const Home = async () => {
   const cookieStore = await cookies();
@@ -76,26 +77,29 @@ const Home = async () => {
     language_id
   );
 
-  const isBecomeAMemberWithVerified = () => {
-    if (!user || isEmptyObject(user)) return false;
+  const currentTime = momentTimezone().tz(TIMEZONE);
 
-    if (
-      ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
-      !user.is_verified
-    ) {
-      return false;
-    }
+const isBecomeAMemberWithVerified = () => {
+  if (!user || isEmptyObject(user)) return false;
 
-    const currentTime = momentTimezone().tz(TIMEZONE);
-    const subscriptionEndDate = user?.subscription_end_date
-      ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
-      : null;
+  if (
+    ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
+    !user.is_verified
+  ) {
+    return false;
+  }
 
-    return (
-      !user.is_subscribed ||
-      (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
-    );
-  };
+  let subscriptionEndDate: moment.Moment | null = null;
+
+  if (user?.subscription_end_date) {
+    subscriptionEndDate = momentTimezone(user.subscription_end_date).tz(TIMEZONE);
+  }
+
+  return (
+    !user.is_subscribed ||
+    (subscriptionEndDate && moment?.isMoment(subscriptionEndDate) && !subscriptionEndDate?.isAfter(currentTime))
+  );
+};
 
   const homeData = {
     isPopularBrandCoursesDataLoading: false,

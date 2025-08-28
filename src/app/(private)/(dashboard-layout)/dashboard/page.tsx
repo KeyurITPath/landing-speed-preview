@@ -1,11 +1,12 @@
 import { cookies } from 'next/headers';
 import DashboardContainer from './DashboardContainer';
-import { decodeToken } from '@/utils/helper';
+import { decodeToken, isEmptyObject } from '@/utils/helper';
 import { LanguageService } from '@/services/language-service';
 import { fetchCountryCodeHandler } from '@/services/course-service';
 import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
 import { DOMAIN, TIMEZONE, USER_ROLE } from '@/utils/constants';
+import moment from 'moment';
 
 const Dashboard = async () => {
   const cookieStore = await cookies();
@@ -23,8 +24,10 @@ const Dashboard = async () => {
   });
   const domain = (await response?.data) || {};
 
+  const currentTime = momentTimezone().tz(TIMEZONE);
+
   const isBecomeAMemberWithVerified = () => {
-    if (!user) return false;
+    if (!user || isEmptyObject(user)) return false;
 
     if (
       ![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) ||
@@ -33,14 +36,19 @@ const Dashboard = async () => {
       return false;
     }
 
-    const currentTime = momentTimezone().tz(TIMEZONE);
-    const subscriptionEndDate = user?.subscription_end_date
-      ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
-      : null;
+    let subscriptionEndDate: moment.Moment | null = null;
+
+    if (user?.subscription_end_date) {
+      subscriptionEndDate = momentTimezone(user.subscription_end_date).tz(
+        TIMEZONE
+      );
+    }
 
     return (
       !user.is_subscribed ||
-      (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
+      (subscriptionEndDate &&
+        moment.isMoment(subscriptionEndDate) &&
+        !subscriptionEndDate?.isAfter(currentTime))
     );
   };
 

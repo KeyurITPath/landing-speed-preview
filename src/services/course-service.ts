@@ -76,7 +76,7 @@ export async function fetchPopularCourses(data) {
         rating,
         originalPrice: formatCurrency(originalPriceValue, currency),
         price: formatCurrency(price, currency),
-        redirectionUrl: `${'http://54.193.35.97:3000'}/${final_url}`,
+        redirectionUrl: `${domainRedirection}/${final_url}`,
       };
     });
     return popularCoursesOnBrand;
@@ -140,7 +140,7 @@ export async function fetchHomeCoursesData(data) {
         rating,
         originalPrice: actualPrice,
         price: formatCurrency(prices.price, prices.currency),
-        redirectionUrl: `${'http://54.193.35.97:3000'}/${final_url}`,
+        redirectionUrl: `${domainRedirection}/${final_url}`,
       };
     });
     return courseData;
