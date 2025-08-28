@@ -17,13 +17,13 @@ import { AuthContext } from '@/context/auth-provider';
 // import { gtm } from '@/assets/utils/gtm';
 import useAsyncOperation from '@/hooks/use-async-operation';
 import { DOMAIN } from '@/utils/constants';
-// import { pixel } from '@/assets/utils/pixel';
 import { routes } from '@/utils/constants/routes';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import useSocket from '@/hooks/use-socket';
+import { pixel } from '@/utils/pixel';
 
 const TermsLink = styled(Link)(() => ({
   color: '#304BE0',
@@ -124,10 +124,10 @@ const OpenAccessForm = ({
     const resOrderCheckout = await api.getAccess.orderCheckout({ data });
 
     if (resOrderCheckout?.data?.data?.checkoutUrl) {
-      // pixel.initial_checkout({
-      //     content_ids: [],
-      //     ...(!isEmptyObject(utmData) ? { utmData } : {})
-      // });
+      pixel.initial_checkout({
+          content_ids: [],
+          ...(!isEmptyObject(utmData) ? { utmData } : {})
+      });
       window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
     }
   });

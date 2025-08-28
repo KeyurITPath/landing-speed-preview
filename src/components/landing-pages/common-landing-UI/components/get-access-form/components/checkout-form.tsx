@@ -23,8 +23,8 @@ import { api } from '@/api';
 import { routes } from '@/utils/constants/routes';
 import Image from 'next/image';
 import { AuthContext } from '@/context/auth-provider';
-// import { pixel } from '@/assets/utils/pixel';
 import { useTranslations } from 'next-intl';
+import { pixel } from '@/utils/pixel';
 
 const CheckoutForm = ({
   landingData,
@@ -157,11 +157,11 @@ const CheckoutForm = ({
 
       const res = await api.getAccess.orderCheckout({ data });
       if (res?.data?.data?.checkoutUrl) {
-        // await pixel.initial_checkout({
-        //     userId: user?.id,
-        //     ...(upsaleIds?.length ? { content_ids: upsaleIds } : {}),
-        //     ...(!isEmptyObject(utmData) ? { utmData } : {})
-        // });
+        await pixel.initial_checkout({
+            userId: user?.id,
+            ...(upsaleIds?.length ? { content_ids: upsaleIds } : {}),
+            ...(!isEmptyObject(utmData) ? { utmData } : {})
+        });
         window.location.href = res?.data?.data?.checkoutUrl;
       }
     } catch (error) {

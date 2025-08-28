@@ -13,6 +13,7 @@ import AuthProvider from '@/context/auth-provider';
 import { api } from '@/api';
 import { DOMAIN } from '@/utils/constants';
 import { SocketProvider } from '@/context/socket-context';
+import GTM from "@/components/GTM";
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -65,6 +66,7 @@ export default async function RootLayout(
   return (
     <html lang={locale}>
       <body className={`${rubik.variable}`} suppressHydrationWarning={true}>
+        <GTM />
         <ReduxProvider>
           <NextIntlClientProvider>
             <AppRouterCacheProvider>

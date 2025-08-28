@@ -62,22 +62,24 @@ const client = async ({
     fullUrl += `?${queryString}`;
   }
 
+    if (!isEmptyObject(auth)) {
+      const basicAuth = btoa(`${auth.username}:${auth.password}`);
+      headers.Authorization = `Basic ${basicAuth}`;
+    }else {
+      headers.Authorization = `Bearer ${cookieToken || token}`;
+    }
+
   // ✅ On server, read cookies via `next/headers`
   if (!token && typeof window !== 'undefined') {
     const tokenCookie = getTokenSync();
     token = tokenCookie || '';
   }
 
-  if (!isEmptyObject(auth)) {
-    const basicAuth = btoa(`${auth.username}:${auth.password}`);
-    headers.Authorization = `Basic ${basicAuth}`;
-  }
-
   const fetchOptions: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(token || cookieToken ? { Authorization: `Bearer ${token || cookieToken}` } : {}),
       ...headers,
     },
     ...(signal && { signal }),

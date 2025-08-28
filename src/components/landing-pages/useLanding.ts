@@ -1,9 +1,17 @@
 'use client';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useMediaQuery } from '@mui/material';
 import momentTimezone from 'moment-timezone';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import cookies from 'js-cookie'
 import {
   DOMAIN,
   LANDING_PAGE,
@@ -41,11 +49,11 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchAllUpSales } from '@/store/features/course.slice';
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
+import { clearMetaPixelHandler, pixel } from '../../utils/pixel';
 
 let globalPipValue = false;
 
 const useLanding = ({ activeLandingPage, ...otherData }: any) => {
-
   const { updateSocketOnLogin } = useSocket();
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(
@@ -63,7 +71,9 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   const params = useParams();
   const queryParams = useSearchParams();
 
-  const landingUrl = Array.isArray(params.landing_url) ? params.landing_url[0] : params.landing_url;
+  const landingUrl = Array.isArray(params.landing_url)
+    ? params.landing_url[0]
+    : params.landing_url;
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -146,11 +156,12 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
       params: {
         userId: user?.id || '',
       },
+      cookieToken: cookies.get('token') || ''
     });
     if (response?.data) {
       const token = response?.data?.data;
       const registerUserData = decodeToken(token);
-      setToken(token)
+      setToken(token);
       updateSocketOnLogin(token);
       dispatch(
         updateUser({
@@ -315,7 +326,17 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
     //             );
     //             i18n.changeLanguage(selectedLanguage?.code);
     //         }
-  }, [activeLandingPage, dispatch, fetchAllAnalyticsCredentialsData, fetchAllFbAnalyticsCredentialsData, fetchAllUpSalesData, landingUrl, otherData?.course, otherData?.data, queryParams]);
+  }, [
+    activeLandingPage,
+    dispatch,
+    fetchAllAnalyticsCredentialsData,
+    fetchAllFbAnalyticsCredentialsData,
+    fetchAllUpSalesData,
+    landingUrl,
+    otherData?.course,
+    otherData?.data,
+    queryParams,
+  ]);
 
   const utmData = useMemo(() => {
     const params = queryParams;
@@ -340,33 +361,33 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   }, [queryParams]);
 
   // Replace the problematic useEffect with this updated version
-  // useEffect(() => {
-  //     if (
-  //         !pixelViewTriggered.current &&
-  //         isFbAnalyticsCredentialsAPICalled &&
-  //         isTiktokAnalyticsCredentialsAPICalled &&
-  //         (pixelIds?.length || isAnalyticsCredentialsExists) &&
-  //         data?.id
-  //     ) {
-  //         pixel.view_content({
-  //             landingMetaPixelId: pixelIds,
-  //             isAnalyticsCredentialsExists: isAnalyticsCredentialsExists,
-  //             ...(!isEmptyObject(utmData) && { utmData }),
-  //             ...(user?.id ? { userId: user.id } : {})
-  //         });
-  //         pixelViewTriggered.current = true;
-  //     } else {
-  //         clearMetaPixelHandler();
-  //     }
-  // }, [
-  //     pixelIds,
-  //     isAnalyticsCredentialsExists,
-  //     isFbAnalyticsCredentialsAPICalled,
-  //     isTiktokAnalyticsCredentialsAPICalled,
-  //     data?.id,
-  //     utmData,
-  //     user.id
-  // ]);
+  useEffect(() => {
+    if (
+      !pixelViewTriggered.current &&
+      isFbAnalyticsCredentialsAPICalled &&
+      isTiktokAnalyticsCredentialsAPICalled &&
+      (pixelIds?.length || isAnalyticsCredentialsExists) &&
+      otherData?.id
+    ) {
+      pixel.view_content({
+        landingMetaPixelId: pixelIds,
+        isAnalyticsCredentialsExists: isAnalyticsCredentialsExists,
+        ...(!isEmptyObject(utmData) && { utmData }),
+        ...(user?.id ? { userId: user.id } : {}),
+      });
+      pixelViewTriggered.current = true;
+    } else {
+      clearMetaPixelHandler();
+    }
+  }, [
+    pixelIds,
+    isAnalyticsCredentialsExists,
+    isFbAnalyticsCredentialsAPICalled,
+    isTiktokAnalyticsCredentialsAPICalled,
+    otherData?.id,
+    utmData,
+    user.id,
+  ]);
 
   const translation = otherData?.data || {};
 
@@ -598,42 +619,47 @@ const useLanding = ({ activeLandingPage, ...otherData }: any) => {
   );
 
   const handleProceedToWatch = useCallback(() => {
-    const landingUrl = Array.isArray(params.landing_url) ? params.landing_url[0] : params.landing_url;
-    const URL = routes.private.course_details.replace(':slug', landingUrl || '');
+    const landingUrl = Array.isArray(params.landing_url)
+      ? params.landing_url[0]
+      : params.landing_url;
+    const URL = routes.private.course_details.replace(
+      ':slug',
+      landingUrl || ''
+    );
     router.push(URL);
   }, [params.landing_url, router]);
 
   return {
     videoContainerRef,
-        videoPlayerOptions,
-        pipMode,
-        closePipMode,
-        queryParams,
-        activeForm,
-        setActiveForm,
-        getAccessState,
-        dispatch,
-        isMobile,
-        activeLandingPage,
-        isVisibleBuyBtn,
-        isPaymentSuccess,
-        isPaymentFailed,
-        LOGO_URL,
-        BRAND_NAME,
-        SUPPORT_MAIL,
-        LEGAL_NAME,
-        domainName,
-        isBecomeAMemberWithVerified,
-        trialPopupState,
-        trialPopupOpen,
-        trialPopupClose,
-        handleStartFree,
-        language_id: otherData?.data?.language_id,
-        isSubscriptionActivated,
-        isBecomeVerifiedAndSubscribed,
-        isUserPurchasedCourse,
-        handleProceedToWatch,
-        utmData
+    videoPlayerOptions,
+    pipMode,
+    closePipMode,
+    queryParams,
+    activeForm,
+    setActiveForm,
+    getAccessState,
+    dispatch,
+    isMobile,
+    activeLandingPage,
+    isVisibleBuyBtn,
+    isPaymentSuccess,
+    isPaymentFailed,
+    LOGO_URL,
+    BRAND_NAME,
+    SUPPORT_MAIL,
+    LEGAL_NAME,
+    domainName,
+    isBecomeAMemberWithVerified,
+    trialPopupState,
+    trialPopupOpen,
+    trialPopupClose,
+    handleStartFree,
+    language_id: otherData?.data?.language_id,
+    isSubscriptionActivated,
+    isBecomeVerifiedAndSubscribed,
+    isUserPurchasedCourse,
+    handleProceedToWatch,
+    utmData,
   };
 };
 

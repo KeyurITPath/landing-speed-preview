@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import momentTimezone from 'moment-timezone';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import cookies from 'js-cookie'
 import {
   DOMAIN,
   POPUPS_CATEGORIES,
@@ -400,6 +401,7 @@ const useDashboard = ({
       params: {
         userId: user?.id,
       },
+      cookieToken: cookies.get('token') || ''
     });
 
     if (response?.data) {
@@ -711,11 +713,15 @@ const useDashboard = ({
               user_id: user?.id,
               login_date: moment().format('YYYY-MM-DD'),
             },
+            headers: { 'req-from': country_code || '' },
+            cookieToken: cookies.get('token') || ''
           });
 
           if (fetchUserInteractedData) {
             fetchUserInteractedData({
               params: { user_id: user?.id },
+              headers: { 'req-from': country_code || '' },
+              cookieToken: cookies.get('token') || ''
             });
           }
         } catch (error) {
@@ -725,7 +731,7 @@ const useDashboard = ({
     };
 
     postAndFetchData();
-  }, [fetchUserInteractedData, user?.id]);
+  }, [country_code, fetchUserInteractedData, user?.id]);
 
   useEffect(() => {
     return () => {

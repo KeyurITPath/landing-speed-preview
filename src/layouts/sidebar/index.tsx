@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import useSidebar from './use-sidebar';
 import {
   Avatar,
@@ -9,7 +9,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { SERVER_URL, SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '@/utils/constants';
+import { DOMAIN, SERVER_URL, SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '@/utils/constants';
 import { AuthContext } from '@/context/auth-provider';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
@@ -28,6 +28,9 @@ import {
   videoURL,
 } from '@/utils/helper';
 import ConfirmationPopup from '@/components/confirmation-popup';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { fetchUser } from '@/store/features/user.slice';
+import cookies from 'js-cookie';
 
 const Logo = styled(Typography)(({ theme }) => ({
   [`${theme.breakpoints.down('md')}`]: {
@@ -54,6 +57,10 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { isLoggedIn } = useSelector(({ auth }: any) => auth);
+
+  const [fetchUserData] = useDispatchWithAbort(fetchUser)
+
+  const { data } = useSelector(({user}: any) => user);
 
   const { logo, brand_name, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
@@ -82,6 +89,22 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
     },
     [router]
   );
+
+    useEffect(() => {
+      if (user?.id && fetchUserData) {
+        fetchUserData({
+          params: {
+            user_id: user?.id,
+            language: cookies.get('language_id'),
+            domain: DOMAIN,
+          },
+          headers: {
+            'req-from': cookies.get('country_code'),
+          },
+          cookieToken: cookies.get('token'),
+        });
+      }
+    }, [fetchUserData, user?.id]);
 
   const handleLogout = async () => {
     await api.auth.logout({});
@@ -223,7 +246,7 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
                 gap: 1.5,
               }}
             >
-              {user?.profile_image ? (
+              {data?.profile_image ? (
                 <Image
                   style={{
                     objectFit: 'cover',
@@ -231,13 +254,13 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
                   }}
                   width={40}
                   height={40}
-                  alt={user?.name}
-                  loading='lazy'
-                  src={videoURL(user?.profile_image)}
+                 alt={'profile_image'}
+                  loading='eager'
+                  src={videoURL(data?.profile_image)}
                 />
               ) : (
-                <Avatar loading='lazy' alt={user?.name}>
-                  {user?.name && getAvatarInitials(user?.name)}
+                <Avatar alt={'profile_image'}>
+                  {data?.name && getAvatarInitials(data?.name)}
                 </Avatar>
               )}
 

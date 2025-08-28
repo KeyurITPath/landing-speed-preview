@@ -13,10 +13,10 @@ import OpenAccessForm from './components/open-access-form';
 import CheckoutForm from './components/checkout-form';
 // import { gtm } from '@/assets/utils/gtm';
 import { useSearchParams } from 'next/navigation';
-// import { pixel } from '@/assets/utils/pixel';
 import { useSelector } from 'react-redux';
 import { isEmptyObject } from '@/utils/helper';
 import { useTranslations, useMessages } from 'next-intl';
+import { pixel } from '@/utils/pixel';
 
 const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
   const { data, course, activeForm, setActiveForm, SUPPORT_MAIL, utmData } =
@@ -31,15 +31,15 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
 
   const t = useTranslations();
 
-  //    useEffect(() => {
-  //         if (open && activeForm === 'access-form') {
-  //             gtm.ecommerce.open_cart();
-  //             pixel.add_to_cart({
-  //                 content_ids: [],
-  //                 ...(!isEmptyObject(utmData) ? { utmData } : {})
-  //             });
-  //         }
-  //     }, [activeForm, open, utmData]);
+     useEffect(() => {
+          if (open && activeForm === 'access-form') {
+              // gtm.ecommerce.open_cart();
+              pixel.add_to_cart({
+                  content_ids: [],
+                  ...(!isEmptyObject(utmData) ? { utmData } : {})
+              });
+          }
+      }, [activeForm, open, utmData]);
 
   return (
     <Dialog

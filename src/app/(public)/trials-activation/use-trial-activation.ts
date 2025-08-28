@@ -3,28 +3,28 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import useToggleState from '../../../hooks/use-toggle-state';
-import { AuthContext } from '../../../context/auth-provider';
-import { routes } from '../../../utils/constants/routes';
-import { api } from '../../../api';
+import useToggleState from '@/hooks/use-toggle-state';
+import { AuthContext } from '@/context/auth-provider';
+import { routes } from '@/utils/constants/routes';
+import { api } from '@/api';
 // import { gtm } from '../../assets/utils/gtm';
-import useAsyncOperation from '../../../hooks/use-async-operation';
-// import { pixel } from '../../assets/utils/pixel';
+import useAsyncOperation from '@/hooks/use-async-operation';
 import {
   SALES_POPUPS_SUB_CATEGORIES,
   SERVER_URL,
   TRIAL_ACTIVATION_METHODS,
-} from '../../../utils/constants';
-import useDispatchWithAbort from '../../../hooks/use-dispatch-with-abort';
-import { fetchFreeTrialPopups } from '../../../store/features/popup.slice';
-import { fetchTrialActivation } from '../../../store/features/trials-activation.slice';
+} from '@/utils/constants';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { fetchFreeTrialPopups } from '@/store/features/popup.slice';
+import { fetchTrialActivation } from '@/store/features/trials-activation.slice';
 import {
   decodeToken,
   getSubscriptionPayload,
   isEmptyObject,
-} from '../../../utils/helper';
-import { updateUser } from '../../../store/features/auth.slice';
+} from '@/utils/helper';
+import { updateUser } from '@/store/features/auth.slice';
 import useSocket from '@/hooks/use-socket';
+import { pixel } from '@/utils/pixel';
 
 const useTrialActivation = ({ domainDetails, country_code }: any) => {
   const { user, setToken } = useContext(AuthContext);
@@ -154,10 +154,10 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
         }
 
         // gtm.ecommerce.trial_activated();
-        // pixel.start_trial({
-        //     ...(user?.id ? { userId: user?.id } : {}),
-        //     ...(!isEmptyObject(utmData) ? { utmData } : {})
-        // });
+        pixel.start_trial({
+            ...(user?.id ? { userId: user?.id } : {}),
+            ...(!isEmptyObject(utmData) ? { utmData } : {})
+        });
         router.push(routes.public.complete_profile);
       }
     } else {
@@ -268,10 +268,10 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
       }
     }
 
-    // pixel.start_trial({
-    //     ...(user?.id ? { userId: user?.id } : {}),
-    //     ...(!isEmptyObject(utmData) ? { utmData } : {})
-    // });
+    pixel.start_trial({
+        ...(user?.id ? { userId: user?.id } : {}),
+        ...(!isEmptyObject(utmData) ? { utmData } : {})
+    });
     popupsClose();
     router.push(routes.public.complete_profile);
   };

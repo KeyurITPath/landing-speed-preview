@@ -8,8 +8,8 @@ import PopUpModal from '@/shared/pop-up-modal';
 import { AuthContext } from '@/context/auth-provider';
 import { ICONS } from '@/assets/icons';
 import { isEmptyObject } from '@/utils/helper';
+import { pixel } from '@/utils/pixel';
 // import { gtm } from '../../assets/utils/gtm';
-// import { pixel } from '../../assets/utils/pixel';
 
 const SuccessPaymentPopup = ({ open }: any) => {
   const router = useRouter();
@@ -91,12 +91,12 @@ const SuccessPaymentPopup = ({ open }: any) => {
       // if (isExistUpsale) {
       //     gtm.ecommerce.upsale({ value: upSaleAmount });
       // }
-      // pixel.purchase({
-      //     total_amount,
-      //     userId: user?.id,
-      //     currency: orderData?.user_order_details?.[0]?.course_price?.currency?.name || 'USD',
-      //     ...(!isEmptyObject(utmData) && { utmData })
-      // });
+      pixel.purchase({
+          total_amount,
+          userId: user?.id,
+          currency: orderData?.user_order_details?.[0]?.course_price?.currency?.name || 'USD',
+          ...(!isEmptyObject(utmData) && { utmData })
+      });
     }
   }, [data, open, user?.id]);
 

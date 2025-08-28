@@ -170,7 +170,7 @@ const logError = (error: any) => {
   console.error('Error:', error);
 };
 
-const apiAsyncHandler = async (apiCall: any, handleError: any) => {
+const apiAsyncHandler = async (apiCall: any, handleError?: any) => {
   try {
     const response = await apiCall();
     return response;

@@ -1,5 +1,4 @@
 'use client';
-
 import { Box, styled, useMediaQuery } from '@mui/material';
 import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '@/utils/constants';
 import Header from '@/layouts/header';
@@ -51,7 +50,7 @@ const MainLayoutContainer = ({
       <Sidebar
         id='sidebar'
         {...{
-          open: isSidebarOpen,
+          open: isSidebarOpen || lgUp,
           onClose: handleToggle,
           lgUp,
           isCollapse: lgUp,

@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { fetchUser } from '@/store/features/user.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { api } from '@/api';
+import cookies from 'js-cookie'
 import {
   decodeToken,
   formatCurrency,
@@ -39,8 +40,8 @@ import {
 import { useMediaQuery } from '@mui/material';
 import { routes } from '@/utils/constants/routes';
 import { AuthContext } from '@/context/auth-provider';
-// import { pixel } from '../../assets/utils/pixel';
 import useSocket from '@/hooks/use-socket';
+import { pixel } from '@/utils/pixel';
 
 const useSettingAndSubscription = ({
   language_id,
@@ -418,6 +419,7 @@ const useSettingAndSubscription = ({
         params: {
           userId: user?.id || '',
         },
+        cookieToken: cookies.get('token') || ''
       });
 
       if (response?.data) {
@@ -842,11 +844,11 @@ const useSettingAndSubscription = ({
       }
 
       onPopupSuccessForCancelSubscription();
-      // pixel.start_trial({
-      //     ...(user?.id ? { userId: user?.id } : {}),
-      // });
+      pixel.start_trial({
+          ...(user?.id ? { userId: user?.id } : {}),
+      });
     },
-    [cancelPopupsClose, onPopupSuccessForCancelSubscription]
+    [cancelPopupsClose, onPopupSuccessForCancelSubscription, user?.id]
   );
 
   const [handleCancelPopupWarningSuccess] = useAsyncOperation(async () => {

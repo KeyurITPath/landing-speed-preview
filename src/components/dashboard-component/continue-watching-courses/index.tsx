@@ -11,6 +11,7 @@ import { getAllContinueWatchHistoryCoursesData } from '@/store/features/dashboar
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import moment from 'moment';
 import { api } from '@/api';
+import cookies from 'js-cookie'
 
 const ContinueWatchingCourses = ({
   isBecomeAMemberWithVerified,
@@ -137,6 +138,7 @@ const ContinueWatchingCourses = ({
         headers: {
           'req-from': country_code,
         },
+        cookieToken: cookies.get('token') || ''
       });
     }
   }, [
