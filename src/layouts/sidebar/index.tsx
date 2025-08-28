@@ -1,15 +1,27 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import useSidebar from './use-sidebar';
 import {
   Avatar,
+  Backdrop,
   Box,
-  Drawer,
   List,
   Stack,
   styled,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
-import { DOMAIN, SERVER_URL, SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '@/utils/constants';
+import {
+  DOMAIN,
+  SERVER_URL,
+  SIDE_NAV_WIDTH,
+  TOP_NAV_HEIGHT,
+} from '@/utils/constants';
 import { AuthContext } from '@/context/auth-provider';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
@@ -58,9 +70,9 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
   const router = useRouter();
   const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
-  const [fetchUserData] = useDispatchWithAbort(fetchUser)
+  const [fetchUserData] = useDispatchWithAbort(fetchUser);
 
-  const { data } = useSelector(({user}: any) => user);
+  const { data } = useSelector(({ user }: any) => user);
 
   const { logo, brand_name, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
@@ -90,21 +102,21 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
     [router]
   );
 
-    useEffect(() => {
-      if (user?.id && fetchUserData) {
-        fetchUserData({
-          params: {
-            user_id: user?.id,
-            language: cookies.get('language_id'),
-            domain: DOMAIN,
-          },
-          headers: {
-            'req-from': cookies.get('country_code'),
-          },
-          cookieToken: cookies.get('token'),
-        });
-      }
-    }, [fetchUserData, user?.id]);
+  useEffect(() => {
+    if (user?.id && fetchUserData) {
+      fetchUserData({
+        params: {
+          user_id: user?.id,
+          language: cookies.get('language_id'),
+          domain: DOMAIN,
+        },
+        headers: {
+          'req-from': cookies.get('country_code'),
+        },
+        cookieToken: cookies.get('token'),
+      });
+    }
+  }, [fetchUserData, user?.id]);
 
   const handleLogout = async () => {
     await api.auth.logout({});
@@ -254,7 +266,7 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
                   }}
                   width={40}
                   height={40}
-                 alt={'profile_image'}
+                  alt={'profile_image'}
                   loading='eager'
                   src={videoURL(data?.profile_image)}
                 />
@@ -309,26 +321,47 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
   );
 };
 
-const Sidebar = ({ open, onClose, lgUp, user, domainDetails }: any) => {
+const Sidebar = ({ open, onClose, domainDetails, user }: any) => {
+
+  const lgUp = useMediaQuery(theme => theme.breakpoints.up('lg'), {
+    noSsr: true,
+  });
+
   const { sidebar } = useSidebar({ onClose, user });
+
+  // Track mount to avoid SSR mismatch
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // Default behavior before hydration:
+  // - Desktop → open
+  // - Mobile  → closed
+  const isVisible = mounted ? open || lgUp : true; // SSR fallback → assume open (desktop-like)
+
   return (
-    <Drawer
-      anchor='left'
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'initial.white',
-          color: 'initial.black',
-          width: SIDE_NAV_WIDTH,
+    <>
+      {/* Backdrop only for mobile */}
+      {mounted && !lgUp && (
+        <Backdrop open={open} onClick={onClose} sx={{ zIndex: 997 }} />
+      )}
+
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          width: 280, // SIDE_NAV_WIDTH
+          bgcolor: 'background.paper',
+          boxShadow: 1,
           zIndex: 998,
-        },
-      }}
-      sx={lgUp ? {} : { zIndex: () => 998 }}
-      variant={lgUp ? 'permanent' : 'temporary'}
-    >
-      <SidebarContent {...{ sidebar, domainDetails, user }} />
-    </Drawer>
+          transform: isVisible ? 'translateX(0)' : `translateX(-${SIDE_NAV_WIDTH}px)`,
+          transition: 'transform 0.3s ease-in-out',
+        }}
+      >
+        <SidebarContent {...{ sidebar, domainDetails, user }} />
+      </Box>
+    </>
   );
 };
 
