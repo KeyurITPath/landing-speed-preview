@@ -71,8 +71,6 @@ const JoinCourse = ({ domainDetails, isLoggedIn }: any) => {
 
   // Animation starts immediately on component mount
 
-  console.log('isLoggedIn', isLoggedIn)
-
   const animationDuration = Math.max(40, JOIN_COURSES.length * 5);
 
   return (

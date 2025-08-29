@@ -31,8 +31,8 @@ const ContinueWatchingCourses = ({
   const {
     continueWatchingCourse: { data: continueWatchCourseData, loading },
   } = useSelector(({ dashboard }: any) => dashboard);
-  const { data: userPerchasedCoursesData, loading: purchaseLoading } =
-    useSelector(({ user }: any) => user);
+  const { data: userPerchasedCoursesData, loading: purchaseLoading } = useSelector(({ user }: any) => user);
+
   const isCoursesDataLoading = useMemo(
     () => loading || purchaseLoading,
     [loading, purchaseLoading]
@@ -183,7 +183,6 @@ const ContinueWatchingCourses = ({
                 justifyContent: 'space-between',
               }}
             >
-              {continueWatchingCourseData?.length ? (
                 <Typography
                   sx={{
                     fontWeight: 500,
@@ -193,7 +192,6 @@ const ContinueWatchingCourses = ({
                 >
                   {t('continue_watching')}
                 </Typography>
-              ) : null}
               <Box
                 className='navigation-wrapper'
                 sx={{
@@ -219,7 +217,7 @@ const ContinueWatchingCourses = ({
               </Box>
             </Stack>
           </Grid2>
-          {!isEmptyArray(continueWatchingCourseData) ? (
+          {!isEmptyArray(continueWatchingCourseData) || isCoursesDataLoading ? (
             <Grid2 size={{ xs: 12 }}>
               <Box sx={{ position: 'relative' }}>
                 <CourseCard

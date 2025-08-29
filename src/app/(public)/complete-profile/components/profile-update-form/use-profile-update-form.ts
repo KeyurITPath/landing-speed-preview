@@ -37,8 +37,6 @@ const useProfileUpdateForm = ({ userData }: any) => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
 
-  console.log('plainPassword', plainPassword, userData)
-
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     await api.user.update({ data: values, params: { user_id: user?.id }, cookieToken: cookies.get('token') });

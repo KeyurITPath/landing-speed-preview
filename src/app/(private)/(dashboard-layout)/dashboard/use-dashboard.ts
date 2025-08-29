@@ -25,12 +25,9 @@ import { useMediaQuery } from '@mui/material';
 import {
   fetchDashboardCourses,
   fetchUserInteractedDates,
-  getAllCourseOfTheWeek,
-  getAllPopularCoursesOnBrand,
   handlePagination,
   resetPagination,
 } from '@/store/features/dashboard.slice';
-import { getAllCourseCategories } from '@/store/features/course-categories.slice';
 import useToggleState from '@/hooks/use-toggle-state';
 import {
   fetchCategories,
@@ -56,19 +53,15 @@ const useDashboard = ({
   user,
   domainDetails,
   country_code,
+  courseOfTheWeek,
+  popularCoursesOnBrand,
+  courseCategoriesData
 }: any) => {
   const { setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
   const [fetchDashboardCoursesData] = useDispatchWithAbort(
     fetchDashboardCourses
   );
-  const [fetchAllCourseCategories] = useDispatchWithAbort(
-    getAllCourseCategories
-  );
-  const [fetchAllPopularCoursesOnBrand] = useDispatchWithAbort(
-    getAllPopularCoursesOnBrand
-  );
-  const [fetchAllCourseOfTheWeek] = useDispatchWithAbort(getAllCourseOfTheWeek);
   const [fetchCategoriesData] = useDispatchWithAbort(fetchCategories);
   const [fetchTrialPopupsData] = useDispatchWithAbort(fetchTrialPopups);
   const [fetchTrialBannerPopupsData] = useDispatchWithAbort(
@@ -94,25 +87,13 @@ const useDashboard = ({
 
   const {
     courses: { data: courseData, pagination: params, loading },
-    popularCoursesOnBrand: {
-      data: popularCoursesOnBrand,
-      loading: popularCoursesOnBrandLoading,
-      pagination: popularCoursesOnBrandParams,
-    },
-    courseOfTheWeek: {
-      data: courseOfTheWeekData,
-      loading: course_of_the_week_loading,
-    },
-    // giftClaimReward: { data: giftClaimRewardData },
     userInteractedDates: {
       data: userInteractedDatesData,
       total_login_days: totalLoginDaysCount,
     },
   } = useSelector(({ dashboard }: any) => dashboard);
 
-  const {
-    courseCategories: { data: courseCategoriesData },
-  } = useSelector(({ courseCategories }: any) => courseCategories);
+  const courseOfTheWeekData = courseOfTheWeek
 
   const { brand_name } = domainDetails?.data?.domain_detail || {};
 
@@ -174,19 +155,6 @@ const useDashboard = ({
       });
     }
   }, [dispatch, language_id]);
-
-  const CATEGORIES_BADGE = useMemo(() => {
-    if (courseCategoriesData && isEmptyArray(courseCategoriesData)) return [];
-
-    return courseCategoriesData
-      ?.filter((category: any) => category?.language?.id === language_id)
-      ?.map((category: any) => {
-        return {
-          id: category?.id,
-          name: category?.name,
-        };
-      });
-  }, [courseCategoriesData, language_id]);
 
   const dashboardCoursesData = useMemo(() => {
     if (courseData && isEmptyArray(courseData)) return [];
@@ -372,28 +340,6 @@ const useDashboard = ({
       redirectionUrl: `${domainRedirection}/${final_url}`,
     };
   }, [courseOfTheWeekData, language_id]);
-
-  useEffect(() => {
-    if (language_id && country_code && fetchAllCourseCategories) {
-      fetchAllCourseCategories({
-        method: 'GET',
-        params: { language_id },
-      });
-      if (fetchAllCourseOfTheWeek) {
-        fetchAllCourseOfTheWeek({
-          params: { language_id, domain: DOMAIN },
-          headers: {
-            'req-from': country_code,
-          },
-        });
-      }
-    }
-  }, [
-    fetchAllCourseCategories,
-    fetchAllCourseOfTheWeek,
-    language_id,
-    country_code,
-  ]);
 
   const fetchLatestTokenAPI = useCallback(async () => {
     const response = await api.token.getToken({
@@ -646,46 +592,6 @@ const useDashboard = ({
     onPopupSuccess();
   });
 
-  useEffect(() => {
-    if (language_id && country_code && user?.id) {
-      const filteredPopularCoursesOnBrandParams = Object.fromEntries(
-        Object.entries(popularCoursesOnBrandParams)
-          .filter(
-            ([, value]) =>
-              value != null &&
-              value !== '' &&
-              value !== 'all' &&
-              (!Array.isArray(value) || value.length > 0)
-          )
-          .map(([key, value]) => [
-            key,
-            Array.isArray(value) ? JSON.stringify(value) : value,
-          ])
-      );
-
-      if (fetchAllPopularCoursesOnBrand) {
-        fetchAllPopularCoursesOnBrand({
-          method: 'GET',
-          params: {
-            ...filteredPopularCoursesOnBrandParams,
-            language_id,
-            domain: DOMAIN,
-            user_id: user?.id,
-          },
-          headers: {
-            'req-from': country_code,
-          },
-        });
-      }
-    }
-  }, [
-    fetchAllPopularCoursesOnBrand,
-    language_id,
-    popularCoursesOnBrandParams,
-    country_code,
-    user?.id,
-  ]);
-
   const isSubscriptionActivated = useMemo(() => {
     return (
       queryParams?.get('subscription') === 'activated' ||
@@ -738,17 +644,16 @@ const useDashboard = ({
     };
   }, [dispatch]);
 
+
+
   return {
     isCourseDataLoading: loading,
     COURSES_DATA: dashboardCoursesData,
     POPULAR_BRAND_COURSES_DATA: popularCoursesOnBrandData,
     COURSE_OF_THE_WEEK_DATA: CourseOfTheWeekData,
-    isPopularBrandCoursesDataLoading: popularCoursesOnBrandLoading,
-    isCourseOfTheWeekDataLoading: course_of_the_week_loading,
     isBecomeAMemberWithVerified,
     BRAND_NAME,
     isMobile,
-    CATEGORIES_BADGE,
     filterCategory,
     filterCategoryHandler,
     trialPopupState,

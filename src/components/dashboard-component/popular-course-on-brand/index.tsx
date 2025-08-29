@@ -2,6 +2,8 @@ import { Box, Grid2, Stack, Typography } from '@mui/material';
 import CourseCard from '../../dashboard-card';
 import { ICONS } from '@/assets/icons';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import RenderCard from '../../dashboard-card/components/course-card';
 
 const PopularCourseOnBrand = ({ dashboardData, progress, className }: any) => {
   const {
@@ -10,6 +12,14 @@ const PopularCourseOnBrand = ({ dashboardData, progress, className }: any) => {
     isPopularBrandCoursesDataLoading,
   } = dashboardData;
   const t = useTranslations();
+
+  // State to track if the component has mounted on the client-side
+  const [isMounted, setIsMounted] = useState(false);
+
+  // This effect will run only on the client-side (after SSR)
+  useEffect(() => {
+    setIsMounted(true); // Set to true after mounting
+  }, []);
 
   return (
     <Grid2 size={{ xs: 12 }} className={className}>
@@ -24,17 +34,15 @@ const PopularCourseOnBrand = ({ dashboardData, progress, className }: any) => {
                 justifyContent: 'space-between',
               }}
             >
-              {POPULAR_BRAND_COURSES_DATA?.length ? (
-                <Typography
-                  sx={{
-                    fontWeight: 500,
-                    fontSize: { xs: '28px', sm: '32px', fontWeight: 500 },
-                    color: '#0E0E0E',
-                  }}
-                >
-                  {t('popular_on')} {BRAND_NAME}
-                </Typography>
-              ) : null}
+              <Typography
+                sx={{
+                  fontWeight: 500,
+                  fontSize: { xs: '28px', sm: '32px', fontWeight: 500 },
+                  color: '#0E0E0E',
+                }}
+              >
+                {t('popular_on')} {BRAND_NAME}
+              </Typography>
               <Box
                 className='navigation-wrapper'
                 sx={{
@@ -61,22 +69,42 @@ const PopularCourseOnBrand = ({ dashboardData, progress, className }: any) => {
               </Box>
             </Stack>
           </Grid2>
-          {Boolean(POPULAR_BRAND_COURSES_DATA?.length) ||
-          isPopularBrandCoursesDataLoading ? (
+          {Boolean(POPULAR_BRAND_COURSES_DATA?.length) ? (
             <Grid2 size={{ xs: 12 }}>
               <Box sx={{ position: 'relative' }}>
-                <CourseCard
-                  {...{
-                    dashboardData,
-                    nextEl:
-                      '.user-popular-course-on-branch-slider-swiper-button-next',
-                    prevEl:
-                      '.user-popular-course-on-branch-slider-swiper-button-prev',
-                    progress,
-                    COURSES_DATA: POPULAR_BRAND_COURSES_DATA,
-                    isLoading: isPopularBrandCoursesDataLoading,
-                  }}
-                />
+                {!isMounted ? (
+                  <Grid2 container spacing={2} >
+                    {[...POPULAR_BRAND_COURSES_DATA]?.splice(0, 3)?.map(
+                      (item: any, index: number) => {
+                        return (
+                          <Grid2 size={{xs: 12, md: 4 }} key={index}>
+                            <RenderCard
+                              {...{
+                                course: item,
+                                isBecomeAMemberWithVerified:
+                                  dashboardData?.isBecomeAMemberWithVerified,
+                                handleStartFree: dashboardData?.handleStartFree,
+                              }}
+                            />
+                          </Grid2>
+                        );
+                      }
+                    )}
+                  </Grid2>
+                ) : (
+                  <CourseCard
+                    {...{
+                      dashboardData,
+                      nextEl:
+                        '.user-popular-course-on-branch-slider-swiper-button-next',
+                      prevEl:
+                        '.user-popular-course-on-branch-slider-swiper-button-prev',
+                      progress,
+                      COURSES_DATA: POPULAR_BRAND_COURSES_DATA,
+                      isLoading: isPopularBrandCoursesDataLoading,
+                    }}
+                  />
+                )}
               </Box>
             </Grid2>
           ) : null}

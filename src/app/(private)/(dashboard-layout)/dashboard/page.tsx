@@ -2,7 +2,12 @@ import { cookies } from 'next/headers';
 import DashboardContainer from './DashboardContainer';
 import { decodeToken, isEmptyObject } from '@/utils/helper';
 import { LanguageService } from '@/services/language-service';
-import { fetchCountryCodeHandler } from '@/services/course-service';
+import {
+  fetchAllCourseCategories,
+  fetchAllCourseOfTheWeek,
+  fetchAllPopularCoursesOnBrand,
+  fetchCountryCodeHandler,
+} from '@/services/course-service';
 import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
 import { DOMAIN, TIMEZONE, USER_ROLE } from '@/utils/constants';
@@ -52,6 +57,30 @@ const Dashboard = async () => {
     );
   };
 
+  const courseOfTheWeek = await fetchAllCourseOfTheWeek({
+    params: { language_id, domain: DOMAIN },
+    headers: {
+      'req-from': country_code,
+    },
+  });
+
+  const popularCoursesOnBrand = await fetchAllPopularCoursesOnBrand({
+    params: {
+      page: 1,
+      limit: 8,
+      language_id,
+      domain: DOMAIN,
+      user_id: user?.id,
+    },
+    headers: {
+      'req-from': country_code,
+    },
+  });
+
+  const courseCategoriesData = await fetchAllCourseCategories({
+      params: { language_id }
+  }, language_id)
+
   return (
     <DashboardContainer
       {...{
@@ -59,7 +88,10 @@ const Dashboard = async () => {
         user,
         domainDetails: domain,
         country_code,
+        courseOfTheWeek,
+        popularCoursesOnBrand,
         isBecomeAMemberWithVerified: isBecomeAMemberWithVerified(),
+        courseCategoriesData
       }}
     />
   );

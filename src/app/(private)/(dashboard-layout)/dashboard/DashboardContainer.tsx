@@ -3,7 +3,7 @@ import { Grid2 } from '@mui/material';
 import { useMemo, useCallback, memo } from 'react';
 import useDashboard from './use-dashboard';
 import TopTrialBanner from '@/components/dashboard-component/top-trial-banner';
-import ContinueWatchingCourses from '@/components/dashboard-component/continue-watching-courses';
+const ContinueWatchingCourses = dynamic(() => import('@/components/dashboard-component/continue-watching-courses'), {ssr: false});
 import CourseOfTheWeek from '@/components/dashboard-component/course-of-the-week';
 import PopularCourseOnBrand from '@/components/dashboard-component/popular-course-on-brand';
 import PopularCourseByCategories from '@/components/dashboard-component/popular-course-by-categories';
@@ -12,13 +12,17 @@ import SuccessSubscriptionPopup from '@/components/success-subscription-popup';
 import SidebarCalendar from '@/components/dashboard-component/sidebar-calendar';
 import TrialPopup from '@/components/trial-popup';
 import { USER_ROLE } from '@/utils/constants';
+import dynamic from 'next/dynamic';
 
 const DashboardContainer = ({
   language_id,
   user,
   domainDetails,
   country_code,
-  isBecomeAMemberWithVerified
+  isBecomeAMemberWithVerified,
+  courseOfTheWeek,
+  popularCoursesOnBrand,
+  courseCategoriesData
 }: any) => {
   const {
     isTablet,
@@ -29,13 +33,14 @@ const DashboardContainer = ({
     isSubscriptionActivated,
     trialPopupClose,
     trialPopupState,
-    isCourseOfTheWeekDataLoading,
     ...dashboardData
   } = useDashboard({
     language_id,
     user,
     domainDetails,
     country_code,
+    courseOfTheWeek,
+    popularCoursesOnBrand
   });
 
   // Memoize the condition checks to prevent unnecessary re-renders
@@ -53,12 +58,10 @@ const DashboardContainer = ({
     user?.role,
   ]);
 
-  console.log('shouldShowTrialBanner', user?.role !== USER_ROLE.AUTHOR, isBecomeAMemberWithVerified, !user?.is_user_purchased_trial, transformDataForTrialBannerTopOfThePage?.status)
-
   const shouldShowCourseOfTheWeek = useMemo(
     () =>
-      !isEmptyObject(COURSE_OF_THE_WEEK_DATA) && !isCourseOfTheWeekDataLoading,
-    [COURSE_OF_THE_WEEK_DATA, isCourseOfTheWeekDataLoading]
+      !isEmptyObject(COURSE_OF_THE_WEEK_DATA),
+    [COURSE_OF_THE_WEEK_DATA]
   );
 
   // Memoize component props to prevent unnecessary re-renders
@@ -69,8 +72,7 @@ const DashboardContainer = ({
         isBecomeAMemberWithVerified,
         handleStartFree: dashboardData.handleStartFree,
         POPULAR_BRAND_COURSES_DATA: dashboardData.POPULAR_BRAND_COURSES_DATA,
-        isPopularBrandCoursesDataLoading:
-          dashboardData.isPopularBrandCoursesDataLoading,
+        isPopularBrandCoursesDataLoading: false
       },
       progress: false,
       className: 'popular-course-on-brand',
@@ -79,7 +81,6 @@ const DashboardContainer = ({
       dashboardData.BRAND_NAME,
       dashboardData.POPULAR_BRAND_COURSES_DATA,
       dashboardData.handleStartFree,
-      dashboardData.isPopularBrandCoursesDataLoading,
       isBecomeAMemberWithVerified,
     ]
   );
@@ -87,7 +88,7 @@ const DashboardContainer = ({
   const popularCourseByCategoriesProps = useMemo(
     () => ({
       dashboardData: {
-        CATEGORIES_BADGE: dashboardData.CATEGORIES_BADGE,
+        CATEGORIES_BADGE: courseCategoriesData,
         isBecomeAMemberWithVerified,
         handleStartFree: dashboardData.handleStartFree,
         isCoursesDataLoading: dashboardData.isCourseDataLoading,
@@ -98,7 +99,7 @@ const DashboardContainer = ({
       progress: false,
     }),
     [
-      dashboardData.CATEGORIES_BADGE,
+      courseCategoriesData,
       dashboardData.COURSES_DATA,
       dashboardData.filterCategory,
       dashboardData.filterCategoryHandler,
@@ -167,7 +168,6 @@ const DashboardContainer = ({
             {shouldShowCourseOfTheWeek && (
               <Grid2 size={{ xs: 12 }}>
                 <CourseOfTheWeek
-                  {...{ loading: isCourseOfTheWeekDataLoading }}
                   {...courseOfTheWeekProps}
                 />
               </Grid2>

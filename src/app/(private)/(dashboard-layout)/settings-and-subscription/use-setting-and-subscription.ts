@@ -239,8 +239,6 @@ const useSettingAndSubscription = ({
     ]
   );
 
-  console.log('user', user)
-
   useEffect(() => {
     if (user?.is_user_purchased_trial && fetchSubscriptionWithDiscountData) {
       fetchSubscriptionWithDiscountData({});

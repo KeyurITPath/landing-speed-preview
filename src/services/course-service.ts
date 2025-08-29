@@ -352,3 +352,23 @@ export const fetchTrialActivation = async (data: any) => {
     console.error('Error fetching trial activation:', error);
   }
 };
+
+export const fetchAllCourseOfTheWeek = async (data: any) => {
+  try {
+    const response = await api.dashboard.getAllCourseOfTheWeek(data)
+    const responseData = response?.data?.data
+    return responseData?.result?.[0]
+  } catch (error) {
+    console.error('Error fetching course of the week :', error);
+  }
+}
+
+export const fetchAllPopularCoursesOnBrand = async (data: any) => {
+  try {
+    const response = await api.dashboard.getAllPopularCoursesOnBrand(data)
+    const responseData = response?.data?.data
+    return responseData?.result || []
+  } catch (error) {
+    console.error('Error fetching popular courses :', error);
+  }
+}
