@@ -14,6 +14,7 @@ import { api } from '@/api';
 import { DOMAIN } from '@/utils/constants';
 import { SocketProvider } from '@/context/socket-context';
 import GTM from "@/components/GTM";
+import JoyrideProvider from '@/shared/joyride-provider';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -73,7 +74,11 @@ export default async function RootLayout(
               <ThemeRegistry>
                 <SocketProvider>
                   <ToastProvider>
-                    <AuthProvider>{children}</AuthProvider>
+                    <AuthProvider>
+                      <JoyrideProvider>
+                        {children}
+                      </JoyrideProvider>
+                    </AuthProvider>
                   </ToastProvider>
                 </SocketProvider>
               </ThemeRegistry>
