@@ -1,5 +1,4 @@
 'use client';
-
 import { FormHelperText, Stack, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CustomButton from '@/shared/button';
@@ -10,7 +9,7 @@ import PopUpModal from '@/shared/pop-up-modal';
 import SuccessPaymentPopup from '@/components/success-payment-popup';
 import FailedPaymentPopup from '@/components/failed-payment-popup';
 
-const EmailVerificationComponent = () => {
+const EmailVerificationComponent = ({ data }: any) => {
   const t = useTranslations();
   const {
     formData,
@@ -21,7 +20,7 @@ const EmailVerificationComponent = () => {
     isPaymentSuccess,
     validationClose,
     validationState,
-  } = useEmailVerification();
+  } = useEmailVerification({ data });
 
   return (
     <>

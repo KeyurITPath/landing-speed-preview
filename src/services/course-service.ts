@@ -223,7 +223,7 @@ export async function fetchCountryCodeHandler() {
     // First check if country code exists in cookies
     const cookieStore = await cookies();
     const countryFromCookie = getCountryFromServer(cookieStore);
-    console.log('countryFromCookie', countryFromCookie)
+    console.log('countryFromCookie', countryFromCookie);
     if (countryFromCookie) {
       return countryFromCookie;
     }
@@ -233,13 +233,14 @@ export async function fetchCountryCodeHandler() {
       method: 'GET',
       cache: 'default',
       headers: {
-        'x-rapidapi-key': RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
+        'x-rapidapi-key':
+          RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
         'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
       },
     });
 
     const data = await response.json();
-    console.log('data-01', data)
+    console.log('data-01', data);
     const { country_code } = data || {};
     return country_code || 'US';
   } catch (error) {
@@ -330,16 +331,24 @@ export const fetchUser = async (data: any) => {
             ...item,
             subscription_plan: {
               ...item.plan_data,
-              trial_days:
-                item.trial_days || item.plan_data?.trial_days || 0,
+              trial_days: item.trial_days || item.plan_data?.trial_days || 0,
             },
           };
         });
     }
 
-    return clone
-
+    return clone;
   } catch (error) {
-     console.error('Error fetching user:', error);
+    console.error('Error fetching user:', error);
   }
-}
+};
+
+export const fetchTrialActivation = async (data: any) => {
+  try {
+    const response = await api.trialsActivation.fetchTrialActivation(data);
+    const responseData = response?.data?.data;
+    return responseData?.result || {};
+  } catch (error) {
+    console.error('Error fetching trial activation:', error);
+  }
+};

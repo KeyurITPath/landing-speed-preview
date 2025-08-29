@@ -9,22 +9,16 @@ import useToggleState from '@/hooks/use-toggle-state';
 import useAsyncOperation from '@/hooks/use-async-operation';
 import { useTranslations } from 'next-intl';
 import { DOMAIN } from '@/utils/constants';
-import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-import { fetchTrialActivation } from '@/store/features/trials-activation.slice';
-import { useSelector } from 'react-redux';
 import cookies from 'js-cookie';
 
-const useEmailVerification = () => {
+const useEmailVerification = ({ data }: any) => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
   const t = useTranslations();
   const queryParams = useSearchParams();
-  const [fetchTrialActivationData] = useDispatchWithAbort(fetchTrialActivation);
   const [validationState, validationOpen, validationClose] =
     useToggleState(false);
-  const { data: trialActivationData } = useSelector(
-    ({ trialsActivation }: any) => trialsActivation.trialsActivation
-  );
+
   const initialValues = useMemo(
     () => ({ email: user?.email || '', confirmEmail: '', phone: '' }),
     [user?.email]
@@ -52,12 +46,6 @@ const useEmailVerification = () => {
     }
   );
 
-  useEffect(() => {
-    if (fetchTrialActivationData) {
-      fetchTrialActivationData({});
-    }
-  }, [fetchTrialActivationData]);
-
   const { errors, values, touched, handleChange, handleBlur, handleSubmit } =
     useFormik({
       initialValues,
@@ -67,9 +55,9 @@ const useEmailVerification = () => {
     });
 
   const hidePhoneField =
-    Array.isArray(trialActivationData) &&
-    trialActivationData.length > 0 &&
-    trialActivationData[0].status === 'off';
+    Array.isArray(data) &&
+    data.length > 0 &&
+    data?.[0]?.status === 'off';
 
   const formData = useMemo(() => {
     const fields = [
