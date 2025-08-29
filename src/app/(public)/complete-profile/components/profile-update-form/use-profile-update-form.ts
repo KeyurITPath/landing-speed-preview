@@ -16,6 +16,7 @@ import { useTranslations } from 'next-intl';
 import useSocket from '@/hooks/use-socket';
 import { fetchUser } from '@/store/features/user.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import cookies from 'js-cookie';
 
 const useProfileUpdateForm = () => {
   const { user, setToken } = useContext(AuthContext);
@@ -51,7 +52,7 @@ const useProfileUpdateForm = () => {
   }, [fetchUserData, user?.id]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
-    await api.user.update({ data: values, params: { user_id: user?.id } });
+    await api.user.update({ data: values, params: { user_id: user?.id }, cookieToken: cookies.get('token') });
     const { first_name, last_name, age } = values;
     await api.getAccess.openAccess({
       data: { email: userData?.email, first_name, last_name, age },

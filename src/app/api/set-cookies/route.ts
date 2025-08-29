@@ -1,8 +1,5 @@
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
-import { COUNTRY_COOKIE } from '@/utils/cookies';
-import { fetchCountryCodeHandler } from '@/services/course-service';
-
+import { NextResponse, NextRequest } from 'next/server';
 
 // CORS headers configuration
 const corsHeaders = {
@@ -16,37 +13,33 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function GET() {
+export async function POST(request: NextRequest) {
+
+  const cookieStore = await cookies();
+
   try {
-    const country_code = await fetchCountryCodeHandler();
+    const body = await request.json();
 
-    if (!country_code) {
-      return NextResponse.json({
-        success: false,
-        message: 'Could not determine country code'
-      });
-    }
+    const {name, value} = body
 
-    // Set the cookie
-    const cookieStore = await cookies();
     cookieStore.set({
-      name: COUNTRY_COOKIE,
-      value: country_code,
+      name,
+      value,
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 days
-    });
+    })
 
-    return NextResponse.json({
+    NextResponse.json({
       success: true,
-      country_code,
-      headers: corsHeaders,
-    });
+      message: 'Cookie set successfully'
+    })
+
   } catch (error) {
     return NextResponse.json({
       success: false,
-      message: 'Error setting country code'
+      message: 'Error setting cookie'
     }, {
       status: 500
     });

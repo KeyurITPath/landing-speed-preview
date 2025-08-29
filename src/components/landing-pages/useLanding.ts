@@ -123,6 +123,12 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
   const { setToken } = useContext(AuthContext);
 
   useEffect(() => {
+    if (otherData?.data?.final_url) {
+      cookies.set('final_url', otherData?.data?.final_url, { expires: 7 });
+    }
+  }, [otherData, setToken]);
+
+  useEffect(() => {
     dispatch(resetCourse());
     return () => {
       setPipMode(false);
@@ -278,7 +284,7 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
           id,
           slug: landingUrl || '',
           course_title: otherData?.data?.header,
-          landing_page: LANDING_PAGE[activeLandingPage],
+          landing_page: LANDING_PAGE[activeLandingPage.name],
         })
       );
       dispatch(setCurrency({ id: currency?.id, code: currency?.name }));
@@ -363,7 +369,7 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
         const observerCallback = (entries: any) => {
           const entry = entries[0];
           if (!entry.isIntersecting) {
-            if (!globalPipValue && activeLandingPage === 'landing2') {
+            if (!globalPipValue && activeLandingPage.name === 'landing2') {
               togglePipMode(true);
             }
           } else {
@@ -504,13 +510,13 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
 
   useEffect(() => {
     const footer = document.getElementById('footer');
-    if (!footer || !activeLandingPage) return;
+    if (!footer || !activeLandingPage.name) return;
 
     let marginBottom = '';
 
-    if (['landing1', 'landing2'].includes(activeLandingPage)) {
+    if (['landing1', 'landing2'].includes(activeLandingPage.name)) {
       marginBottom = isVisibleBuyBtn ? '80px' : '64px';
-    } else if (activeLandingPage === 'landing3') {
+    } else if (activeLandingPage.name === 'landing3') {
       marginBottom = isVisibleBuyBtn ? '80px' : '0px';
     }
 
@@ -522,7 +528,7 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
   useEffect(() => {
     if (
       isBecomeAMemberWithVerified &&
-      activeLandingPage === 'landing3' &&
+      activeLandingPage.name === 'landing3' &&
       fetchCategoriesData
     ) {
       fetchCategoriesData({});
@@ -533,7 +539,7 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
     if (
       isBecomeAMemberWithVerified &&
       categories?.data?.length &&
-      activeLandingPage === 'landing3'
+      activeLandingPage.name === 'landing3'
     ) {
       const trialPopupsCategoryId = categories.data.find(
         ({ slug }: any) => slug === POPUPS_CATEGORIES.trial_popups

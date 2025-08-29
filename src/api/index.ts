@@ -59,6 +59,17 @@ export const api = {
         ...configs,
       }),
   },
+  cookies: {
+    set: ({ data, ...config }: any) =>
+      client({
+        url: '/api/set-cookies',
+        method: METHODS.POST,
+        isServer: true,
+        cache: 'no-store',
+        data,
+        ...config,
+      }),
+  },
   home: {
     countryCode: ({ ...configs }: any) =>
       client({

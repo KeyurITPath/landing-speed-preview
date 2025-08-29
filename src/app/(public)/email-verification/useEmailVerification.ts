@@ -12,6 +12,7 @@ import { DOMAIN } from '@/utils/constants';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchTrialActivation } from '@/store/features/trials-activation.slice';
 import { useSelector } from 'react-redux';
+import cookies from 'js-cookie';
 
 const useEmailVerification = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const useEmailVerification = () => {
           phone: phone ? '+' + phone : null,
           domain: DOMAIN,
         };
-        await api.user.update({ data, params: { user_id: user?.id } });
+        await api.user.update({ data, params: { user_id: user?.id }, cookieToken: cookies.get('token') || '' });
         await api.getAccess.openAccess({
           data,
         });

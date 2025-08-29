@@ -12,7 +12,7 @@ const VideoPlayer = ({
   onReady,
   pipMode = true,
   closePipMode,
-  isVideoProcessed = false
+  isVideoProcessed = false,
 }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
@@ -22,12 +22,12 @@ const VideoPlayer = ({
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorDetails, setErrorDetails] = useState({
     message: 'Video unavailable',
-    description: 'This content is currently not accessible'
+    description: 'This content is currently not accessible',
   });
   const currentTimeRef = useRef(0);
   const isPlayingRef = useRef(false);
   const hlsRef = useRef(null);
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (!playerRef.current) {
@@ -48,7 +48,7 @@ const VideoPlayer = ({
         videoRef.current.appendChild(videoElement);
       }
 
-      player = (playerRef.current = videojs(
+      player = playerRef.current = videojs(
         videoElement,
         {
           ...options,
@@ -61,9 +61,9 @@ const VideoPlayer = ({
           // Force Video.js to avoid native HLS and be consistent across browsers
           html5: {
             vhs: {
-              overrideNative: true
-            }
-          }
+              overrideNative: true,
+            },
+          },
         },
         async () => {
           if (typeof onReady === 'function') {
@@ -80,7 +80,7 @@ const VideoPlayer = ({
             }
           }
         }
-      ));
+      );
 
       const handleReadyToPlay = async () => {
         console.log('Player ready to play');
@@ -116,7 +116,7 @@ const VideoPlayer = ({
         isPlayingRef.current = false;
       });
 
-      player.on('error', (e) => {
+      player.on('error', e => {
         const error = player.error();
         console.error('Video.js Error:', error, e);
 
@@ -131,7 +131,8 @@ const VideoPlayer = ({
               break;
             case 2:
               errorMessage = 'Network error';
-              errorDescription = 'A network error occurred while loading the video';
+              errorDescription =
+                'A network error occurred while loading the video';
               break;
             case 3:
               errorMessage = 'Video decode error';
@@ -144,11 +145,15 @@ const VideoPlayer = ({
               break;
             default:
               errorMessage = 'Video playback error';
-              errorDescription = 'An unknown error occurred during video playback';
+              errorDescription =
+                'An unknown error occurred during video playback';
           }
         }
 
-        setErrorDetails({ message: errorMessage, description: errorDescription });
+        setErrorDetails({
+          message: errorMessage,
+          description: errorDescription,
+        });
 
         if (isVideoProcessed) {
           setShowErrorMessage(true);
@@ -175,7 +180,7 @@ const VideoPlayer = ({
           const hls = new Hls({
             enableWorker: true,
             lowLatencyMode: false,
-            backBufferLength: 90
+            backBufferLength: 90,
             // withCredentials: true, // uncomment if your stream needs credentials + CORS support
           });
 
@@ -191,12 +196,14 @@ const VideoPlayer = ({
             console.error('HLS Error:', data);
             if (data.fatal) {
               let errorMessage = 'Video playback error';
-              let errorDescription = 'An error occurred while loading the video';
+              let errorDescription =
+                'An error occurred while loading the video';
 
               switch (data.type) {
                 case Hls.ErrorTypes.NETWORK_ERROR:
                   errorMessage = 'Network error';
-                  errorDescription = 'Failed to load video due to network issues';
+                  errorDescription =
+                    'Failed to load video due to network issues';
                   break;
                 case Hls.ErrorTypes.MEDIA_ERROR:
                   errorMessage = 'Media error';
@@ -215,7 +222,10 @@ const VideoPlayer = ({
                   errorDescription = 'Unable to play this video stream';
               }
 
-              setErrorDetails({ message: errorMessage, description: errorDescription });
+              setErrorDetails({
+                message: errorMessage,
+                description: errorDescription,
+              });
               if (isVideoProcessed) setShowErrorMessage(true);
               setIsLoading(false);
               setPlayerReady(false);
@@ -228,7 +238,7 @@ const VideoPlayer = ({
           videoEl.onerror = () => {
             setErrorDetails({
               message: 'Video format not supported',
-              description: 'This video format is not supported in your browser'
+              description: 'This video format is not supported in your browser',
             });
             if (isVideoProcessed) setShowErrorMessage(true);
             setIsLoading(false);
@@ -239,7 +249,7 @@ const VideoPlayer = ({
           console.warn('HLS not supported in this browser');
           setErrorDetails({
             message: 'Browser not supported',
-            description: 'Your browser does not support HLS video streaming'
+            description: 'Your browser does not support HLS video streaming',
           });
           if (isVideoProcessed) setShowErrorMessage(true);
           setIsLoading(false);
@@ -255,7 +265,9 @@ const VideoPlayer = ({
         existingPlayer.currentTime(currentTimeRef.current);
       }
       if (isPlayingRef.current && existingPlayer.paused()) {
-        existingPlayer.play().catch((e) => console.warn('Failed to resume play:', e));
+        existingPlayer
+          .play()
+          .catch(e => console.warn('Failed to resume play:', e));
       }
       // readyState() === 0 => HAVE_NOTHING
       if (existingPlayer.readyState() >= 1) {
@@ -295,99 +307,129 @@ const VideoPlayer = ({
 
   return (
     <div
-      className={`${
-        pipMode ? 'pip-mode-video-player-custom' : 'video-player-custom'
-      } video-player-container`}
-      data-vjs-player
-      onMouseEnter={() => (pipMode ? setHoverPipMode(true) : null)}
-      onMouseLeave={() => (pipMode ? setHoverPipMode(false) : null)}
+      className='video-player-wrapper'
+      style={{
+        ...(pipMode
+          ? {
+              border: '1px dashed rgba(0, 0, 0, 0.2)',
+              backgroundImage: options?.poster
+                ? `url(${encodeURI(options.poster)})`
+                : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }
+          : {}),
+      }}
     >
-      {showLoadingOverlay && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
-          }}
-        >
-          {options?.poster ? (
-
-            <Image
-              src={options.poster}
-              alt="Loading video"
-              loading="lazy"
-              width={options?.posterWidth || 640}
-              height={options?.posterHeight || 360}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          ) : (
-            <Skeleton variant="rectangular" width="100%" height="100%" sx={{ bgcolor: 'grey.900' }} />
-          )}
-        </div>
-      )}
-
-      {/* Error Message Overlay - Only show if video is processed and there's an actual error */}
-      {showErrorMessage && isVideoProcessed && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            color: 'white',
-            padding: '15px 20px',
-            textAlign: 'center',
-            zIndex: 3
-          }}
-        >
-          <div style={{ marginBottom: '8px' }}>{errorDetails.message}</div>
-          <div style={{ fontSize: '0.9em', opacity: 0.8 }}>{errorDetails.description}</div>
-        </div>
-      )}
-
-      {/* Video.js container - Controls visibility and fade */}
       <div
-        ref={videoRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          transition: 'opacity 0.4s ease-in-out',
-          opacity: playerReady && !isLoading && !showErrorMessage ? 1 : 0,
-          visibility: playerReady && !isLoading && !showErrorMessage ? 'visible' : 'hidden',
-          zIndex: 1
-        }}
-      />
+        className={`${
+          pipMode ? 'pip-mode-video-player-custom' : 'video-player-custom'
+        } video-player-container`}
+        data-vjs-player
+        onMouseEnter={() => (pipMode ? setHoverPipMode(true) : null)}
+        onMouseLeave={() => (pipMode ? setHoverPipMode(false) : null)}
+      >
+        {showLoadingOverlay && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            {options?.poster ? (
+              <Image
+                src={options.poster}
+                alt='Loading video'
+                loading='lazy'
+                width={options?.posterWidth || 640}
+                height={options?.posterHeight || 360}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <Skeleton
+                variant='rectangular'
+                width='100%'
+                height='100%'
+                sx={{ bgcolor: 'grey.900' }}
+              />
+            )}
+          </div>
+        )}
 
-      {/* PiP Close Button */}
-      {pipMode && (
-        <IconButton
-          sx={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            backgroundColor: hoverPipMode || isMobile ? 'black' : 'transparent',
-            opacity: 0.6,
-            padding: '4px',
-            zIndex: 4
+        {/* Error Message Overlay - Only show if video is processed and there's an actual error */}
+        {showErrorMessage && isVideoProcessed && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              color: 'white',
+              padding: '15px 20px',
+              textAlign: 'center',
+              zIndex: 3,
+            }}
+          >
+            <div style={{ marginBottom: '8px' }}>{errorDetails.message}</div>
+            <div style={{ fontSize: '0.9em', opacity: 0.8 }}>
+              {errorDetails.description}
+            </div>
+          </div>
+        )}
+
+        {/* Video.js container - Controls visibility and fade */}
+        <div
+          ref={videoRef}
+          style={{
+            width: '100%',
+            height: '100%',
+            transition: 'opacity 0.4s ease-in-out',
+            opacity: playerReady && !isLoading && !showErrorMessage ? 1 : 0,
+            visibility:
+              playerReady && !isLoading && !showErrorMessage
+                ? 'visible'
+                : 'hidden',
+            zIndex: 1,
           }}
-          onClick={closePipMode}
-        >
-          <ICONS.CLOSE style={{ color: hoverPipMode || isMobile ? 'white' : 'transparent' }} />
-        </IconButton>
-      )}
+        />
+
+        {/* PiP Close Button */}
+        {pipMode && (
+          <IconButton
+            sx={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              backgroundColor:
+                hoverPipMode || isMobile ? 'black' : 'transparent',
+              opacity: 0.6,
+              padding: '4px',
+              zIndex: 4,
+            }}
+            onClick={closePipMode}
+          >
+            <ICONS.CLOSE
+              style={{
+                color: hoverPipMode || isMobile ? 'white' : 'transparent',
+              }}
+            />
+          </IconButton>
+        )}
+      </div>
     </div>
   );
 };
