@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { countries } from 'countries-list';
 import { profileUpdateValidation } from '@/utils/validations';
 import { AGE_RANGE, GENDERS } from '@/utils/constants';
@@ -14,23 +14,18 @@ import { decodeToken, decrypt } from '@/utils/helper';
 import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
 import useSocket from '@/hooks/use-socket';
-import { fetchUser } from '@/store/features/user.slice';
-import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import cookies from 'js-cookie';
 
-const useProfileUpdateForm = () => {
+const useProfileUpdateForm = ({ userData }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
-
-  const [fetchUserData] = useDispatchWithAbort(fetchUser);
-  const { data: userData } = useSelector(({ user }: any) => user);
   const router = useRouter();
   const dispatch = useDispatch();
   const t = useTranslations();
 
   const initialValues = {
-    first_name: '',
-    last_name: '',
+    first_name: userData?.first_name || '',
+    last_name: userData?.last_name || '',
     location: '',
     age: '',
     gender: 'male',
@@ -42,18 +37,13 @@ const useProfileUpdateForm = () => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
 
+  console.log('plainPassword', plainPassword, userData)
 
-  useEffect(() => {
-    if(fetchUserData){
-        fetchUserData({
-            params: { user_id: user?.id }
-        });
-    }
-  }, [fetchUserData, user?.id]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     await api.user.update({ data: values, params: { user_id: user?.id }, cookieToken: cookies.get('token') });
     const { first_name, last_name, age } = values;
+
     await api.getAccess.openAccess({
       data: { email: userData?.email, first_name, last_name, age },
     });

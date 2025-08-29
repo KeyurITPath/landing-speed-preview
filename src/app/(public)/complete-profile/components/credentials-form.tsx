@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   Box,
   CircularProgress,
@@ -9,16 +9,12 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { ICONS } from '@/assets/icons';
 import CustomButton from '@/shared/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { IMAGES } from '@/assets/images';
-import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-import { fetchUser } from '@/store/features/user.slice';
 import { decrypt } from '@/utils/helper';
-import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { routes } from '../../../../utils/constants/routes';
 import Image from 'next/image';
@@ -41,62 +37,48 @@ const ProductsCard = styled(Stack)(() => ({
   boxShadow: '10px 10px 90px 0px #8080801A',
 }));
 
-const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL }: any) => {
-  const { user } = useContext(AuthContext);
-  const [fetchUserData] = useDispatchWithAbort(fetchUser);
-  const { data, loading, failed } = useSelector(({ user }: any) => user);
+const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
   const [copyEmail, emailLoading, emailIsCopied] = useClipboard();
   const [copyPassword, passwordLoading, passwordIsCopied] = useClipboard();
-
-  const { country } = useSelector(({ defaults }: any) => defaults);
   const router = useRouter();
   const t = useTranslations();
 
   const plainPassword = useMemo(() => {
-    return decrypt(data?.passwordforUI);
-  }, [data?.passwordforUI]);
+    return decrypt(userData?.passwordforUI);
+  }, [userData?.passwordforUI]);
 
   const isFreeTrial = useMemo(() => {
     return (
-      data?.subscription_purchase_histories?.find(
+      userData?.subscription_purchase_histories?.find(
         ({ is_trial }: any) => is_trial
       )?.is_trial || false
     );
-  }, [data?.subscription_purchase_histories]);
+  }, [userData?.subscription_purchase_histories]);
 
   const trailDays = useMemo(() => {
     return (
-      data?.subscription_purchase_histories?.find(
+      userData?.subscription_purchase_histories?.find(
         ({ is_trial }: any) => is_trial
       )?.subscription_plan?.trial_days || 7
     );
-  }, [data?.subscription_purchase_histories]);
+  }, [userData?.subscription_purchase_histories]);
 
   const orderHistory = useMemo(() => {
     return (
-      data?.user_orders?.[0]?.user_order_details?.map(
+      userData?.user_orders?.[0]?.user_order_details?.map(
         ({ id, course_translation }: any) => ({
           id,
           title: course_translation?.title,
         })
       ) || []
     );
-  }, [data]);
+  }, [userData]);
 
   useEffect(() => {
-    if (fetchUserData) {
-      fetchUserData({
-        params: { user_id: user?.id },
-        headers: { 'req-from': country?.country_code },
-      });
-    }
-  }, [fetchUserData, user?.id, country?.country_code]);
-
-  useEffect(() => {
-    if (failed) {
+    if (!userData?.id) {
       router.push(routes.public.home);
     }
-  }, [failed, router]);
+  }, [userData?.id, router]);
 
   return (
     <>
@@ -105,7 +87,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL }: any) => {
         {t('purchase_message')}
         {':'}
       </Typography>
-      {loading && !data?.id ? (
+      {!userData?.id ? (
         <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress />
         </Stack>
@@ -178,7 +160,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL }: any) => {
                     >
                       {t('login_text')}
                     </Box>{' '}
-                    {data?.email}
+                    {userData?.email}
                   </Typography>
                 </Stack>
                 <IconButton
@@ -186,7 +168,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL }: any) => {
                   sx={{ mr: -1, color: 'primary.main' }}
                   onClick={() => {
                     if (!emailIsCopied) {
-                      copyEmail(data?.email);
+                      copyEmail(userData?.email);
                     }
                   }}
                   disableRipple={emailIsCopied}
@@ -264,7 +246,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL }: any) => {
         onClick={() => {
           setActiveTab(2);
         }}
-        disabled={loading}
+        disabled={!userData?.id}
       >
         {t('go_to_course')}
       </CustomButton>

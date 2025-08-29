@@ -7,9 +7,8 @@ import {
   useEffect,
   useCallback,
   useMemo,
-  use,
 } from 'react';
-import Joyride, { ACTIONS, STATUS } from 'react-joyride';
+import Joyride, { ACTIONS, STATUS } from 'react-joyride-next';
 import { useSelector, useDispatch } from 'react-redux';
 import { api } from '@/api';
 import { routes } from '@/utils/constants/routes';

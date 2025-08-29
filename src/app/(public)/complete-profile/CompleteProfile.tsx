@@ -35,7 +35,7 @@ const Tab = ({ id, value, children }: any) => {
   );
 };
 
-const CompleteProfileComponent = ({ domainDetails }: any) => {
+const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   const queryParams = useSearchParams();
 
   const { email } = domainDetails?.data?.domain_detail || {};
@@ -74,7 +74,7 @@ const CompleteProfileComponent = ({ domainDetails }: any) => {
         {tabs.map(({ id, Component }) => {
           return (
             <Tab key={id} {...{ id }} value={activeTab}>
-              <Component {...{ setActiveTab, SUPPORT_MAIL }} />
+              <Component {...{ setActiveTab, SUPPORT_MAIL, userData }} />
             </Tab>
           );
         })}

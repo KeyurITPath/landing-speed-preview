@@ -4,8 +4,8 @@ import FormControl from '@/shared/inputs/form-control';
 import CustomButton from '@/shared/button';
 import { useTranslations } from 'next-intl';
 
-const ProfileUpdateForm = () => {
-  const { handleSubmit, formData, loading } = useProfileUpdateForm()
+const ProfileUpdateForm = ({ userData }: any) => {
+  const { handleSubmit, formData, loading } = useProfileUpdateForm({ userData })
   const t = useTranslations();
 
   return (

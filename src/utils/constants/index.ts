@@ -1,5 +1,5 @@
 import momentTimezone from 'moment-timezone';
-const SECRET_KEY = process.env.NEXT_PUBLIC_PASSWORD_SECRET;
+const SECRET_KEY = process.env.NEXT_PUBLIC_PASSWORD_SECRET || '~!@#$%^&*()_+';
 
 const LOCAL_STORAGE_KEY = 'edzenity:';
 
