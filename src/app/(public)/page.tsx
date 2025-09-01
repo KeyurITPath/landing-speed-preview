@@ -10,12 +10,20 @@ import {
 } from '@services/course-service';
 import { LanguageService } from '@/services/language-service';
 import { DOMAIN, TIMEZONE, USER_ROLE } from '@utils/constants';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
+import { NextApiRequest } from 'next';
+
 
 const Home = async () => {
+
+  const headersList = headers();
+  const forwardedFor = (await headersList).get("x-forwarded-for");
+  const ip = forwardedFor?.split(',')[0] || (await headersList).get("x-real-ip");
+
+  console.log('Client IP:', ip);
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
 
@@ -125,3 +133,4 @@ const isBecomeAMemberWithVerified = () => {
 };
 
 export default Home;
+
