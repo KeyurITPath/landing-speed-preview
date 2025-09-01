@@ -278,7 +278,7 @@ const VimeoPlayer = ({
             top: 0,
             left: 0,
             width: '100%',
-            height: isMobile ? `calc(${getMobileHeight} + 32px)` : '100%',
+            height: isMobile ? `calc(${getMobileHeight})` : '87.5%',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

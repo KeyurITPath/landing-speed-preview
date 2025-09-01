@@ -3,7 +3,7 @@ import { ICONS } from '@/assets/icons';
 import useToggleState from '@/hooks/use-toggle-state';
 import CustomButton from '@/shared/button';
 import { neutral } from '@/theme/color';
-import { SERVER_URL } from '@/utils/constants';
+import { NAV_ITEMS, SERVER_URL } from '@/utils/constants';
 import { routes } from '@/utils/constants/routes';
 import { toCapitalCase } from '@/utils/helper';
 import {
@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import ConfirmationPopup from '@components/confirmation-popup';
 import { api } from '@/api';
 import { logout } from '@/store/features/auth.slice';
@@ -65,6 +65,12 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
     }
     router.refresh();
   };
+
+  const NAVBAR_NAVIGATION_ITEMS = useMemo(() => {
+    if (pathname !== routes.public.home) {
+      return NAV_ITEMS.filter(item => item.key !== 'courses');
+    } else return NAV_ITEMS;
+  }, [pathname]);
 
   return (
     <>
@@ -153,13 +159,14 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
               >
                 <IconButton
                   sx={{
-                    display: { xs: 'block', sm: 'none' }
+                    display: { xs: 'block', sm: 'none' },
                   }}
                   onClick={() => router.push(routes.public.search)}
                 >
                   <ICONS.SEARCH size={22} />
                 </IconButton>
-                <Button variant='contained'
+                <Button
+                  variant='contained'
                   onClick={() => router.push(routes.public.search)}
                   sx={{
                     display: { xs: 'none', sm: 'flex' },
@@ -218,9 +225,8 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
                     spacing={{ xs: 1, sm: 1, md: 3 }}
                     display={{ xs: 'none', md: 'flex' }}
                   >
-                    <Link
-                      href='#'
-                      style={{
+                    {NAVBAR_NAVIGATION_ITEMS.map(item => (
+                      <Link href={item?.path}  style={{
                         fontSize: 14,
                         fontWeight: 400,
                         color: neutral[900],
@@ -229,10 +235,12 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
                           textDecoration: 'underline',
                         },
                       }}
-                      onClick={() => handleNavClick('courses-by-category')}
-                    >
-                      {toCapitalCase(t(`nav.courses`))}
-                    </Link>
+                        key={item.path}
+                        onClick={() => handleNavClick(item.path)}
+                      >
+                        {toCapitalCase(t(`nav.${item.key}`))}
+                      </Link>
+                    ))}
                   </Stack>
                   <Box
                     sx={{
@@ -255,7 +263,7 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
                             pathname !== routes.public.home && (
                               <CustomButton
                                 sx={{
-                                  ml: { xs: 0, sm: 2 }
+                                  ml: { xs: 0, sm: 2 },
                                 }}
                                 variant='gradient'
                                 onClick={() =>
@@ -279,13 +287,13 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
                         </Box>
                       </>
                     ) : (
-                        <CustomButton
-                          sx={{ ml: { xs: 0, sm: 2 } }}
-                          variant='gradient'
-                          onClick={() => router.push(routes.auth.login)}
-                        >
-                          {t('login')}
-                        </CustomButton>
+                      <CustomButton
+                        sx={{ ml: { xs: 0, sm: 2 } }}
+                        variant='gradient'
+                        onClick={() => router.push(routes.auth.login)}
+                      >
+                        {t('login')}
+                      </CustomButton>
                     )}
                   </Box>
                 </>

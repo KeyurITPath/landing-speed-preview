@@ -1,15 +1,22 @@
 'use client';
 
-import { Box, Container, Rating, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Rating,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { ICONS } from '@assets/icons';
 import { IMAGES } from '@assets/images';
-import NextImage from 'next/image';
 import dynamic from 'next/dynamic';
 import { USER_REVIEW_IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
 import CustomImage from '../custom-image';
+import Image from 'next/image';
 
 const UserSlider = dynamic(() => import('../user-slider'), {
   ssr: false,
@@ -17,6 +24,7 @@ const UserSlider = dynamic(() => import('../user-slider'), {
 
 const UserReviews = () => {
   const t = useTranslations();
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
   const USER_REVIEWS = [
     {
@@ -144,13 +152,17 @@ const UserReviews = () => {
                                 sx={{
                                   flexDirection: 'row',
                                   aspectRatio: '1/1',
+                                  position: 'relative', // required for fill
+                                  width: { xs: 20, sm: 40 }, // MUI responsive width
+                                  height: { xs: 'auto', sm: 32 },
                                 }}
                               >
-                                <NextImage
-                                  width={40}
-                                  height={32}
+                                <Image
                                   src={IMAGES.doubleQuotes.src}
                                   alt={name}
+                                  fill
+                                  sizes='(min-width: 600px) 40px, 20px'
+                                  style={{ objectFit: 'cover' }}
                                 />
                               </Stack>
                               <Rating
@@ -202,14 +214,20 @@ const UserReviews = () => {
                             aspectRatio='4/5'
                             borderRadius={2}
                             containerSx={{
-                              width: '35%',
-                              order: { xs: 1, md: 1 },
-                              maxWidth: { xs: '150px', md: 'unset' },
-                              zIndex: { xs: 2, md: 1 },
-                              position: { xs: 'relative'},
-                              top: { xs: '75px', md: 0 },
-                              left: { xs: 0, md: 'unset' },
-                              alignSelf: { xs: 'flex-start', md: 'unset' },
+                              width: {
+                                xs: '100%',
+                                sm: '100%',
+                                md: '35%',
+                              },
+                              order: { xs: 1, sm: 1, md: 2 },
+                              ...(isMobile && {
+                                maxWidth: '150px !important',
+                                zIndex: 2,
+                                position: 'relative !important',
+                                top: 60,
+                                left: 0,
+                                alignSelf: 'flex-start !important',
+                              }),
                             }}
                           />
                         </Stack>
@@ -222,7 +240,7 @@ const UserReviews = () => {
             <Box
               className='swiper-button-prev user-reviews-swiper-button-prev'
               sx={{
-                visibility: { xs: 'hidden', md: 'visible' },
+                visibility: { xs: 'hidden', sm: 'visible' },
               }}
             >
               <ICONS.KeyboardArrowLeft size={32} />
@@ -230,7 +248,7 @@ const UserReviews = () => {
             <Box
               className='swiper-button-next user-reviews-swiper-button-next'
               sx={{
-                visibility: { xs: 'hidden', md: 'visible' },
+                visibility: { xs: 'hidden', sm: 'visible' },
               }}
             >
               <ICONS.KeyboardArrowRight size={32} />

@@ -3,12 +3,14 @@ import {
   Container,
   Grid2,
   Stack,
-  Typography
+  Typography,
+  useMediaQuery,
 } from '@mui/material';
-import { primaryNew } from '../../theme/color';
-import NextImage from 'next/image';
+import { primaryNew } from '@/theme/color';
 import { GET_STARTED_IMAGE, IMAGES } from '@assets/images';
 import { useTranslations } from 'next-intl';
+import CustomImage from '../custom-image';
+import Image from 'next/image';
 
 const GetStartedSteps = () => {
   const GET_STARTED_STEPS = [
@@ -32,6 +34,7 @@ const GetStartedSteps = () => {
     },
   ];
   const t = useTranslations();
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
   return (
     <Container maxWidth='lg'>
@@ -48,24 +51,21 @@ const GetStartedSteps = () => {
         </Typography>
 
         <Grid2
+          width='100%'
           container
           spacing={2}
           sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}
         >
           <Grid2 size={{ xs: 12, sm: 5 }}>
-            <NextImage
+            <CustomImage
               src={GET_STARTED_IMAGE}
               alt='Get started'
-              width={310} // required for NextImage
-              height={420} // required for NextImage
-              style={{
+              aspectRatio='5/7'
+              containerSx={{
                 width: '100%',
                 height: '100%',
-                maxHeight: '420px',
-                maxWidth: '310px',
-                borderRadius: '10px',
-                objectFit: 'cover', // mimic aspectRatio
-                aspectRatio: '5 / 7', // if you want strict aspect ratio
+                maxHeight: { xs: '200px', sm: '420px' },
+                maxWidth: { xs: '100%', sm: '310px' },
               }}
             />
           </Grid2>
@@ -92,19 +92,13 @@ const GetStartedSteps = () => {
                       gap={{ xs: 1, sm: 2 }}
                     >
                       <Typography
-                        variant='h5'
+                        variant='indexNumber'
                         sx={{
                           color: '#E7EAFC',
                           minWidth: {
                             xs: '52px',
                             sm: '64px',
                             md: '124px',
-                          },
-                          fontWeight: 700,
-                          fontSize: {
-                            xs: '2rem',
-                            sm: '2.5rem',
-                            md: '3rem',
                           },
                         }}
                       >
@@ -136,10 +130,17 @@ const GetStartedSteps = () => {
                               width: { xs: '50px', sm: '70px' },
                             }}
                           >
-                            <NextImage width={26} height={26}
-                              loading='eager'
+                            {}
+                            <Image
                               src={image}
                               alt={`Step ${index + 1}`}
+                              width={isMobile ? 20 : 28}
+                              height={isMobile ? 20 : 28}
+                              loading='eager'
+                              fetchPriority='high'
+                              style={{
+                                objectFit: 'contain',
+                              }}
                             />
                           </Box>
                         </Stack>

@@ -43,21 +43,28 @@ const CourseAuthor = ({ data, SUPPORT_MAIL }: any) => {
           display: 'flex',
           gap: '20px',
           alignItems: { xs: 'flex-start' },
-          flexDirection: 'row',
+          flexDirection: {xs: 'column', sm: 'row'},
           mt: { xs: 2, sm: 4 },
         }}
       >
-        <Image
-          width={100}
-          height={100}
-          loading='lazy'
-          alt='course_author'
-          src={videoURL(data?.author_image)}
-          style={{
+        <Box
+          sx={{
+            width: { xs: 100, sm: 188 },
+            height: { xs: 100, sm: 100 },
             borderRadius: '50%',
-            objectFit: 'cover',
+            overflow: 'hidden',
+            position: 'relative', // required for fill
           }}
-        />
+        >
+          <Image
+            alt='course_author'
+            src={videoURL(data?.author_image)}
+            fill
+            sizes='(min-width: 600px) 100px, 50px'
+            style={{ objectFit: 'cover' }}
+            loading='lazy'
+          />
+        </Box>
         <Stack spacing={2}>
           <Typography
             fontWeight={400}

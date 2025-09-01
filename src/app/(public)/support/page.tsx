@@ -1,6 +1,17 @@
-const Support = () => {
+import { api } from "@/api";
+import { DOMAIN } from "@/utils/constants";
+import SupportContainer from "./SupportContainer";
+
+const Support = async() => {
+
+    const response = await api.home.fetchDomainDetails({
+      params: { name: DOMAIN },
+    });
+
   return (
-    <div>Support</div>
+    <SupportContainer {...{
+      domainDetails: response.data?.data || {},
+    }} />
   )
 }
 

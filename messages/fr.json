@@ -80,6 +80,8 @@
   },
 
   "search": "Recherche",
+  "search_courses": "Rechercher des cours",
+  "search_description": "Découvrez des cours adaptés à vos intérêts. Trouvez la bonne voie pour développer vos compétences, rencontrer des experts et atteindre vos objectifs.",
   "dashboard": "Tableau de bord",
   "logout": "Se déconnecter",
   "login": "Se connecter",

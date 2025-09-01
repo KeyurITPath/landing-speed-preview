@@ -29,6 +29,18 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
   }
 );
 
+export const fetchSearchCourseData = createAsyncThunk(
+  'home/fetchSearchCourseData',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.home.fetchHomeCourses(data);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const initialState = {
   courses: {
     data: [],
@@ -40,6 +52,13 @@ export const initialState = {
   popularCoursesOnBrand: {
     data: [],
     loading: false,
+    pagination: { search: '', limit: 8, page: 1, course_categories: [] },
+    total_data: 1,
+    current_page: 1,
+  },
+  search: {
+    data: [],
+    loading: true,
     pagination: { search: '', limit: 8, page: 1, course_categories: [] },
     total_data: 1,
     current_page: 1,
@@ -87,6 +106,32 @@ const homeSlice = createSlice({
           return;
         }
         state.courses = initialState.courses;
+      });
+
+    builder
+      .addCase(fetchSearchCourseData.pending, state => {
+        state.search.loading = true;
+      })
+
+      .addCase(fetchSearchCourseData.fulfilled, (state, action) => {
+        state.search.loading = false;
+        const {
+          payload: {
+            data: { result, pagination },
+          },
+        } = action;
+        state.search.data = result;
+        if (pagination) {
+          state.search.total_data = pagination.totalItems;
+          state.search.current_page = pagination.currentPage;
+        }
+      })
+
+      .addCase(fetchSearchCourseData.rejected, (state, action) => {
+        if (action.meta.aborted) {
+          return;
+        }
+        state.search = initialState.search;
       });
 
     builder

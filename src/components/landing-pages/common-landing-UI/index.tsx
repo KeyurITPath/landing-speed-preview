@@ -108,7 +108,7 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
                 >
                   <Image
                     loading='eager'
-                    src={videoURL(data?.intro_thumbnail)}
+                    src={encodeURI(videoURL(data?.intro_thumbnail))}
                     alt='Video processing poster'
                     fill
                     sizes='100vw'

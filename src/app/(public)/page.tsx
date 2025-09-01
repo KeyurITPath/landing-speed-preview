@@ -14,7 +14,6 @@ import { cookies, headers } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
-import { NextApiRequest } from 'next';
 
 
 const Home = async () => {

@@ -13,7 +13,7 @@ const VideoPlayer = ({
   pipMode = true,
   closePipMode,
   isVideoProcessed = false,
-}) => {
+}: any) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const [playerReady, setPlayerReady] = useState(false);
@@ -305,6 +305,8 @@ const VideoPlayer = ({
 
   const showLoadingOverlay = (isLoading || !playerReady) && !showErrorMessage;
 
+  console.log('options.poster', options?.poster)
+
   return (
     <div
       className='video-player-wrapper'
@@ -348,7 +350,7 @@ const VideoPlayer = ({
               <Image
                 src={options.poster}
                 alt='Loading video'
-                loading='lazy'
+                loading='eager'
                 width={options?.posterWidth || 640}
                 height={options?.posterHeight || 360}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}

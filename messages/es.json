@@ -80,6 +80,8 @@
   },
 
   "search": "Buscar",
+  "search_courses": "Buscar cursos",
+  "search_description": "Descubre cursos adaptados a tus intereses. Encuentra el camino adecuado para mejorar tus habilidades, conectar con expertos y alcanzar tus metas.",
   "dashboard": "Tablero",
   "logout": "Cerrar sesión",
   "login": "Iniciar sesión",

@@ -1,28 +1,13 @@
-import {
-  Box,
-  Container,
-  Grid2,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Box, Container, Grid2, Stack, Typography } from '@mui/material';
 import { keyframes } from '@emotion/react';
 import CustomButton from '@shared/button';
-// import CustomButton from '../../../../shared/button';
-// import { Trans, useTranslation } from 'react-i18next';
-// import { URLS } from '../../../../constant/urls';
-// import { useEffect, useState, useRef, useMemo } from 'react';
-// import { scrollToSection } from '../../../../assets/utils/function';
 import { scrollToSection } from '@utils/helper';
-// import { useSelector } from 'react-redux';
 import { JOIN_COURSE_IMAGES, MEMBER_AVATAR_IMAGES } from '../../assets/images';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { routes } from '../../utils/constants/routes';
 import { useMemo } from 'react';
-
-// import useLocation from '../../../../hooks/use-location';
 
 const scrollAnimation = keyframes`
   0% { transform: translateY(0); }
@@ -54,18 +39,18 @@ const JoinCourse = ({ domainDetails, isLoggedIn }: any) => {
     BRAND_NAME: domainDetails?.data?.domain_detail?.brand_name || 'Eduelle',
   };
 
-  const quadruplicatedImages = useMemo(() =>
-    [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES],
+  const quadruplicatedImages = useMemo(
+    () => [...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES, ...JOIN_COURSES],
     []
   );
 
-  const leftColumnImages = useMemo(() =>
-    quadruplicatedImages.filter((_, i) => i % 2 === 0),
+  const leftColumnImages = useMemo(
+    () => quadruplicatedImages.filter((_, i) => i % 2 === 0),
     [quadruplicatedImages]
   );
 
-  const rightColumnImages = useMemo(() =>
-    quadruplicatedImages.filter((_, i) => i % 2 !== 0),
+  const rightColumnImages = useMemo(
+    () => quadruplicatedImages.filter((_, i) => i % 2 !== 0),
     [quadruplicatedImages]
   );
 
@@ -163,20 +148,22 @@ const JoinCourse = ({ domainDetails, isLoggedIn }: any) => {
                   spacing={{ xs: 1, sm: 2 }}
                 >
                   <Stack direction='row' sx={{ position: 'relative' }}>
-                      {MEMBER_AVATARS?.map((memberImg, index) => (
-                        <Image width={45} height={45}
-                          key={index}
-                          src={memberImg}
-                          alt={`member-${index}`}
-                          style={{
-                            borderRadius: '50%',
-                            width: '45px',
-                            height: '45px',
-                            marginLeft: index === 0 ? 0 : '-14px',
-                            zIndex: 1,
-                          }}
-                        />
-                      ))}
+                    {MEMBER_AVATARS?.map((memberImg, index) => (
+                      <Image
+                        width={45}
+                        height={45}
+                        key={index}
+                        src={memberImg}
+                        alt={`member-${index}`}
+                        style={{
+                          borderRadius: '50%',
+                          width: '45px',
+                          height: '45px',
+                          marginLeft: index === 0 ? 0 : '-14px',
+                          zIndex: 1,
+                        }}
+                      />
+                    ))}
                   </Stack>
                   <Stack>
                     <Typography
@@ -207,118 +194,116 @@ const JoinCourse = ({ domainDetails, isLoggedIn }: any) => {
                   position: 'relative',
                 }}
               >
-                  <>
+                <>
+                  <Box
+                    sx={{
+                      flex: 1,
+                      overflow: 'hidden',
+                      position: 'relative',
+                      willChange: 'transform',
+                      perspective: 1000,
+                      backfaceVisibility: 'hidden',
+                    }}
+                  >
                     <Box
                       sx={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        position: 'relative',
+                        animation: `${scrollAnimation} ${animationDuration}s linear infinite`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '16px',
+                        position: 'absolute',
+                        width: '100%',
                         willChange: 'transform',
-                        perspective: 1000,
-                        backfaceVisibility: 'hidden',
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          animation: `${scrollAnimation} ${animationDuration}s linear infinite`,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '16px',
-                          position: 'absolute',
-                          width: '100%',
-                          willChange: 'transform',
-                          transform: 'translate3d(0,0,0)',
+                        transform: 'translate3d(0,0,0)',
                           containIntrinsicSize: '230px 3000px',
                           contentVisibility: 'auto',
-                        }}
-                      >
-                        {leftColumnImages.map((item, index) => (
-                          <Box
-                            key={index}
-                            sx={{
-                              mb: 2,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
+                      }}
+                    >
+                      {leftColumnImages.map((item, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            mb: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Image
+                            src={item}
+                            alt={`join-course-${index}`}
+                            priority={index < 3}
+                            loading={index < 3 ? 'eager' : 'lazy'}
+                            fetchPriority={index < 2 ? 'high' : 'auto'}
+                            style={{
+                              borderRadius: '14px',
+                              width: '100%',
+                              height: 'auto',
+                              maxWidth: 230,
+                              maxHeight: 250,
+                              objectFit: 'cover',
+                              display: 'block',
                             }}
-                          >
-                            <Image
-                              src={item}
-                              alt={`join-course-${index}`}
-                              width={185}
-                              height={250}
-                              priority={index < 3}
-                              loading={index < 3 ? 'eager' : 'lazy'}
-                              fetchPriority={index < 2 ? 'high' : 'auto'}
-                              style={{
-                                borderRadius: '14px',
-                                width: '100%',
-                                maxWidth: 230,
-                                maxHeight: 250,
-                                objectFit: 'cover',
-                                display: 'block',
-                              }}
-                            />
-                          </Box>
-                        ))}
-                      </Box>
+                          />
+                        </Box>
+                      ))}
                     </Box>
+                  </Box>
 
+                  <Box
+                    sx={{
+                      flex: 1,
+                      overflow: 'hidden',
+                      position: 'relative',
+                      willChange: 'transform',
+                      perspective: 1000,
+                      backfaceVisibility: 'hidden',
+                    }}
+                  >
                     <Box
                       sx={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        position: 'relative',
+                        animation: `${scrollAnimation} ${animationDuration + 5}s linear infinite`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '16px',
+                        position: 'absolute',
+                        width: '100%',
+                        transform: 'translate3d(0, -10%, 0)',
                         willChange: 'transform',
-                        perspective: 1000,
-                        backfaceVisibility: 'hidden',
+                        containIntrinsicSize: '230px 3000px',
+                        contentVisibility: 'auto',
                       }}
                     >
-                      <Box
-                        sx={{
-                          animation: `${scrollAnimation} ${animationDuration + 5}s linear infinite`,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '16px',
-                          position: 'absolute',
-                          width: '100%',
-                          transform: 'translate3d(0, -10%, 0)',
-                          willChange: 'transform',
-                          containIntrinsicSize: '230px 3000px',
-                          contentVisibility: 'auto',
-                        }}
-                      >
-                        {rightColumnImages.map((item, index) => (
-                          <Box
-                            key={index}
-                            sx={{
-                              mb: 2,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
+                      {rightColumnImages.map((item, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            mb: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Image
+                            src={item}
+                            alt={`join-course-alt-${index}`}
+                            priority={index < 3}
+                            loading={index < 3 ? 'eager' : 'lazy'}
+                            fetchPriority={index < 2 ? 'high' : 'auto'}
+                            style={{
+                              borderRadius: '14px',
+                              width: '100%',
+                              height: 'auto',
+                              maxHeight: 250,
+                              objectFit: 'cover',
+                              display: 'block',
                             }}
-                          >
-                            <Image
-                              src={item}
-                              alt={`join-course-alt-${index}`}
-                              width={185}
-                              height={250}
-                              priority={index < 3}
-                              loading={index < 3 ? 'eager' : 'lazy'}
-                              fetchPriority={index < 2 ? 'high' : 'auto'}
-                              style={{
-                                borderRadius: '14px',
-                                width: '100%',
-                                maxHeight: 250,
-                                objectFit: 'cover',
-                                display: 'block',
-                              }}
-                            />
-                          </Box>
-                        ))}
-                      </Box>
+                          />
+                        </Box>
+                      ))}
                     </Box>
-                  </>
+                  </Box>
+                </>
               </Box>
             </Grid2>
           </Grid2>
