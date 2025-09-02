@@ -52,8 +52,8 @@ const Header = ({
     domainDetails?.data?.domain_detail || {};
 
   const smDown = useMediaQuery(theme => theme.breakpoints.down('sm'));
-
   const LOGO_URL = logo ? SERVER_URL + logo : null;
+  console.log('LOGO_URL', LOGO_URL)
   const BRAND_NAME = brand_name || '';
   const SUPPORT_MAIL = email || '';
   const LOGO_WIDTH = smDown ? logo_width / 1.5 : logo_width || null;
