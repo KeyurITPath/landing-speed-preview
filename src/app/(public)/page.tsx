@@ -52,7 +52,9 @@ const Home = async () => {
     params: {
       language_id,
       domain: domain_value,
-      ...(user && { user_id: user?.id }),
+      page: 1,
+      limit: 8,
+      ...((!isEmptyObject(user)) && { user_id: user?.id })
     },
     headers: {
       'req-from': country_code,
@@ -63,7 +65,9 @@ const Home = async () => {
     params: {
       language_id,
       domain: domain_value,
-      ...(user && { user_id: user?.id }),
+      page: 1,
+      limit: 8,
+      ...((!isEmptyObject(user)) && { user_id: user?.id })
     },
     headers: {
       'req-from': country_code,
