@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
         hostname: 'stagingcoursemarketplace2025.s3.amazonaws.com',
         pathname: '/**', // allow all paths
       },
+      {
+        protocol: 'https',
+        hostname: 'coursemarketplace2025.s3.amazonaws.com',
+        pathname: '/**', // allow all paths
+      }
     ],
   },
 
