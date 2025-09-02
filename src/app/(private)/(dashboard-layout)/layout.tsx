@@ -9,7 +9,7 @@ import {
   fetchCountryCodeHandler,
 } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 const layoutStyle = {
   width: '100%',
@@ -25,8 +25,9 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
   const userData = decodeToken(cookieStore.get('token')?.value);
   const domain_value = await getDomain()
+  const IP = await fetchIP()
   // IP address with country code
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   // Get language_id and languages using the simple service
   const language_id = await LanguageService.getEffectiveLanguageId();

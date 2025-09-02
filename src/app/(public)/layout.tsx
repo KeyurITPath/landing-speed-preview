@@ -6,7 +6,7 @@ import { fetchAllCountries, fetchCountryCodeHandler } from '@/services/course-se
 import { LanguageService } from '@/services/language-service';
 import { cookies } from 'next/headers';
 import { decodeToken, isTokenActive } from '@/utils/helper';
-import { getDomain } from '../../utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 export async function generateMetadata() {
   const domain_value = await getDomain()
@@ -40,6 +40,7 @@ export async function generateMetadata() {
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
   const domain_value = await getDomain()
+  const IP = await fetchIP()
   const token = cookieStore.get('token')?.value; // read cookie "token"
   // domain details
   const response = await api.home.fetchDomainDetails({
@@ -48,7 +49,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const domain = (await response?.data) || {};
 
   // IP address with country code
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   let user = {}
   let isLoggedIn;

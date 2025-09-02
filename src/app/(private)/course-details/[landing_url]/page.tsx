@@ -9,12 +9,13 @@ import { api } from '@/api';
 import CourseDetailContainer from './CourseDetailContainer';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 const CourseDetails = async ({ params }: any) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   const domain_value = await getDomain()
+  const IP = await fetchIP()
   const slug = await params;
 
   let userData = {};
@@ -25,7 +26,7 @@ const CourseDetails = async ({ params }: any) => {
   }
 
   // IP address with country code
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   // Get language_id and languages using the simple service
   const language_id = await LanguageService.getEffectiveLanguageId();

@@ -14,16 +14,13 @@ import { cookies, headers } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 
 const Home = async () => {
   const domain_value = await getDomain()
-  const headersList = headers();
-  const forwardedFor = (await headersList).get("x-forwarded-for");
-  const ip = forwardedFor?.split(',')[0] || (await headersList).get("x-real-ip");
-
-  console.log('Client IP:', ip);
+  const IP = await fetchIP()
+  console.log('Client IP:', IP);
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
 
@@ -36,7 +33,7 @@ const Home = async () => {
 
   const language_id = await LanguageService.getEffectiveLanguageId();
 
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   const domainDetails = await fetchDomainDetails(domain_value);
 

@@ -1,9 +1,6 @@
 import { api } from '@/api';
 import { formatCurrency, isEmptyArray, videoURL } from '@utils/helper';
-import {
-  RAPID_API_KEY,
-  SERVER_URL,
-} from '@utils/constants';
+import { RAPID_API_KEY, SERVER_URL } from '@utils/constants';
 import { cookies } from 'next/headers';
 import { getCountryFromServer } from '@/utils/cookies';
 
@@ -214,7 +211,7 @@ export async function fetchCourseForLanding(data: any) {
   }
 }
 
-export async function fetchCountryCodeHandler() {
+export async function fetchCountryCodeHandler(IP?: any) {
   try {
     // First check if country code exists in cookies
     const cookieStore = await cookies();
@@ -225,15 +222,27 @@ export async function fetchCountryCodeHandler() {
     }
 
     // If not in cookie, fetch from IP
-    const response = await fetch('https://telize-v1.p.rapidapi.com/location', {
-      method: 'GET',
-      cache: 'default',
-      headers: {
-        'x-rapidapi-key':
-          RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
-        'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
-      },
-    });
+    const response = IP
+      ? await fetch(`https://telize-v1.p.rapidapi.com/location/${IP}`, {
+          method: 'GET',
+          cache: 'default',
+          headers: {
+            'x-rapidapi-key':
+              RAPID_API_KEY ||
+              '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
+            'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
+          },
+        })
+      : await fetch('https://telize-v1.p.rapidapi.com/location', {
+          method: 'GET',
+          cache: 'default',
+          headers: {
+            'x-rapidapi-key':
+              RAPID_API_KEY ||
+              '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
+            'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
+          },
+        });
 
     const data = await response.json();
     console.log('data-01', data);
@@ -351,20 +360,20 @@ export const fetchTrialActivation = async (data: any) => {
 
 export const fetchAllCourseOfTheWeek = async (data: any) => {
   try {
-    const response = await api.dashboard.getAllCourseOfTheWeek(data)
-    const responseData = response?.data?.data
-    return responseData?.result?.[0]
+    const response = await api.dashboard.getAllCourseOfTheWeek(data);
+    const responseData = response?.data?.data;
+    return responseData?.result?.[0];
   } catch (error) {
     console.error('Error fetching course of the week :', error);
   }
-}
+};
 
 export const fetchAllPopularCoursesOnBrand = async (data: any) => {
   try {
-    const response = await api.dashboard.getAllPopularCoursesOnBrand(data)
-    const responseData = response?.data?.data
-    return responseData?.result || []
+    const response = await api.dashboard.getAllPopularCoursesOnBrand(data);
+    const responseData = response?.data?.data;
+    return responseData?.result || [];
   } catch (error) {
     console.error('Error fetching popular courses :', error);
   }
-}
+};

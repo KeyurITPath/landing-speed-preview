@@ -7,12 +7,13 @@ import { TIMEZONE, USER_ROLE } from '@/utils/constants';
 import momentTimezone from 'moment-timezone';
 import SearchContainer from './SearchContainer';
 import moment from 'moment'
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 const Search = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
   const domain_value = await getDomain()
+  const IP = await fetchIP()
   let user = {};
   let isLoggedIn;
   if (token) {
@@ -22,7 +23,7 @@ const Search = async () => {
 
   const language_id = await LanguageService.getEffectiveLanguageId();
 
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   const userResponse = await fetchUser({
     params: {

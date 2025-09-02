@@ -12,18 +12,19 @@ import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
 import { TIMEZONE, USER_ROLE } from '@/utils/constants';
 import moment from 'moment';
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 const Dashboard = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
   const user = decodeToken(token);
   const domain_value = await getDomain()
+  const IP = await fetchIP()
 
   const language_id = await LanguageService.getEffectiveLanguageId();
 
   // IP address with country code
-  const country_code = await fetchCountryCodeHandler();
+  const country_code = await fetchCountryCodeHandler(IP);
 
   // domain details
   const response = await api.home.fetchDomainDetails({

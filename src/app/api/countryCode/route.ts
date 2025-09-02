@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { COUNTRY_COOKIE } from '@/utils/cookies';
 import { fetchCountryCodeHandler } from '@/services/course-service';
+import { fetchIP } from '@/utils/domain';
 
 // CORS headers configuration
 const corsHeaders = {
@@ -17,7 +18,8 @@ export async function OPTIONS() {
 
 export async function GET() {
   try {
-    const country_code = await fetchCountryCodeHandler();
+    const IP = await fetchIP()
+    const country_code = await fetchCountryCodeHandler(IP);
 
     if (!country_code) {
       return NextResponse.json({
