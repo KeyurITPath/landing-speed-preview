@@ -1,4 +1,4 @@
-import { fetchCourseForLanding } from '@services/course-service';
+import { fetchCountryCodeHandler, fetchCourseForLanding } from '@services/course-service';
 import { TIMEZONE, USER_ROLE } from '@utils/constants';
 import { cookies } from 'next/headers';
 import MainLanding from './MainLanding';
@@ -6,7 +6,7 @@ import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
-import { getDomain } from '@/utils/domain';
+import { fetchIP, getDomain } from '@/utils/domain';
 
 const Landing = async ({ params, searchParams }: any) => {
   const cookieStore = await cookies();
@@ -21,8 +21,9 @@ const Landing = async ({ params, searchParams }: any) => {
     isLoggedIn = isTokenActive(token);
   }
 
-  const countryResponse = await api.home.countryCode({});
-  const { country_code } = await countryResponse.data;
+  const IP = await fetchIP();
+  // IP address with country code
+  const country_code = await fetchCountryCodeHandler(IP);
 
   const slug = await params;
   const discountCode = await searchParams;

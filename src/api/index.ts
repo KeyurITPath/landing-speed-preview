@@ -51,34 +51,8 @@ export const api = {
         data,
         ...configs,
       }),
-    logout: ({ ...configs }: any) =>
-      client({
-        url: '/api/logout',
-        method: METHODS.POST,
-        isServer: true,
-        ...configs,
-      }),
-  },
-  cookies: {
-    set: ({ data, ...config }: any) =>
-      client({
-        url: '/api/set-cookies',
-        method: METHODS.POST,
-        isServer: true,
-        cache: 'no-store',
-        data,
-        ...config,
-      }),
   },
   home: {
-    countryCode: ({ ...configs }: any) =>
-      client({
-        url: `/api/countryCode`,
-        method: METHODS.GET,
-        isServer: true,
-        cache: 'no-store',
-        ...configs,
-      }),
     course: ({ params, ...configs }: any) =>
       client({
         url: `/landingPageDetails`,

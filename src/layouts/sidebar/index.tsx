@@ -119,7 +119,9 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
   }, [fetchUserData, user?.id]);
 
   const handleLogout = async () => {
-    await api.auth.logout({});
+    await fetch('/api/logout', {
+      method: 'POST',
+    });
     localStorage.clear();
     sessionStorage.clear();
     dispatch(logout());
@@ -322,7 +324,6 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
 };
 
 const Sidebar = ({ open, onClose, domainDetails, user }: any) => {
-
   const lgUp = useMediaQuery(theme => theme.breakpoints.up('lg'), {
     noSsr: true,
   });
@@ -355,7 +356,9 @@ const Sidebar = ({ open, onClose, domainDetails, user }: any) => {
           bgcolor: 'background.paper',
           boxShadow: 1,
           zIndex: 998,
-          transform: isVisible ? 'translateX(0)' : `translateX(-${SIDE_NAV_WIDTH}px)`,
+          transform: isVisible
+            ? 'translateX(0)'
+            : `translateX(-${SIDE_NAV_WIDTH}px)`,
           transition: 'transform 0.3s ease-in-out',
         }}
       >

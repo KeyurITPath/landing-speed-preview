@@ -11,7 +11,9 @@ export async function logoutAction() {
 
     if (token) {
       try {
-        await api.auth.logout({ cookieToken: token });
+        await fetch('/api/logout', {
+          method: 'POST',
+        });
       } catch (error) {
         console.warn('Logout API call failed:', error);
       }
