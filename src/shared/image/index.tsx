@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { IMAGES } from '@assets/images';
 
 interface ImageProps {
-  src: string;
+  src: string | any;
   alt?: string;
   sx?: object;
   containerSx?: object;
-  aspectRatio?: string;
+  aspectRatio?: any;
   borderRadius?: number;
   disableBgColor?: boolean;
   [key: string]: any;
