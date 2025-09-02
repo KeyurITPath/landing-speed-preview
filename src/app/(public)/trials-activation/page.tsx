@@ -1,10 +1,11 @@
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import TrialsActivationComponent from './TrialsActivationComponent';
+import { getDomain } from '../../../utils/domain';
 
 const TrialsActivation = async () => {
+  const domain_value = await getDomain()
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
     // IP address with country code

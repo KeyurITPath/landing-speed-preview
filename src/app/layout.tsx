@@ -11,10 +11,10 @@ import ReduxProvider from '@/store/ReduxProvider';
 import ToastProvider from '@/context/stack-provider';
 import AuthProvider from '@/context/auth-provider';
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import { SocketProvider } from '@/context/socket-context';
 import GTM from "@/components/GTM";
 import JoyrideProvider from '@/shared/joyride-provider';
+import { getDomain } from '@/utils/domain';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -29,8 +29,9 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata() {
+  const domain_value = await getDomain()
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   const domain = (await response?.data?.data) || {};

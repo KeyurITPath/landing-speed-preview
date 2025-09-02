@@ -4,12 +4,12 @@ import MainLayoutContainer from './MainLayoutContainer';
 import { cookies } from 'next/headers';
 import { decodeToken } from '@/utils/helper';
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import {
   fetchAllCountries,
   fetchCountryCodeHandler,
 } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
+import { getDomain } from '@/utils/domain';
 
 const layoutStyle = {
   width: '100%',
@@ -24,7 +24,7 @@ export const metadata = {
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
   const userData = decodeToken(cookieStore.get('token')?.value);
-
+  const domain_value = await getDomain()
   // IP address with country code
   const country_code = await fetchCountryCodeHandler();
 
@@ -38,7 +38,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   // domain details
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
   const domain = (await response?.data) || {};
 

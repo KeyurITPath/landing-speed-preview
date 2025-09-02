@@ -9,15 +9,16 @@ import {
   fetchUser,
 } from '@services/course-service';
 import { LanguageService } from '@/services/language-service';
-import { DOMAIN, TIMEZONE, USER_ROLE } from '@utils/constants';
+import { TIMEZONE, USER_ROLE } from '@utils/constants';
 import { cookies, headers } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
+import { getDomain } from '@/utils/domain';
 
 
 const Home = async () => {
-
+  const domain_value = await getDomain()
   const headersList = headers();
   const forwardedFor = (await headersList).get("x-forwarded-for");
   const ip = forwardedFor?.split(',')[0] || (await headersList).get("x-real-ip");
@@ -37,13 +38,13 @@ const Home = async () => {
 
   const country_code = await fetchCountryCodeHandler();
 
-  const domainDetails = await fetchDomainDetails();
+  const domainDetails = await fetchDomainDetails(domain_value);
 
   const userResponse = await fetchUser({
     params: {
       user_id: user?.id,
       language: language_id,
-      domain: DOMAIN,
+      domain: domain_value,
     },
     headers: {
       'req-from': country_code,
@@ -53,7 +54,7 @@ const Home = async () => {
   const popularCourses = await fetchPopularCourses({
     params: {
       language_id,
-      domain: DOMAIN,
+      domain: domain_value,
       ...(user && { user_id: user?.id }),
     },
     headers: {
@@ -64,7 +65,7 @@ const Home = async () => {
   const homeCourses = await fetchHomeCoursesData({
     params: {
       language_id,
-      domain: DOMAIN,
+      domain: domain_value,
       ...(user && { user_id: user?.id }),
     },
     headers: {

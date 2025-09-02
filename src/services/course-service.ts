@@ -1,12 +1,8 @@
 import { api } from '@/api';
 import { formatCurrency, isEmptyArray, videoURL } from '@utils/helper';
 import {
-  DOMAIN,
-  POPUPS_CATEGORIES,
   RAPID_API_KEY,
   SERVER_URL,
-  TIMEZONE,
-  USER_ROLE,
 } from '@utils/constants';
 import { cookies } from 'next/headers';
 import { getCountryFromServer } from '@/utils/cookies';
@@ -249,7 +245,7 @@ export async function fetchCountryCodeHandler() {
   }
 }
 
-export const fetchDomainDetails = async () => {
+export const fetchDomainDetails = async (DOMAIN?: any) => {
   try {
     const response = await api.home.fetchDomainDetails({
       params: { name: DOMAIN },

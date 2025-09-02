@@ -1,14 +1,16 @@
 import { fetchCourseForLanding } from '@services/course-service';
-import { DOMAIN, TIMEZONE, USER_ROLE } from '@utils/constants';
+import { TIMEZONE, USER_ROLE } from '@utils/constants';
 import { cookies } from 'next/headers';
 import MainLanding from './MainLanding';
 import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
+import { getDomain } from '@/utils/domain';
 
 const Landing = async ({ params, searchParams }: any) => {
   const cookieStore = await cookies();
+  const domain_value = await getDomain()
   const token = cookieStore.get('token')?.value || null;
   const country_value = cookieStore.get('country_code')?.value || null;
 
@@ -26,7 +28,7 @@ const Landing = async ({ params, searchParams }: any) => {
   const discountCode = await searchParams;
 
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   const courseResponse = await fetchCourseForLanding({
@@ -35,7 +37,7 @@ const Landing = async ({ params, searchParams }: any) => {
       ...(discountCode?.discount_code
         ? { discount_code: discountCode?.discount_code }
         : {}),
-      domain: DOMAIN,
+      domain: domain_value,
     },
     headers: {
       'req-from': country_value || country_code,

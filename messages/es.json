@@ -4,21 +4,17 @@
   "participants": "participantes",
   "last_update": "Última actualización",
   "home": "Inicio",
-
   "discount": "descuento",
   "end_of_sale": "Fin de la venta",
   "hours": "2 horas",
   "get_access": "Obtener acceso",
   "money_back": "Garantizamos la devolución de su dinero",
   "email_support_message": "Si por alguna razón el curso no satisface sus expectativas, nosotros le cubrimos las espaldas. Envíe un correo electrónico al servicio de asistencia en un plazo de 14 días a <a>{ email }</a> para obtener un reembolso completo, sin preguntas.",
-
   "comments_about_course": "Comentarios sobre el curso",
   "course_includes": "El curso incluye",
-
   "why_choose_this_course": "¿Por qué elegir este curso?",
   "academic_plan": "Plan académico",
   "meet_course_author": "Conozca al autor del curso",
-
   "refund_after_days": "Si después de 14 días sigue sin estar satisfecho, no se preocupe. <span>Le devolveremos el importe del curso sin hacerle preguntas. Envíenos un correo electrónico a</span> <a>{ email }</a>.",
   "after_payment_practicing": "Tras el pago, puede empezar a practicar inmediatamente",
   "payment_steps": [
@@ -26,7 +22,6 @@
     "Complete el proceso de pedido y recibirá al instante una contraseña para acceder a su cuenta personal de {brand_name}.",
     "Reciba clases, realice tareas prácticas, formule preguntas al autor y descubra nuevos cursos."
   ],
-
   "faq": [
     {
       "question": "¿Durante cuánto tiempo tendré acceso al curso?",
@@ -53,24 +48,19 @@
       "answer": "Sí, puedes. No corres ningún riesgo. Si el curso no cumple con tus expectativas en los primeros 14 días desde la compra, te reembolsaremos el importe completo en tu tarjeta, sin preguntas. Solo envía un correo electrónico a nuestro soporte en <a>{email}</a>."
     }
   ],
-
   "manager_intro": "Kayla Parker - Responsable de Felicidad del Cliente",
   "customer_support_message": "Nuestro equipo de atención al cliente está a su disposición en todo momento. Si tiene alguna pregunta, envíe un correo electrónico a <a>{email}</a>.",
-
   "save_your_seat": "Reserve su plaza ahora mismo con un precio especial",
   "your_email": "tu correo electrónico",
   "terms_of_service": "Estoy de acuerdo con los términos de las <refund>Políticas de Reembolso</refund>, <terms>Condiciones de Servicio</terms>, <privacy>Política de Privacidad</privacy>.",
   "start_practicing": "<strong>Empieza a practicar inmediatamente</strong> después de rellenar el formulario y pagar. Date prisa en comprar un curso a bajo precio mientras la oferta especial siga vigente.",
   "money_back_guarantee": "<strong>14 días de garantía de devolución del dinero:</strong> si el curso no satisface sus expectativas en los primeros catorce días tras la compra, le devolveremos el precio íntegro sin preguntas. Sólo tiene que enviar un correo electrónico a <email>{support_email}</email>",
   "must_be_valid_email": "Debe ser un email válido",
-
   "unlock_special_offer": "¡Espere! ¡Desbloquee la oferta especial por tiempo limitado!",
   "course_at_discount": "Antes de finalizar tu compra, ¡aprovecha estos cursos exclusivos con un gran descuento!",
   "add_to_order": "Añadir al pedido",
   "total": "Total",
-
   "reviews_landing_3": "Reseñas",
-
   "nav": {
     "courses": "cursos",
     "about": "sobre nosotros",
@@ -78,7 +68,6 @@
     "jobs": "trabajo",
     "support": "centro de soporte"
   },
-
   "search": "Buscar",
   "search_courses": "Buscar cursos",
   "search_description": "Descubre cursos adaptados a tus intereses. Encuentra el camino adecuado para mejorar tus habilidades, conectar con expertos y alcanzar tus metas.",
@@ -101,7 +90,7 @@
       "message": "He transformado mi carrera y he conectado con otras personas que comparten mis intereses. Todo comenzó con un curso de mejora de la memoria, y los resultados—mejor enfoque y claridad—me motivaron a profundizar en el funcionamiento del cerebro. Ahora me siento más seguro y empoderado tanto en mi vida personal como profesional."
     },
     "2": {
-      "message": "He transformado mi carrera y he conectado con otras personas que comparten mis intereses. Todo comenzó con un curso de mejora de la memoria, y los resultados—mejor enfoque y claridad—me motivaron a profundizar en el funcionamiento del cerebro. Ahora me siento más seguro y empoderado tanto en mi vida personal como profesional."
+      "message": "Unirme a esta plataforma provocó un gran cambio en mi forma de aprender. Comencé con un curso de creatividad y rápidamente noté cómo abrió nuevas formas de pensar. Desde entonces, he estado explorando más temas y encontrando un valor real en cada paso. Ha sido un cambio total para mi mentalidad."
     },
     "3": {
       "message": "Unirme a esta plataforma provocó un gran cambio en la forma en que enfrento el aprendizaje. Empecé con un curso de creatividad y rápidamente noté cómo abrió nuevas formas de pensar. Desde entonces, he estado explorando más temas y encontrando un valor real en cada paso. Ha sido un cambio radical en mi mentalidad."
@@ -115,7 +104,7 @@
   },
   "popular_authors": "Autores Populares",
   "become_an_author": "Conviértete en un autor",
-  "join_brand": "<span>¡Únete a {brand_name}</span> y comparte tu experiencia como autor!",
+  "join_brand": "<span>¡Únete a {brand_name}<span> y comparte tu experiencia como autor!",
   "learn_from_creatives": "Hay millones de personas allá afuera que quieren aprender de creativos como tú. Si te gusta enseñar y compartir lo que sabes, {brand_name} es un lugar único para hacerlo.",
   "teach_course": "Enseñar un Curso",
   "easy_steps_to_get_started": "Pasos fáciles para comenzar",
@@ -133,10 +122,8 @@
       "description": "Con acceso ilimitado, puedes ver los cursos tantas veces como necesites."
     }
   ],
-
   "see_all_courses_by_categories": "Ver todos los cursos por categorías",
   "faqTitle": "Preguntas frecuentes",
-
   "generalFaqTitle": "General",
   "pricingFaqTitle": "Precios y pagos",
   "general_faqs": [
@@ -180,7 +167,6 @@
       ]
     }
   ],
-
   "showLessText": "Mostrar menos",
   "showMoreText": "Mostrar más",
   "faqTitleShort": "Preguntas Frecuentes",
@@ -192,16 +178,12 @@
   "termsOfService": "Términos de servicio",
   "privacyPolicy": "Política de privacidad",
   "copyright": "© {year} Todos los derechos reservados por {name}",
-
   "cancellation_refund_policies": "Políticas de cancelación y reembolso",
-
   "openAccessNow": "ACCEDER AHORA",
-
   "keepPageOpen": "Mantén esta página abierta. Tu pedido no ha finalizado.",
   "continueWatchVideo": "Continúa viendo este video",
   "freeAccessMessage": "7 días de acceso gratuito a nuestros 50+ mejores cursos",
   "subscriptionMessage": "Incluye acceso a nuestros más vendidos en Yoga, Danza, Canto, Masaje y Ejercicios Mentales. Pruébalo gratis, y si te gusta, cuesta {price} al mes.",
-
   "subscriptionAgreement": "Al hacer clic en la casilla, acepto los Términos de suscripción y estoy de acuerdo con los pagos automáticos.",
   "continueToCourse": "CONTINUAR AL CURSO",
   "exclusiveOpportunity": "Oportunidad exclusiva única",
@@ -213,13 +195,10 @@
   "transformationMessage": "Tu transformación que cambia la vida comienza con la membresía de {brand_name}",
   "growthPathMessage": "Así podría ser tu camino de crecimiento personal...",
   "unlockMessage": "Después de desbloquear {courseTitle}, continúa tu transformación con otros programas empoderadores:",
-
   "danceTherapy": "Terapia de danza",
   "danceManifest": "Baila tus emociones y manifiesta tus sueños a través de la danza:",
   "danceCourseDescription": "Un curso en línea sobre cómo aprender a bailar hermosamente y dominar tu cuerpo, trabajar a través del estrés, bloqueos internos, y cómo sanar tu estado psicológico a través del movimiento. El autor del curso es un entrenador de clase internacional con 15 años de experiencia, coreógrafo, bailarín profesional y psicólogo.",
-
   "freeTrialText": "Prueba gratuita durante 7 días, luego <span>{price} por mes.</span> Se cobrará automáticamente. Cancela en cualquier momento.",
-
   "guaranteed": "100% Garantizado:",
   "cancelTrialText": "Siéntete libre de cancelar tu prueba por cualquier motivo, completamente sin compromiso.",
   "whyActNow": "¿Por qué actuar ahora?",
@@ -228,14 +207,12 @@
   "membershipSubtitle": "Tu transformación que cambia la vida comienza con la Membresía {brand_name}",
   "membershipDescription1": "En el mundo acelerado de hoy, tomarse el tiempo para enfocarse en ti mismo no solo es beneficioso, es esencial. Participar en el cuidado personal y la introspección es crucial para mantener el equilibrio mental y el bienestar emocional. Te ayuda a enfrentar los desafíos de la vida con mayor resiliencia y aprovechar todo tu potencial.",
   "membershipDescription2": "En {brand_name}, creemos en empoderarte con las herramientas para mirar hacia adentro, explorar tus capacidades y cultivar un estado mental que fomente el crecimiento y la realización.",
-
   "whatYouGetTitle": "Lo que obtienes",
   "programsTitle": "100+ programas en 7 categorías",
   "communityTitle": "Comunidad",
   "communityDescription": "Accede a la red social privada de {brand_name}, donde puedes conectar, compartir sabiduría y crecer",
   "brandValuesTitle": "{brand_name} encarna los valores y principios fundamentales que resuenan profundamente con nuestra comunidad de usuarios y autores.",
   "brandValuesDescription": "Nuestro compromiso radica en curar solo el contenido más fino y asociarnos con escritores excepcionales. Nuestros usuarios se destacan como las personas más perspicaces, reflexivas y exitosas. Al entrelazar estos tres elementos clave: contenido sobresaliente, autores eminentes y una base de usuarios iluminada, fomentamos la comunidad más sólida de individuos realizados. Y sin lugar a dudas, eres una parte esencial de esta comunidad próspera.",
-
   "categoriesBadge": [
     "Cerebro",
     "Meditaciones",
@@ -245,7 +222,6 @@
     "Fitness & Salud",
     "Relaciones"
   ],
-
   "successStories": "176 405 histoires de réussite",
   "journeyMessage": "¿Estás listo para comenzar tu propio camino hacia el éxito? ¡Únete a nuestra gran familia!",
   "feedbacks": {
@@ -295,13 +271,11 @@
       ]
     }
   ],
-
   "popup_message": "¿Crees que {trial_days} días no son suficientes?",
   "free_trial": "días de prueba gratuita",
   "begin_journey": "COMENZAR MI VIAJE SAGRADO DE {trial_days}-DÍAS",
   "pause_for": "PAUSA POR {trial_days}-DÍAS",
   "skip_offer": "OMITIR ESTA OFERTA ÚNICA",
-
   "thank_you": "¡Gracias por tu confianza!",
   "purchase_message": "Acabas de comprar",
   "access_message": "Acceso a",
@@ -309,15 +283,12 @@
   "trial_message": "Prueba varios cursos y selecciona los que sean adecuados para ti. Después de {trial_days} días, tu tarjeta se cobrará automáticamente por el próximo mes. Si es necesario, cancela futuros cargos en tu cuenta personal.",
   "login_text": "Tu inicio de sesión",
   "password_text": "Tu contraseña",
-
   "email_support_message_new": "Te hemos enviado el login y la contraseña por correo electrónico y SMS. Puede que quieras hacer una captura de pantalla para asegurarte de no perderlos. Si no has recibido el correo, revisa tu carpeta de spam o contacta con nuestro soporte inmediatamente: <a>{email}</a>",
   "course_dashboard_message": "¡Ahora es el momento perfecto para ir al panel del curso!",
   "go_to_course": "IR AL CURSO",
-
   "thank_you_message": "¡Gracias! Por favor, cuéntanos sobre ti para personalizar tu experiencia.",
   "continue": "CONTINUAR",
   "terms_confirmation": "Al hacer clic en el botón \"Continuar\", confirmo que acepto los términos y condiciones de la <a>Política de privacidad</a>",
-
   "order_incomplete_message": "Tu pedido aún no está completo. Mantén esta página abierta",
   "order_almost_complete": "¡Tu pedido está casi completo!",
   "order_instructions": "Por favor, vuelve a ingresar tu correo electrónico para verificar y proporciona tu número de teléfono para un acceso seguro a la cuenta.",
@@ -326,11 +297,9 @@
   "confirm_email_button": "CONFIRMAR CORREO",
   "validation_error_message": "Las direcciones de correo electrónico no coinciden.",
   "validation_okay_button": "ACEPTAR",
-
   "enter_email": "Ingresa tu correo electrónico",
   "confirm_email": "Confirma tu correo electrónico",
   "enter_phone": "Ingresa tu teléfono",
-
   "your_first_name": "Tu primer nombre",
   "your_last_name": "Tu apellido",
   "country": "País",
@@ -338,17 +307,16 @@
   "Male": "Masculino",
   "Female": "Femenino",
   "Other": "Otro",
-
   "payment_successful": "¡Pago exitoso!",
   "payment_failed": "¡Pago fallido!",
-
-  "age_range": { "value": "under 18", "label": "Menor de 18" },
-
+  "age_range": {
+    "value": "under 18",
+    "label": "Menor de 18"
+  },
   "users": "Usuarios",
   "positive_reviews": "Reseñas Positivas",
   "sale": "Venta",
   "enjoy_course": "Disfruta <span>de este curso</span> y <span>otros 100 de forma ilimitada.</span>",
-
   "about_author": "Sobre el Autor",
   "content": "Contenido",
   "proceed_to_checkout": "PROCEDER AL PAGO",
@@ -363,16 +331,15 @@
   "per": "por",
   "days": "días",
   "any_three_courses": "cualquier tres cursos",
-  "effective_date": "Fecha de vigencia: 4 de mayo de 2023",
-
+  "effective_date": "Fecha de vigencia: 1 de mayo de 2025",
   "privacyPolicies": [
     {
       "title": "Quiénes Somos y Qué Cubre Esta Política",
-      "description": "En Performance EdTech LLC. (\"{brand_name}\", \"nosotros\"), reconocemos que la privacidad es muy importante y valoramos tu privacidad. En esta Política de Privacidad (\"Política\"), describimos cómo recopilamos, usamos y divulgamos la información personal que obtenemos sobre nuestros clientes y usuarios de nuestro sitio web (incluyendo {brand_name}.com) (\"Sitios\"), nuestra aplicación móvil (la \"App\") y los servicios disponibles a través de nuestro Sitio (colectivamente, el Sitio, la App y los servicios disponibles en ellos son los \"Servicios\"). A continuación, explicamos cómo recopilamos, usamos y compartimos información sobre ti, junto con las opciones que tienes con respecto a esa información.<br/><br/>Términos Aplicables<br/><br/>El uso de nuestros Servicios, y cualquier disputa relacionada con la privacidad, está sujeto a esta Política y a los respectivos términos de uso (los \"Términos\") entre tú y {brand_name}, como nuestros Términos de Servicio y cualquier otro acuerdo relevante. Los Términos aplicables se incorporan por referencia en esta Política, incluyendo sus limitaciones de responsabilidad y la resolución de disputas. Al divulgar tu información personal a nosotros o utilizar nuestros Servicios, comprendes y aceptas que {brand_name} puede recopilar, usar y divulgar tu información personal de acuerdo con esta Política y los Términos aplicables."
+      "description": "En Edzen LTD. (\"{brand_name}\", \"nosotros\"), reconocemos que la privacidad es muy importante y valoramos tu privacidad. En esta Política de Privacidad (\"Política\"), describimos cómo recopilamos, usamos y divulgamos la información personal que obtenemos sobre nuestros clientes y usuarios de nuestro sitio web (incluyendo {brand_name}.com) (\"Sitios\"), nuestra aplicación móvil (la \"App\") y los servicios disponibles a través de nuestro Sitio (colectivamente, el Sitio, la App y los servicios disponibles en ellos son los \"Servicios\"). A continuación, explicamos cómo recopilamos, usamos y compartimos información sobre ti, junto con las opciones que tienes con respecto a esa información.<br/><br/>Términos Aplicables<br/><br/>El uso de nuestros Servicios, y cualquier disputa relacionada con la privacidad, está sujeto a esta Política y a los respectivos términos de uso (los \"Términos\") entre tú y {brand_name}, como nuestros Términos de Servicio y cualquier otro acuerdo relevante. Los Términos aplicables se incorporan por referencia en esta Política, incluyendo sus limitaciones de responsabilidad y la resolución de disputas. Al divulgar tu información personal a nosotros o utilizar nuestros Servicios, comprendes y aceptas que {brand_name} puede recopilar, usar y divulgar tu información personal de acuerdo con esta Política y los Términos aplicables."
     },
     {
       "title": "Información que recopilamos",
-      "description": "Generalmente recopilamos información de las siguientes maneras: cuando nos proporciona información directamente, automáticamente a través de nuestros Servicios y desde fuentes de terceros. A continuación, explicamos la información que recopilamos.<br/><br/>Información que nos proporciona<br/><br/>La cantidad y el tipo de información que recopilamos dependen de cómo interactúe con nuestros Servicios. Aquí hay algunos ejemplos:<br/><ul> <li> <strong>Información básica de la cuenta:</strong> Aunque puede navegar por partes de nuestro sitio web sin registrarse, le pedimos que se registre en Newmindstart.com para acceder a ciertas partes de los Servicios (por ejemplo, para acceder a uno de nuestros cursos). Cuando se registra en Newmindstart.com, podemos solicitarle información personal básica como su dirección de correo electrónico, nombre, apellido y número de teléfono. También podemos permitirle enviar información adicional de la cuenta de manera voluntaria, como una foto de perfil, su biografía o el país/ciudad en el que se encuentra. También puede suscribirse para recibir boletines informativos y ofertas promocionales enviándonos su dirección de correo electrónico y número de teléfono.<br> </li> <li> <strong>Información del perfil:</strong> Si tiene una cuenta con nosotros, cierta información de su perfil será utilizada en su perfil público. Por ejemplo, su nombre de usuario, foto de perfil y ubicación de residencia autoinformada forman parte de ese perfil público, junto con cualquier otra información que elija incluir, como su biografía. Tenga esto en cuenta al decidir qué información desea compartir.<br> </li> <li> <strong>Contenido del usuario:</strong> El contenido que crea y envía (por ejemplo, imágenes, comentarios) a través de los Servicios será visible para los usuarios registrados, como los autores de los cursos y otros usuarios. Mantenemos una copia de dicho contenido y podemos adjuntar otra información a él, como comentarios y calificaciones de los autores o compañeros. Si elige participar en debates, blogs u otras funciones similares y envía comentarios, calificaciones u otro contenido, mantenemos una copia de este contenido. Puede eliminar su contenido contactándonos en <a>{email}</a>. También podemos recopilar ciertos metadatos asociados con su contenido. Parte del contenido público del usuario también puede ser visible para otros visitantes del sitio web y usuarios registrados de los Servicios.<br> </li> <li> <strong>Comunicaciones con nosotros:</strong> También puede proporcionarnos información cuando responde encuestas, se comunica con nosotros por correo electrónico, correo postal, chat, teléfono o cualquier otro medio en relación con los Servicios o una consulta de soporte. Recopilamos y mantenemos un registro de sus datos de contacto, comunicaciones y nuestras respuestas.<br> </li> <li> <strong>Otra información que recopilamos sobre el uso de nuestros Servicios:</strong> También podemos recopilar información sobre su uso de nuestros Servicios, como su historial de pedidos y compras. También podemos recopilar cierta información personal sobre usted de terceros, como calificaciones, comentarios o valoraciones proporcionadas por los autores.<br> </li> <li> <strong>Cuentas de autores:</strong> Si es un autor y usa el sitio o la aplicación, recopilamos información personal sobre usted, incluidos su nombre, foto de perfil y biografía, así como el contenido que proporciona, como comentarios y calificaciones de usuarios u otro contenido que envíe.<br><br> </li> </ul> <strong>Información que recopilamos automáticamente</strong><br/><br/>También podemos recopilar información personal sobre cómo usa los Servicios (por ejemplo, mediante cookies y etiquetas de píxeles), como su dirección IP, ID de publicidad, información de ubicación, tipo de navegador, tipo de dispositivo, nombre de dominio, el sitio web que lo dirigió a nuestros Servicios, el sitio web al que accede después de salir de nuestros Servicios, las fechas y horas en que accede a nuestros Servicios, los enlaces en los que hace clic y otras actividades dentro de los Servicios. También podemos usar píxeles en correos electrónicos en formato HTML para comprender si los usuarios leen los correos electrónicos que les enviamos (\"Datos de uso\"). Podemos combinar esta información con otra información que hayamos recopilado sobre usted, incluyendo, cuando corresponda, su nombre y otra información personal. (Para más información, consulte la sección de Cookies e Información de Seguimiento a continuación.)"
+      "description": "Generalmente recopilamos información de las siguientes maneras: cuando nos proporciona información directamente, automáticamente a través de nuestros Servicios y desde fuentes de terceros. A continuación, explicamos la información que recopilamos.<br/><br/>Información que nos proporciona<br/><br/>La cantidad y el tipo de información que recopilamos dependen de cómo interactúe con nuestros Servicios. Aquí hay algunos ejemplos:<br/><ul> <li> <strong>Información básica de la cuenta:</strong> Aunque puede navegar por partes de nuestro sitio web sin registrarse, le pedimos que se registre en edzen.org para acceder a ciertas partes de los Servicios (por ejemplo, para acceder a uno de nuestros cursos). Cuando se registra en edzen.org, podemos solicitarle información personal básica como su dirección de correo electrónico, nombre, apellido y número de teléfono. También podemos permitirle enviar información adicional de la cuenta de manera voluntaria, como una foto de perfil, su biografía o el país/ciudad en el que se encuentra. También puede suscribirse para recibir boletines informativos y ofertas promocionales enviándonos su dirección de correo electrónico y número de teléfono.<br> </li> <li> <strong>Información del perfil:</strong> Si tiene una cuenta con nosotros, cierta información de su perfil será utilizada en su perfil público. Por ejemplo, su nombre de usuario, foto de perfil y ubicación de residencia autoinformada forman parte de ese perfil público, junto con cualquier otra información que elija incluir, como su biografía. Tenga esto en cuenta al decidir qué información desea compartir.<br> </li> <li> <strong>Contenido del usuario:</strong> El contenido que crea y envía (por ejemplo, imágenes, comentarios) a través de los Servicios será visible para los usuarios registrados, como los autores de los cursos y otros usuarios. Mantenemos una copia de dicho contenido y podemos adjuntar otra información a él, como comentarios y calificaciones de los autores o compañeros. Si elige participar en debates, blogs u otras funciones similares y envía comentarios, calificaciones u otro contenido, mantenemos una copia de este contenido. Puede eliminar su contenido contactándonos en <a>{email}</a>. También podemos recopilar ciertos metadatos asociados con su contenido. Parte del contenido público del usuario también puede ser visible para otros visitantes del sitio web y usuarios registrados de los Servicios.<br> </li> <li> <strong>Comunicaciones con nosotros:</strong> También puede proporcionarnos información cuando responde encuestas, se comunica con nosotros por correo electrónico, correo postal, chat, teléfono o cualquier otro medio en relación con los Servicios o una consulta de soporte. Recopilamos y mantenemos un registro de sus datos de contacto, comunicaciones y nuestras respuestas.<br> </li> <li> <strong>Otra información que recopilamos sobre el uso de nuestros Servicios:</strong> También podemos recopilar información sobre su uso de nuestros Servicios, como su historial de pedidos y compras. También podemos recopilar cierta información personal sobre usted de terceros, como calificaciones, comentarios o valoraciones proporcionadas por los autores.<br> </li> <li> <strong>Cuentas de autores:</strong> Si es un autor y usa el sitio o la aplicación, recopilamos información personal sobre usted, incluidos su nombre, foto de perfil y biografía, así como el contenido que proporciona, como comentarios y calificaciones de usuarios u otro contenido que envíe.<br><br> </li> </ul> <strong>Información que recopilamos automáticamente</strong><br/><br/>También podemos recopilar información personal sobre cómo usa los Servicios (por ejemplo, mediante cookies y etiquetas de píxeles), como su dirección IP, ID de publicidad, información de ubicación, tipo de navegador, tipo de dispositivo, nombre de dominio, el sitio web que lo dirigió a nuestros Servicios, el sitio web al que accede después de salir de nuestros Servicios, las fechas y horas en que accede a nuestros Servicios, los enlaces en los que hace clic y otras actividades dentro de los Servicios. También podemos usar píxeles en correos electrónicos en formato HTML para comprender si los usuarios leen los correos electrónicos que les enviamos (\"Datos de uso\"). Podemos combinar esta información con otra información que hayamos recopilado sobre usted, incluyendo, cuando corresponda, su nombre y otra información personal. (Para más información, consulte la sección de Cookies e Información de Seguimiento a continuación.)"
     },
     {
       "title": "Cómo y por qué usamos la información",
@@ -382,7 +349,6 @@
       "title": "Cookies e Información de Seguimiento",
       "description": "Nosotros y nuestros proveedores externos utilizamos cookies, GIFs transparentes/etiquetas de píxeles, JavaScript, almacenamiento local, archivos de registro y otros mecanismos para recopilar y registrar automáticamente información sobre sus actividades de navegación y el uso de los Sitios y otros Servicios.Podemos combinar estos \"datos de uso\" con otra información personal que recopilamos sobre usted. Utilizamos estos datos de uso para comprender cómo se utilizan nuestros Servicios, rastrear errores y fallos, proporcionar y mejorar nuestros Servicios, verificar credenciales de cuenta, permitir inicios de sesión, rastrear sesiones, prevenir fraudes y proteger nuestros Servicios, así como para marketing y publicidad dirigida, personalizar contenido y con fines analíticos.<br/><br/>Cookies<br/><br/>Las cookies son identificadores alfanuméricos que transferimos al disco duro de su computadora a través de su navegador web para fines de mantenimiento de registros.Algunas cookies nos permiten facilitarle la navegación en nuestro Sitio, mientras que otras se utilizan para permitir un proceso de inicio de sesión más rápido o para rastrear sus actividades mientras usa nuestro Sitio.La mayoría de los navegadores web aceptan automáticamente las cookies, pero si lo prefiere, puede editar las opciones de su navegador para bloquearlas en el futuro.La sección de Ayuda en la barra de herramientas de la mayoría de los navegadores le indicará cómo evitar que su computadora acepte nuevas cookies, cómo hacer que el navegador le notifique cuando recibe una nueva cookie o cómo deshabilitar las cookies por completo.Algunos de los Servicios pueden no funcionar correctamente si deshabilita las cookies.<br/><br/>Etiquetas de Píxeles<br/><br/>Las etiquetas de píxeles son pequeños gráficos con un identificador único, similares en función a las cookies.A diferencia de las cookies, que se almacenan en el disco duro de su computadora, los GIFs transparentes están incrustados de manera invisible en las páginas web.Podemos utilizar etiquetas de píxeles (también conocidas como balizas web, web bugs o GIFs transparentes) en relación con nuestros Servicios para, entre otras cosas, ayudarnos a administrar anuncios y contenido, y compilar estadísticas sobre el uso de nuestros Servicios.También podemos usar etiquetas de píxeles en correos electrónicos en formato HTML dirigidos a nuestros clientes para ayudarnos a rastrear las tasas de respuesta de los correos electrónicos, identificar cuándo se ven nuestros correos electrónicos y rastrear si se reenvían.<br/><br/>Puede bloquear o deshabilitar las cookies para el dispositivo y el navegador que está utilizando a través de la configuración de su navegador; sin embargo, ciertas funciones en nuestros Sitios pueden no estar disponibles o no funcionar correctamente si bloquea o deshabilita las cookies.Nuestros Sitios actualmente no responden a señales de \"no rastrear\"."
     },
-
     {
       "title": "Publicidad Basada en Intereses",
       "description": "Podemos trabajar con redes publicitarias de terceros, socios de canal, servicios de medición y otros (\"empresas publicitarias de terceros\") para mostrar publicidad en nuestros Servicios y gestionar nuestra publicidad en sitios y servicios en línea de terceros.Nosotros y estas empresas publicitarias de terceros podemos utilizar cookies, etiquetas de píxeles y otras herramientas para recopilar información sobre la actividad en nuestros Servicios (así como en sitios y servicios de terceros), así como la dirección IP, ID del dispositivo, cookies e identificadores publicitarios, otros identificadores e información de ubicación general.Nosotros y estas empresas publicitarias de terceros utilizamos esta información para proporcionarle anuncios y contenido más relevantes y para mejorar y evaluar dichos anuncios y contenido. **<br/><br/>Opciones de Publicidad<br/><br/>Puede obtener más información sobre las prácticas de recopilación de información y los procedimientos de \"exclusión voluntaria\" de muchas empresas publicitarias de terceros visitando <a href=\"https://www.networkadvertising.org/optout_nonppii.asp\">networkadvertising.org/optout_nonppii.asp</a>.Optar por no participar en redes publicitarias no significa que dejará de recibir publicidad.Seguirá recibiendo anuncios genéricos o \"contextuales\" en nuestros Servicios.También puede seguir recibiendo anuncios dirigidos en otros sitios web de empresas que no participan en los programas mencionados anteriormente."
@@ -403,17 +369,15 @@
       "title": "Niños",
       "description": "Nuestros Servicios no están dirigidos ni destinados a niños menores de trece (13) años y no recopilamos conscientemente ninguna información personal de un niño menor de 13 años. Si cree que hemos recopilado inadvertidamente información personal sobre un niño, comuníquese con nosotros y tomaremos las medidas necesarias para eliminar dicha información."
     },
-
     {
       "title": "Cómo contactarnos",
-      "description": "Si tiene alguna pregunta sobre esta política o desea contactarnos sobre privacidad, por favor escríbanos a <a>{email}</a>. La dirección física de {brand_name} (Performance EdTech LLC) es 447 Broadway, 2º piso, #1389, Nueva York, Nueva York 10013."
+      "description": "Si tiene alguna pregunta sobre esta política o desea contactarnos sobre privacidad, por favor escríbanos a <a>{email}</a>. La dirección física de {brand_name} (Edzen LTD)"
     },
     {
       "title": "Cambios en esta política",
       "description": "Esta política está vigente a partir de la fecha de entrada en vigor indicada anteriormente. Podemos cambiar esta política de vez en cuando, así que asegúrese de revisarla periódicamente. Publicaremos cualquier cambio en esta política en nuestros servicios. Si realizamos cambios en esta política que afecten significativamente nuestras prácticas con respecto a la información personal que hemos recopilado anteriormente de usted, nos esforzaremos por informarle con antelación resaltando el cambio en nuestros servicios."
     }
   ],
-
   "refundPolicy": [
     {
       "title": "Cursos",
@@ -428,23 +392,19 @@
       "description": "Para cancelar un CURSO, infórmenos enviando un correo electrónico a <a>{email}</a>.<br/><br/>Para cancelar una SUSCRIPCIÓN, puede gestionarla enviando un correo electrónico a <a>{email}</a>.<br/><br/>Recibirá un correo electrónico de confirmación de nuestro equipo de soporte dentro de las 48 horas posteriores al envío de la primera solicitud.<br/><br/>En caso de esperar una respuesta del servicio de soporte por más de 48 horas, la fecha de la solicitud de cancelación de la suscripción se considerará la fecha de su primera solicitud real."
     }
   ],
-
   "mainTerms": {
     "title": "Términos de Servicio",
-    "description": "Estos términos de servicio (\"términos\") son un contrato legal entre Performance EdTech LLC. (\"{brand_name}\", \"nosotros\", \"nuestro\", \"nos\") y usted (colectivamente, \"todos\") y rigen su uso de todos los textos, datos, información, software, gráficos, fotografías, materiales de clase, muestras, plantillas y más (a los que nos referimos como \"materiales\") que nosotros y nuestras afiliadas podemos poner a su disposición, así como cualquier servicio (\"servicios\") que podamos ofrecer a través de cualquiera de nuestros sitios web (todos los cuales se denominan en estos términos como este \"sitio web\").<br/><br/>Lea estos términos detenidamente antes de navegar por este sitio web. Usar este sitio web indica que ha leído y acepta estos términos. No puede utilizar este sitio web si no acepta estos términos.<br/><br/>Nota: Estos términos contienen una disposición de resolución de disputas y arbitraje, incluida una renuncia a demandas colectivas que afecta sus derechos bajo estos términos y con respecto a disputas que pueda tener con la empresa. Puede optar por excluirse del arbitraje individual vinculante y la renuncia a demandas colectivas como se indica a continuación."
+    "description": "Estos términos de servicio (\"términos\") son un contrato legal entre Edzen LTD. (\"{brand_name}\", \"nosotros\", \"nuestro\", \"nos\") y usted (colectivamente, \"todos\") y rigen su uso de todos los textos, datos, información, software, gráficos, fotografías, materiales de clase, muestras, plantillas y más (a los que nos referimos como \"materiales\") que nosotros y nuestras afiliadas podemos poner a su disposición, así como cualquier servicio (\"servicios\") que podamos ofrecer a través de cualquiera de nuestros sitios web (todos los cuales se denominan en estos términos como este \"sitio web\").<br/><br/>Lea estos términos detenidamente antes de navegar por este sitio web. Usar este sitio web indica que ha leído y acepta estos términos. No puede utilizar este sitio web si no acepta estos términos.<br/><br/>Nota: Estos términos contienen una disposición de resolución de disputas y arbitraje, incluida una renuncia a demandas colectivas que afecta sus derechos bajo estos términos y con respecto a disputas que pueda tener con la empresa. Puede optar por excluirse del arbitraje individual vinculante y la renuncia a demandas colectivas como se indica a continuación."
   },
-
   "terms_of_services": [
     {
       "title": "Cambios",
       "description": "Podemos modificar los Materiales y Servicios que le ofrecemos y/o optar por modificar, suspender o descontinuar este Sitio Web en cualquier momento y sin notificárselo. También podemos cambiar, actualizar, agregar o eliminar disposiciones (colectivamente, \"modificaciones\") de estos Términos de vez en cuando. Como todos se benefician de la claridad, nos comprometemos a informarle sobre cualquier modificación sustancial de estos Términos publicándolas en este Sitio Web y, si se ha registrado con nosotros, describiendo las modificaciones en un correo electrónico que enviaremos a la dirección que proporcionó durante el registro. Para asegurarnos de que nuestro correo llegue correctamente a su bandeja de entrada, solo le pedimos que nos informe si su dirección de correo electrónico preferida cambia en cualquier momento después de su registro.<br/><br/>Si se opone a cualquiera de estas modificaciones, su único recurso será dejar de usar este Sitio Web. El uso continuado de este Sitio Web después de recibir notificación de cualquier modificación indica que reconoce y acepta estar sujeto a dichas modificaciones. Además, tenga en cuenta que estos Términos pueden ser reemplazados por avisos legales o términos expresamente designados en páginas específicas de este Sitio Web. Estos avisos legales o términos expresamente designados se incorporan a estos Términos y reemplazan las disposiciones de estos Términos que se consideren reemplazadas."
     },
-
     {
       "title": "Uso general",
       "description": "Le invitamos a utilizar este Sitio Web para fines individuales, personales y no comerciales (\"Fines Permitidos\") — ¡disfrútelo!<br/><br/>En estos Términos, le otorgamos una licencia limitada, personal, no exclusiva e intransferible para utilizar y mostrar los Materiales para los Fines Permitidos; su derecho a utilizar los Materiales está condicionado al cumplimiento de estos Términos. No tiene ningún otro derecho sobre este Sitio Web ni sobre los Materiales, y no puede modificar, editar, copiar, reproducir, crear obras derivadas, realizar ingeniería inversa, alterar, mejorar o explotar de ninguna manera este Sitio Web ni los Materiales. Si realiza copias de cualquier parte de este Sitio Web mientras participa en los Fines Permitidos, le pedimos que mantenga en dichas copias todos nuestros avisos de derechos de autor y otras notificaciones de propiedad tal como aparecen en este Sitio Web.<br/><br/>Desafortunadamente, si incumple cualquiera de estos Términos, la licencia anterior se terminará automáticamente y deberá destruir de inmediato cualquier Material descargado o impreso (y cualquier copia del mismo)."
     },
-
     {
       "title": "Uso de este sitio web y los servicios del sitio web",
       "description": "¡Agradecemos su visita a {brand_name}! Puede acceder a gran parte de este Sitio Web sin necesidad de registrarse.<br/><br/>Sin embargo, para acceder a ciertas áreas restringidas por contraseña de este Sitio Web (como contenido de clases o Envíos de Usuarios (definidos a continuación)) y para utilizar ciertos Servicios y Materiales ofrecidos en y a través de este Sitio Web, debe registrarse correctamente con nosotros. También reconoce y acepta cumplir con nuestras políticas en todo momento mientras usa los Servicios y Materiales, las cuales están disponibles en nuestro sitio web y pueden ser actualizadas por nosotros periódicamente.<br/><br/>ÁREAS RESTRINGIDAS POR CONTRASEÑA DE ESTE SITIO WEB.<br/>Si desea una cuenta con nosotros, debe proporcionar la siguiente información a través de la página de registro de cuenta en este Sitio Web:<br/>Una dirección de correo electrónico válida;<br/>Nombre y apellido; y<br/>Nombre de usuario y contraseña preferidos.<br/><br/>También puede proporcionar información adicional y opcional para que podamos ofrecerle una experiencia más personalizada al utilizar este Sitio Web. Una vez que envíe la información de registro requerida, solo nosotros determinaremos si aprobamos o no su cuenta propuesta. Mientras utilice la cuenta, se compromete a proporcionar información verdadera, precisa, actual y completa, lo que puede hacer iniciando sesión en su cuenta y realizando los cambios pertinentes directamente o contactándonos a través de la información de contacto proporcionada abajo para que podamos hacer los cambios por usted. Si olvida su contraseña, háganoslo saber y le enviaremos una actualización de contraseña a su dirección de correo electrónico proporcionada.<br/><br/>Es responsable de cumplir con estos Términos cuando acceda a este Sitio Web, ya sea directamente o a través de cualquier cuenta que pueda configurar en este Sitio Web. Dado que es su cuenta, es su responsabilidad obtener y mantener todo el equipo y los servicios necesarios para acceder y utilizar este Sitio Web, así como pagar los cargos relacionados. También es su responsabilidad mantener la confidencialidad de su(s) contraseña(s), incluida cualquier contraseña de un sitio de terceros que podamos permitirle utilizar para acceder a este Sitio Web. Si cree que su contraseña o la seguridad de este Sitio Web han sido comprometidas de alguna manera, debe notificarnos de inmediato."
@@ -475,7 +435,7 @@
     },
     {
       "title": "Derechos de propiedad",
-      "description": "El nombre y los logotipos de {brand_name} son marcas comerciales y marcas de servicio que nos pertenecen.<br/>Otras marcas comerciales, nombres y logotipos en este sitio web son propiedad de sus respectivos dueños.<br/><br/>A menos que se especifique lo contrario en estos Términos, todos los Materiales, incluida su disposición en este sitio web, son de nuestra exclusiva propiedad, Copyright © 2023.Todos los derechos no expresamente otorgados en este documento están reservados.Excepto cuando lo exija o limite la ley aplicable, cualquier reproducción, distribución, modificación, retransmisión o publicación de cualquier material protegido por derechos de autor está estrictamente prohibida sin el consentimiento expreso y por escrito del propietario de los derechos de autor o de la licencia."
+      "description": "El nombre y los logotipos de {brand_name} son marcas comerciales y marcas de servicio que nos pertenecen.<br/>Otras marcas comerciales, nombres y logotipos en este sitio web son propiedad de sus respectivos dueños.<br/><br/>A menos que se especifique lo contrario en estos Términos, todos los Materiales, incluida su disposición en este sitio web, son de nuestra exclusiva propiedad, Copyright © 2025.Todos los derechos no expresamente otorgados en este documento están reservados.Excepto cuando lo exija o limite la ley aplicable, cualquier reproducción, distribución, modificación, retransmisión o publicación de cualquier material protegido por derechos de autor está estrictamente prohibida sin el consentimiento expreso y por escrito del propietario de los derechos de autor o de la licencia."
     },
     {
       "title": "Infracción de propiedad intelectual",
@@ -503,7 +463,7 @@
     },
     {
       "title": "Resolución de disputas y arbitraje; renuncia a acción colectiva",
-      "description": "Por favor, lea atentamente esta disposición. Afecta sus derechos legales.<br/><br/>Esta disposición facilita la resolución rápida y eficiente de cualquier disputa (por ejemplo, reclamación o controversia), ya sea basada en contrato, estatuto, regulación, ordenanza, agravio —incluyendo, pero sin limitarse a, fraude, tergiversación, inducción fraudulenta o negligencia— u otra teoría legal o equitativa, e incluye la validez, exigibilidad o alcance de esta disposición (con la excepción de la exigibilidad de la cláusula de Renuncia a Acción Colectiva a continuación) que pueda surgir entre usted y nosotros. En efecto, el término \"disputa\" se le otorga el significado más amplio permitido por la ley e incluye cualquier reclamación contra otras partes relacionadas con los servicios o productos proporcionados o facturados a usted (como nuestros licenciantes, proveedores, distribuidores o vendedores terceros) siempre que también haga valer reclamaciones contra nosotros en el mismo procedimiento.<br/><br/>Esta disposición establece que todas las disputas entre usted y nosotros se resolverán mediante arbitraje vinculante, ya que la aceptación de estos Términos constituye una renuncia a su derecho a presentar reclamaciones en los tribunales y a toda oportunidad de ser escuchado por un juez o jurado. Para ser claros, en el arbitraje no hay juez ni jurado, y la revisión judicial de un laudo arbitral es limitada. El árbitro debe seguir estos Términos y puede otorgar los mismos daños y compensaciones que un tribunal (incluidos los honorarios de abogados). Sin embargo, usted puede optar por excluirse de esta disposición, lo que significa que tendría el derecho u oportunidad de presentar reclamaciones en un tribunal, ante un juez o jurado, y/o participar o ser representado en un caso presentado en los tribunales por otros (incluyendo, pero sin limitarse a, acciones colectivas). TODOS ACUERDAN QUE, EXCEPTO SEGÚN SE ESTABLECE A CONTINUACIÓN, TODAS Y CADA UNA DE LAS DISPUTAS, SEGÚN SE DEFINEN ARRIBA, YA SEA PRESENTES O BASADAS EN HECHOS U OMISIONES DEL PASADO O FUTURO, SE RESOLVERÁN EXCLUSIVA Y DEFINITIVAMENTE MEDIANTE ARBITRAJE VINCULANTE EN LUGAR DE EN UN TRIBUNAL DE ACUERDO CON ESTA DISPOSICIÓN.<br/><br/>Resolución de reclamaciones antes del arbitraje<br/><br/>Para todas las disputas, ya sea que se presenten ante un tribunal o arbitraje, primero debe brindarnos la oportunidad de resolver la disputa enviándonos un correo electrónico a hello@newmindstart.com con la siguiente información: (1) Su nombre, (2) Su dirección, (3) Una descripción escrita de su reclamación y (4) Una descripción del alivio específico que busca. Si no resolvemos la disputa dentro de los 45 días posteriores a la recepción de su notificación, entonces podrá llevar su disputa a arbitraje en los EE.UU.<br/><br/>Renuncia a acción colectiva<br/><br/>Salvo que se indique lo contrario en esta disposición, el árbitro no podrá consolidar las reclamaciones de más de una persona ni presidir ningún tipo de procedimiento colectivo o representativo (como una acción colectiva, acción consolidada, acción representativa o acción de fiscal privado), a menos que tanto usted como nosotros acordemos específicamente hacerlo por escrito después de la iniciación del arbitraje. Si elige llevar su disputa ante un tribunal al optar por excluirse de la disposición de arbitraje, según se especifica anteriormente, esta renuncia a acción colectiva no se aplicará a usted. Ni usted ni ningún otro usuario de este sitio web pueden ser representantes de una clase, miembros de una acción colectiva o participar de otro modo en un procedimiento colectivo, consolidado o representativo sin haber cumplido con los requisitos de exclusión mencionados anteriormente.<br/><br/>Sin juez ni jurado en el arbitraje<br/><br/>El arbitraje no involucra a un juez ni a un jurado. Usted entiende y acepta que al aceptar estos Términos, tanto usted como nosotros renunciamos al derecho a un juicio con jurado o a un juicio ante un juez en un tribunal público. En ausencia de esta disposición, usted y nosotros podríamos haber tenido el derecho u oportunidad de llevar disputas a un tribunal, ante un juez o jurado, y/o participar o ser representado en un caso presentado en los tribunales por otros (incluidas las acciones colectivas). Salvo lo indicado a continuación, esos derechos quedan renunciados. Otros derechos que tendría si acudiera a los tribunales (por ejemplo, los derechos de apelación y ciertos tipos de pruebas) pueden estar más limitados o también pueden ser renunciados.<br/><br/>Divisibilidad<br/><br/>Si se determina que alguna cláusula dentro de esta disposición (excepto la cláusula de renuncia a acción colectiva mencionada anteriormente) es ilegal o inaplicable, dicha cláusula se separará de esta disposición, y el resto tendrá pleno vigor y efecto. Si se determina que la cláusula de renuncia a acción colectiva es ilegal o inaplicable, toda esta disposición será inaplicable y la disputa será resuelta por un tribunal.<br/><br/>Continuidad<br/><br/>Esta disposición sobrevivirá a la terminación de su cuenta con nosotros o nuestras afiliadas y a su interrupción del uso de este sitio web. No obstante cualquier disposición en estos Términos en contrario, acordamos que si realizamos algún cambio en esta disposición (que no sea un cambio en la dirección de notificación), usted puede rechazar dicho cambio y exigirnos que nos atengamos al lenguaje actual de esta disposición si surge una disputa entre nosotros."
+      "description": "Por favor, lea atentamente esta disposición. Afecta sus derechos legales.<br/><br/>Esta disposición facilita la resolución rápida y eficiente de cualquier disputa (por ejemplo, reclamación o controversia), ya sea basada en contrato, estatuto, regulación, ordenanza, agravio —incluyendo, pero sin limitarse a, fraude, tergiversación, inducción fraudulenta o negligencia— u otra teoría legal o equitativa, e incluye la validez, exigibilidad o alcance de esta disposición (con la excepción de la exigibilidad de la cláusula de Renuncia a Acción Colectiva a continuación) que pueda surgir entre usted y nosotros. En efecto, el término \"disputa\" se le otorga el significado más amplio permitido por la ley e incluye cualquier reclamación contra otras partes relacionadas con los servicios o productos proporcionados o facturados a usted (como nuestros licenciantes, proveedores, distribuidores o vendedores terceros) siempre que también haga valer reclamaciones contra nosotros en el mismo procedimiento.<br/><br/>Esta disposición establece que todas las disputas entre usted y nosotros se resolverán mediante arbitraje vinculante, ya que la aceptación de estos Términos constituye una renuncia a su derecho a presentar reclamaciones en los tribunales y a toda oportunidad de ser escuchado por un juez o jurado. Para ser claros, en el arbitraje no hay juez ni jurado, y la revisión judicial de un laudo arbitral es limitada. El árbitro debe seguir estos Términos y puede otorgar los mismos daños y compensaciones que un tribunal (incluidos los honorarios de abogados). Sin embargo, usted puede optar por excluirse de esta disposición, lo que significa que tendría el derecho u oportunidad de presentar reclamaciones en un tribunal, ante un juez o jurado, y/o participar o ser representado en un caso presentado en los tribunales por otros (incluyendo, pero sin limitarse a, acciones colectivas). TODOS ACUERDAN QUE, EXCEPTO SEGÚN SE ESTABLECE A CONTINUACIÓN, TODAS Y CADA UNA DE LAS DISPUTAS, SEGÚN SE DEFINEN ARRIBA, YA SEA PRESENTES O BASADAS EN HECHOS U OMISIONES DEL PASADO O FUTURO, SE RESOLVERÁN EXCLUSIVA Y DEFINITIVAMENTE MEDIANTE ARBITRAJE VINCULANTE EN LUGAR DE EN UN TRIBUNAL DE ACUERDO CON ESTA DISPOSICIÓN.<br/><br/>Resolución de reclamaciones antes del arbitraje<br/><br/>Para todas las disputas, ya sea que se presenten ante un tribunal o arbitraje, primero debe brindarnos la oportunidad de resolver la disputa enviándonos un correo electrónico a hello@edzen.org con la siguiente información: (1) Su nombre, (2) Su dirección, (3) Una descripción escrita de su reclamación y (4) Una descripción del alivio específico que busca. Si no resolvemos la disputa dentro de los 45 días posteriores a la recepción de su notificación, entonces podrá llevar su disputa a arbitraje en los EE.UU.<br/><br/>Renuncia a acción colectiva<br/><br/>Salvo que se indique lo contrario en esta disposición, el árbitro no podrá consolidar las reclamaciones de más de una persona ni presidir ningún tipo de procedimiento colectivo o representativo (como una acción colectiva, acción consolidada, acción representativa o acción de fiscal privado), a menos que tanto usted como nosotros acordemos específicamente hacerlo por escrito después de la iniciación del arbitraje. Si elige llevar su disputa ante un tribunal al optar por excluirse de la disposición de arbitraje, según se especifica anteriormente, esta renuncia a acción colectiva no se aplicará a usted. Ni usted ni ningún otro usuario de este sitio web pueden ser representantes de una clase, miembros de una acción colectiva o participar de otro modo en un procedimiento colectivo, consolidado o representativo sin haber cumplido con los requisitos de exclusión mencionados anteriormente.<br/><br/>Sin juez ni jurado en el arbitraje<br/><br/>El arbitraje no involucra a un juez ni a un jurado. Usted entiende y acepta que al aceptar estos Términos, tanto usted como nosotros renunciamos al derecho a un juicio con jurado o a un juicio ante un juez en un tribunal público. En ausencia de esta disposición, usted y nosotros podríamos haber tenido el derecho u oportunidad de llevar disputas a un tribunal, ante un juez o jurado, y/o participar o ser representado en un caso presentado en los tribunales por otros (incluidas las acciones colectivas). Salvo lo indicado a continuación, esos derechos quedan renunciados. Otros derechos que tendría si acudiera a los tribunales (por ejemplo, los derechos de apelación y ciertos tipos de pruebas) pueden estar más limitados o también pueden ser renunciados.<br/><br/>Divisibilidad<br/><br/>Si se determina que alguna cláusula dentro de esta disposición (excepto la cláusula de renuncia a acción colectiva mencionada anteriormente) es ilegal o inaplicable, dicha cláusula se separará de esta disposición, y el resto tendrá pleno vigor y efecto. Si se determina que la cláusula de renuncia a acción colectiva es ilegal o inaplicable, toda esta disposición será inaplicable y la disputa será resuelta por un tribunal.<br/><br/>Continuidad<br/><br/>Esta disposición sobrevivirá a la terminación de su cuenta con nosotros o nuestras afiliadas y a su interrupción del uso de este sitio web. No obstante cualquier disposición en estos Términos en contrario, acordamos que si realizamos algún cambio en esta disposición (que no sea un cambio en la dirección de notificación), usted puede rechazar dicho cambio y exigirnos que nos atengamos al lenguaje actual de esta disposición si surge una disputa entre nosotros."
     },
     {
       "title": "Idioma",
@@ -515,10 +475,9 @@
     },
     {
       "title": "Contáctanos",
-      "description": "Si tienes alguna pregunta sobre estos Términos o necesitas contactarnos por cualquier motivo, puedes comunicarte con nosotros en<br/><br/>{brand_name} soporte<br/><a>{email}</a><br/><br/>Performance EdTech LLC<br/>447 Broadway, 2nd Floor, #1389<br/>New York, Nueva York 10013"
+      "description": "Si tienes alguna pregunta sobre estos Términos o necesitas contactarnos por cualquier motivo, puedes comunicarte con nosotros en<br/><br/>{brand_name} soporte<br/><a>{email}</a><br/><br/>Edzen LTD<br/>"
     }
   ],
-
   "errors": {
     "email_required": "El correo electrónico es obligatorio",
     "must_be_valid_email": "Debe ser un correo electrónico válido",
@@ -620,23 +579,18 @@
   "upload_photo": "Subir foto",
   "cancel_subscription_settings": "Cancelar suscripción",
   "save": "Ahorrar",
-
   "congratulations": "¡Felicidades!",
   "reached_your_goal": "Has alcanzado tu objetivo",
   "claim_your_gift": "Reclama Tu Regalo",
   "banner_days": "Días",
-
   "yoga_practitioner": "Practicante de yoga",
   "right_yoga_pose": "Postura de yoga derecha",
   "get_started_today": "¡Comienza hoy!",
   "start_with_free_trial": "Comienza con nuestra prueba gratuita de {trial_days} días.",
   "then_price_per_month": "luego {price}/mes",
-
   "course_of_the_week": "Curso de la semana",
   "course_of_the_week_image": "Imagen del curso de la semana",
-
   "popular_courses_by_categories": "Cursos populares por categorías",
-
   "trial_popup": {
     "course_unlocked": "{course_title} Desbloqueado",
     "top_programs_label": "Más de 100 Programas: ",
@@ -654,7 +608,6 @@
     "start_free_trial": "COMENZAR PRUEBA GRATUITA DE {trial_days} DÍAS",
     "user_review": "Últimamente, mi vida se siente como un musical: canto sin importar mi estado de ánimo. Nunca esperé que fuera un alivio del estrés tan bueno, pero ahora es mi forma preferida de relajarme después del trabajo. ¡Alivia el agotamiento, levanta mi ánimo e incluso quema calorías!"
   },
-
   "sidebar": {
     "dashboard": "Panel de control",
     "support": "Soporte",
@@ -664,16 +617,13 @@
     "logout_confirmation_text": "Se cerrará la sesión de su cuenta.",
     "cancel": "Cancelar"
   },
-
   "close": "Cerrar",
   "open_access_form": {
     "complete_form": "Complete el formulario para proceder con el pago del curso",
     "email_placeholder": "Ingrese su dirección de correo electrónico",
     "go_to_checkout": "Ir a Pagar"
   },
-
   "terms_of_service_link": "Al hacer clic en \"Ir a Pagar\", confirmo que tengo 16 años o más y acepto las <refund>Políticas de reembolso</refund>, los <terms>Términos de servicio</terms> y la <privacy>Política de privacidad</privacy>.",
-
   "submitting": "Enviando...",
   "you_are_on_a_streak": "¡Estás en racha!",
   "consistently_logging_your_goal": "¡Gran trabajo! Estás iniciando sesión constantemente y ganando impulso. ¡Sigue así, estás cada vez más cerca de tu objetivo!",
@@ -683,7 +633,7 @@
   "thank_you_subscription_message": "<thankyou>¡Gracias por suscribirte a nuestro servicio!</thankyou>",
   "go_back": "Volver",
   "submit": "Enviar",
-  "go_to_dashboard": "Ir al panel",
+  "go_to_dashboard": "Ir al panel de control",
   "results_for": "{count} {plural} para \"{searchTerm}\"",
   "search_results": "Resultados de búsqueda",
   "all_courses": "todos los cursos",
@@ -711,7 +661,7 @@
   "loading": "Cargando...",
   "redirecting": "Redirigiendo...",
   "navigate_courses_by_category": "Navegar por los cursos por categoría",
-  "please_rate_this_lesson": "Por favor, califique esta lección",
+  "please_rate_this_lesson": "Por favor, califica este curso",
   "submitted": "Enviado!",
   "training_calendar": "Calendario de entrenamiento",
   "current_streak": "Racha actual",
@@ -732,11 +682,8 @@
   "yes": "Sí",
   "no": "No",
   "lifetime_subscription_activated_message": "Has activado correctamente el plan <span>{planName}</span>.",
-  "reward_message": "¡Felicitaciones, el curso ha sido completado!",
-  "stay_here": "Quédate aquí",
   "extend_trial_initial": "Explora gratis por {trial_days}-días",
   "decline_the_opportunity": "Ahora no",
   "video_processing": "Procesando video...",
-  "video_playing_in_pip_mode": "Video reproduciéndose en modo imagen en imagen",
   "disclaimer": "{BRAND} no se hace responsable de lesiones o daños derivados de la realización de los ejercicios en este video. Practica bajo tu propia responsabilidad."
 }

@@ -10,13 +10,15 @@ import {
 } from '@/services/course-service';
 import { api } from '@/api';
 import momentTimezone from 'moment-timezone';
-import { DOMAIN, TIMEZONE, USER_ROLE } from '@/utils/constants';
+import { TIMEZONE, USER_ROLE } from '@/utils/constants';
 import moment from 'moment';
+import { getDomain } from '@/utils/domain';
 
 const Dashboard = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
   const user = decodeToken(token);
+  const domain_value = await getDomain()
 
   const language_id = await LanguageService.getEffectiveLanguageId();
 
@@ -25,7 +27,7 @@ const Dashboard = async () => {
 
   // domain details
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
   const domain = (await response?.data) || {};
 
@@ -58,7 +60,7 @@ const Dashboard = async () => {
   };
 
   const courseOfTheWeek = await fetchAllCourseOfTheWeek({
-    params: { language_id, domain: DOMAIN },
+    params: { language_id, domain: domain_value },
     headers: {
       'req-from': country_code,
     },
@@ -69,7 +71,7 @@ const Dashboard = async () => {
       page: 1,
       limit: 8,
       language_id,
-      domain: DOMAIN,
+      domain: domain_value,
       user_id: user?.id,
     },
     headers: {

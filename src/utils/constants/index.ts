@@ -70,23 +70,19 @@ const ASPECT_RATIO = {
   LOGO: 1 / 1,
 };
 
-// const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
-const SERVER_URL = 'https://staging-api.eduelle.com';
-const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'https://staging.eduelle.com';
-const TOLSTOY_COMMENT_LAST_KEY = process.env.NEXT_PUBLIC_TOLSTOY_COMMENT_LAST_KEY || '0a1efdadd65f4ca5bb691ae23284ad68'
-const GTM_TAG_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-NGQ89XPC';
-// const SERVER_URL = 'https://api.eduelle.com';
-// const SERVER_URL = 'https://api-coursemarketplace-dev.project-demo.info';
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
+const OWN_URL = 'https://staging.eduelle.com';
+const TOLSTOY_COMMENT_LAST_KEY = process.env.NEXT_PUBLIC_TOLSTOY_COMMENT_LAST_KEY || ''
+const GTM_TAG_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 
-// const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-const DOMAIN = 'https://staging.eduelle.com';
-// const DOMAIN = 'https://edzen.org';
+// const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'https://staging.eduelle.com';
+const DOMAIN = 'https://staging.eduelle.com'
+const INITIAL_DOMAIN = 'https://staging.eduelle.com';
 
 const AUTHOR_URL = process.env.NEXT_PUBLIC_REDIRECT_ADMIN_URL;
 
-const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b';
+const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || '';
 
 const AGE_RANGE = [
   { value: '19-25', label: '19-25' },
@@ -192,5 +188,6 @@ export {
   AUTHOR_URL,
   OWN_URL,
   TOLSTOY_COMMENT_LAST_KEY,
-  GTM_TAG_ID
+  GTM_TAG_ID,
+  INITIAL_DOMAIN
 };

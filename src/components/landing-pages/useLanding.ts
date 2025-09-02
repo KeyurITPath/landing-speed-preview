@@ -18,12 +18,10 @@ import {
   POPUPS_CATEGORIES,
   SERVER_URL,
   TIMEZONE,
-  USER_ROLE,
 } from '@utils/constants';
 import {
   decodeToken,
   getVideoType,
-  isEmptyArray,
   isEmptyObject,
   isHLS,
   videoURL,

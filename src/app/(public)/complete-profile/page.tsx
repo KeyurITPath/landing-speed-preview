@@ -1,13 +1,13 @@
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import CompleteProfileComponent from './CompleteProfile';
 import { cookies } from 'next/headers';
-import { fetchUser } from '../../../services/course-service';
-import { decodeToken } from '../../../utils/helper';
+import { fetchUser } from '@/services/course-service';
+import { decodeToken } from '@/utils/helper';
+import { getDomain } from '@/utils/domain';
 
 
 const CompleteProfile = async () => {
-
+  const domain_value = await getDomain()
   const cookieStore = await cookies()
 
   const token = cookieStore.get('token')?.value
@@ -23,7 +23,7 @@ const CompleteProfile = async () => {
   }
 
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   return <CompleteProfileComponent userData={userData} domainDetails={response.data} />;

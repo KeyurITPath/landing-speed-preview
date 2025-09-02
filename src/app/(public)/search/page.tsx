@@ -3,15 +3,16 @@ import { cookies } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import { LanguageService } from '@/services/language-service';
 import { fetchCountryCodeHandler, fetchUser } from '@/services/course-service';
-import { DOMAIN, TIMEZONE, USER_ROLE } from '@/utils/constants';
+import { TIMEZONE, USER_ROLE } from '@/utils/constants';
 import momentTimezone from 'moment-timezone';
 import SearchContainer from './SearchContainer';
 import moment from 'moment'
+import { getDomain } from '@/utils/domain';
 
 const Search = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
-
+  const domain_value = await getDomain()
   let user = {};
   let isLoggedIn;
   if (token) {
@@ -27,7 +28,7 @@ const Search = async () => {
     params: {
       user_id: user?.id,
       language: language_id,
-      domain: DOMAIN,
+      domain: domain_value,
     },
     headers: {
       'req-from': country_code,

@@ -63,7 +63,7 @@ const StyledLink = styled(Link)(() => ({
   },
 }));
 
-const RefundPoliciesContainer = ({ domainDetails }: any) => {
+const TermsOfServiceContainer = ({ domainDetails }: any) => {
   const t = useTranslations();
   const messages = useMessages();
   const [expanded, setExpanded] = useState(false);
@@ -76,7 +76,7 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
 
   const { email, brand_name } = domainDetails?.domain_detail || {};
 
-  const REFUND_POLICIES = messages['refundPolicy'];
+  const TERMS_OF_SERVICES = messages['terms_of_services'];
 
   return (
     <Container
@@ -100,14 +100,23 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
               {brand_name}
             </Link>
             <Typography sx={{ color: 'text.primary', fontSize: 13 }}>
-              {t('refundPolicies')}
+              {t('mainTerms.title')}
             </Typography>
           </Breadcrumbs>
+
+          {/* Main Title & Description */}
           <Typography fontSize={'1.75rem'} fontWeight={500}>
-            {t('cancellation_refund_policies')}
+            {t('mainTerms.title')}
+          </Typography>
+          <Typography variant='body1'>
+            {t.rich('mainTerms.description', {
+              brand_name: brand_name, // replaces {brand_name}
+              br: () => <br />, // replaces <br/>
+            })}
           </Typography>
         </Stack>
-        {REFUND_POLICIES?.map((item: any, index: number) => (
+        {/* Accordion Sections */}
+        {TERMS_OF_SERVICES?.map((item: any, index: number) => (
           <StyledAccordion
             key={index}
             expanded={expanded === `panel${index}`}
@@ -145,7 +154,7 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
               }}
             >
               <Typography fontWeight={500} fontSize={16} pr={2}>
-                {t.rich(`refundPolicy.${index}.title`, {
+                {t.rich(`terms_of_services.${index}.title`, {
                   brand_name: brand_name,
                   email: email,
                   a: chunks => (
@@ -156,9 +165,10 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
                 })}
               </Typography>
             </StyledAccordionSummary>
+
             <StyledAccordionDetails>
               <Box fontSize={16} fontWeight={400} color='primary.typography'>
-                {t.rich(`refundPolicy.${index}.description`, {
+                {t.rich(`terms_of_services.${index}.description`, {
                   brand_name: brand_name,
                   email: email,
                   a: chunks => (
@@ -192,4 +202,4 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
   );
 };
 
-export default RefundPoliciesContainer;
+export default TermsOfServiceContainer;

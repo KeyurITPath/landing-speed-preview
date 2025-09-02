@@ -6,15 +6,15 @@ import {
 } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import CourseDetailContainer from './CourseDetailContainer';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import { getDomain } from '@/utils/domain';
 
 const CourseDetails = async ({ params }: any) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
-
+  const domain_value = await getDomain()
   const slug = await params;
 
   let userData = {};
@@ -33,7 +33,7 @@ const CourseDetails = async ({ params }: any) => {
 
   // domain details
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
   const domain = (await response?.data) || {};
 

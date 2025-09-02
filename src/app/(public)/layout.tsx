@@ -1,5 +1,4 @@
 import { api } from '@/api';
-import { DOMAIN } from '@/utils/constants';
 import Header from '@/components/header';
 import { Box } from '@mui/material';
 import Footer from '@/components/footer';
@@ -7,10 +6,12 @@ import { fetchAllCountries, fetchCountryCodeHandler } from '@/services/course-se
 import { LanguageService } from '@/services/language-service';
 import { cookies } from 'next/headers';
 import { decodeToken, isTokenActive } from '@/utils/helper';
+import { getDomain } from '../../utils/domain';
 
 export async function generateMetadata() {
+  const domain_value = await getDomain()
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   const domain = (await response?.data?.data) || {};
@@ -38,10 +39,11 @@ export async function generateMetadata() {
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
+  const domain_value = await getDomain()
   const token = cookieStore.get('token')?.value; // read cookie "token"
   // domain details
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
   const domain = (await response?.data) || {};
 

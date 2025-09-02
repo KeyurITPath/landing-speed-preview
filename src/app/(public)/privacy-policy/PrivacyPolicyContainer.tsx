@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -12,7 +12,6 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
 import { useTranslations, useMessages } from 'next-intl';
 import { ICONS } from '@/assets/icons';
 import { routes } from '@/utils/constants/routes';
@@ -22,9 +21,7 @@ const StyledAccordion = styled(Accordion)(() => ({
     '& .MuiAccordionSummary-expandIconWrapper': {
       backgroundColor: '#333333',
       borderRadius: '50%',
-      '& svg': {
-        color: '#a0a0a0',
-      },
+      '& svg': { color: '#a0a0a0' },
     },
   },
 }));
@@ -33,19 +30,12 @@ const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   padding: theme.spacing(1, 0),
   '& .MuiAccordionSummary-expandIconWrapper': {
     padding: theme.spacing(0.8),
-    '&:hover': {
-      backgroundColor: '#333333',
-      borderRadius: '50%',
-    },
-    '& svg': {
-      color: '#a0a0a0',
-    },
+    '&:hover': { backgroundColor: '#333333', borderRadius: '50%' },
+    '& svg': { color: '#a0a0a0' },
     '&.Mui-expanded': {
       backgroundColor: '#333333',
       borderRadius: '50%',
-      '& svg': {
-        color: '#a0a0a0',
-      },
+      '& svg': { color: '#a0a0a0' },
     },
   },
 }));
@@ -58,25 +48,22 @@ const StyledLink = styled(Link)(() => ({
   color: '#782fef',
   textDecoration: 'none',
   transition: 'opacity 0.3s',
-  '&:hover': {
-    opacity: 0.7,
-  },
+  '&:hover': { opacity: 0.7 },
 }));
 
-const RefundPoliciesContainer = ({ domainDetails }: any) => {
+const PrivacyPolicyContainer = ({ domainDetails }: any) => {
   const t = useTranslations();
   const messages = useMessages();
   const [expanded, setExpanded] = useState(false);
+
   const handleChange = useCallback(
-    (panel: any) => (event: any, isExpanded: any) => {
-      setExpanded(isExpanded ? panel : false);
-    },
+    (panel: any) => (_event: any, isExpanded: any) =>
+      setExpanded(isExpanded ? panel : false),
     []
   );
 
   const { email, brand_name } = domainDetails?.domain_detail || {};
-
-  const REFUND_POLICIES = messages['refundPolicy'];
+  const PRIVACY_POLICIES = messages['privacyPolicies'];
 
   return (
     <Container
@@ -90,6 +77,7 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
       }}
     >
       <Stack sx={{ maxWidth: '1000px', width: '100%' }}>
+        {/* Breadcrumb & Title */}
         <Stack sx={{ gap: { xs: 1, sm: 2 }, mb: { xs: 1, sm: 2 } }}>
           <Breadcrumbs aria-label='breadcrumb'>
             <Link
@@ -100,14 +88,18 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
               {brand_name}
             </Link>
             <Typography sx={{ color: 'text.primary', fontSize: 13 }}>
-              {t('refundPolicies')}
+              {t('privacyPolicy')}
             </Typography>
           </Breadcrumbs>
+
           <Typography fontSize={'1.75rem'} fontWeight={500}>
-            {t('cancellation_refund_policies')}
+            {t('privacyPolicy')}
           </Typography>
+          <Typography variant='body1'>{t('effective_date')}</Typography>
         </Stack>
-        {REFUND_POLICIES?.map((item: any, index: number) => (
+
+        {/* Accordion Sections */}
+        {PRIVACY_POLICIES?.map((item: any, index: number) => (
           <StyledAccordion
             key={index}
             expanded={expanded === `panel${index}`}
@@ -145,7 +137,7 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
               }}
             >
               <Typography fontWeight={500} fontSize={16} pr={2}>
-                {t.rich(`refundPolicy.${index}.title`, {
+                {t.rich(`privacyPolicies.${index}.title`, {
                   brand_name: brand_name,
                   email: email,
                   a: chunks => (
@@ -156,20 +148,26 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
                 })}
               </Typography>
             </StyledAccordionSummary>
+
             <StyledAccordionDetails>
               <Box fontSize={16} fontWeight={400} color='primary.typography'>
-                {t.rich(`refundPolicy.${index}.description`, {
+                {t.rich(`privacyPolicies.${index}.description`, {
                   brand_name: brand_name,
                   email: email,
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br></br>,
+                  br: () => <br />,
+                  strong: chunks => <strong>{chunks}</strong>,
+                  strong_brand: chunks => <strong>{chunks}</strong>,
+                  strong_policy: chunks => <strong>{chunks}</strong>,
                   ol: chunks => (
-                    <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
+                    <ol style={{ paddingLeft: '1.5em' }}>{chunks}</ol>
+                  ),
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
                   ),
                   li: chunks => <li>{chunks}</li>,
-                  strong: chunks => <strong>{chunks}</strong>,
                   termsLink: chunks => (
                     <Link
                       component='span'
@@ -192,4 +190,4 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
   );
 };
 
-export default RefundPoliciesContainer;
+export default PrivacyPolicyContainer;

@@ -11,9 +11,15 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "format": "prettier --write . && next lint --fix",
-    "dev:development": "dotenv -e .env.development -- next dev --turbopack",
-    "dev:staging": "dotenv -e .env.staging -- next dev --turbopack",
-    "dev:production": "dotenv -e .env.production -- next dev --turbopack"
+
+    "dev:stage": "dotenv -e .env.development -- next dev --turbopack",
+    "dev:prod": "dotenv -e .env.production -- next dev --turbopack",
+
+    "build:stage": "dotenv -e .env.development -- next build",
+    "build:prod": "dotenv -e .env.production -- next build",
+
+    "start:stage": "dotenv -e .env.development -- next start",
+    "start:prod": "dotenv -e .env.production -- next start"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

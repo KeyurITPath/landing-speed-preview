@@ -1,10 +1,11 @@
 import { api } from '@/api';
-import DomainProvider from '../../context/domain-provider';
-import { DOMAIN } from '../../utils/constants';
+import DomainProvider from '@/context/domain-provider';
+import { getDomain } from '@/utils/domain';
 
 export async function generateMetadata() {
+  const domain_value = await getDomain()
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   const domain = (await response?.data?.data) || {};
@@ -31,8 +32,9 @@ export async function generateMetadata() {
 }
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
+  const domain_value = await getDomain()
   const response = await api.home.fetchDomainDetails({
-    params: { name: DOMAIN },
+    params: { name: domain_value },
   });
 
   return <DomainProvider value={response?.data}>{children}</DomainProvider>;

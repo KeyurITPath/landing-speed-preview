@@ -39,8 +39,6 @@ export const JoyrideProvider = ({ children }: any) => {
     user = decodeToken(token);
   }
 
-  console.log('user', user);
-
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
