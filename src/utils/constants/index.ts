@@ -78,7 +78,6 @@ const GTM_TAG_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 
 const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'https://staging.eduelle.com';
 // const DOMAIN = 'https://staging.eduelle.com'
-const INITIAL_DOMAIN = 'https://staging.eduelle.com';
 
 const AUTHOR_URL = process.env.NEXT_PUBLIC_REDIRECT_ADMIN_URL;
 
@@ -188,6 +187,5 @@ export {
   AUTHOR_URL,
   OWN_URL,
   TOLSTOY_COMMENT_LAST_KEY,
-  GTM_TAG_ID,
-  INITIAL_DOMAIN
+  GTM_TAG_ID
 };
