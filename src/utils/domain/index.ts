@@ -5,7 +5,9 @@ export async function getDomain() {
   const headersList = await headers();
   const host = headersList.get("host");
   const protocol = headersList.get("x-forwarded-proto") || "https";
-  return `${protocol}://${host}`;
+  if(['staging.eduelle.com', 'staging.edzen.org', 'eduelle.com', 'edzen.org'].includes(host)){
+    return `https://${host}`;
+  }else return `${protocol}://${host}`
 }
 
 export const fetchIP = async() => {
