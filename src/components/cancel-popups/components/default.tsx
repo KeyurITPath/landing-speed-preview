@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material';
 import { IMAGES } from '@/assets/images';
 import CustomButton from '@/shared/button';
 import { useTranslations } from 'next-intl';
@@ -13,6 +13,8 @@ const Default = ({
 }: any) => {
   const t = useTranslations();
 
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
   return (
     <>
       <Stack
@@ -22,19 +24,31 @@ const Default = ({
           justifyContent: 'center',
         }}
       >
-        <Image
-          width={600}
-          height={280}
-          src={encodeURI(image)}
-          style={{
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            justifyContent: 'center',
+            display: 'flex',
+            alignItems: 'center',
             aspectRatio: '16/6',
-            borderRadius: 0,
           }}
-          alt='defaultBanner'
-        />
+        >
+          <Image
+            fill
+            sizes='100vw'
+            src={encodeURI(image)}
+            style={{
+              aspectRatio: '16/6',
+              borderRadius: 0,
+            }}
+            alt='defaultBanner'
+          />
+        </Box>
         <Image
-          width={80}
-          height={80}
+          width={isMobile ? 45 : 80}
+          height={isMobile ? 45 : 80}
           src={IMAGES.byeEmoji}
           alt='byeEmoji'
           style={{

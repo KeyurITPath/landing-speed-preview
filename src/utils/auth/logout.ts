@@ -2,7 +2,6 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { api } from '@/api';
 
 /**
  * Server action to handle user logout
@@ -20,7 +19,9 @@ export async function logoutAction() {
     // Call logout API endpoint if token exists
     if (token) {
       try {
-        await api.auth.logout({ cookieToken: token });
+        await fetch('/api/logout', {
+          method: 'POST',
+        });
       } catch (error) {
         // Continue with logout even if API call fails
         console.warn('Logout API call failed:', error);

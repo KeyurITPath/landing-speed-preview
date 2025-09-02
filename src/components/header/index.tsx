@@ -54,7 +54,9 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
   };
 
   const handleLogout = async () => {
-    await api.auth.logout({});
+    await fetch('/api/logout', {
+      method: 'POST'
+    });
     localStorage.clear();
     sessionStorage.clear();
     dispatch(logout());

@@ -72,7 +72,7 @@ const ASPECT_RATIO = {
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
-const OWN_URL = 'https://staging.eduelle.com';
+const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'https://staging.eduelle.com';
 const TOLSTOY_COMMENT_LAST_KEY = process.env.NEXT_PUBLIC_TOLSTOY_COMMENT_LAST_KEY || ''
 const GTM_TAG_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 
@@ -80,7 +80,6 @@ const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'https:/
 // const DOMAIN = 'https://staging.eduelle.com'
 
 const AUTHOR_URL = process.env.NEXT_PUBLIC_REDIRECT_ADMIN_URL;
-
 const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || '';
 
 const AGE_RANGE = [
