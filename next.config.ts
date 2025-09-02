@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
         port: '', // keep empty unless you have a custom port
         pathname: '/**', // allow all image paths
       },
+       {
+        protocol: 'https',
+        hostname: 'api.eduelle.com',
+        port: '', // keep empty unless you have a custom port
+        pathname: '/**', // allow all image paths
+      },
       {
         protocol: 'https',
         hostname: 'stagingcoursemarketplace2025.s3.amazonaws.com',
