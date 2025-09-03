@@ -26,6 +26,7 @@ import Link from 'next/link';
 import { pixel } from '@/utils/pixel';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
+import { useSearchParams } from 'next/navigation';
 
 const TermsLink = styled(Link)(() => ({
   color: 'black',
@@ -47,6 +48,7 @@ const OpenAccessForm = ({
   const { user, setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
   const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
+  const searchParams = useSearchParams();
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -61,6 +63,11 @@ const OpenAccessForm = ({
   };
 
   const t = useTranslations();
+
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
 
   useEffect(() => {
     if (fetchAllLanguages) {
@@ -124,8 +131,10 @@ const OpenAccessForm = ({
         success_url,
         cancel_url,
         domain: DOMAIN,
-        ...queryParams,
+        ...params,
       };
+
+      console.log('data2', data);
 
       const resOrderCheckout = await api.getAccess.orderCheckout({ data });
       if (resOrderCheckout?.data?.data?.checkoutUrl) {

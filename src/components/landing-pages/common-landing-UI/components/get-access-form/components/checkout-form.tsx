@@ -25,6 +25,7 @@ import Image from 'next/image';
 import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
+import { useSearchParams } from 'next/navigation';
 
 const CheckoutForm = ({
   landingData,
@@ -38,6 +39,7 @@ const CheckoutForm = ({
   const { upSaleCourses } = useSelector(({ course }: any) => course);
 
   const { enqueueSnackbar } = useSnackbar();
+  const searchParams = useSearchParams();
 
   const { user } = useContext(AuthContext);
 
@@ -46,6 +48,11 @@ const CheckoutForm = ({
   const mainCurrencyCode = currency.code;
 
   const t = useTranslations();
+
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
 
   const upSalesOrders = useMemo(() => {
     if (!upSaleCourses?.length) return [];
@@ -193,8 +200,10 @@ const CheckoutForm = ({
         cancel_url,
         domain: DOMAIN,
         final_url: landingData?.final_url,
-        ...queryParams,
+        ...params,
       };
+
+      console.log('data1', data);
 
       const res = await api.getAccess.orderCheckout({ data });
       if (res?.data?.data?.checkoutUrl) {
