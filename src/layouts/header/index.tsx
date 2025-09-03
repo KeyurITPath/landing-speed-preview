@@ -13,7 +13,6 @@ import { routes } from '@/utils/constants/routes';
 import { shouldOfferTrial, toCapitalCase } from '@/utils/helper';
 import {
   Box,
-  Button,
   IconButton,
   InputAdornment,
   Stack,
@@ -23,16 +22,17 @@ import {
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormControl from '@/shared/inputs/form-control';
 import { setLanguage } from '@/store/features/defaults.slice';
 import { changeLanguageAction } from '@/app/actions/language';
 import { setLanguageCookie } from '@/utils/cookies';
 import { IMAGES } from '@/assets/images';
-import TrialPopup from '../../components/trial-popup';
 import momentTimezone from 'moment-timezone';
+import SearchDrawer from '@/components/search-drawer';
+import CustomInput from '@/shared/inputs/text-field';
 
 const Header = ({
   onNavOpen,
@@ -45,25 +45,32 @@ const Header = ({
   const { isLoggedIn } = useSelector(({ auth }: any) => auth);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations();
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { logo, brand_name, email, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};
 
   const smDown = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const LOGO_URL = logo ? SERVER_URL + logo : null;
-  console.log('LOGO_URL', LOGO_URL)
   const BRAND_NAME = brand_name || '';
-  const SUPPORT_MAIL = email || '';
   const LOGO_WIDTH = smDown ? logo_width / 1.5 : logo_width || null;
   const LOGO_HEIGHT = smDown ? logo_height / 1.5 : logo_height || null;
 
   const mdDown = useMediaQuery(theme => theme.breakpoints.down('md'));
 
   const [activeLanguage, setActiveLanguage] = useState(language_id);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [trialPopupState, trialPopupOpen, trialPopupClose] = useToggleState({});
+
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
+  const [openSearch, handleOpenSearch, handleCloseSearch] =
+    useToggleState(false);
+
+  const handleSearchChange = useCallback((e: any) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+  }, []);
 
   const sx = useMemo(
     () => ({
@@ -80,6 +87,16 @@ const Header = ({
     }),
     [isCollapse]
   );
+
+  const handleIconClick = useCallback(() => {
+    if (!searchTerm && inputRef.current) {
+      inputRef.current.focus();
+    } else {
+      router.push(
+        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim())
+      );
+    }
+  }, [router, searchTerm]);
 
   const chooseLanguageHandler = useCallback(
     async (event: any) => {
@@ -297,53 +314,59 @@ const Header = ({
                 }}
               >
                 {smDown ? (
-                  <IconButton onClick={() => router.push(routes.public.search)}>
+                  <IconButton onClick={() => handleOpenSearch(true)}>
                     <ICONS.SEARCH size={22} />
                   </IconButton>
                 ) : (
-                  <Button
-                    variant='contained'
-                    onClick={() => router.push(routes.public.search)}
-                    sx={{
-                      display: { xs: 'none', sm: 'flex' },
-                      width: { xs: '240px', md: '320px' },
-                      justifyContent: 'flex-start',
-                      textTransform: 'none',
-                      borderRadius: '33px',
-                      boxShadow: 'none',
-                      bgcolor: '#f5f5f5',
-                      border: 'none',
-                      px: 2,
-                      py: '6px',
-                      '&:hover': {
-                        bgcolor: '#f5f5f5!important',
-                        border: 'none',
-                        boxShadow: 'none',
+                  <CustomInput
+                    inputRef={inputRef}
+                    placeholder={t('search')}
+                    size='small'
+                    value={searchTerm}
+                    handleChange={handleSearchChange}
+                    slotProps={{
+                      input: {
+                        onKeyDown: (
+                          e: React.KeyboardEvent<HTMLInputElement>
+                        ) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault(); // prevent default form submit
+                            handleIconClick();
+                          }
+                        },
+                        endAdornment: (
+                          <InputAdornment
+                            onClick={handleIconClick}
+                            position='end'
+                            sx={{
+                              color: '#808080',
+                              fontSize: 20,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <ICONS.SEARCH />
+                          </InputAdornment>
+                        ),
                       },
                     }}
-                  >
-                    <Box
-                      sx={{
-                        flex: 1,
-                        color: '#808080',
-                        fontSize: 16,
-                        textAlign: 'left',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        fontWeight: 400,
-                      }}
-                    >
-                      {t('search')}
-                    </Box>
-
-                    <InputAdornment
-                      position='end'
-                      sx={{ ml: 1, color: '#808080', fontSize: 20 }}
-                    >
-                      <ICONS.SEARCH size={22} />
-                    </InputAdornment>
-                  </Button>
+                    sx={{
+                      display: { xs: 'none', sm: 'block' },
+                      width: { xs: '100%', sm: 400 },
+                      '.MuiInputBase-root': {
+                        bgcolor: '#F5F5F5',
+                        borderRadius: '33px',
+                        border: 'none',
+                      },
+                      '.MuiOutlinedInput-notchedOutline': {
+                        border: 'none',
+                      },
+                      input: {
+                        pl: 2,
+                        pr: 0,
+                        py: 0.8,
+                      },
+                    }}
+                  />
                 )}
                 <FormControl
                   placeholder={t('enterLanguage')}
@@ -420,14 +443,16 @@ const Header = ({
         </Stack>
       </Box>
 
-      {isBecomeAMemberWithVerified ||
-        (shouldOfferTrials && (
-          <TrialPopup
-            {...{
-              dashboardData: { trialPopupState, trialPopupClose, language_id },
-            }}
-          />
-        ))}
+      <SearchDrawer
+        {...{
+          open: openSearch,
+          handleClose: handleCloseSearch,
+          inputRef,
+          searchTerm,
+          handleSearchChange,
+          handleIconClick,
+        }}
+      />
     </>
   );
 };

@@ -143,6 +143,24 @@ const useSettingAndSubscription = ({
     enableReinitialize: true,
     onSubmit: async formValues => updateUserProfile(formValues),
   });
+  const metaParams = useMemo(() => {
+    const clone = { ...userData }
+    const subscription = clone?.subscription_purchase_histories?.[0]
+    return {
+      content_type: 'course',
+      content_ids: [subscription?.subscription_plan_id],
+      currency: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.currency?.name || 'USD',
+      total_amount: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0,
+      value: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0,
+      contents: [
+        {
+          id: subscription?.subscription_plan_id,
+          quantity: 1,
+          item_price: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0
+        }
+      ]
+    }
+  }, [userData])
 
   const updateUserProfile = useCallback(
     async (formValues: any) => {
@@ -843,10 +861,11 @@ const useSettingAndSubscription = ({
 
       onPopupSuccessForCancelSubscription();
       pixel.start_trial({
+          ...metaParams,
           ...(user?.id ? { userId: user?.id } : {}),
       });
     },
-    [cancelPopupsClose, onPopupSuccessForCancelSubscription, user?.id]
+    [cancelPopupsClose, metaParams, onPopupSuccessForCancelSubscription, user?.id]
   );
 
   const [handleCancelPopupWarningSuccess] = useAsyncOperation(async () => {

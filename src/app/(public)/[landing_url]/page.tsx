@@ -7,6 +7,7 @@ import momentTimezone from 'moment-timezone';
 import moment from 'moment';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import { fetchIP, getDomain } from '@/utils/domain';
+import NoData from '../redirecting-page/NoData';
 
 const Landing = async ({ params, searchParams }: any) => {
   const cookieStore = await cookies();
@@ -44,8 +45,6 @@ const Landing = async ({ params, searchParams }: any) => {
       'req-from': country_value || country_code,
     },
   });
-
-  const { data, defaultCoursePrice }: any = courseResponse;
 
   const currentTime = momentTimezone().tz(TIMEZONE);
 
@@ -97,9 +96,9 @@ const isBecomeAMemberWithVerified = () => {
 };
 
   const landingData = {
-    data: data?.landing_page_translations?.[0] || {},
+    data: courseResponse?.data?.landing_page_translations?.[0] || {},
     loading: false,
-    course: data?.course || {},
+    course: courseResponse?.data?.course || {},
     domainDetails: response.data?.data || {},
     user,
     country: {
@@ -110,10 +109,11 @@ const isBecomeAMemberWithVerified = () => {
     isBecomeVerifiedAndSubscribed: isBecomeVerifiedAndSubscribed(),
   };
 
-  if (!data?.id) return <h1>No Data Found</h1>;
-  if (!defaultCoursePrice) return <h1>No Price Found</h1>;
+  if(!courseResponse?.defaultCoursePrice || !courseResponse?.data?.id){
+    return <NoData/>
+  }
 
-  const activeLandingPage = data?.landing_name;
+  const activeLandingPage = courseResponse?.data?.landing_name;
 
   return <MainLanding {...{ landingData, activeLandingPage }} />;
 };

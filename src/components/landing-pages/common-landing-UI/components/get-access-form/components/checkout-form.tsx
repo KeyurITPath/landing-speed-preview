@@ -25,6 +25,7 @@ import Image from 'next/image';
 import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
+import { useSearchParams } from 'next/navigation';
 
 const CheckoutForm = ({
   landingData,
@@ -38,6 +39,7 @@ const CheckoutForm = ({
   const { upSaleCourses } = useSelector(({ course }: any) => course);
 
   const { enqueueSnackbar } = useSnackbar();
+  const searchParams = useSearchParams();
 
   const { user } = useContext(AuthContext);
 
@@ -46,6 +48,11 @@ const CheckoutForm = ({
   const mainCurrencyCode = currency.code;
 
   const t = useTranslations();
+
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
 
   const upSalesOrders = useMemo(() => {
     if (!upSaleCourses?.length) return [];
@@ -124,6 +131,49 @@ const CheckoutForm = ({
     setCartUpSalesOrder(newCartOrders);
   };
 
+  const upsaleIds = cartUpSalesOrders.map(({ stripeId }) => stripeId);
+
+  const contentCourse = cartUpSalesOrders?.map(item => ({
+    id: item?.id,
+    quantity: 1,
+    item_price: item?.priceAmount,
+  }));
+
+  const otherMeta = useMemo(
+    () => ({
+      content_type: 'course',
+      content_ids: [courseData?.id, ...upsaleIds],
+      total_amount:
+        (courseData?.course_prices?.[0]?.price || 0) +
+        cartUpSalesOrders.reduce(
+          (sum, item: any) => sum + item?.priceAmount || 0,
+          0
+        ),
+      value:
+        (courseData?.course_prices?.[0]?.price || 0) +
+        cartUpSalesOrders.reduce(
+          (sum, item: any) => sum + item?.priceAmount || 0,
+          0
+        ),
+      currency: courseData?.course_prices?.[0]?.currency?.name || 'USD',
+      contents: [
+        {
+          id: courseData?.id,
+          quantity: 1,
+          item_price: courseData.course_prices?.[0]?.price,
+        },
+        ...contentCourse,
+      ],
+    }),
+    [
+      cartUpSalesOrders,
+      contentCourse,
+      courseData.course_prices,
+      courseData?.id,
+      upsaleIds,
+    ]
+  );
+
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -142,8 +192,6 @@ const CheckoutForm = ({
 
       const cancel_url = `${origin}${pathname}?payment=failed`;
 
-      const upsaleIds = cartUpSalesOrders.map(({ stripeId }) => stripeId);
-
       const data = {
         stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
         selected_upsale_price_ids: upsaleIds || [],
@@ -152,15 +200,17 @@ const CheckoutForm = ({
         cancel_url,
         domain: DOMAIN,
         final_url: landingData?.final_url,
-        ...queryParams,
+        ...params,
       };
+
+      console.log('data1', data);
 
       const res = await api.getAccess.orderCheckout({ data });
       if (res?.data?.data?.checkoutUrl) {
         await pixel.initial_checkout({
-            userId: user?.id,
-            ...(upsaleIds?.length ? { content_ids: upsaleIds } : {}),
-            ...(!isEmptyObject(utmData) ? { utmData } : {})
+          userId: user?.id,
+          ...otherMeta,
+          ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
         window.location.href = res?.data?.data?.checkoutUrl;
       }

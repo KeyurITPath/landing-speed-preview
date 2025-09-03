@@ -27,10 +27,11 @@ const Default = ({
         <Box
           sx={{
             width: '100%',
-            height: '100%',
+            height: {xs: 240, sm: '100%'},
             overflow: 'hidden',
             justifyContent: 'center',
             display: 'flex',
+            position: 'relative',
             alignItems: 'center',
             aspectRatio: '16/6',
           }}

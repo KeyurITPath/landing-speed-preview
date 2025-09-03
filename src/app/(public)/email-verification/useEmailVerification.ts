@@ -10,19 +10,35 @@ import useAsyncOperation from '@/hooks/use-async-operation';
 import { useTranslations } from 'next-intl';
 import { DOMAIN } from '@/utils/constants';
 import cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { getAllLanguages } from '@/store/features/defaults.slice';
 
 const useEmailVerification = ({ data }: any) => {
   const router = useRouter();
   const { user } = useContext(AuthContext);
   const t = useTranslations();
   const queryParams = useSearchParams();
+  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
   const [validationState, validationOpen, validationClose] =
     useToggleState(false);
+  const { languages } = useSelector(({ defaults }: any) => defaults);
+  const { data: languagesData } = languages || {};
 
   const initialValues = useMemo(
     () => ({ email: user?.email || '', confirmEmail: '', phone: '' }),
     [user?.email]
   );
+
+  const selectedLanguage = languagesData?.find(
+    (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
+  );
+
+    useEffect(() => {
+      if (fetchAllLanguages) {
+        fetchAllLanguages({});
+      }
+    }, [fetchAllLanguages]);
 
   const [onSubmit, loading] = useAsyncOperation(
     async ({ email, confirmEmail, phone }: any) => {
@@ -33,8 +49,13 @@ const useEmailVerification = ({ data }: any) => {
           email,
           phone: phone ? '+' + phone : null,
           domain: DOMAIN,
+          user_language: selectedLanguage?.name,
         };
-        await api.user.update({ data, params: { user_id: user?.id }, cookieToken: cookies.get('token') || '' });
+        await api.user.update({
+          data,
+          params: { user_id: user?.id },
+          cookieToken: cookies.get('token') || '',
+        });
         await api.getAccess.openAccess({
           data,
         });
@@ -55,9 +76,7 @@ const useEmailVerification = ({ data }: any) => {
     });
 
   const hidePhoneField =
-    Array.isArray(data) &&
-    data.length > 0 &&
-    data?.[0]?.status === 'off';
+    Array.isArray(data) && data.length > 0 && data?.[0]?.status === 'off';
 
   const formData = useMemo(() => {
     const fields = [

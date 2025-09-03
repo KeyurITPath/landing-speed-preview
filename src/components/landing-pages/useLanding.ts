@@ -87,7 +87,6 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
   const {
     course: {
       analyticsMetaCredentials,
-      isAnalyticsCredentialsExists,
       isFbAnalyticsCredentialsAPICalled,
       isTiktokAnalyticsCredentialsAPICalled,
     },
@@ -330,33 +329,42 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
   }, [queryParams]);
 
   // Replace the problematic useEffect with this updated version
+
+  const anotherPixelData = useMemo(() => ({
+    ...(otherData?.course?.course_prices?.[0]?.price ? { value : otherData?.course?.course_prices?.[0]?.price } : {}),
+    ...(otherData?.course?.course_prices?.[0]?.price ? { total_amount : otherData?.course?.course_prices?.[0]?.price } : {}),
+    ...(otherData?.course?.course_prices?.[0]?.currency?.name ? { currency: otherData?.course?.course_prices?.[0]?.currency?.name } : {}),
+    ...(otherData?.course?.id ? { content_ids: [otherData?.course?.id] } : {}),
+    content_type: 'course',
+    contents: [
+      {
+        id: otherData?.course?.id,
+        quantity: 1,
+        item_price: otherData?.course?.course_prices?.[0]?.price
+      }
+    ]
+  }), [otherData?.course?.course_prices, otherData?.course?.id])
+
   useEffect(() => {
     if (
       !pixelViewTriggered.current &&
       isFbAnalyticsCredentialsAPICalled &&
       isTiktokAnalyticsCredentialsAPICalled &&
-      (pixelIds?.length || isAnalyticsCredentialsExists) &&
-      otherData?.id
+      (pixelIds?.length) &&
+      otherData?.data?.id
     ) {
       pixel.view_content({
         landingMetaPixelId: pixelIds,
-        isAnalyticsCredentialsExists: isAnalyticsCredentialsExists,
+        isAnalyticsCredentialsExists: true,
         ...(!isEmptyObject(utmData) && { utmData }),
         ...(user?.id ? { userId: user.id } : {}),
+        ...anotherPixelData
       });
       pixelViewTriggered.current = true;
     } else {
       clearMetaPixelHandler();
     }
-  }, [
-    pixelIds,
-    isAnalyticsCredentialsExists,
-    isFbAnalyticsCredentialsAPICalled,
-    isTiktokAnalyticsCredentialsAPICalled,
-    otherData?.id,
-    utmData,
-    user.id,
-  ]);
+  }, [anotherPixelData, isFbAnalyticsCredentialsAPICalled, isTiktokAnalyticsCredentialsAPICalled, otherData?.data?.id, pixelIds, user.id, utmData]);
 
   const translation = otherData?.data || {};
 

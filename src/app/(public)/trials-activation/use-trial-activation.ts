@@ -155,8 +155,25 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
 
         // gtm.ecommerce.trial_activated();
         pixel.start_trial({
-            ...(user?.id ? { userId: user?.id } : {}),
-            ...(!isEmptyObject(utmData) ? { utmData } : {})
+          content_type: 'course',
+          content_ids: [monthlySubscriptionData?.id],
+          currency:
+            monthlySubscriptionData?.subscription_plan_prices?.[0]?.currency
+              ?.name || 'USD',
+          value:
+            monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount || 0,
+          total_amount:
+            monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount || 0,
+          ...(user?.id ? { userId: user?.id } : {}),
+          ...(!isEmptyObject(utmData) ? { utmData } : {}),
+          contents: [
+            {
+              id: monthlySubscriptionData?.id,
+              quantity: 1,
+              item_price:
+                monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount,
+            },
+          ],
         });
         router.push(routes.public.complete_profile);
       }
@@ -269,8 +286,25 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
     }
 
     pixel.start_trial({
-        ...(user?.id ? { userId: user?.id } : {}),
-        ...(!isEmptyObject(utmData) ? { utmData } : {})
+      content_type: 'course',
+      content_ids: [monthlySubscriptionData?.id],
+      currency:
+        monthlySubscriptionData?.subscription_plan_prices?.[0]?.currency
+          ?.name || 'USD',
+      value:
+        monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount || 0,
+      total_amount:
+        monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount || 0,
+      ...(user?.id ? { userId: user?.id } : {}),
+      ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      contents: [
+        {
+          id: monthlySubscriptionData?.id,
+          quantity: 1,
+          item_price:
+            monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount,
+        },
+      ],
     });
     popupsClose();
     router.push(routes.public.complete_profile);

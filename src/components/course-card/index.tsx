@@ -52,7 +52,7 @@ const CourseCard = ({
   );
 
   return (
-    <Stack>
+    <Stack width='100%' >
       <Stack sx={{ display: { xs: 'flex', sm: 'none' } }}>
         <Swiper
           modules={[Navigation, Pagination]}
