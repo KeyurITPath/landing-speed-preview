@@ -28,14 +28,17 @@ const CourseDetailsForAuthorInfo = ({ landingData }: any) => {
               position: 'relative',
               alignItems: { xs: 'start', sm: 'center' },
               flexDirection: { xs: 'column', sm: 'row' },
+              minWidth: {xs: 100, sm: 150},
+              width: {xs: 100, sm: 150},
+              height: {xs: 100, sm: 150}
             }}
           >
             <Image
               loading='lazy'
               alt={course?.user?.name}
               src={videoURL(data?.author_image)}
-              width={140}
-              height={140}
+              fill
+              sizes='100vw'
               style={{
                 borderRadius: '50%',
                 objectFit: 'cover',

@@ -49,9 +49,10 @@ const CourseAuthor = ({ data, SUPPORT_MAIL }: any) => {
       >
         <Box
           sx={{
-            width: { xs: 100, sm: 188 },
-            height: { xs: 100, sm: 100 },
+            width: {xs: 50, sm: 100},
+            height: {xs: 50, sm: 100},
             borderRadius: '50%',
+            minWidth: {xs: 50, sm: 100},
             overflow: 'hidden',
             position: 'relative', // required for fill
           }}
@@ -60,7 +61,7 @@ const CourseAuthor = ({ data, SUPPORT_MAIL }: any) => {
             alt='course_author'
             src={videoURL(data?.author_image)}
             fill
-            sizes='(min-width: 600px) 100px, 50px'
+            sizes='100vw'
             style={{ objectFit: 'cover' }}
             loading='lazy'
           />
