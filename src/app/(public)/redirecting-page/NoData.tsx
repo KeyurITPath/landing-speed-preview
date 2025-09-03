@@ -1,7 +1,11 @@
+"use client"
 import { Stack, Typography } from '@mui/material';
 import CustomButton from '@/shared/button';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/utils/constants/routes';
 
-const NoData = ({ navigateHomePage }: any) => {
+const NoData = () => {
+    const router = useRouter()
     return (
         <Stack
             sx={{
@@ -15,7 +19,7 @@ const NoData = ({ navigateHomePage }: any) => {
             <Typography variant="h5" color="initial" sx={{ textAlign: 'center' }}>
                 Sorry, the page you&apos;re looking for doesn&apos;t exist.
             </Typography>
-            <CustomButton size="large" variant="gradient" onClick={navigateHomePage}>
+            <CustomButton size="large" variant="gradient" onClick={() => router.push(routes.public.home)}>
                 GO TO HOMEPAGE
             </CustomButton>
         </Stack>

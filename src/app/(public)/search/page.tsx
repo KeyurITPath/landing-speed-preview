@@ -2,18 +2,22 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import { LanguageService } from '@/services/language-service';
-import { fetchCountryCodeHandler, fetchUser } from '@/services/course-service';
+import {
+  fetchCountryCodeHandler,
+  fetchHomeCoursesData,
+  fetchUser,
+} from '@/services/course-service';
 import { TIMEZONE, USER_ROLE } from '@/utils/constants';
 import momentTimezone from 'moment-timezone';
 import SearchContainer from './SearchContainer';
-import moment from 'moment'
+import moment from 'moment';
 import { fetchIP, getDomain } from '@/utils/domain';
 
-const Search = async () => {
+const Search = async ({ searchParams }: any) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value; // read cookie "token"
-  const domain_value = await getDomain()
-  const IP = await fetchIP()
+  const domain_value = await getDomain();
+  const IP = await fetchIP();
   let user = {};
   let isLoggedIn;
   if (token) {
@@ -24,6 +28,21 @@ const Search = async () => {
   const language_id = await LanguageService.getEffectiveLanguageId();
 
   const country_code = await fetchCountryCodeHandler(IP);
+
+  const search_params = await searchParams;
+
+  const courseResponse = await fetchHomeCoursesData({
+    params: {
+      language_id,
+      domain: domain_value,
+      search: search_params?.query || '  ',
+      page: 1,
+      limit: 8
+    },
+    headers: {
+      'req-from': country_code,
+    },
+  });
 
   const userResponse = await fetchUser({
     params: {
@@ -64,14 +83,19 @@ const Search = async () => {
     );
   };
 
-  return <SearchContainer {...{
-    isBecomeAMemberWithVerified: isBecomeAMemberWithVerified(),
-    isLoggedIn,
-    user,
-    userResponse,
-    language_id,
-    country_code
-  }} />;
+  return (
+    <SearchContainer
+      {...{
+        isBecomeAMemberWithVerified: isBecomeAMemberWithVerified(),
+        isLoggedIn,
+        user,
+        userResponse,
+        language_id,
+        country_code,
+        courseResponse
+      }}
+    />
+  );
 };
 
 export default Search;
