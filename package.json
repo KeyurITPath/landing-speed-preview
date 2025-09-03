@@ -11,13 +11,10 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "format": "prettier --write . && next lint --fix",
-
     "dev:stage": "dotenv -e .env.development -- next dev --turbopack",
     "dev:prod": "dotenv -e .env.production -- next dev --turbopack",
-
     "build:stage": "dotenv -e .env.development -- next build",
     "build:prod": "dotenv -e .env.production -- next build",
-
     "start:stage": "dotenv -e .env.development -- next start",
     "start:prod": "dotenv -e .env.production -- next start"
   },
@@ -33,6 +30,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@vimeo/player": "^2.29.3",
     "countries-list": "^3.1.1",
+    "crypto-js": "^4.2.0",
     "formik": "^2.4.6",
     "hls.js": "^1.6.2",
     "js-cookie": "^3.0.5",
@@ -59,6 +57,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/crypto-js": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18.3.12",

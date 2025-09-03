@@ -95,17 +95,30 @@ const Discount = ({
 
   return (
     <>
-      <Image
-        width={600}
-        height={230}
-        src={encodeURI(image)}
-        alt='coursesBanner'
-        style={{
+      <Box
+        sx={{
+          width: '100%',
+          height: {xs: 240, sm: '100%'},
+          overflow: 'hidden',
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
           aspectRatio: '16/6',
-          borderRadius: '0px',
-          objectFit: 'cover',
+          position: 'relative'
         }}
-      />
+      >
+        <Image
+          fill
+          sizes='100vw'
+          src={encodeURI(image)}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/6',
+            borderRadius: 0,
+          }}
+          alt='coursesBanner'
+        />
+      </Box>
       <Stack
         sx={{
           alignItems: 'center',

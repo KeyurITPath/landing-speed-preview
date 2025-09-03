@@ -1,6 +1,8 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { LOCAL_STORAGE_KEY, SECRET_KEY, SERVER_URL } from '@utils/constants';
 import moment from 'moment';
+import SHA256 from "crypto-js/sha256";
+import Hex from "crypto-js/enc-hex";
 
 interface CustomJwtPayload extends JwtPayload {
   token: string;
@@ -202,14 +204,14 @@ const isEmptyArray = (arr = []) => {
   return arr.length === 0;
 };
 
-export async function sha256Hash(value = '') {
+export function sha256Hash(value = '') {
   if (!value) return null;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(value.trim().toLowerCase()); // FB compliance
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  // Convert to string, normalize for FB compliance
+  const strValue = String(value).trim().toLowerCase();
+
+  return SHA256(strValue).toString(Hex);
 }
+
 
 const shouldOfferTrial = (user: any) => {
   const { is_user_purchased_trial, subscription_end_date } = user;
@@ -346,6 +348,10 @@ export const getTokenSync = (): string | undefined => {
   return '';
 };
 
+export function generateEventId(): string {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+}
+
 export {
   getDomainName,
   isHLS,
@@ -380,5 +386,5 @@ export {
   isAfter24Hours,
   getVideoId,
   arrayToKeyValueObject,
-  scrollToSection,
+  scrollToSection
 };

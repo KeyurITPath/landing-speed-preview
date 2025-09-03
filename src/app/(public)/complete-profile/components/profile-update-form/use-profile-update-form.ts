@@ -2,10 +2,10 @@ import { useContext, useEffect, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { countries } from 'countries-list';
 import { profileUpdateValidation } from '@/utils/validations';
-import { AGE_RANGE, GENDERS } from '@/utils/constants';
+import { AGE_RANGE, DOMAIN, GENDERS } from '@/utils/constants';
 import { api } from '@/api';
 import { AuthContext } from '@/context/auth-provider';
 import useAsyncOperation from '@/hooks/use-async-operation';
@@ -15,9 +15,12 @@ import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
 import useSocket from '@/hooks/use-socket';
 import cookies from 'js-cookie';
+import { getAllLanguages } from '@/store/features/defaults.slice';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 
 const useProfileUpdateForm = ({ userData }: any) => {
   const { user, setToken } = useContext(AuthContext);
+  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
   const { updateSocketOnLogin } = useSocket();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -33,17 +36,40 @@ const useProfileUpdateForm = ({ userData }: any) => {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    if (fetchAllLanguages) {
+      fetchAllLanguages({});
+    }
+  }, [fetchAllLanguages]);
+
+  const { languages } = useSelector(({ defaults }: any) => defaults);
+  const { data: languagesData } = languages || {};
+
+  const selectedLanguage = languagesData?.find(
+    (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
+  );
+
   const plainPassword = useMemo(() => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
 
-
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
-    await api.user.update({ data: values, params: { user_id: user?.id }, cookieToken: cookies.get('token') });
+    await api.user.update({
+      data: values,
+      params: { user_id: user?.id },
+      cookieToken: cookies.get('token'),
+    });
     const { first_name, last_name, age } = values;
 
     await api.getAccess.openAccess({
-      data: { email: userData?.email, first_name, last_name, age },
+      data: {
+        email: userData?.email,
+        first_name,
+        last_name,
+        age,
+        user_language: selectedLanguage?.name,
+        domain: DOMAIN,
+      },
     });
 
     const response = await api.auth.login({

@@ -72,16 +72,30 @@ const LifetimeAccess = ({
 
   return (
     <>
-      <Image
-        width={600}
-        height={230}
-        style={{
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
           aspectRatio: '16/6',
-          objectFit: 'cover',
+          position: 'relative'
         }}
-        src={image}
-        alt='coursesBanner'
-      />
+      >
+        <Image
+          fill
+          sizes='100vw'
+          src={encodeURI(image)}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/6',
+            borderRadius: 0,
+          }}
+          alt='coursesBanner'
+        />
+      </Box>
       <Stack
         sx={{
           alignItems: 'center',

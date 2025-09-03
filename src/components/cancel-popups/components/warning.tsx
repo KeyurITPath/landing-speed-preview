@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import CustomButton from '@/shared/button';
 import { IMAGES } from '@/assets/images';
 import Image from 'next/image';
@@ -23,16 +23,30 @@ const Warning = ({
 
   return (
     <>
-      <Image width={600} height={230}
-        style={{
-          objectFit: 'cover',
+      <Box
+        sx={{
           width: '100%',
-          height: 'auto',
+          height: {xs: 240, sm: '100%'},
+          overflow: 'hidden',
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
           aspectRatio: '16/6',
+          position: 'relative',
         }}
-        src={encodeURI(image)}
-        alt='coursesBanner'
-      />
+      >
+        <Image
+          fill
+          sizes='100vw'
+          src={encodeURI(image)}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/6',
+            borderRadius: 0,
+          }}
+          alt='coursesBanner'
+        />
+      </Box>
       <Stack
         sx={{
           p: { xs: 3, sm: 4 },

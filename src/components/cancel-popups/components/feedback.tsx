@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import CustomButton from '@/shared/button';
@@ -26,13 +26,30 @@ const Feedback = ({
 
   return (
     <>
-      <Image
-        src={encodeURI(image)}
-        width={600}
-        height={230}
-        style={{ objectFit: 'cover', aspectRatio: '16/6' }}
-        alt='coursesBanner'
-      />
+      <Box
+        sx={{
+          width: '100%',
+          height: {xs: 240, sm: '100%'},
+          overflow: 'hidden',
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          aspectRatio: '16/6',
+          position: 'relative'
+        }}
+      >
+        <Image
+          fill
+          sizes='100vw'
+          src={encodeURI(image)}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/6',
+            borderRadius: 0,
+          }}
+          alt='coursesBanner'
+        />
+      </Box>
       <Stack
         component='form'
         onSubmit={handleSubmit}

@@ -31,12 +31,28 @@ const GetAccessForm = ({
     if (open && activeForm === 'access-form') {
       // gtm.ecommerce.open_cart();
       pixel.add_to_cart({
-          content_ids: [],
-          ...(!isEmptyObject(utmData) ? { utmData } : {})
+        content_ids: [course?.id],
+        content_type: 'course',
+        ...(course.course_prices?.[0]?.currency?.name
+          ? { currency: course.course_prices?.[0]?.currency?.name }
+          : {}),
+        ...(course.course_prices?.[0]?.price
+          ? { value: course.course_prices?.[0]?.price }
+          : {}),
+        ...(course.course_prices?.[0]?.price
+          ? { total_amount: course.course_prices?.[0]?.price }
+          : {}),
+        contents: [
+          {
+            id: course?.id,
+            quantity: 1,
+            item_price: course.course_prices?.[0]?.price,
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
       });
     }
-  }, [activeForm, open, utmData]);
-
+  }, [activeForm, open, utmData, course]);
 
   return (
     <Dialog

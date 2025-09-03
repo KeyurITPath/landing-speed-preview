@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import {
   Checkbox,
   Divider,
@@ -24,6 +24,8 @@ import { useTranslations } from 'next-intl';
 import useSocket from '@/hooks/use-socket';
 import Link from 'next/link';
 import { pixel } from '@/utils/pixel';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { getAllLanguages } from '@/store/features/defaults.slice';
 
 const TermsLink = styled(Link)(() => ({
   color: 'black',
@@ -44,6 +46,7 @@ const OpenAccessForm = ({
 }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
+  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -58,6 +61,12 @@ const OpenAccessForm = ({
   };
 
   const t = useTranslations();
+
+  useEffect(() => {
+    if (fetchAllLanguages) {
+      fetchAllLanguages({});
+    }
+  }, [fetchAllLanguages]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
@@ -121,9 +130,20 @@ const OpenAccessForm = ({
       const resOrderCheckout = await api.getAccess.orderCheckout({ data });
       if (resOrderCheckout?.data?.data?.checkoutUrl) {
         await pixel.initial_checkout({
-            userId: registerUserData?.id,
-            content_ids: [],
-            ...(!isEmptyObject(utmData) ? { utmData } : {})
+          userId: registerUserData?.id,
+          content_type: 'course',
+          content_ids: [courseData?.id],
+          total_amount: courseData?.course_prices?.[0]?.price,
+          value: courseData?.course_prices?.[0]?.price,
+          currency: courseData?.course_prices?.[0]?.currency?.name,
+          contents: [
+            {
+              id: courseData?.id,
+              quantity: 1,
+              item_price: courseData.course_prices?.[0]?.price,
+            },
+          ],
+          ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
         window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
       }

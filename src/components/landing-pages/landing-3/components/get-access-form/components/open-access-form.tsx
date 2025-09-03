@@ -47,7 +47,7 @@ const OpenAccessForm = ({
   const { updateSocketOnLogin } = useSocket();
 
   const searchParams = useSearchParams();
-  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages)
+  const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
 
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
@@ -55,9 +55,11 @@ const OpenAccessForm = ({
   });
 
   const language_id = useMemo(() => {
-    return cookies.get('language_id') || courseData?.course_translations[0]?.language_id;
+    return (
+      cookies.get('language_id') ||
+      courseData?.course_translations[0]?.language_id
+    );
   }, [courseData?.course_translations]);
-
 
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
@@ -74,10 +76,10 @@ const OpenAccessForm = ({
   const isLanding3LangPage = activeLandingPage.name === 'landing3';
 
   useEffect(() => {
-    if(fetchAllLanguages){
-      fetchAllLanguages({})
+    if (fetchAllLanguages) {
+      fetchAllLanguages({});
     }
-  }, [fetchAllLanguages])
+  }, [fetchAllLanguages]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
@@ -85,14 +87,14 @@ const OpenAccessForm = ({
     );
 
     const payload = {
-        email: values.email,
-        final_url: course?.slug,
-        currency_id: currency?.id,
-        domain: DOMAIN,
-        user_language: selectedLanguage?.name,
-        user_currency: currency?.code,
-        landing_page: LANDING_PAGE[activeLandingPage.name],
-    }
+      email: values.email,
+      final_url: course?.slug,
+      currency_id: currency?.id,
+      domain: DOMAIN,
+      user_language: selectedLanguage?.name,
+      user_currency: currency?.code,
+      landing_page: LANDING_PAGE[activeLandingPage.name],
+    };
 
     const res = await api.getAccess.openAccess({
       data: payload,
@@ -135,15 +137,27 @@ const OpenAccessForm = ({
       is_purchase_from_landing_3: isLanding3LangPage && true,
       domain: isLanding3LangPage ? domainName : DOMAIN,
       final_url: course?.slug,
-      ...params
+      ...params,
     };
 
     const resOrderCheckout = await api.getAccess.orderCheckout({ data });
 
     if (resOrderCheckout?.data?.data?.checkoutUrl) {
       pixel.initial_checkout({
-          content_ids: [],
-          ...(!isEmptyObject(utmData) ? { utmData } : {})
+        userId: registerUserData?.id,
+        content_type: 'course',
+        content_ids: [courseData?.id],
+        total_amount: courseData?.course_prices?.[0]?.price,
+        value: courseData?.course_prices?.[0]?.price,
+        currency: courseData?.course_prices?.[0]?.currency?.name,
+        contents: [
+          {
+            id: courseData?.id,
+            quantity: 1,
+            item_price: courseData.course_prices?.[0]?.price,
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
       });
       window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
     }
