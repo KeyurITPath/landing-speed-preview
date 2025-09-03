@@ -196,6 +196,12 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
                   handleChange={handleSearchChange}
                   slotProps={{
                     input: {
+                      onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault(); // prevent default form submit
+                          handleIconClick();
+                        }
+                      },
                       endAdornment: (
                         <InputAdornment
                           onClick={handleIconClick}

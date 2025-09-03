@@ -15,8 +15,15 @@ const SearchDrawer = ({
   const t = useTranslations();
 
   return (
-    <Drawer anchor={'top'} open={open} onClose={handleClose} hideBackdrop >
-      <Stack minHeight={60} direction='row' gap={1} justifyContent='space-between' alignItems='center' px={2}>
+    <Drawer anchor={'top'} open={open} onClose={handleClose} hideBackdrop>
+      <Stack
+        minHeight={60}
+        direction='row'
+        gap={1}
+        justifyContent='space-between'
+        alignItems='center'
+        px={2}
+      >
         <CustomInput
           inputRef={inputRef}
           placeholder={t('search')}
@@ -25,6 +32,12 @@ const SearchDrawer = ({
           handleChange={handleSearchChange}
           slotProps={{
             input: {
+              onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault(); // prevent default form submit
+                  handleIconClick();
+                }
+              },
               endAdornment: (
                 <InputAdornment
                   onClick={handleIconClick}
@@ -57,8 +70,8 @@ const SearchDrawer = ({
             },
           }}
         />
-        <IconButton onClick={handleClose} >
-            <ICONS.CLOSE size={20} />
+        <IconButton onClick={handleClose}>
+          <ICONS.CLOSE size={20} />
         </IconButton>
       </Stack>
     </Drawer>
