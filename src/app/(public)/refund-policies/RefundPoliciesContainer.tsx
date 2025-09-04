@@ -151,8 +151,38 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br />,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: (chunk) => <strong>{chunk}</strong>,
+                  ol: chunks => (
+                    <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
+                  ),
+                  li: chunks => <li>{chunks}</li>,
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
+                  ),
                   strong: chunks => <strong>{chunks}</strong>,
+                  termsLink: chunks => (
+                    <Link
+                      component='span'
+                      onClick={() =>
+                        window.open(routes.public.terms_of_service, '_blank')
+                      }
+                      sx={{ cursor: 'pointer', color: '#782fef' }}
+                      underline='hover'
+                    >
+                      {chunks}
+                    </Link>
+                  ),
                 })}
               </Typography>
             </StyledAccordionSummary>
@@ -164,11 +194,25 @@ const RefundPoliciesContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br></br>,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: (chunk) => <strong>{chunk}</strong>,
                   ol: chunks => (
                     <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
                   ),
                   li: chunks => <li>{chunks}</li>,
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
+                  ),
                   strong: chunks => <strong>{chunks}</strong>,
                   termsLink: chunks => (
                     <Link

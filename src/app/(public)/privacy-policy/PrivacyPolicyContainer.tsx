@@ -143,8 +143,38 @@ const PrivacyPolicyContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br />,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: (chunk) => <strong>{chunk}</strong>,
+                  ol: chunks => (
+                    <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
+                  ),
+                  li: chunks => <li>{chunks}</li>,
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
+                  ),
                   strong: chunks => <strong>{chunks}</strong>,
+                  termsLink: chunks => (
+                    <Link
+                      component='span'
+                      onClick={() =>
+                        window.open(routes.public.terms_of_service, '_blank')
+                      }
+                      sx={{ cursor: 'pointer', color: '#782fef' }}
+                      underline='hover'
+                    >
+                      {chunks}
+                    </Link>
+                  ),
                 })}
               </Typography>
             </StyledAccordionSummary>
@@ -157,7 +187,22 @@ const PrivacyPolicyContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br />,
+                  span: chunks => <span>{chunks}</span>,
+                  stripe: chunks => <StyledLink href='https://stripe.com/privacy' target='_blank' >{chunks}</StyledLink>,
+                  network: chunks => <StyledLink href='https://www.networkadvertising.org/optout_nonppii.asp' target='_blank' >{chunks}</StyledLink>,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: (chunk) => <strong>{chunk}</strong>,
+                  p: chunks => <Typography variant='body1'>{chunks}</Typography>,
                   strong: chunks => <strong>{chunks}</strong>,
                   strong_brand: chunks => <strong>{chunks}</strong>,
                   strong_policy: chunks => <strong>{chunks}</strong>,

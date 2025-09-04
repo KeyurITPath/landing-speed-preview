@@ -111,7 +111,25 @@ const TermsOfServiceContainer = ({ domainDetails }: any) => {
           <Typography variant='body1'>
             {t.rich('mainTerms.description', {
               brand_name: brand_name, // replaces {brand_name}
-              br: () => <br />, // replaces <br/>
+              br: () => (
+                <>
+                  <br />
+                </>
+              ),
+              p: chunks => <Typography variant='body1'>{chunks}</Typography>,
+              span: chunks => <span>{chunks}</span>,
+              strong: chunks => <strong>{chunks}</strong>,
+              double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  )
             })}
           </Typography>
         </Stack>
@@ -160,8 +178,38 @@ const TermsOfServiceContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br />,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: (chunk) => <strong>{chunk}</strong>,
+                  ol: chunks => (
+                    <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
+                  ),
+                  li: chunks => <li>{chunks}</li>,
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
+                  ),
                   strong: chunks => <strong>{chunks}</strong>,
+                  termsLink: chunks => (
+                    <Link
+                      component='span'
+                      onClick={() =>
+                        window.open(routes.public.terms_of_service, '_blank')
+                      }
+                      sx={{ cursor: 'pointer', color: '#782fef' }}
+                      underline='hover'
+                    >
+                      {chunks}
+                    </Link>
+                  ),
                 })}
               </Typography>
             </StyledAccordionSummary>
@@ -174,11 +222,25 @@ const TermsOfServiceContainer = ({ domainDetails }: any) => {
                   a: chunks => (
                     <StyledLink href={`mailto:${email}`}>{chunks}</StyledLink>
                   ),
-                  br: () => <br></br>,
+                  double: () => (
+                    <>
+                      <br />
+                      <br />
+                    </>
+                  ),
+                  single: () => (
+                    <>
+                      <br />
+                    </>
+                  ),
+                  b: () => <strong></strong>,
                   ol: chunks => (
                     <ol style={{ WebkitPaddingStart: '1.5em' }}>{chunks}</ol>
                   ),
                   li: chunks => <li>{chunks}</li>,
+                  ul: chunks => (
+                    <ul style={{ paddingLeft: '1.5em' }}>{chunks}</ul>
+                  ),
                   strong: chunks => <strong>{chunks}</strong>,
                   termsLink: chunks => (
                     <Link
