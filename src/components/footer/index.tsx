@@ -61,12 +61,11 @@ const Footer = ({
   countries,
   language_id,
   isHidePadding,
+  isLoggedIn
 }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const t = useTranslations();
-
-  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
   const { logo, email, legal_name, brand_name, logo_width, logo_height } =
     domainDetails?.data?.domain_detail || {};

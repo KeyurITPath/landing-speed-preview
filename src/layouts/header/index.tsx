@@ -41,8 +41,8 @@ const Header = ({
   domainDetails,
   languages,
   language_id,
+  isLoggedIn
 }: any) => {
-  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

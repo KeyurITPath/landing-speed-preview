@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { themeColors } from '@/theme/color';
 import MainLayoutContainer from './MainLayoutContainer';
 import { cookies } from 'next/headers';
-import { decodeToken } from '@/utils/helper';
+import { decodeToken, isTokenActive } from '@/utils/helper';
 import { api } from '@/api';
 import {
   fetchAllCountries,
@@ -23,9 +23,18 @@ export const metadata = {
 };
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();
-  const userData = decodeToken(cookieStore.get('token')?.value);
+  const token = cookieStore.get('token')?.value
   const domain_value = await getDomain()
   const IP = await fetchIP()
+
+  let isLoggedIn;
+  let userData = {}
+
+  if(token){
+    userData = decodeToken(token);
+    isLoggedIn = isTokenActive(token) && userData?.is_verified
+  }
+
   // IP address with country code
   const country_code = await fetchCountryCodeHandler(IP);
 
@@ -53,6 +62,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
           countries,
           language_id,
           user: userData,
+          isLoggedIn
         }}
       >
         {children}

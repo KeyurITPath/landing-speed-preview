@@ -175,17 +175,14 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
     }
   }, [dispatch, setToken, updateSocketOnLogin, user]);
 
-  const subscriptionEndDate = user?.subscription_end_date
-    ? momentTimezone(user?.subscription_end_date).tz(TIMEZONE)
-    : null;
 
   const isUserPurchasedCourse = useMemo(() => {
-    if (!otherData?.course?.id || !userData?.user_orders) return false;
+    if (!otherData?.course?.id || !userData?.user_orders?.length) return false;
     const landingCourseId = otherData?.course?.id;
 
     return userData?.user_orders?.some((order: any) =>
       order?.user_order_details?.some(
-        (detail: any) => detail?.course_id === landingCourseId
+        (detail: any) => detail?.course_id === landingCourseId && detail?.payment_status === 'paid'
       )
     );
   }, [otherData, userData]);

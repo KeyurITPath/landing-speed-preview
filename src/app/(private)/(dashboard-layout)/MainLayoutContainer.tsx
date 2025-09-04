@@ -32,6 +32,7 @@ const MainLayoutContainer = ({
   countries,
   language_id,
   user,
+  isLoggedIn
 }: any) => {
   const dispatch = useDispatch();
   const lgUp = useMediaQuery(theme => theme.breakpoints.up('lg'));
@@ -46,7 +47,7 @@ const MainLayoutContainer = ({
 
   return (
     <>
-      <Header id='header' {...{ onNavOpen: handleToggle, lgUp, user, domainDetails: domain, country_code, languages, countries, language_id }} />
+      <Header id='header' {...{ onNavOpen: handleToggle, lgUp, user, isLoggedIn, domainDetails: domain, country_code, languages, countries, language_id }} />
       <Sidebar
         id='sidebar'
         {...{
@@ -55,6 +56,7 @@ const MainLayoutContainer = ({
           lgUp,
           isCollapse: lgUp,
           user,
+          isLoggedIn,
           domainDetails: domain,
         }}
       />
@@ -63,7 +65,7 @@ const MainLayoutContainer = ({
           {children}
           <Footer isHidePadding
             domainDetails={domain}
-            {...{ country_code, languages, countries, language_id }}
+            {...{ country_code, languages, countries, language_id, isLoggedIn }}
           />
         </LayoutContainer>
       </LayoutRoot>

@@ -22,7 +22,7 @@ const CourseDetails = async ({ params }: any) => {
   let isLoggedIn;
   if (token) {
     userData = decodeToken(token);
-    isLoggedIn = isTokenActive(token);
+    isLoggedIn = isTokenActive(token) && user?.is_verified;
   }
 
   // IP address with country code
@@ -56,7 +56,7 @@ const CourseDetails = async ({ params }: any) => {
         }}
       />
       <Footer domainDetails={domain}
-      {...{ country_code, languages, countries, language_id }} />
+      {...{ country_code, languages, countries, language_id, isLoggedIn }} />
     </>
   );
 };

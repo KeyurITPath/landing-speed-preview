@@ -371,9 +371,13 @@ const useDashboard = ({
 
   useEffect(() => {
     if (isBecomeAMemberWithVerified && fetchCategoriesData) {
-      fetchCategoriesData({});
+      fetchCategoriesData({
+           headers: {
+          'req-from': country_code
+        }
+      });
     }
-  }, [fetchCategoriesData, isBecomeAMemberWithVerified]);
+  }, [country_code, fetchCategoriesData, isBecomeAMemberWithVerified]);
 
   useEffect(() => {
     if (isBecomeAMemberWithVerified && categories?.data?.length) {
@@ -402,6 +406,9 @@ const useDashboard = ({
       ) {
         fetchTrialBannerPopupsData({
           params: { popUps_category_id: trialBannerCategoryId },
+          headers: {
+            'req-from': country_code
+          }
         });
       }
     }
@@ -412,6 +419,7 @@ const useDashboard = ({
     isBecomeAMemberWithVerified,
     trialPopupsData,
     trialBannerPopupsData,
+    country_code
   ]);
 
   useEffect(() => {
