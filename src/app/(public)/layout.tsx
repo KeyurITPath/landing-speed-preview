@@ -55,7 +55,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   let isLoggedIn;
   if (token) {
     user = decodeToken(token);
-    isLoggedIn = isTokenActive(token);
+    isLoggedIn = isTokenActive(token) && user?.is_verified;
   }
 
   // Get language_id and languages using the simple service
@@ -71,7 +71,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
     {children}
     <Footer
       domainDetails={domain}
-      {...{ country_code, languages, countries, language_id }}
+      {...{ country_code, languages, countries, language_id, isLoggedIn }}
     />
   </Box>;
 };

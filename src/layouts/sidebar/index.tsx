@@ -63,12 +63,11 @@ const LogoImage = styled(Image)(({ theme }) => ({
   },
 }));
 
-const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
+const SidebarContent = ({ sidebar, domainDetails, user, isLoggedIn }: any) => {
   const { removeToken } = useContext(AuthContext);
   const t = useTranslations();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn } = useSelector(({ auth }: any) => auth);
 
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
 
@@ -323,7 +322,7 @@ const SidebarContent = ({ sidebar, domainDetails, user }: any) => {
   );
 };
 
-const Sidebar = ({ open, onClose, domainDetails, user }: any) => {
+const Sidebar = ({ open, onClose, domainDetails, user, isLoggedIn }: any) => {
   const lgUp = useMediaQuery(theme => theme.breakpoints.up('lg'), {
     noSsr: true,
   });
@@ -362,7 +361,7 @@ const Sidebar = ({ open, onClose, domainDetails, user }: any) => {
           transition: 'transform 0.3s ease-in-out',
         }}
       >
-        <SidebarContent {...{ sidebar, domainDetails, user }} />
+        <SidebarContent {...{ sidebar, domainDetails, user, isLoggedIn }} />
       </Box>
     </>
   );

@@ -200,11 +200,11 @@ const useCourseDetails = ({
     }, [currentTime, subscriptionEndDate, user]);
 
     const isUserPurchasedCourse = useMemo(() => {
-        if (!getUserCourseProgressApiDataForCopy?.id || !userData?.user_orders) return false;
+        if (!getUserCourseProgressApiDataForCopy?.id || !userData?.user_orders?.length) return false;
         const landingCourseId = getUserCourseProgressApiDataForCopy?.id;
 
         return userData?.user_orders?.some((order: any) =>
-            order?.user_order_details?.some((detail: any) => detail?.course_id === landingCourseId)
+            order?.user_order_details?.some((detail: any) => detail?.course_id === landingCourseId && detail?.payment_status === 'paid')
         );
     }, [getUserCourseProgressApiDataForCopy, userData]);
 

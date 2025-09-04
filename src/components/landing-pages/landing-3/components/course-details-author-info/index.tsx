@@ -28,9 +28,9 @@ const CourseDetailsForAuthorInfo = ({ landingData }: any) => {
               position: 'relative',
               alignItems: { xs: 'start', sm: 'center' },
               flexDirection: { xs: 'column', sm: 'row' },
-              minWidth: {xs: 100, sm: 150},
-              width: {xs: 100, sm: 150},
-              height: {xs: 100, sm: 150}
+              minWidth: { xs: 100, sm: 150 },
+              width: { xs: 100, sm: 150 },
+              height: { xs: 100, sm: 150 },
             }}
           >
             <Image
@@ -44,35 +44,35 @@ const CourseDetailsForAuthorInfo = ({ landingData }: any) => {
                 objectFit: 'cover',
               }}
             />
-            <Stack spacing={2}>
-              <Typography
-                color='primary.typography'
-                fontWeight={500}
-                fontSize={{ xs: 16, sm: 18 }}
-              >
-                {course?.user?.name || '-'}
-              </Typography>
-              <Typography
-                fontWeight={400}
-                fontSize={16}
-                color='primary.typography'
-                dangerouslySetInnerHTML={{
-                  __html: data?.author_bio || '',
-                }}
-                sx={{
-                  '& ul': {
-                    listStyleType: 'disc',
-                    marginLeft: 2,
-                    paddingLeft: 2,
-                  },
-                  '& li': {
-                    display: 'list-item',
-                  },
-                  whiteSpace: 'break-spaces',
-                }}
-              />
-            </Stack>
           </Box>
+          <Stack spacing={2} sx={{ mt: { xs: 2} }}>
+            <Typography
+              color='primary.typography'
+              fontWeight={500}
+              fontSize={{ xs: 16, sm: 18 }}
+            >
+              {course?.user?.name || '-'}
+            </Typography>
+            <Typography
+              fontWeight={400}
+              fontSize={16}
+              color='primary.typography'
+              dangerouslySetInnerHTML={{
+                __html: data?.author_bio || '',
+              }}
+              sx={{
+                '& ul': {
+                  listStyleType: 'disc',
+                  marginLeft: 2,
+                  paddingLeft: 2,
+                },
+                '& li': {
+                  display: 'list-item',
+                },
+                whiteSpace: 'break-spaces',
+              }}
+            />
+          </Stack>
         </Grid2>
       </Grid2>
     </Grid2>

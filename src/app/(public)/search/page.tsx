@@ -22,7 +22,7 @@ const Search = async ({ searchParams }: any) => {
   let isLoggedIn;
   if (token) {
     user = decodeToken(token);
-    isLoggedIn = isTokenActive(token);
+    isLoggedIn = isTokenActive(token) && user?.is_verified;
   }
 
   const language_id = await LanguageService.getEffectiveLanguageId();

@@ -10,9 +10,12 @@ import useAsyncOperation from '@/hooks/use-async-operation';
 import { useTranslations } from 'next-intl';
 import { DOMAIN } from '@/utils/constants';
 import cookies from 'js-cookie';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
+import useSocket from '@/hooks/use-socket';
+import { decodeToken } from '@/utils/helper';
+import { updateUser } from '@/store/features/auth.slice';
 
 const useEmailVerification = ({ data }: any) => {
   const router = useRouter();
@@ -20,6 +23,9 @@ const useEmailVerification = ({ data }: any) => {
   const t = useTranslations();
   const queryParams = useSearchParams();
   const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
+  const { setToken } = useContext(AuthContext)
+  const { updateSocketOnLogin } = useSocket()
+  const dispatch = useDispatch()
   const [validationState, validationOpen, validationClose] =
     useToggleState(false);
   const { languages } = useSelector(({ defaults }: any) => defaults);
@@ -34,11 +40,11 @@ const useEmailVerification = ({ data }: any) => {
     (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
   );
 
-    useEffect(() => {
-      if (fetchAllLanguages) {
-        fetchAllLanguages({});
-      }
-    }, [fetchAllLanguages]);
+  useEffect(() => {
+    if (fetchAllLanguages) {
+      fetchAllLanguages({});
+    }
+  }, [fetchAllLanguages]);
 
   const [onSubmit, loading] = useAsyncOperation(
     async ({ email, confirmEmail, phone }: any) => {
@@ -56,9 +62,29 @@ const useEmailVerification = ({ data }: any) => {
           params: { user_id: user?.id },
           cookieToken: cookies.get('token') || '',
         });
-        await api.getAccess.openAccess({
+        const res = await api.getAccess.openAccess({
           data,
         });
+        const { token } = res?.data?.data || {};
+
+        if (token) {
+          let registerUserData;
+
+          if (token) {
+            setToken(token);
+            updateSocketOnLogin(token);
+            registerUserData = decodeToken(token);
+            dispatch(
+              updateUser({
+                token,
+                activeUI: '',
+                ...user,
+                ...registerUserData,
+              })
+            );
+          }
+        }
+
         const queryString = new URLSearchParams(queryParams)?.toString();
         router.push(
           `${routes.public.trial_activation}?${queryString ? `${queryString}` : ''}`
