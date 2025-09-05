@@ -22,7 +22,7 @@ const CourseDetails = async ({ params }: any) => {
   let isLoggedIn;
   if (token) {
     userData = decodeToken(token);
-    isLoggedIn = isTokenActive(token) && user?.is_verified;
+    isLoggedIn = isTokenActive(token) && userData?.is_verified;
   }
 
   // IP address with country code

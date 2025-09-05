@@ -1,11 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie'
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.user.get({ ...data, signal });
+      const response = await api.user.get({ ...data, signal, headers: {
+        ...data?.headers,
+        'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+      } });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);

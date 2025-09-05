@@ -13,6 +13,7 @@ import { useDomain } from '@/context/domain-provider';
 import useToast from '@/hooks/use-snackbar';
 import { AuthContext } from '@/context/auth-provider';
 import useSocket from '@/hooks/use-socket';
+import cookies from 'js-cookie';
 
 const useLogin = () => {
   const { setToken } = useContext(AuthContext);
@@ -104,6 +105,7 @@ const useLogin = () => {
             const decodeData = decodeToken(token);
             setToken(token);
             updateSocketOnLogin(token);
+            cookies.set('is_cancellation_request', decodeData?.is_cancellation_request ? 'true' : 'false');
             dispatch(
               updateUser({
                 token,

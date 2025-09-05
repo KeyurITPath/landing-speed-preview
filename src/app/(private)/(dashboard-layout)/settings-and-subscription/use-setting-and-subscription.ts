@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { fetchUser } from '@/store/features/user.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { api } from '@/api';
-import cookies from 'js-cookie'
+import cookies from 'js-cookie';
 import {
   decodeToken,
   formatCurrency,
@@ -33,6 +33,7 @@ import { updateUser } from '@/store/features/auth.slice';
 import useToggleState from '@/hooks/use-toggle-state';
 import {
   fetchCancelDelayPopups,
+  fetchCategories,
   fetchManageBilling,
   fetchSubscriptionWithDiscount,
   fetchTrialBannerPopups,
@@ -77,7 +78,10 @@ const useSettingAndSubscription = ({
   const [saveFeedBackFormData, setSaveFeedBackFormData] = useState({});
   const [resetCancelPopup, setResetCancelPopup] = useState(false);
   const [isFormUpdated, setIsFormUpdated] = useState(false);
+  const [fetchCategoriesData] = useDispatchWithAbort(fetchCategories);
   const { data: userData } = useSelector(({ user }: any) => user);
+
+  const [isSubscriptionCancelled, setIsSubscriptionCancelled] = useState(cookies.get('is_cancellation_request') === 'true');
 
   const t = useTranslations();
   const dispatch = useDispatch();
@@ -124,6 +128,9 @@ const useSettingAndSubscription = ({
     );
   }, [user]);
 
+  useEffect(() => {
+    setIsSubscriptionCancelled(cookies.get('is_cancellation_request') === 'true');
+  }, []);
 
   const {
     errors,
@@ -144,23 +151,41 @@ const useSettingAndSubscription = ({
     onSubmit: async formValues => updateUserProfile(formValues),
   });
   const metaParams = useMemo(() => {
-    const clone = { ...userData }
-    const subscription = clone?.subscription_purchase_histories?.[0]
+    const clone = { ...userData };
+    const subscription = clone?.subscription_purchase_histories?.[0];
     return {
       content_type: 'course',
       content_ids: [subscription?.subscription_plan_id],
-      currency: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.currency?.name || 'USD',
-      total_amount: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0,
-      value: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0,
+      currency:
+        subscription?.subscription_plan?.subscription_plan_prices?.[0]?.currency
+          ?.name || 'USD',
+      total_amount:
+        subscription?.subscription_plan?.subscription_plan_prices?.[0]
+          ?.amount || 0,
+      value:
+        subscription?.subscription_plan?.subscription_plan_prices?.[0]
+          ?.amount || 0,
       contents: [
         {
           id: subscription?.subscription_plan_id,
           quantity: 1,
-          item_price: subscription?.subscription_plan?.subscription_plan_prices?.[0]?.amount || 0
-        }
-      ]
+          item_price:
+            subscription?.subscription_plan?.subscription_plan_prices?.[0]
+              ?.amount || 0,
+        },
+      ],
+    };
+  }, [userData]);
+
+  useEffect(() => {
+    if (isBecomeAMemberWithVerified && fetchCategoriesData) {
+      fetchCategoriesData({
+        headers: {
+          'req-from': country_code,
+        },
+      });
     }
-  }, [userData])
+  }, [fetchCategoriesData, isBecomeAMemberWithVerified, country_code]);
 
   const updateUserProfile = useCallback(
     async (formValues: any) => {
@@ -168,7 +193,6 @@ const useSettingAndSubscription = ({
       let anyUpdateSuccessful = false;
 
       const { userImage, first_name, last_name } = formValues;
-
       // Task 1: Update Profile Image if a new one is uploaded
       if (isImageUploaded && userImage instanceof File) {
         const imageFormData = new FormData();
@@ -177,6 +201,10 @@ const useSettingAndSubscription = ({
           const imageResponse = await api.user.updateProfileImage({
             data: imageFormData,
             id: user?.id,
+            cookieToken: cookies.get('token') || '',
+            headers: {
+              'req-from': country_code,
+            }
           });
           if (imageResponse.status === 200) {
             enqueueSnackbar(
@@ -213,6 +241,10 @@ const useSettingAndSubscription = ({
           const profileResponse = await api.user.update({
             data: profileData,
             params: { user_id: user?.id },
+            cookieToken: cookies.get('token') || '',
+            headers: {
+              'req-from': country_code,
+            }
           });
           if (profileResponse.status === 200) {
             enqueueSnackbar(
@@ -237,9 +269,8 @@ const useSettingAndSubscription = ({
       if (anyUpdateSuccessful && fetchData) {
         fetchData({
           params: { user_id: user?.id },
-          headers: {
-            'req-from': country_code,
-          },
+          headers: { 'req-from': country_code },
+          cookieToken: cookies.get('token') || '',
         });
         setIsFormUpdated(false);
       }
@@ -259,9 +290,19 @@ const useSettingAndSubscription = ({
 
   useEffect(() => {
     if (user?.is_user_purchased_trial && fetchSubscriptionWithDiscountData) {
-      fetchSubscriptionWithDiscountData({});
+      fetchSubscriptionWithDiscountData({
+        headers: {
+          'req-from': country_code,
+        },
+      });
     }
-  }, [fetchSubscriptionWithDiscountData, user?.is_user_purchased_trial]);
+  }, [
+    fetchSubscriptionWithDiscountData,
+    user?.is_user_purchased_trial,
+    country_code,
+  ]);
+
+  console.log('trialBannerPopupsData', trialBannerPopupsData);
 
   const handleImageUpload = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -400,6 +441,11 @@ const useSettingAndSubscription = ({
     userData?.subscription_purchase_histories
   );
 
+  console.log(
+    'isNotThereAnySubscription',
+    userData?.subscription_purchase_histories
+  );
+
   useEffect(() => {
     if (
       isBecomeAMemberWithVerified &&
@@ -409,6 +455,8 @@ const useSettingAndSubscription = ({
       const trialBannerCategoryId = categories.data.find(
         ({ slug }: any) => slug === POPUPS_CATEGORIES.trial_banner
       )?.id;
+
+      console.log('trialBannerCategoryId', trialBannerCategoryId);
 
       if (
         trialBannerCategoryId &&
@@ -435,7 +483,7 @@ const useSettingAndSubscription = ({
         params: {
           userId: user?.id || '',
         },
-        cookieToken: cookies.get('token') || ''
+        cookieToken: cookies.get('token') || '',
       });
 
       if (response?.data) {
@@ -464,7 +512,6 @@ const useSettingAndSubscription = ({
     }
   }, []);
 
-
   const findTrialBannerTopOfThePageData = useMemo(() => {
     if (trialBannerPopupsData?.slug !== 'trial_banner') return {};
 
@@ -488,7 +535,6 @@ const useSettingAndSubscription = ({
 
     return findActiveLanguageSubscriptionPlan;
   }, [findTrialBannerTopOfThePageData, language_id]);
-
 
   const transformTrialSubscriptionData = useMemo(() => {
     if (user?.is_user_purchased_trial) {
@@ -541,13 +587,14 @@ const useSettingAndSubscription = ({
     user?.is_user_purchased_trial,
   ]);
 
+  console.log('transformTrialSubscriptionData', trialBannerPopupsData);
+
   const onPopupSuccess = useCallback(() => {
     if (fetchData) {
       fetchData({
         params: { user_id: user?.id },
-        headers: {
-          'req-from': country_code,
-        },
+        headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
 
@@ -565,6 +612,7 @@ const useSettingAndSubscription = ({
       fetchData({
         params: { user_id: user?.id },
         headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
     // gtm.cancel_subscription.cancel_subscription();
@@ -604,9 +652,8 @@ const useSettingAndSubscription = ({
         if (fetchData) {
           fetchData({
             params: { user_id: user?.id },
-            headers: {
-              'req-from': country_code,
-            },
+            headers: { 'req-from': country_code },
+            cookieToken: cookies.get('token') || '',
           });
         }
       }
@@ -801,8 +848,13 @@ const useSettingAndSubscription = ({
 
   const cancelDelayBtnDisabled = useMemo(() => {
     if (!user && !isEmptyObject(user)) return true;
-    return user?.is_cancellation_request;
-  }, [user]);
+    return (
+      user?.is_cancellation_request ||
+      cookies.get('is_cancellation_request') === 'true' || isSubscriptionCancelled
+    );
+  }, [user, isSubscriptionCancelled]);
+
+  console.log('cancelDelayBtnDisabled :>> ', cancelDelayBtnDisabled);
 
   const isSubscriptionActivated = useMemo(() => {
     return (
@@ -823,7 +875,8 @@ const useSettingAndSubscription = ({
           }),
         },
       });
-
+      setIsSubscriptionCancelled(true);
+      cookies.set('is_cancellation_request', 'true');
       dispatch(
         updateUser({
           activeUI: '',
@@ -861,11 +914,16 @@ const useSettingAndSubscription = ({
 
       onPopupSuccessForCancelSubscription();
       pixel.start_trial({
-          ...metaParams,
-          ...(user?.id ? { userId: user?.id } : {}),
+        ...metaParams,
+        ...(user?.id ? { userId: user?.id } : {}),
       });
     },
-    [cancelPopupsClose, metaParams, onPopupSuccessForCancelSubscription, user?.id]
+    [
+      cancelPopupsClose,
+      metaParams,
+      onPopupSuccessForCancelSubscription,
+      user?.id,
+    ]
   );
 
   const [handleCancelPopupWarningSuccess] = useAsyncOperation(async () => {
@@ -903,6 +961,8 @@ const useSettingAndSubscription = ({
         registerUserData = decodeToken(token);
         updateSocketOnLogin(token);
         setToken(token);
+        setIsSubscriptionCancelled(false);
+        cookies.set('is_cancellation_request', 'false');
         dispatch(
           updateUser({
             activeUI: '',
@@ -939,6 +999,7 @@ const useSettingAndSubscription = ({
       fetchData({
         params: { user_id: user?.id },
         headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
     if (fetchManageBillingData) {
@@ -947,6 +1008,8 @@ const useSettingAndSubscription = ({
         data: {
           return_url: `${origin}${routes.private.settings_and_subscription}`,
         },
+        headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
   }, [fetchData, user?.id, fetchManageBillingData, country_code]);
@@ -1030,6 +1093,8 @@ const useSettingAndSubscription = ({
     ],
     [t, values, handleChange, handleBlur, touched, errors]
   );
+
+  console.log('transFormData :>> ', transFormData);
 
   return {
     userSettingsFormData,

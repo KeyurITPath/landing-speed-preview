@@ -85,6 +85,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
         updateSocketOnLogin(token);
       }
       const decodeData = decodeToken(token);
+      cookies.set('is_cancellation_request', decodeData?.is_cancellation_request ? 'true' : 'false');
       dispatch(
         updateUser({
           token,

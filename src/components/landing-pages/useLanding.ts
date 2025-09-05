@@ -273,9 +273,15 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
         });
       }
 
+      cookies.set('course_data', JSON.stringify({
+        id: otherData?.course?.id || id,
+        slug: landingUrl || '',
+        course_title: otherData?.data?.header,
+        landing_page: LANDING_PAGE[activeLandingPage.name]
+      }))
       dispatch(
         setCourse({
-          id,
+          id: otherData?.course?.id || id,
           slug: landingUrl || '',
           course_title: otherData?.data?.header,
           landing_page: LANDING_PAGE[activeLandingPage.name],

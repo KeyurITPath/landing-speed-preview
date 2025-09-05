@@ -9,6 +9,7 @@ import { AuthContext } from '@/context/auth-provider';
 import { ICONS } from '@/assets/icons';
 import { isEmptyObject } from '@/utils/helper';
 import { pixel } from '@/utils/pixel';
+import cookies from 'js-cookie';
 
 const SuccessPaymentPopup = ({ open }: any) => {
   const router = useRouter();
@@ -20,7 +21,8 @@ const SuccessPaymentPopup = ({ open }: any) => {
 
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
   const { data } = useSelector(({ user }: any) => user);
-  const { country } = useSelector(({ defaults }: any) => defaults);
+
+  const country_code = cookies.get('country_code') || '';
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -36,10 +38,11 @@ const SuccessPaymentPopup = ({ open }: any) => {
     if (open && user?.id && fetchUserData) {
       fetchUserData({
         params: { user_id: user?.id },
-        headers: { 'req-from': country?.country_code },
+        headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token'),
       });
     }
-  }, [open, fetchUserData, user?.id, country?.country_code]);
+  }, [open, fetchUserData, user?.id, country_code]);
 
   const currency = useMemo(
     () =>

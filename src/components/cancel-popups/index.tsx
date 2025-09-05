@@ -10,6 +10,7 @@ import {
 import { useSelector } from 'react-redux';
 import { POPUPS_CATEGORIES } from '@/utils/constants';
 import useCancelPopups from './use-cancel-popup';
+import cookies from 'js-cookie';
 
 const Tab = ({ rank, value, children }: any) => {
   return (
@@ -49,14 +50,15 @@ const CancelPopups = ({
     setResetCancelPopup,
   });
 
+  const course = JSON.parse(cookies.get('course_data') || '{}' );
   const { user } = useSelector(({ auth }: any) => auth);
-  const { course, language } = useSelector((state: any) => state.defaults);
+  const { language } = useSelector((state: any) => state.defaults);
 
   const purchasePayload = useMemo(
     () => ({
       userId: user?.id,
       course_id: course?.id,
-      language_id: language?.id,
+      language_id: language?.id || cookies.get('language_id') || 1,
       trial_days: 7,
     }),
     [course?.id, language?.id, user?.id]
