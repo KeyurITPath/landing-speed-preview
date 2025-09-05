@@ -40,8 +40,8 @@ export async function generateMetadata() {
     title: domain?.domain_detail?.brand_name || 'Eduelle',
     icons: {
       icon: '/favicon.ico',
-      shortcut: '/favicon.png',
-      apple: '/apple-touch-icon.png',
+      shortcut: '/favicon.ico',
+      apple: '/apple-touch-icon.ico',
     },
     authors: [{ name: domain?.domain_detail?.legal_name, url: domain?.name }],
     keywords: [

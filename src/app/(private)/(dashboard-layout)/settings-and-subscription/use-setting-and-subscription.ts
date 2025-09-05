@@ -81,6 +81,8 @@ const useSettingAndSubscription = ({
   const [fetchCategoriesData] = useDispatchWithAbort(fetchCategories);
   const { data: userData } = useSelector(({ user }: any) => user);
 
+  const [isSubscriptionCancelled, setIsSubscriptionCancelled] = useState(cookies.get('is_cancellation_request') === 'true');
+
   const t = useTranslations();
   const dispatch = useDispatch();
 
@@ -125,6 +127,10 @@ const useSettingAndSubscription = ({
       (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
     );
   }, [user]);
+
+  useEffect(() => {
+    setIsSubscriptionCancelled(cookies.get('is_cancellation_request') === 'true');
+  }, []);
 
   const {
     errors,
@@ -256,9 +262,8 @@ const useSettingAndSubscription = ({
       if (anyUpdateSuccessful && fetchData) {
         fetchData({
           params: { user_id: user?.id },
-          headers: {
-            'req-from': country_code,
-          },
+          headers: { 'req-from': country_code },
+          cookieToken: cookies.get('token') || '',
         });
         setIsFormUpdated(false);
       }
@@ -290,7 +295,7 @@ const useSettingAndSubscription = ({
     country_code,
   ]);
 
-  console.log('trialBannerPopupsData', trialBannerPopupsData)
+  console.log('trialBannerPopupsData', trialBannerPopupsData);
 
   const handleImageUpload = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -429,7 +434,10 @@ const useSettingAndSubscription = ({
     userData?.subscription_purchase_histories
   );
 
-  console.log('isNotThereAnySubscription', userData?.subscription_purchase_histories)
+  console.log(
+    'isNotThereAnySubscription',
+    userData?.subscription_purchase_histories
+  );
 
   useEffect(() => {
     if (
@@ -441,10 +449,11 @@ const useSettingAndSubscription = ({
         ({ slug }: any) => slug === POPUPS_CATEGORIES.trial_banner
       )?.id;
 
-      console.log('trialBannerCategoryId', trialBannerCategoryId)
+      console.log('trialBannerCategoryId', trialBannerCategoryId);
 
       if (
-        trialBannerCategoryId && isEmptyObject(trialBannerPopupsData) &&
+        trialBannerCategoryId &&
+        isEmptyObject(trialBannerPopupsData) &&
         fetchTrialBannerPopupsData
       ) {
         fetchTrialBannerPopupsData({
@@ -577,9 +586,8 @@ const useSettingAndSubscription = ({
     if (fetchData) {
       fetchData({
         params: { user_id: user?.id },
-        headers: {
-          'req-from': country_code,
-        },
+        headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
 
@@ -597,6 +605,7 @@ const useSettingAndSubscription = ({
       fetchData({
         params: { user_id: user?.id },
         headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
     // gtm.cancel_subscription.cancel_subscription();
@@ -636,9 +645,8 @@ const useSettingAndSubscription = ({
         if (fetchData) {
           fetchData({
             params: { user_id: user?.id },
-            headers: {
-              'req-from': country_code,
-            },
+            headers: { 'req-from': country_code },
+            cookieToken: cookies.get('token') || '',
           });
         }
       }
@@ -833,8 +841,13 @@ const useSettingAndSubscription = ({
 
   const cancelDelayBtnDisabled = useMemo(() => {
     if (!user && !isEmptyObject(user)) return true;
-    return user?.is_cancellation_request || cookies.get('is_cancellation_request') === 'true';
-  }, [user]);
+    return (
+      user?.is_cancellation_request ||
+      cookies.get('is_cancellation_request') === 'true' || isSubscriptionCancelled
+    );
+  }, [user, isSubscriptionCancelled]);
+
+  console.log('cancelDelayBtnDisabled :>> ', cancelDelayBtnDisabled);
 
   const isSubscriptionActivated = useMemo(() => {
     return (
@@ -855,6 +868,7 @@ const useSettingAndSubscription = ({
           }),
         },
       });
+      setIsSubscriptionCancelled(true);
       cookies.set('is_cancellation_request', 'true');
       dispatch(
         updateUser({
@@ -940,6 +954,7 @@ const useSettingAndSubscription = ({
         registerUserData = decodeToken(token);
         updateSocketOnLogin(token);
         setToken(token);
+        setIsSubscriptionCancelled(false);
         cookies.set('is_cancellation_request', 'false');
         dispatch(
           updateUser({
@@ -977,6 +992,7 @@ const useSettingAndSubscription = ({
       fetchData({
         params: { user_id: user?.id },
         headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
       });
     }
     if (fetchManageBillingData) {
