@@ -202,6 +202,10 @@ const useSettingAndSubscription = ({
           const imageResponse = await api.user.updateProfileImage({
             data: imageFormData,
             id: user?.id,
+            cookieToken: cookies.get('token') || '',
+            headers: {
+              'req-from': country_code,
+            }
           });
           if (imageResponse.status === 200) {
             enqueueSnackbar(
@@ -238,6 +242,10 @@ const useSettingAndSubscription = ({
           const profileResponse = await api.user.update({
             data: profileData,
             params: { user_id: user?.id },
+            cookieToken: cookies.get('token') || '',
+            headers: {
+              'req-from': country_code,
+            }
           });
           if (profileResponse.status === 200) {
             enqueueSnackbar(
