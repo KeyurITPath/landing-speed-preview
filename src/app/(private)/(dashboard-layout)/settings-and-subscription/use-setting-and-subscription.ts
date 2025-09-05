@@ -193,7 +193,6 @@ const useSettingAndSubscription = ({
       let anyUpdateSuccessful = false;
 
       const { userImage, first_name, last_name } = formValues;
-
       // Task 1: Update Profile Image if a new one is uploaded
       if (isImageUploaded && userImage instanceof File) {
         const imageFormData = new FormData();

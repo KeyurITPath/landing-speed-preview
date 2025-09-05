@@ -5,12 +5,6 @@ const BASE_URL = SERVER_URL;
 const DEFAULT_PREFIX = '/api';
 const FULL_BASE_URL = `${BASE_URL}${DEFAULT_PREFIX}`;
 
-// Enable CORS credentials
-const defaultHeaders = {
-  'Content-Type': 'application/json',
-  'Access-Control-Allow-Credentials': 'true',
-};
-
 export const METHODS = {
   POST: 'post',
   GET: 'get',
@@ -27,7 +21,7 @@ const client = async ({
   data = {},
   auth = {},
   cookieToken = '',
-  headers = defaultHeaders,
+  headers = {}, // ✅ don’t set Content-Type here
   params = {},
   isServer = false,
   signal,
@@ -41,35 +35,29 @@ const client = async ({
   params?: any;
   signal?: AbortSignal;
   auth?: any;
-  data?: {
-    params?: any;
-    [key: string]: unknown;
-  };
+  data?: any;
   rest?: Record<string, unknown>;
 }) => {
   let fullUrl = isServer ? `${OWN_URL}${url}` : `${FULL_BASE_URL}${url}`;
   let token = cookieToken;
 
-  const { ...restData } = data;
-
-  // Handle query params
   // Handle query params
   if (!isEmptyObject(params)) {
     const queryString = Object.entries(params)
-      .map(([key, value]) => `${key}=${value}`) // no encoding here
+      .map(([key, value]) => `${key}=${value}`)
       .join('&');
-
     fullUrl += `?${queryString}`;
   }
 
-    if (!isEmptyObject(auth)) {
-      const basicAuth = btoa(`${auth.username}:${auth.password}`);
-      headers.Authorization = `Basic ${basicAuth}`;
-    }else {
-      headers.Authorization = `Bearer ${cookieToken || token}`;
-    }
+  // Handle auth
+  if (!isEmptyObject(auth)) {
+    const basicAuth = btoa(`${auth.username}:${auth.password}`);
+    headers.Authorization = `Basic ${basicAuth}`;
+  } else if (cookieToken || token) {
+    headers.Authorization = `Bearer ${cookieToken || token}`;
+  }
 
-  // ✅ On server, read cookies via `next/headers`
+  // ✅ On client side, fallback to cookie token
   if (!token && typeof window !== 'undefined') {
     const tokenCookie = getTokenSync();
     token = tokenCookie || '';
@@ -78,9 +66,8 @@ const client = async ({
   const fetchOptions: RequestInit = {
     method,
     headers: {
-      'Content-Type': 'application/json',
       ...(token || cookieToken ? { Authorization: `Bearer ${token || cookieToken}` } : {}),
-      ...headers,
+      ...headers, // no forced Content-Type here
     },
     ...(signal && { signal }),
     credentials: 'include',
@@ -88,17 +75,27 @@ const client = async ({
   };
 
   // Only add body for non-GET/HEAD requests
-  if (restData && ![METHODS.GET, METHODS.HEAD].includes(method.toLowerCase())) {
-    fetchOptions.body = JSON.stringify(restData);
+  if (data && ![METHODS.GET, METHODS.HEAD].includes(method.toLowerCase())) {
+    if (data instanceof FormData) {
+      // For FormData, just pass it directly and let the browser handle the Content-Type
+      fetchOptions.body = data;
+      // Ensure we don't have any Content-Type header for FormData
+      if (fetchOptions.headers) {
+        delete (fetchOptions.headers as any)['Content-Type'];
+      }
+    } else {
+      // For JSON data, stringify and set proper Content-Type
+      fetchOptions.body = JSON.stringify(data);
+      (fetchOptions.headers as any)['Content-Type'] = 'application/json';
+    }
   }
 
   return await apiAsyncHandler(
     async () => {
       const res = await fetch(fullUrl, fetchOptions);
-      const isJSON = res.headers
-        .get('Content-Type')
-        ?.includes('application/json');
+      const isJSON = res.headers.get('Content-Type')?.includes('application/json');
       const responseType = isJSON ? await res.json() : await res.text();
+
       if (res.ok) {
         return { status: res?.status, data: responseType };
       } else {
