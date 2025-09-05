@@ -352,7 +352,6 @@ const VideoPlayer = ({
                 alt='Loading video'
                 loading='eager'
                 priority // ensures preloading
-                placeholder="blur" // optional
                 width={options?.posterWidth || 640}
                 height={options?.posterHeight || 360}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}

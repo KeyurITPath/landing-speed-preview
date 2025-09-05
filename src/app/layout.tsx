@@ -12,7 +12,7 @@ import ToastProvider from '@/context/stack-provider';
 import AuthProvider from '@/context/auth-provider';
 import { api } from '@/api';
 import { SocketProvider } from '@/context/socket-context';
-import GTM from "@/components/GTM";
+import GTM from '@/components/GTM';
 import JoyrideProvider from '@/shared/joyride-provider';
 import { getDomain } from '@/utils/domain';
 
@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata() {
-  const domain_value = await getDomain()
+  const domain_value = await getDomain();
   const response = await api.home.fetchDomainDetails({
     params: { name: domain_value },
   });
@@ -37,7 +37,12 @@ export async function generateMetadata() {
   const domain = (await response?.data?.data) || {};
 
   return {
-    title: domain?.domain_detail?.brand_name || 'Next.js',
+    title: domain?.domain_detail?.brand_name || 'Eduelle',
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon.png',
+      apple: '/apple-touch-icon.png',
+    },
     authors: [{ name: domain?.domain_detail?.legal_name, url: domain?.name }],
     keywords: [
       'Next.js',
@@ -76,9 +81,7 @@ export default async function RootLayout(
                 <SocketProvider>
                   <ToastProvider>
                     <AuthProvider>
-                      <JoyrideProvider>
-                        {children}
-                      </JoyrideProvider>
+                      <JoyrideProvider>{children}</JoyrideProvider>
                     </AuthProvider>
                   </ToastProvider>
                 </SocketProvider>

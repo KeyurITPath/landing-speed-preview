@@ -25,6 +25,7 @@ import {
 import { updateUser } from '@/store/features/auth.slice';
 import useSocket from '@/hooks/use-socket';
 import { pixel } from '@/utils/pixel';
+import cookies from 'js-cookie';
 
 const useTrialActivation = ({ domainDetails, country_code }: any) => {
   const { user, setToken } = useContext(AuthContext);
@@ -33,7 +34,6 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
 
   const { updateSocketOnLogin } = useSocket();
   const dispatch = useDispatch();
-
   const [popupsState, popupsOpen, popupsClose] = useToggleState();
 
   const [isFreeTrial, setIsFreeTrial] = useState(false);
@@ -45,9 +45,11 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
   const continueToCourseButtonRef = useRef(null);
   const [fetchTrialActivationData] = useDispatchWithAbort(fetchTrialActivation);
 
-  const { course, language, currency } = useSelector(
+  const { language, currency } = useSelector(
     ({ defaults }: any) => defaults
   );
+
+  const course = JSON.parse(cookies.get('course_data') || '{}' );
 
   const { logo, email, legal_name, brand_name } =
     domainDetails?.data?.domain_detail || {};

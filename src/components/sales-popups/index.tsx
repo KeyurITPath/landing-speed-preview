@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import useSalesPopups from './useSalesPopups';
 import { POPUPS_CATEGORIES } from '@/utils/constants';
 import { AuthContext } from '@/context/auth-provider';
+import cookies from 'js-cookie';
 
 const Tab = ({ rank, value, children }: any) => {
   return (
@@ -45,13 +46,14 @@ const SalesPopups = ({
 
   const { user } = useContext(AuthContext);
 
-  const { course, language } = useSelector((state: any) => state.defaults);
+  const course = JSON.parse(cookies.get('course_data') || '{}' );
+  const { language } = useSelector((state: any) => state.defaults);
 
   const purchasePayload = useMemo(
     () => ({
       userId: user?.id,
       course_id: course?.id,
-      language_id: language?.id,
+      language_id: language?.id || cookies.get('language_id') || 1,
       trial_days: 7,
     }),
     [course?.id, language?.id, user?.id]
