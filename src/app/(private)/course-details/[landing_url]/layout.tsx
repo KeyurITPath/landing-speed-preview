@@ -25,11 +25,10 @@ export async function generateMetadata({ params }: any) {
 
   return {
     title: course?.header || 'Eduelle',
-    icons: {
-      icon: '/favicon.ico',
-      shortcut: '/favicon.ico',
-      apple: '/apple-touch-icon.ico',
-    },
+    icons: [
+      { rel: 'icon', url: '/favicon.ico' },
+      { rel: 'apple-touch-icon', url: '/favicon.ico' },
+    ],
     openGraph: {
       title:course?.header,
       type: 'website',

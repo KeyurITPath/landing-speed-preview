@@ -28,6 +28,15 @@ function getRedirectUrl(
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Skip middleware for static files and favicons
+  if (
+    pathname.includes('.ico') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/static')
+  ) {
+    return NextResponse.next();
+  }
   const token = request.cookies.get('token')?.value || ''; // replace 'token' with your cookie name
 
   const decodedToken = decodeToken(token);

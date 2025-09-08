@@ -362,7 +362,7 @@ export const fetchAllCourseOfTheWeek = async (data: any) => {
   try {
     const response = await api.dashboard.getAllCourseOfTheWeek(data);
     const responseData = response?.data?.data;
-    return responseData?.result?.[0];
+    return responseData?.result?.[0] || {};
   } catch (error) {
     console.error('Error fetching course of the week :', error);
   }
