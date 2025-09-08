@@ -73,15 +73,15 @@ export const initialState = {
   },
   getUserCourseProgress: {
     data: {},
-    loading: false,
+    loading: true,
   },
   getUserCourseProgressApiDataForCopy: {
     data: {},
-    loading: false,
+    loading: true,
   },
   recommendedCourses: {
     data: {},
-    loading: false,
+    loading: true,
   },
 };
 

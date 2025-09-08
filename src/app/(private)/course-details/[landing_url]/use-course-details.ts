@@ -1631,7 +1631,7 @@ const useCourseDetails = ({
 
     return {
         data: translation,
-        loading: recommendedCoursesAPIDataLoading,
+        loading: recommendedCoursesAPIDataLoading || getUserCourseProgressDataLoading,
         course: getUserCourseProgressApiDataForCopy || {},
         queryParams,
         dispatch,
