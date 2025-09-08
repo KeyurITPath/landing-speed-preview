@@ -12,6 +12,7 @@ import CourseDetailsContent from '@/components/course-details-component/course-d
 import VideoContainer from '@/components/course-details-component/video-container';
 import { useMemo } from 'react';
 import { getDeviceType } from '@/utils/helper';
+import { useCookieSync } from '@/hooks/use-cookie-sync';
 
 const CourseDetailContainer = ({
   language_id,
@@ -21,6 +22,8 @@ const CourseDetailContainer = ({
   slug,
   languages,
 }: any) => {
+      // Sync cookies with server-side values
+  useCookieSync(language_id, country_code, languages);
   const courseDetailsData = useCourseDetails({
     language_id,
     user,

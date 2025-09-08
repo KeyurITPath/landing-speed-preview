@@ -34,12 +34,11 @@ export async function generateMetadata({ params }: any) {
       title:course?.header,
       type: 'website',
     },
-  };
-
+  }
 }
 
-const CourseDetailsLayout = ({ children }: { children: React.ReactNode }) => {
+const CourseLandingLayout = ({ children }: { children: React.ReactNode }) => {
   return <div>{children}</div>;
 };
 
-export default CourseDetailsLayout;
+export default CourseLandingLayout;

@@ -8,7 +8,15 @@ export const fetchDomainDetails = createAsyncThunk(
   'defaults/fetchDomainDetails',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.fetchDomainDetails({ ...data, signal });
+      const response = await api.home.fetchDomainDetails({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookies.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -20,7 +28,15 @@ export const fetchDomainLogo = createAsyncThunk(
   'defaults/fetchDomainLogo',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.getDomainDetails({ ...data, signal });
+      const response = await api.home.getDomainDetails({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookies.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -32,7 +48,15 @@ export const getAllLanguages = createAsyncThunk(
   'defaults/getAllLanguages',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.common.getAllLanguages({ ...data, signal });
+      const response = await api.common.getAllLanguages({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookies.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -49,7 +73,9 @@ export const getIpAddress = createAsyncThunk(
         {
           method: 'GET',
           headers: {
-            'x-rapidapi-key': RAPID_API_KEY || '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
+            'x-rapidapi-key':
+              RAPID_API_KEY ||
+              '8f734bc7b2msh1a0a77977f46f49p106ea9jsnd970dd72aa4b',
             'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
           },
           signal,
@@ -60,11 +86,11 @@ export const getIpAddress = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log('data-02', data)
+      console.log('data-02', data);
       const { country_code } = data || {};
       return country_code || 'US'; // Default to 'US' if country_code is not found
     } catch (error) {
-      console.log('error01', error)
+      console.log('error01', error);
       return rejectWithValue(error);
     }
   }
@@ -77,6 +103,11 @@ export const fetchAllAnalyticsCredentials = createAsyncThunk(
       const response = await api.home.getAllAnalyticsCredentials({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookies.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {
@@ -92,6 +123,11 @@ export const fetchAllFbAnalyticsCredentials = createAsyncThunk(
       const response = await api.home.getAllFbAnalyticsCredentials({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookies.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {
@@ -268,7 +304,10 @@ const defaultsSlice = createSlice({
     // Analytics Meta Credentials
     builder
       .addCase(fetchAllFbAnalyticsCredentials.fulfilled, (state, action) => {
-        cookies.set('analyticsMetaCredentials', JSON.stringify(action.payload?.data || []))
+        cookies.set(
+          'analyticsMetaCredentials',
+          JSON.stringify(action.payload?.data || [])
+        );
         state.course.analyticsMetaCredentials = action.payload?.data || [];
         let isFbAnalyticsCredentialsExists_ =
           state.course.isFbAnalyticsCredentialsExists;

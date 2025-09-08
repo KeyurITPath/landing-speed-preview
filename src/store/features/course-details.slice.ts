@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const getUserCourseProgress = createAsyncThunk(
   'courseDetails/getUserCourseProgress',
@@ -8,6 +9,11 @@ export const getUserCourseProgress = createAsyncThunk(
       const response = await api.courseDetails.getUserCourseProgress({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {
@@ -23,6 +29,11 @@ export const getAllRecommendedCourses = createAsyncThunk(
       const response = await api.courseDetails.getAllRecommendedCourses({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {
@@ -39,6 +50,11 @@ export const getAllPopularCoursesDataByCategories = createAsyncThunk(
         await api.courseDetails.getAllPopularCoursesDataByCategories({
           ...data,
           signal,
+          headers: {
+            ...data?.headers,
+            'req-from':
+              data?.headers?.['req-from'] || cookie.get('country_code') || '',
+          },
         });
       return response?.data;
     } catch (error) {

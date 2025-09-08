@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const getAllCountries = createAsyncThunk(
   'countries/getAllCountries',
@@ -8,6 +9,11 @@ export const getAllCountries = createAsyncThunk(
       const response = await api.countries.getAllCountries({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {

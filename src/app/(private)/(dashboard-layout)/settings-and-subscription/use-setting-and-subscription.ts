@@ -302,8 +302,6 @@ const useSettingAndSubscription = ({
     country_code,
   ]);
 
-  console.log('trialBannerPopupsData', trialBannerPopupsData);
-
   const handleImageUpload = (event: any) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
@@ -441,11 +439,6 @@ const useSettingAndSubscription = ({
     userData?.subscription_purchase_histories
   );
 
-  console.log(
-    'isNotThereAnySubscription',
-    userData?.subscription_purchase_histories
-  );
-
   useEffect(() => {
     if (
       isBecomeAMemberWithVerified &&
@@ -455,8 +448,6 @@ const useSettingAndSubscription = ({
       const trialBannerCategoryId = categories.data.find(
         ({ slug }: any) => slug === POPUPS_CATEGORIES.trial_banner
       )?.id;
-
-      console.log('trialBannerCategoryId', trialBannerCategoryId);
 
       if (
         trialBannerCategoryId &&
@@ -586,8 +577,6 @@ const useSettingAndSubscription = ({
     subscriptionWithDiscountData,
     user?.is_user_purchased_trial,
   ]);
-
-  console.log('transformTrialSubscriptionData', trialBannerPopupsData);
 
   const onPopupSuccess = useCallback(() => {
     if (fetchData) {
@@ -854,8 +843,6 @@ const useSettingAndSubscription = ({
     );
   }, [user, isSubscriptionCancelled]);
 
-  console.log('cancelDelayBtnDisabled :>> ', cancelDelayBtnDisabled);
-
   const isSubscriptionActivated = useMemo(() => {
     return (
       searchParams?.get('subscription') === 'activated' ||
@@ -1093,8 +1080,6 @@ const useSettingAndSubscription = ({
     ],
     [t, values, handleChange, handleBlur, touched, errors]
   );
-
-  console.log('transFormData :>> ', transFormData);
 
   return {
     userSettingsFormData,

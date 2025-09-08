@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const fetchTrialActivation = createAsyncThunk(
   'trialsActivation/fetchTrialActivation',
@@ -11,6 +12,11 @@ export const fetchTrialActivation = createAsyncThunk(
       const response = (await api.trialsActivation.fetchTrialActivation({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       })) as { data?: { data?: any } };
       return response?.data?.data;
     } catch (error) {

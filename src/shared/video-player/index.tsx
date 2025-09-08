@@ -305,8 +305,6 @@ const VideoPlayer = ({
 
   const showLoadingOverlay = (isLoading || !playerReady) && !showErrorMessage;
 
-  console.log('options.poster', options?.poster)
-
   return (
     <div
       className='video-player-wrapper'

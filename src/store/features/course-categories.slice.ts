@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const getAllCourseCategories = createAsyncThunk(
   'courseCategories/getAllCourseCategories',
@@ -8,6 +9,10 @@ export const getAllCourseCategories = createAsyncThunk(
       const response = await api.courseCategories.getAllCourseCategories({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {

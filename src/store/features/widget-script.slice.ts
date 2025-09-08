@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const getWidgetScriptData = createAsyncThunk(
   'profile/getWidgetScriptData',
@@ -8,6 +9,11 @@ export const getWidgetScriptData = createAsyncThunk(
       const response = await api.tolstoyComments.fetchTolstoyScript({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data?.data;
     } catch (error) {

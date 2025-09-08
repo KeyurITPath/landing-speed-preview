@@ -1,11 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const fetchSalesPopups = createAsyncThunk(
   'popup/fetchSalesPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.get({ ...data, signal });
+      const response = await api.popup.get({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -17,7 +26,15 @@ export const fetchFreeTrialPopups = createAsyncThunk(
   'popup/fetchFreeTrialPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.monthlySubscription({ ...data, signal });
+      const response = await api.popup.monthlySubscription({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -29,7 +46,15 @@ export const fetchCancelPopups = createAsyncThunk(
   'popup/fetchCancelPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.get({ ...data, signal });
+      const response = await api.popup.get({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -41,7 +66,15 @@ export const fetchSubscriptionWithDiscount = createAsyncThunk(
   'popup/fetchSubscriptionWithDiscount',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.plan.getDiscountPlan({ ...data, signal });
+      const response = await api.plan.getDiscountPlan({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -53,7 +86,15 @@ export const fetchTrialPopups = createAsyncThunk(
   'popup/fetchTrialPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.get({ ...data, signal });
+      const response = await api.popup.get({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -65,7 +106,15 @@ export const fetchTrialBannerPopups = createAsyncThunk(
   'popup/fetchTrialBannerPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.get({ ...data, signal });
+      const response = await api.popup.get({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -77,7 +126,15 @@ export const fetchCancelDelayPopups = createAsyncThunk(
   'popup/fetchCancelDelayPopups',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.cancelDelay({ ...data, signal });
+      const response = await api.popup.cancelDelay({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -89,7 +146,15 @@ export const fetchManageBilling = createAsyncThunk(
   'popup/fetchManageBilling',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.manageBilling({ ...data, signal });
+      const response = await api.popup.manageBilling({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -101,7 +166,15 @@ export const fetchCategories = createAsyncThunk(
   'popup/fetchCategories',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.popup.getCategories({ ...data, signal });
+      const response = await api.popup.getCategories({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
