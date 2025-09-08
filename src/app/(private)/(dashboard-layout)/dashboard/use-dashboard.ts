@@ -299,8 +299,9 @@ const useDashboard = ({
       courseOfTheWeekData &&
       isEmptyObject(courseOfTheWeekData) &&
       Number(courseOfTheWeekData?.language_id) !== Number(language_id)
-    )
+    ){
       return {};
+    }
 
     const { course, course_id } = courseOfTheWeekData;
 

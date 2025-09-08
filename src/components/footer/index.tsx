@@ -74,8 +74,6 @@ const Footer = ({
   const [activeLanguage, setActiveLanguage] = useState(language_id);
   const [activeCountry, setActiveCountry] = useState(country_code);
 
-  console.log('country_code', country_code, activeCountry);
-
   const pathname = usePathname();
   const isCoursePage = pathname === routes.public.search;
 

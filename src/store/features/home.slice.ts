@@ -1,11 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie';
 
 export const fetchHomeCourses = createAsyncThunk(
   'home/fetchHomeCourses',
   async (data: any = {}, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.fetchHomeCourses({ ...data, signal });
+      const response = await api.home.fetchHomeCourses({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -21,6 +30,11 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
       const response = await api.home.getAllPopularCoursesOnBrand({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
       });
       return response?.data;
     } catch (error) {
@@ -31,9 +45,17 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
 
 export const fetchSearchCourseData = createAsyncThunk(
   'home/fetchSearchCourseData',
-  async (data, { rejectWithValue }) => {
+  async (data: any = {}, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.fetchHomeCourses(data);
+      const response = await api.home.fetchHomeCourses({
+        ...data,
+        signal,
+        headers: {
+          ...data?.headers,
+          'req-from':
+            data?.headers?.['req-from'] || cookie.get('country_code') || '',
+        },
+      });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);

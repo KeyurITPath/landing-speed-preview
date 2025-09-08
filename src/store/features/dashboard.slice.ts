@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie'
 
 export const fetchDashboardCourses = createAsyncThunk(
   'dashboard/fetchDashboardCourses',
@@ -8,6 +9,10 @@ export const fetchDashboardCourses = createAsyncThunk(
       const response = await api.dashboard.fetchDashboardCourses({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+        }
       });
       return response?.data;
     } catch (error) {
@@ -23,6 +28,10 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
       const response = await api.dashboard.getAllPopularCoursesOnBrand({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+        }
       });
       return response?.data;
     } catch (error) {
@@ -38,6 +47,10 @@ export const getAllCourseOfTheWeek = createAsyncThunk(
       const response = await api.dashboard.getAllCourseOfTheWeek({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+        }
       });
       return response?.data;
     } catch (error) {
@@ -53,6 +66,10 @@ export const fetchGiftClaimReward = createAsyncThunk(
       const response = await api.dashboard.fetchGiftClaimReward({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+        }
       });
       return response?.data;
     } catch (error) {
@@ -68,6 +85,10 @@ export const fetchUserInteractedDates = createAsyncThunk(
       const response = await api.dashboard.fetchUserInteractedDates({
         ...data,
         signal,
+        headers: {
+          ...data?.headers,
+          'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+        }
       });
       return response?.data;
     } catch (error) {
@@ -84,6 +105,10 @@ export const getAllContinueWatchHistoryCoursesData = createAsyncThunk(
         await api.dashboard.getAllContinueWatchHistoryCoursesData({
           ...data,
           signal,
+          headers: {
+            ...data?.headers,
+            'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+          }
         });
       return response?.data;
     } catch (error) {

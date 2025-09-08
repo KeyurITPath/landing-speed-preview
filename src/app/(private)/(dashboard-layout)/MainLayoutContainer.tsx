@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { toggleSidebar } from '@/store/features/sidebar-slice';
 import Footer from '@/components/footer';
+import { useCookieSync } from '@/hooks/use-cookie-sync';
 
 const LayoutRoot = styled('div')(({ theme }) => ({
   width: '100%',
@@ -32,8 +33,10 @@ const MainLayoutContainer = ({
   countries,
   language_id,
   user,
-  isLoggedIn
+  isLoggedIn,
 }: any) => {
+  // Sync cookies with server-side values
+  useCookieSync(language_id, country_code, languages);
   const dispatch = useDispatch();
   const lgUp = useMediaQuery(theme => theme.breakpoints.up('lg'));
   const isSidebarOpen = useSelector(
@@ -47,7 +50,20 @@ const MainLayoutContainer = ({
 
   return (
     <>
-      <Header id='header' {...{ onNavOpen: handleToggle, lgUp, user, isLoggedIn, domainDetails: domain, country_code, languages, countries, language_id }} />
+      <Header
+        id='header'
+        {...{
+          onNavOpen: handleToggle,
+          lgUp,
+          user,
+          isLoggedIn,
+          domainDetails: domain,
+          country_code,
+          languages,
+          countries,
+          language_id,
+        }}
+      />
       <Sidebar
         id='sidebar'
         {...{
@@ -63,7 +79,8 @@ const MainLayoutContainer = ({
       <LayoutRoot>
         <LayoutContainer sx={{ p: { xs: 0, sm: 1, md: 3 } }}>
           {children}
-          <Footer isHidePadding
+          <Footer
+            isHidePadding
             domainDetails={domain}
             {...{ country_code, languages, countries, language_id, isLoggedIn }}
           />

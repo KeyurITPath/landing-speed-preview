@@ -157,8 +157,6 @@ export const JoyrideProvider = ({ children }: any) => {
     }
   }, [dispatch, user]);
 
-  console.log('isNewUser', isNewUser)
-
   useEffect(() => {
     // This effect is primarily to auto-start the tour for new users on the dashboard.
     if (

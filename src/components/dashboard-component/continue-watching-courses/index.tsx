@@ -183,7 +183,7 @@ const ContinueWatchingCourses = ({
                 justifyContent: 'space-between',
               }}
             >
-                <Typography
+                {!isEmptyArray(continueWatchingCourseData) ? <Typography
                   sx={{
                     fontWeight: 500,
                     fontSize: { xs: '28px', sm: '32px', fontWeight: 500 },
@@ -191,13 +191,13 @@ const ContinueWatchingCourses = ({
                   }}
                 >
                   {t('continue_watching')}
-                </Typography>
+                </Typography> : null}
               <Box
                 className='navigation-wrapper'
                 sx={{
                   display: {
                     xs: 'none',
-                    sm: showNavigation ? 'flex' : 'none',
+                    sm: showNavigation ? 'flex!important' : 'none!important',
                   },
                   gap: 2,
                 }}

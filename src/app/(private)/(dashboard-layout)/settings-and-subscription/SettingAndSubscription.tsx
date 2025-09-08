@@ -37,6 +37,14 @@ const FormContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+const CommonSpanTag = styled('span')(({ theme }) => ({
+  fontWeight: 500,
+  color: '#0E0E0E',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: '4px',
+  },
+}));
+
 const PhotoUploadButton = styled(Typography)(() => ({
   color: '#304BE0',
   fontSize: '14px',
@@ -258,7 +266,9 @@ const SettingAndSubscriptionContainer = ({
                               textAlign: 'center',
                             }}
                           >
-                            {t('activated')}
+                            {cancelDelayBtnDisabled
+                              ? t('cancelled')
+                              : t('activated')}
                           </Typography>
                           {cancelDelayBtnDisabled ? (
                             <Typography
@@ -273,21 +283,18 @@ const SettingAndSubscriptionContainer = ({
                                 padding: '15px 20px',
                                 width: '100%',
                                 display: 'flex',
-                                alignItems: 'center',
+                                justifyContent: {
+                                  xs: 'flex-start',
+                                  sm: 'flex-start',
+                                },
+                                alignItems: { xs: 'flex-start' },
+                                flexDirection: { xs: 'column', sm: 'row' },
                               }}
                             >
                               {t.rich('subscription_cancel_delay_message', {
                                 payment_date: next_payment_date || '',
                                 span: chunks => (
-                                  <span
-                                    style={{
-                                      fontWeight: 500,
-                                      color: '#0E0E0E',
-                                      marginLeft: '4px',
-                                    }}
-                                  >
-                                    {chunks}
-                                  </span>
+                                  <CommonSpanTag>{chunks}</CommonSpanTag>
                                 ),
                               })}
                             </Typography>
@@ -336,29 +343,24 @@ const SettingAndSubscriptionContainer = ({
                                 padding: '15px 20px',
                                 width: '100%',
                                 display: 'flex',
-                                alignItems: 'center',
+                                justifyContent: {
+                                  xs: 'flex-start',
+                                  sm: 'flex-start',
+                                },
+                                alignItems: { xs: 'flex-start' },
+                                flexDirection: { xs: 'column', sm: 'row' },
                               }}
                             >
                               {t.rich('upcoming_payment_month_due_on', {
                                 payment_per_month: subscriptionPrice || '',
                                 payment_date: next_payment_date || '',
-                                span: chunks => (
-                                  <span
-                                    style={{
-                                      fontWeight: 500,
-                                      color: '#0E0E0E',
-                                      marginLeft: '4px',
-                                    }}
-                                  >
-                                    {chunks}
-                                  </span>
-                                ),
+                                span: chunks => (<CommonSpanTag>{chunks}</CommonSpanTag>),
                               })}
                             </Typography>
                           )}
                         </Stack>
 
-                        {!isLifeTimeSubscription && (
+                        {!isLifeTimeSubscription && !cancelDelayBtnDisabled && (
                           <Button
                             onClick={onSubmit}
                             sx={{

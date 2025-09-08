@@ -38,19 +38,7 @@ export async function generateMetadata() {
 
   return {
     title: domain?.domain_detail?.brand_name || 'Eduelle',
-    icons: {
-      icon: '/favicon.ico',
-      shortcut: '/favicon.ico',
-      apple: '/apple-touch-icon.ico',
-    },
     authors: [{ name: domain?.domain_detail?.legal_name, url: domain?.name }],
-    keywords: [
-      'Next.js',
-      'Project Architecture',
-      'Template',
-      'TypeScript',
-      'React',
-    ],
     openGraph: {
       title: domain?.domain_detail?.brand_name,
       description: 'A custom Next.js project architecture template.',

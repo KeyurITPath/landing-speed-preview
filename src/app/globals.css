@@ -51,7 +51,7 @@ body {
 }
 
 .navigation-wrapper {
-    display: flex!important;
+    display: flex;
     align-items: center!important;
     gap: 24px!important;
 }

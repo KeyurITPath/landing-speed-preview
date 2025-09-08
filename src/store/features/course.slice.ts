@@ -1,11 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/api';
+import cookie from 'js-cookie'
 
 export const fetchCourse = createAsyncThunk(
   'course/fetchCourse',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.course({ ...data, signal });
+      const response = await api.home.course({ ...data, signal, headers: {
+        ...data?.headers,
+        'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+      } });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -17,7 +21,10 @@ export const fetchAllUpSales = createAsyncThunk(
   'course/fetchAllUpSales',
   async (data: any, { rejectWithValue, signal }) => {
     try {
-      const response = await api.home.getAllUpSales({ ...data, signal });
+      const response = await api.home.getAllUpSales({ ...data, signal, headers: {
+        ...data?.headers,
+        'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+      } });
       return response?.data;
     } catch (error) {
       return rejectWithValue(error);

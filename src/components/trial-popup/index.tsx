@@ -14,7 +14,6 @@ import { primaryNew } from '@/theme/color';
 import { IMAGES } from '@/assets/images';
 import useTrialPopup from './useTrialPopup';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { formatCurrency } from '../../utils/helper';
 
 const TrialPopup = ({ dashboardData }: any) => {
@@ -261,18 +260,6 @@ const TrialPopup = ({ dashboardData }: any) => {
                   justifyContent: 'flex-start',
                 }}
               >
-                <Avatar
-                  component={Image}
-                  width={50}
-                  height={50}
-                  loading='lazy'
-                  alt='User review'
-                  src='/path-to-avatar.jpg'
-                  sx={{
-                    height: 50,
-                    width: 50,
-                  }}
-                />
                 <Typography sx={{ fontSize: '14px', fontWeight: 500 }}>
                   Lauren M.
                 </Typography>

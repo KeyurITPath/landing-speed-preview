@@ -85,7 +85,7 @@ const CourseDetails = ({ landingData }: any) => {
                   }}
                 >
                   <Image
-                    loading='eager'
+                    loading='eager' priority
                     src={videoURL(data?.intro_thumbnail)}
                     alt='Video processing poster'
                     fill

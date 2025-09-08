@@ -2,11 +2,11 @@ import { Box, Container, Grid2, Stack, Typography } from '@mui/material';
 import { keyframes } from '@emotion/react';
 import CustomButton from '@shared/button';
 import { scrollToSection } from '@utils/helper';
-import { JOIN_COURSE_IMAGES, MEMBER_AVATAR_IMAGES } from '../../assets/images';
+import { JOIN_COURSE_IMAGES, MEMBER_AVATAR_IMAGES } from '@/assets/images';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { routes } from '../../utils/constants/routes';
+import { routes } from '@/utils/constants/routes';
 import { useMemo } from 'react';
 
 const scrollAnimation = keyframes`

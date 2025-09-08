@@ -179,7 +179,7 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
                 ) : isVideoType ? (
                   <VideoPlayer {...{ options }} pipMode={false} />
                 ) : isImageType && trialActivationDetails?.image ? (
-                  <Image
+                  <Image loading='eager' priority
                     src={videoURL(trialActivationDetails?.image) || ''}
                     alt='defaultBanner'
                   />

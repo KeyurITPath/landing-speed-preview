@@ -35,6 +35,8 @@ const Home = async () => {
 
   const country_code = await fetchCountryCodeHandler(IP);
 
+  console.log('country_code for landing :>> ', country_code);
+
   const domainDetails = await fetchDomainDetails(domain_value);
 
   const userResponse = await fetchUser({

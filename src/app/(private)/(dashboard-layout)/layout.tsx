@@ -18,8 +18,8 @@ const layoutStyle = {
 };
 
 export const metadata = {
-  title: 'Dashboard | Architecture',
-  description: 'Dashboard layout for the Project Architecture Next.js Template',
+  title: 'Dashboard',
+  description: '',
 };
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookieStore = await cookies();

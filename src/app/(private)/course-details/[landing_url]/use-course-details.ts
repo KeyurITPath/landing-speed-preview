@@ -1,17 +1,15 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from '@mui/material';
-import moment from 'moment';
-import momentTimezone from 'moment-timezone';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import moment from 'moment';
 import {
   DOMAIN,
   POPUPS_CATEGORIES,
   SERVER_URL,
   TIMEZONE,
   TRIAL_ACTIVATION_METHODS,
-  USER_ROLE,
 } from '@/utils/constants';
 import {
   decodeToken,
@@ -79,7 +77,10 @@ const useCourseDetails = ({
     country_code,
     domainDetails,
     language_id,
-    languages
+    languages,
+    isBecomeVerifiedAndSubscribed,
+    isBecomeAMemberWithVerified,
+    isUserPurchasedCourse
 }: any) => {
     const { socket, updateSocketOnLogin } = useSocket();
     const { setToken } = useContext(AuthContext);
@@ -121,8 +122,6 @@ const useCourseDetails = ({
         getUserCourseProgressApiDataForCopy: { data: getUserCourseProgressApiDataForCopy }
     } = useSelector(({ courseDetails }: any) => courseDetails);
 
-      const { data: userData } = useSelector((store: any) => store.user);
-
     const {
         trialPopups: { data: trialPopupsData },
         trialBannerPopups: { data: trialBannerPopupsData },
@@ -161,52 +160,6 @@ const useCourseDetails = ({
     const LEGAL_NAME = useMemo(() => {
         return legal_name || '';
     }, [legal_name]);
-
-    const currentTime = momentTimezone().tz(TIMEZONE);
-
-     const subscriptionEndDate = user?.subscription_end_date
-        ? momentTimezone(user?.subscription_end_date).tz(TIMEZONE)
-        : null;
-
-    const isBecomeAMemberWithVerified = useMemo(() => {
-        if (!user) return false;
-
-        if (![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) || !user.is_verified) {
-            return false;
-        }
-
-        const currentTime = momentTimezone().tz(TIMEZONE);
-        const subscriptionEndDate = user?.subscription_end_date
-            ? momentTimezone(user.subscription_end_date).tz(TIMEZONE)
-            : null;
-
-        return (
-            !user.is_subscribed ||
-            (subscriptionEndDate && !subscriptionEndDate.isAfter(currentTime))
-        );
-    }, [user]);
-
-    const isBecomeVerifiedAndSubscribed = useMemo(() => {
-        if (!user) return false;
-
-        if (![USER_ROLE.CUSTOMER, USER_ROLE.AUTHOR].includes(user.role) || !user.is_verified) {
-            return false;
-        }
-
-        const isSubscribed = !!user?.is_subscribed;
-        const isSubscriptionActive = subscriptionEndDate?.isAfter(currentTime);
-
-        return (isSubscribed && isSubscriptionActive) || user.is_lifetime === true;
-    }, [currentTime, subscriptionEndDate, user]);
-
-    const isUserPurchasedCourse = useMemo(() => {
-        if (!getUserCourseProgressApiDataForCopy?.id || !userData?.user_orders?.length) return false;
-        const landingCourseId = getUserCourseProgressApiDataForCopy?.id;
-
-        return userData?.user_orders?.some((order: any) =>
-            order?.user_order_details?.some((detail: any) => detail?.course_id === landingCourseId && detail?.payment_status === 'paid')
-        );
-    }, [getUserCourseProgressApiDataForCopy, userData]);
 
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
@@ -1678,7 +1631,7 @@ const useCourseDetails = ({
 
     return {
         data: translation,
-        loading: recommendedCoursesAPIDataLoading,
+        loading: recommendedCoursesAPIDataLoading || getUserCourseProgressDataLoading,
         course: getUserCourseProgressApiDataForCopy || {},
         queryParams,
         dispatch,
