@@ -2,7 +2,9 @@ import { cookies } from 'next/headers';
 import { decodeToken, isTokenActive } from '@/utils/helper';
 import {
   fetchCountryCodeHandler,
-  fetchAllCountries
+  fetchAllCountries,
+  fetchCourseProgress,
+  fetchUser,
 } from '@/services/course-service';
 import { LanguageService } from '@/services/language-service';
 import { api } from '@/api';
@@ -14,8 +16,8 @@ import { fetchIP, getDomain } from '@/utils/domain';
 const CourseDetails = async ({ params }: any) => {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
-  const domain_value = await getDomain()
-  const IP = await fetchIP()
+  const domain_value = await getDomain();
+  const IP = await fetchIP();
   const slug = await params;
 
   let userData = {};
@@ -38,9 +40,42 @@ const CourseDetails = async ({ params }: any) => {
   });
   const domain = (await response?.data) || {};
 
-    // countries
-    const countriesResponse = await fetchAllCountries();
-    const countries = countriesResponse?.data?.result || [];
+  // countries
+  const countriesResponse = await fetchAllCountries();
+  const countries = countriesResponse?.data?.result || [];
+
+  const userCourseProgress = await fetchCourseProgress({
+    params: {
+      domain: domain_value,
+      final_url: slug.landing_url,
+      user_id: userData?.id,
+    },
+  });
+
+  const userHistory = await fetchUser({
+    params: {
+      user_id: userData?.id,
+      language: language_id,
+      domain: domain_value,
+      payment_status: 'paid'
+    },
+    headers: {
+      'req-from': country_code,
+    },
+  });
+
+
+  const isUserPurchasedCourse = () => {
+    if (!userCourseProgress?.id || !userHistory?.user_orders?.length) return false;
+    const landingCourseId = userCourseProgress?.id || '';
+    return userHistory?.user_orders?.some((order: any) =>
+      order?.user_order_details?.some(
+        (detail: any) =>
+          detail?.course_id === landingCourseId &&
+          detail?.payment_status === 'paid'
+      )
+    );
+  };
 
   return (
     <>
@@ -53,10 +88,13 @@ const CourseDetails = async ({ params }: any) => {
           country_code,
           slug: slug.landing_url,
           languages,
+          isUserPurchasedCourse: isUserPurchasedCourse(),
         }}
       />
-      <Footer domainDetails={domain}
-      {...{ country_code, languages, countries, language_id, isLoggedIn }} />
+      <Footer
+        domainDetails={domain}
+        {...{ country_code, languages, countries, language_id, isLoggedIn }}
+      />
     </>
   );
 };

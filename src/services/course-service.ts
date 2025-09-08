@@ -377,3 +377,12 @@ export const fetchAllPopularCoursesOnBrand = async (data: any) => {
     console.error('Error fetching popular courses :', error);
   }
 };
+
+export const fetchCourseProgress = async (data: any) => {
+  try {
+    const response = await api.courseDetails.getUserCourseProgress(data)
+    return response?.data?.data || {};
+  } catch (error) {
+    console.error('Error fetching popular courses :', error);
+  }
+}
