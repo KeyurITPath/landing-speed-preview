@@ -61,7 +61,7 @@ const CourseDetailContainer = ({
 
   if (loading) return <Loader />;
   if (!isUserPurchasedCourse && !isBecomeVerifiedAndSubscribed)
-    return <NoData {...courseDetailsData} />;
+    return <p>No available content</p>;
 
 
     return (
