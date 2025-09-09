@@ -11,13 +11,47 @@ const SearchDrawer = ({
   searchTerm,
   handleSearchChange,
   handleIconClick,
+  forDashboard
 }: any) => {
   const t = useTranslations();
 
   return (
-    <Drawer anchor={'top'} open={open} onClose={handleClose} hideBackdrop>
+    <Drawer
+      anchor={'top'}
+      open={open}
+      onClose={handleClose}
+      hideBackdrop
+      variant="temporary"
+      ModalProps={{
+        keepMounted: false,
+        disableScrollLock: true,
+        disablePortal: true,
+        sx: {
+          position: 'fixed',
+          zIndex: 1300,
+          bottom: 'unset',
+          height: forDashboard ? 80 : 60,
+          '& .MuiBackdrop-root': {
+            display: 'none'
+          }
+        }
+      }}
+      PaperProps={{
+        sx: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 'unset',
+          height: forDashboard ? 80 : 60,
+          backgroundColor: 'white',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          maxHeight: 'auto'
+        }
+      }}
+    >
       <Stack
-        minHeight={60}
+        minHeight={forDashboard ? 80: 60}
         direction='row'
         gap={1}
         justifyContent='space-between'

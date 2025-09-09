@@ -359,6 +359,7 @@ const Sidebar = ({ open, onClose, domainDetails, user, isLoggedIn }: any) => {
             ? 'translateX(0)'
             : `translateX(-${SIDE_NAV_WIDTH}px)`,
           transition: 'transform 0.3s ease-in-out',
+          ...(!isVisible && { pointerEvents: 'none', display: 'none' }),
         }}
       >
         <SidebarContent {...{ sidebar, domainDetails, user, isLoggedIn }} />
