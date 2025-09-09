@@ -443,7 +443,7 @@ const Header = ({
         </Stack>
       </Box>
 
-      <SearchDrawer
+      <SearchDrawer forDashboard
         {...{
           open: openSearch,
           handleClose: handleCloseSearch,
