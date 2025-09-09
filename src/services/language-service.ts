@@ -10,21 +10,28 @@ export class LanguageService {
   static async getLanguages(): Promise<any[]> {
     const cookieStore = await cookies();
 
-    // Try to get cached languages first
-    const cachedLanguages = getLanguagesFromServer(cookieStore);
-
-    if (cachedLanguages && cachedLanguages.length > 0) {
-      return cachedLanguages;
-    }
-
     try {
+      // Try to get cached languages first
+      const cachedLanguages = getLanguagesFromServer(cookieStore);
+      if (cachedLanguages && cachedLanguages.length > 0) {
+        return cachedLanguages;
+      }
+
+      // If no cached languages, fetch fresh ones
       const langResponse = await fetchAllLanguages();
       const freshLanguages = langResponse?.data?.result || [];
 
-      return freshLanguages;
-    } catch (error) {
+      if (freshLanguages.length > 0) {
+        // Cache the languages for future use
+        await setLanguagesOnServer(cookieStore, freshLanguages);
+        return freshLanguages;
+      }
 
-      return [];
+      throw new Error('No languages available');
+    } catch (error) {
+      console.error('Error fetching languages:', error);
+      // Return a default language array instead of empty
+      return [{ id: 1, name: 'English', code: 'en' }];
     }
   }
 

@@ -4,10 +4,11 @@ import { RAPID_API_KEY, SERVER_URL } from '@utils/constants';
 import { cookies } from 'next/headers';
 import { getCountryFromServer } from '@/utils/cookies';
 
-export async function fetchPopularCourses(data) {
+export async function fetchPopularCourses(data: any) {
   try {
     const response = await api.home.getAllPopularCoursesOnBrand(data);
-    const popularCoursesOnBrand = response?.data?.data?.result.map(course => {
+    if(response?.data?.data?.result && isEmptyArray(response?.data?.data?.result)) return [];
+    const popularCoursesOnBrand = response?.data?.data?.result.map((course: any) => {
       // Destructure top-level fields
       const {
         id,
@@ -78,7 +79,7 @@ export async function fetchPopularCourses(data) {
   }
 }
 
-export async function fetchHomeCoursesData(data) {
+export async function fetchHomeCoursesData(data: any) {
   try {
     const response = await api.home.fetchHomeCourses(data);
     if (
@@ -87,7 +88,7 @@ export async function fetchHomeCoursesData(data) {
     )
       return [];
 
-    const courseData = response?.data?.data?.result?.map(course => {
+    const courseData = response?.data?.data?.result?.map((course: any) => {
       const { id, course_categories, landing_pages } = course || {};
       const {
         title,
@@ -122,8 +123,8 @@ export async function fetchHomeCoursesData(data) {
         id,
         title,
         category: course_categories
-          ?.filter(category => category?.language_id === course_language_id)
-          ?.map(item => item?.category?.name)
+          ?.filter((category: any) => category?.language_id === course_language_id)
+          ?.map((item: any) => item?.category?.name)
           ?.join(' , '),
         image: videoURL(course_image),
         instructor: {
@@ -142,15 +143,15 @@ export async function fetchHomeCoursesData(data) {
   }
 }
 
-export async function fetchAllCourseCategories(data, language_id) {
+export async function fetchAllCourseCategories(data: any, language_id: number | string) {
   try {
     const response = await api.courseCategories.getAllCourseCategories(data);
     const courseCategoriesData = response?.data?.data?.result || [];
     if (courseCategoriesData && isEmptyArray(courseCategoriesData)) return [];
 
     return courseCategoriesData
-      ?.filter(category => category?.language?.id === language_id)
-      ?.map(category => {
+      ?.filter((category: any) => category?.language?.id === language_id)
+      ?.map((category: any) => {
         return {
           id: category?.id,
           name: category?.name,
@@ -268,48 +269,20 @@ export const fetchDomainDetails = async (DOMAIN?: any) => {
 export const fetchAllLanguages = async () => {
   try {
     const response = await api.common.getAllLanguages({});
-    return response?.data;
+    return response?.data || {};
   } catch (error) {
     console.error('Error fetching all languages:', error);
+    return {}
   }
 };
 
 export const fetchAllCountries = async () => {
   try {
     const response = await api.countries.getAllCountries({});
-    return response?.data;
+    return response?.data || {};
   } catch (error) {
     console.error('Error fetching all countries:', error);
-  }
-};
-
-export const fetchAllUpSales = async (data: any) => {
-  try {
-    const response = await api.home.getAllUpSales(data);
-    return response?.data?.data || [];
-  } catch (error) {
-    console.error('Error fetching all up sales:', error);
-  }
-};
-
-export const fetchAllFbAnalyticsCredentials = async (params: any) => {
-  try {
-    const response = await api.home.getAllFbAnalyticsCredentials(params);
-    const data = await response.data;
-    return {
-      analyticsMetaCredentials: data?.data || [],
-    };
-  } catch (error) {
-    console.error('Error fetching all Facebook analytics credentials:', error);
-  }
-};
-
-export const fetchTrialPopups = async (data: any) => {
-  try {
-    const response = await api.popup.get(data);
-    return response?.data?.data || {};
-  } catch (error) {
-    console.error('Error fetching trial popups:', error);
+    return {};
   }
 };
 
@@ -355,6 +328,7 @@ export const fetchTrialActivation = async (data: any) => {
     return responseData?.result || {};
   } catch (error) {
     console.error('Error fetching trial activation:', error);
+    return {}
   }
 };
 
@@ -365,6 +339,7 @@ export const fetchAllCourseOfTheWeek = async (data: any) => {
     return responseData?.result?.[0] || {};
   } catch (error) {
     console.error('Error fetching course of the week :', error);
+    return {}
   }
 };
 
@@ -375,6 +350,7 @@ export const fetchAllPopularCoursesOnBrand = async (data: any) => {
     return responseData?.result || [];
   } catch (error) {
     console.error('Error fetching popular courses :', error);
+    return []
   }
 };
 
@@ -384,5 +360,6 @@ export const fetchCourseProgress = async (data: any) => {
     return response?.data?.data || {};
   } catch (error) {
     console.error('Error fetching popular courses :', error);
+    return {}
   }
 }
