@@ -8,7 +8,6 @@ import {
   DOMAIN,
   POPUPS_CATEGORIES,
   SERVER_URL,
-  TIMEZONE,
   TRIAL_ACTIVATION_METHODS,
 } from '@/utils/constants';
 import {
@@ -22,7 +21,6 @@ import {
 } from '@/utils/helper';
 import { setLanguage } from '@/store/features/defaults.slice';
 import { routes } from '@/utils/constants/routes';
-// import i18n from '../../i18n';
 import useToggleState from '@/hooks/use-toggle-state';
 import { fetchUser } from '@/store/features/user.slice';
 import { getAllCourseCategories } from '@/store/features/course-categories.slice';
@@ -203,16 +201,16 @@ const useCourseDetails = ({
         let updatedDescription = description;
 
         if (updateTitle?.length) {
-            updateTitle = updateTitle.replaceAll('{BRAND_NAME}', BRAND_NAME);
+            updateTitle = updateTitle.replaceAll('{brand_name}', BRAND_NAME);
         }
 
         if (updatedDescription?.length) {
             updatedDescription = updatedDescription.replaceAll(
-                '{TRIAL_SIDE_BANNER_TRIAL_DAYS}',
+                '{trial_days}',
                 trial_days
             );
             updatedDescription = updatedDescription.replaceAll(
-                '{TRIAL_SIDE_BANNER_TRIAL_PRICE}',
+                '{actual_price}',
                 formatCurrency(price, currencyCode)
             );
         }
