@@ -4,7 +4,7 @@ import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import { LanguageService } from '@/services/language-service';
 import {
   fetchCountryCodeHandler,
-  fetchHomeCoursesData,
+  fetchSearchCoursesData,
   fetchUser,
 } from '@/services/course-service';
 import { TIMEZONE, USER_ROLE } from '@/utils/constants';
@@ -31,18 +31,24 @@ const Search = async ({ searchParams }: any) => {
 
   const search_params = await searchParams;
 
-  const courseResponse = await fetchHomeCoursesData({
-    params: {
-      language_id,
-      domain: domain_value,
-      search: search_params?.query || '  ',
-      page: 1,
-      limit: 8
-    },
-    headers: {
-      'req-from': country_code,
-    },
-  });
+  let response = {
+    courseData: [],
+    pagination: { totalItems: 0 },
+  };
+  if(search_params?.query) {
+    response = await fetchSearchCoursesData({
+      params: {
+        language_id,
+        domain: domain_value,
+        ...(search_params?.query === 'all' ? {} : { search: search_params?.query }),
+        page: search_params?.page || 1,
+        limit: search_params?.limit || 8
+      },
+      headers: {
+        'req-from': country_code,
+      },
+    });
+  }
 
   const userResponse = await fetchUser({
     params: {
@@ -92,7 +98,8 @@ const Search = async ({ searchParams }: any) => {
         userResponse,
         language_id,
         country_code,
-        courseResponse
+        courseResponse: response?.courseData || [],
+        pagination: response?.pagination || {},
       }}
     />
   );

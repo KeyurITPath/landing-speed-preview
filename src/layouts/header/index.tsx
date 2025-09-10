@@ -63,7 +63,8 @@ const Header = ({
 
   const [activeLanguage, setActiveLanguage] = useState(language_id);
 
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
+  const queryParam = searchParams.get('query') ?? '';
+  const [searchTerm, setSearchTerm] = useState(['All', 'all'].includes(queryParam) ? '' : queryParam);
   const [openSearch, handleOpenSearch, handleCloseSearch] =
     useToggleState(false);
 
@@ -93,7 +94,7 @@ const Header = ({
       inputRef.current.focus();
     } else {
       router.push(
-        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim())
+        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim() + '&page=1&limit=10')
       );
     }
   }, [router, searchTerm]);

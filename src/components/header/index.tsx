@@ -44,8 +44,10 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('query') || '');
+  const queryParam = searchParams.get('query') ?? '';
+  const [searchTerm, setSearchTerm] = useState(
+    ['All', 'all'].includes(queryParam) ? '' : queryParam
+  );
 
   const [logoutState, logoutOpen, logoutClose] = useToggleState();
   const [openSearch, handleOpenSearch, handleCloseSearch] =
@@ -90,7 +92,7 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
       inputRef.current.focus();
     } else {
       router.push(
-        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim())
+        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim()) + '&page=1&limit=10'
       );
     }
   }, [router, searchTerm]);
