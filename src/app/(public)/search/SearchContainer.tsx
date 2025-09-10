@@ -7,13 +7,15 @@ import CourseCard from '@/components/course-card';
 import useToggleState from '@/hooks/use-toggle-state';
 import TrialPopup from '@/components/trial-popup';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { ICONS } from '../../../assets/icons';
+import { ICONS } from '@/assets/icons';
+import CustomPagination from '@/components/pagination';
 
 const SearchContainer = ({
   isBecomeAMemberWithVerified,
   isLoggedIn,
   user,
   courseResponse,
+  pagination
 }: any) => {
   const t = useTranslations();
 
@@ -72,10 +74,10 @@ const SearchContainer = ({
             fontSize={{ xs: 28, sm: 32 }}
             sx={{ fontWeight: 500, color: '#0E0E0E' }}
           >
-            {t('search_results')}: {searchParams.get('query')}
+            {t('search_results')}: {searchParams.get('query') || ''}
           </Typography>
         </Stack>
-        <CourseCard
+        <CourseCard forSearchPage
           {...{
             POPULAR_BRAND_COURSES_DATA: popularCoursesOnBrandData,
             isPopularBrandCoursesDataLoading: false,
@@ -84,6 +86,7 @@ const SearchContainer = ({
             isLoggedIn,
           }}
         />
+        <CustomPagination totalItems={pagination?.totalItems || 0} />
       </Stack>
       {(isBecomeAMemberWithVerified || shouldOfferTrials) && (
         <TrialPopup

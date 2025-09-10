@@ -143,6 +143,71 @@ export async function fetchHomeCoursesData(data: any) {
   }
 }
 
+export async function fetchSearchCoursesData(data: any) {
+  try {
+    const response = await api.home.fetchHomeCourses(data);
+    const pagination = response?.data?.data?.pagination || {};
+    if (
+      response?.data?.data?.result &&
+      isEmptyArray(response?.data?.data?.result)
+    )
+      return [];
+
+    const courseData = response?.data?.data?.result?.map((course: any) => {
+      const { id, course_categories, landing_pages } = course || {};
+      const {
+        title,
+        course_image,
+        language_id: course_language_id,
+      } = course?.course_translations?.[0] || {};
+      const { author_image, rating, final_url } =
+        course?.landing_pages?.[0]?.landing_page_translations?.[0] || {};
+      const { name: domainRedirection } =
+        landing_pages?.[0]?.landing_name?.domain_detail?.domain || {};
+
+      const clone = { ...course };
+      const currentDefaultPrice = clone?.course_prices?.[0] || {};
+      const calculatedDiscount = 100 - clone?.discount;
+
+      const prices = clone?.course_prices?.length
+        ? {
+            price: currentDefaultPrice?.price || 0,
+            currency: currentDefaultPrice?.currency?.name || 'USD',
+          }
+        : {
+            price: 0,
+            currency: 'USD',
+          };
+
+      const actualPrice = formatCurrency(
+        (prices.price / calculatedDiscount) * 100 || 0,
+        prices.currency
+      );
+
+      return {
+        id,
+        title,
+        category: course_categories
+          ?.filter((category: any) => category?.language_id === course_language_id)
+          ?.map((item: any) => item?.category?.name)
+          ?.join(' , '),
+        image: videoURL(course_image),
+        instructor: {
+          name: course?.user?.name,
+          avatar: SERVER_URL + author_image,
+        },
+        rating,
+        originalPrice: actualPrice,
+        price: formatCurrency(prices.price, prices.currency),
+        redirectionUrl: `${domainRedirection}/${final_url}`,
+      };
+    });
+    return { courseData, pagination };
+  } catch (error) {
+    console.error('Error fetching home courses data:', error);
+  }
+}
+
 export async function fetchAllCourseCategories(data: any, language_id: number | string) {
   try {
     const response = await api.courseCategories.getAllCourseCategories(data);

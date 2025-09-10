@@ -193,7 +193,7 @@ const PopularCourseByCategories = ({ dashboardData, progress }: any) => {
                   fontSize: { xs: '14px', sm: '16px' },
                   mb: { xs: 2, sm: 4 },
                 }}
-                onClick={() => router.push(routes.public.search)}
+                onClick={() => router.push(routes.public.search + '?query=all&page=1&limit=10')}
               >
                 {t('see_all_courses')}
               </CustomButton>
