@@ -14,7 +14,6 @@ import { openAccessNowValidation } from '@/utils/validations';
 import FormControl from '@/shared/inputs/form-control';
 import { api } from '@/api';
 import { AuthContext } from '@/context/auth-provider';
-// import { gtm } from '@/assets/utils/gtm';
 import useAsyncOperation from '@/hooks/use-async-operation';
 import { DOMAIN, LANDING_PAGE } from '@/utils/constants';
 import { routes } from '@/utils/constants/routes';
@@ -27,6 +26,7 @@ import { pixel } from '@/utils/pixel';
 import cookies from 'js-cookie';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
+import { gtm } from '@/utils/gtm';
 
 const TermsLink = styled(Link)(() => ({
   color: '#304BE0',
@@ -117,7 +117,7 @@ const OpenAccessForm = ({
       );
     }
 
-    // gtm.ecommerce.add_to_cart();
+    gtm.ecommerce.add_to_cart();
 
     let success_url = '';
     const { origin, pathname } = window.location;

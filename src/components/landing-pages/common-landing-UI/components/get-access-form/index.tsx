@@ -11,12 +11,12 @@ import {
 import { ICONS } from '@/assets/icons';
 import OpenAccessForm from './components/open-access-form';
 import CheckoutForm from './components/checkout-form';
-// import { gtm } from '@/assets/utils/gtm';
 import { useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { isEmptyObject } from '@/utils/helper';
-import { useTranslations, useMessages } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
+import { gtm } from '@/utils/gtm';
 
 const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
   const { data, course, activeForm, setActiveForm, SUPPORT_MAIL, utmData } =
@@ -33,7 +33,7 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
 
      useEffect(() => {
           if (open && activeForm === 'access-form') {
-              // gtm.ecommerce.open_cart();
+              gtm.ecommerce.open_cart();
               pixel.add_to_cart({
                   content_ids: [landingData.course?.id],
                   content_type: 'course',

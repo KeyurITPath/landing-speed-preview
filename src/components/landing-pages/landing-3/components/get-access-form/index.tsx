@@ -9,10 +9,10 @@ import {
 } from '@mui/material';
 import { ICONS } from '@/assets/icons';
 import OpenAccessForm from './components/open-access-form';
-// import { gtm } from '../../../../../assets/utils/gtm';
 import { isEmptyObject } from '@/utils/helper';
 import { useSearchParams } from 'next/navigation';
 import { pixel } from '@/utils/pixel';
+import { gtm } from '@/utils/gtm';
 
 const GetAccessForm = ({
   open,
@@ -29,7 +29,7 @@ const GetAccessForm = ({
 
   useEffect(() => {
     if (open && activeForm === 'access-form') {
-      // gtm.ecommerce.open_cart();
+      gtm.ecommerce.open_cart();
       pixel.add_to_cart({
         content_ids: [course?.id],
         content_type: 'course',

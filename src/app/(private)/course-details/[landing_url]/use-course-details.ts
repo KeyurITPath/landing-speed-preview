@@ -33,7 +33,6 @@ import {
 } from '@/store/features/popup.slice';
 import useAsyncOperation from '@/hooks/use-async-operation';
 import { api } from '@/api';
-// import { gtm } from '../../assets/utils/gtm';
 import { updateUser } from '@/store/features/auth.slice';
 import {
         getAllPopularCoursesDataByCategories,
@@ -47,6 +46,7 @@ import {
 import { getWidgetScriptData } from '@/store/features/widget-script.slice';
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
+import { gtm } from '@/utils/gtm';
 
 let globalPipValue = false;
 interface GlobalLastReportedTimeItem {
@@ -590,7 +590,7 @@ const useCourseDetails = ({
         const queryString = new URLSearchParams(queryParams).toString();
 
         router.replace(`${pathname}?subscription=activated${queryString ? `&${queryString}` : ''}`);
-        // gtm.trial_activation.trial_side_banner();
+        gtm.trial_activation.trial_side_banner();
     }, [router, queryParams]);
 
     const [startTrialSubmitForSideBanner, isStartTrialSubmitForSideBannerLoading] =
@@ -1128,14 +1128,14 @@ const useCourseDetails = ({
         const { description, title: label } =
             getUserCourseProgressApiDataForCopy?.course_translations?.[0] || {};
 
-        // gtm.mainflow.course_started({ label, description });
+        gtm.mainflow.course_started({ label, description });
     }, [getUserCourseProgressApiDataForCopy]);
 
     const playerCompleted = useCallback(() => {
         const { description, title: label } =
             getUserCourseProgressApiDataForCopy?.course_translations?.[0] || {};
 
-        // gtm.mainflow.course_completed({ label, description });
+        gtm.mainflow.course_completed({ label, description });
     }, [getUserCourseProgressApiDataForCopy?.course_translations]);
 
     const handleIsCompleted = useCallback(

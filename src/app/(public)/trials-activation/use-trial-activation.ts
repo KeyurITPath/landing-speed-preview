@@ -7,7 +7,6 @@ import useToggleState from '@/hooks/use-toggle-state';
 import { AuthContext } from '@/context/auth-provider';
 import { routes } from '@/utils/constants/routes';
 import { api } from '@/api';
-// import { gtm } from '../../assets/utils/gtm';
 import useAsyncOperation from '@/hooks/use-async-operation';
 import {
   SALES_POPUPS_SUB_CATEGORIES,
@@ -26,6 +25,7 @@ import { updateUser } from '@/store/features/auth.slice';
 import useSocket from '@/hooks/use-socket';
 import { pixel } from '@/utils/pixel';
 import cookies from 'js-cookie';
+import { gtm } from '@/utils/gtm';
 
 const useTrialActivation = ({ domainDetails, country_code }: any) => {
   const { user, setToken } = useContext(AuthContext);
@@ -155,7 +155,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
           );
         }
 
-        // gtm.ecommerce.trial_activated();
+        gtm.ecommerce.trial_activated();
         pixel.start_trial({
           content_type: 'course',
           content_ids: [monthlySubscriptionData?.id],
@@ -208,7 +208,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
             })
           );
         }
-        // gtm.ecommerce.no_trial();
+        gtm.ecommerce.no_trial();
         router.push(routes.public.complete_profile);
       }
     }
@@ -265,7 +265,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
       }
 
       // gtm.ecommerce.trial_activated();
-      // gtm.trial_activation.warning_popup();
+      gtm.trial_activation.warning_popup();
       router.push(routes.public.complete_profile);
     }
   });
@@ -274,13 +274,13 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
     if (slug) {
       switch (slug) {
         case SALES_POPUPS_SUB_CATEGORIES.extendTrial:
-          // gtm.trial_activation.extended_trial_popup();
+          gtm.trial_activation.extended_trial_popup();
           break;
         case SALES_POPUPS_SUB_CATEGORIES.discount:
-          // gtm.trial_activation.discount_popup();
+          gtm.trial_activation.discount_popup();
           break;
         case SALES_POPUPS_SUB_CATEGORIES.lifetimeAccess:
-          // gtm.ecommerce.trial_activated();
+          gtm.ecommerce.trial_activated();
           break;
         default:
           break;

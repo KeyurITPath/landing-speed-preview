@@ -9,6 +9,7 @@ import { AuthContext } from '@/context/auth-provider';
 import { ICONS } from '@/assets/icons';
 import { isEmptyObject } from '@/utils/helper';
 import { pixel } from '@/utils/pixel';
+import { gtm } from '@/utils/gtm';
 import cookies from 'js-cookie';
 
 const SuccessPaymentPopup = ({ open }: any) => {
@@ -64,6 +65,24 @@ const SuccessPaymentPopup = ({ open }: any) => {
     })
   );
 
+  const courseAmount = data?.user_orders?.[0]?.user_order_details
+    ?.filter(({ is_upsale }: any) => !is_upsale)
+    ?.reduce(
+      (sum: any, { course_price }: any) => sum + course_price?.price || 0,
+      0
+    );
+
+  const upSaleAmount = data?.user_orders?.[0]?.user_order_details
+    ?.filter(({ is_upsale }: any) => is_upsale)
+    ?.reduce(
+      (sum: any, { course_price }: any) => sum + course_price?.price || 0,
+      0
+    );
+
+  const isExistUpsale = data?.user_orders?.[0]?.user_order_details?.some(
+    ({ is_upsale }: any) => is_upsale
+  );
+
   const metaParams = useMemo(() => {
     return {
       content_type: 'course',
@@ -103,6 +122,10 @@ const SuccessPaymentPopup = ({ open }: any) => {
 
   useEffect(() => {
     if (data?.id && open && !hasFired.current) {
+      gtm.ecommerce.purchase({ value: courseAmount });
+      if (isExistUpsale) {
+        gtm.ecommerce.upsale({ value: upSaleAmount });
+      }
       pixel.purchase({
         ...metaParams,
         ...(!isEmptyObject(utmData) && { utmData }),
@@ -115,7 +138,15 @@ const SuccessPaymentPopup = ({ open }: any) => {
     if (!open) {
       hasFired.current = false;
     }
-  }, [data?.id, metaParams, open, utmData]);
+  }, [
+    courseAmount,
+    data?.id,
+    isExistUpsale,
+    metaParams,
+    open,
+    upSaleAmount,
+    utmData,
+  ]);
 
   return (
     <PopUpModal

@@ -37,7 +37,6 @@ import {
 import useAsyncOperation from '@/hooks/use-async-operation';
 import { api } from '@/api';
 import { updateUser } from '@/store/features/auth.slice';
-// import { gtm } from '../../assets/utils/gtm';
 import { fetchUser } from '@/store/features/user.slice';
 import moment from 'moment/moment';
 import {
@@ -47,6 +46,7 @@ import {
 } from '@/store/features/defaults.slice';
 import { AuthContext } from '@/context/auth-provider';
 import useSocket from '@/hooks/use-socket';
+import { gtm } from '@/utils/gtm';
 
 const useDashboard = ({
   language_id,
@@ -545,7 +545,7 @@ const useDashboard = ({
     router.replace(
       `${pathname}?subscription=activated${queryString ? `&${queryString}` : ''}`
     );
-    // gtm.trial_activation.trial_top_banner();
+    gtm.trial_activation.trial_top_banner();
   }, [queryParams, router, pathname]);
 
   const [

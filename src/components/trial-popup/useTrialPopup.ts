@@ -16,6 +16,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchSubscriptionWithDiscount } from '@/store/features/popup.slice';
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
+import { gtm } from '@/utils/gtm';
 
 const useTrialPopup = ({ trialPopupClose, trialPopupState }: any) => {
   const { updateSocketOnLogin } = useSocket();
@@ -167,7 +168,7 @@ const useTrialPopup = ({ trialPopupClose, trialPopupState }: any) => {
     router.push(
       `${pathname}?subscription=activated${queryString ? `&${queryString}` : ''}`
     );
-    // gtm.trial_activation.trial_activation_popup();
+    gtm.trial_activation.trial_activation_popup();
   }, [trialPopupClose, queryParams, router, pathname]);
 
   const [startFreeTrialSubmit, loading] = useAsyncOperation(async () => {

@@ -28,7 +28,6 @@ import {
   USER_ROLE,
 } from '@/utils/constants';
 import useAsyncOperation from '@/hooks/use-async-operation';
-// import { gtm } from '../../assets/utils/gtm';
 import { updateUser } from '@/store/features/auth.slice';
 import useToggleState from '@/hooks/use-toggle-state';
 import {
@@ -43,6 +42,7 @@ import { routes } from '@/utils/constants/routes';
 import { AuthContext } from '@/context/auth-provider';
 import useSocket from '@/hooks/use-socket';
 import { pixel } from '@/utils/pixel';
+import { gtm } from '@/utils/gtm';
 
 const useSettingAndSubscription = ({
   language_id,
@@ -593,7 +593,7 @@ const useSettingAndSubscription = ({
       `${pathname}?subscription=activated${queryString ? `&${queryString}` : ''}`
     );
 
-    // gtm.trial_activation.trial_account_settings();
+    gtm.trial_activation.trial_account_settings();
   }, [fetchData, searchParams, router, pathname, user?.id, country_code]);
 
   const onPopupSuccessForCancelSubscription = useCallback(() => {
@@ -604,7 +604,7 @@ const useSettingAndSubscription = ({
         cookieToken: cookies.get('token') || '',
       });
     }
-    // gtm.cancel_subscription.cancel_subscription();
+    gtm.cancel_subscription.cancel_subscription();
   }, [fetchData, user?.id, country_code]);
 
   const [handleSubscription, handleSubscriptionLoading] = useAsyncOperation(
@@ -875,7 +875,7 @@ const useSettingAndSubscription = ({
       cancelPopupsClose();
       onPopupSuccessForCancelSubscription();
       setResetCancelPopup(true);
-      // gtm.ecommerce.no_trial();
+      gtm.ecommerce.no_trial();
     }
   );
 
@@ -885,14 +885,14 @@ const useSettingAndSubscription = ({
       if (slug) {
         switch (slug) {
           case CANCEL_POPUPS_SUB_CATEGORIES.extendTrial:
-            // gtm.trial_activation.extended_trial_popup();
+            gtm.trial_activation.extended_trial_popup();
             break;
           case CANCEL_POPUPS_SUB_CATEGORIES.discountMain:
           case CANCEL_POPUPS_SUB_CATEGORIES.discountSecondary:
-            // gtm.trial_activation.discount_popup();
+            gtm.trial_activation.discount_popup();
             break;
           case CANCEL_POPUPS_SUB_CATEGORIES.lifetimeAccess:
-            // gtm.ecommerce.trial_activated();
+            gtm.ecommerce.trial_activated();
             break;
           default:
             break;
@@ -962,7 +962,7 @@ const useSettingAndSubscription = ({
 
       cancelPopupsClose();
       onPopupSuccessForCancelSubscription();
-      // gtm.trial_activation.warning_popup();
+      gtm.trial_activation.warning_popup();
     }
   });
 
