@@ -330,37 +330,60 @@ const VideoPlayer = ({
         onMouseLeave={() => (pipMode ? setHoverPipMode(false) : null)}
       >
         {showLoadingOverlay && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            }}
-          >
+          <div className='loading-overlay'>
             {options?.poster ? (
-              <Image
-                src={options.poster}
-                alt='Loading video'
-                loading='eager'
-                priority // ensures preloading
-                width={options?.posterWidth || 640}
-                height={options?.posterHeight || 360}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
+              <>
+                <Image
+                  src={options.poster}
+                  alt='Loading video'
+                  loading='eager'
+                  priority // ensures preloading
+                  width={options?.posterWidth || 640}
+                  height={options?.posterHeight || 360}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.9,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    zIndex: 1,
+                  }}
+                />
+                {/* Loading overlay with spinner */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    zIndex: 2,
+                  }}
+                >
+                  <div className='loading-spinner' />
+                </div>
+              </>
             ) : (
-              <Skeleton
-                variant='rectangular'
-                width='100%'
-                height='100%'
-                sx={{ bgcolor: 'grey.900' }}
-              />
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#1a1a1a',
+                }}
+              >
+                <div className='loading-spinner' />
+              </div>
             )}
           </div>
         )}
