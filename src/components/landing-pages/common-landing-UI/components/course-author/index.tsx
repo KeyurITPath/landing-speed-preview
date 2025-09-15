@@ -49,10 +49,10 @@ const CourseAuthor = ({ data, SUPPORT_MAIL }: any) => {
       >
         <Box
           sx={{
-            width: {xs: 50, sm: 100},
-            height: {xs: 50, sm: 100},
+            width: {xs: 100, sm: 150},
+            height: {xs: 100, sm: 150},
             borderRadius: '50%',
-            minWidth: {xs: 50, sm: 100},
+            minWidth: {xs: 100, sm: 150},
             overflow: 'hidden',
             position: 'relative', // required for fill
           }}
