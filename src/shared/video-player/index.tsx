@@ -303,6 +303,16 @@ const VideoPlayer = ({
     };
   }, []);
 
+//   if (typeof window !== "undefined") {
+//     console.log("Initializing video.js on client side");
+//   document.addEventListener("DOMContentLoaded", () => {
+//     const videoElement = document.querySelector("#my-video");
+//     if (videoElement) {
+//       videojs(videoElement);
+//     }
+//   });
+// }
+
   const showLoadingOverlay = (isLoading || !playerReady) && !showErrorMessage;
 
   return (
@@ -329,7 +339,38 @@ const VideoPlayer = ({
         onMouseEnter={() => (pipMode ? setHoverPipMode(true) : null)}
         onMouseLeave={() => (pipMode ? setHoverPipMode(false) : null)}
       >
-        {showLoadingOverlay && (
+        {/* <video height={"100%"} width={"100%"} src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' muted autoPlay /> */}
+        {/* <video
+        id="my-video"
+        className="video-js vjs-big-play-centered"
+        controls
+        playsInline
+        preload="auto"
+        poster="/poster.jpg"
+        data-setup='{"fluid": true}'
+      >
+        <source
+          src="https://stagingcoursemarketplace2025.s3.amazonaws.com/intro-files/hls/c87a40a8-4800-4d6b-819a-2ec8f1ec67c0/master.m3u8"
+          type="application/x-mpegURL"
+        />
+      </video> */}
+      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+        <iframe
+          src="https://player.vimeo.com/video/76979871?h=bf2e1a&autoplay=1&muted=1&playsinline=1"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            border: 0,
+          }}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          title="Vimeo video"
+        />
+      </div>
+        {/* {showLoadingOverlay && (
           <div className='loading-overlay'>
             {options?.poster ? (
               <>
@@ -351,7 +392,6 @@ const VideoPlayer = ({
                     zIndex: 1,
                   }}
                 />
-                {/* Loading overlay with spinner */}
                 <div
                   style={{
                     position: 'absolute',
@@ -386,10 +426,9 @@ const VideoPlayer = ({
               </div>
             )}
           </div>
-        )}
+        )} */}
 
-        {/* Error Message Overlay - Only show if video is processed and there's an actual error */}
-        {showErrorMessage && isVideoProcessed && (
+        {/* {showErrorMessage && isVideoProcessed && (
           <div
             style={{
               position: 'absolute',
@@ -413,10 +452,10 @@ const VideoPlayer = ({
               {errorDetails.description}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Video.js container - Controls visibility and fade */}
-        <div
+        {/* <div
           ref={videoRef}
           style={{
             width: '100%',
@@ -429,10 +468,10 @@ const VideoPlayer = ({
                 : 'hidden',
             zIndex: 1,
           }}
-        />
+        /> */}
 
         {/* PiP Close Button */}
-        {pipMode && (
+        {/* {pipMode && (
           <IconButton
             sx={{
               position: 'absolute',
@@ -452,7 +491,7 @@ const VideoPlayer = ({
               }}
             />
           </IconButton>
-        )}
+        )} */}
       </div>
     </div>
   );
