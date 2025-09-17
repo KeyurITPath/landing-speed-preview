@@ -29,14 +29,14 @@ const VimeoPlayer = ({
   playerStarted,
   lessonId,
 }: any) => {
-  const playerContainerRef = useRef(null);
-  const playerRef = useRef(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null);
   const [loader, setLoader] = useState(true);
   const [hoverPipMode, setHoverPipMode] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
   });
   const previousLessonIdRef = useRef(null);
   const latestVideoEnded = useRef(videoEnded);
@@ -156,8 +156,8 @@ const VimeoPlayer = ({
         const isNewPlayer = !player;
 
         if (isNewPlayer) {
-          player = new Player(playerContainerRef.current, {
-            id: vimeoId,
+          player = new Player(playerContainerRef.current!, {
+            id: parseInt(vimeoId),
             autoplay: autoplay,
             loop: options?.loop || false,
             responsive: true,
@@ -171,34 +171,34 @@ const VimeoPlayer = ({
           });
 
           const setupEventListeners = () => {
-            player.on('loaded', async () => {
+            player!.on('loaded', async () => {
               setLoader(false);
               if (onReady) onReady(player);
               await handleWatchedTime(player);
             });
 
-            player.on('play', playerStarted);
+            player!.on('play', playerStarted);
 
-            player.on('ended', () => {
+            player!.on('ended', () => {
               if (latestVideoEnded.current) {
                 latestVideoEnded.current();
               }
             });
 
-            player.on('timeupdate', (time: any) => {
+            player!.on('timeupdate', (time: any) => {
               handleTimeUpdate(time, lessonId);
             });
 
-            player.on('fullscreenchange', ({ fullscreen }: any) => {
+            player!.on('fullscreenchange', ({ fullscreen }: any) => {
               setIsFullScreen(fullscreen);
             });
 
-            player.on('error', (error: any) => {
+            player!.on('error', (error: any) => {
               console.error('Vimeo player error:', error);
               setLoader(false);
             });
 
-            player.on('bufferend', () => {
+            player!.on('bufferend', () => {
               setLoader(false);
             });
           };
@@ -206,18 +206,26 @@ const VimeoPlayer = ({
           setupEventListeners();
           playerRef.current = player;
         } else {
-          // Show loader immediately when switching lessons
-          setLoader(true);
+          // For existing player, check if it's a different video or just a mode change
+          const currentVideoId = await player!.getVideoId();
+          if (currentVideoId !== parseInt(vimeoId)) {
+            // Show loader immediately when switching videos
+            setLoader(true);
 
-          // Load new video
-          await player.loadVideo({
-            id: vimeoId,
-            autoplay: autoplay,
-          });
+            // Load new video
+            await player!.loadVideo({
+              id: parseInt(vimeoId),
+              autoplay: autoplay,
+            });
 
-          // Loader will be hidden by the 'loaded' event listener
-          if (onReady) onReady(player);
-          await handleWatchedTime(player);
+            // Loader will be hidden by the 'loaded' event listener
+            if (onReady) onReady(player);
+            await handleWatchedTime(player);
+          } else {
+            // Same video, just continue (for PiP mode switches)
+            setLoader(false);
+            if (onReady) onReady(player);
+          }
         }
       } catch (error) {
         console.error('Vimeo player setup error:', error);
@@ -225,8 +233,13 @@ const VimeoPlayer = ({
         cleanupPlayer();
       }
     };
-    if (lessonId !== previousLessonIdRef.current || !playerRef.current) {
-      // Show loader immediately when lesson changes
+    // For landing videos (lessonId === 'landing-video'), set up immediately without delays
+    if (lessonId === 'landing-video') {
+      if (!playerRef.current) {
+        setupPlayer();
+      }
+    } else if (lessonId !== previousLessonIdRef.current || !playerRef.current) {
+      // Show loader immediately when lesson changes (for actual lessons)
       setLoader(true);
       previousLessonIdRef.current = lessonId;
 
@@ -237,9 +250,11 @@ const VimeoPlayer = ({
     }
 
     return () => {
-      if (!lessonId) {
-        cleanupPlayer();
+      if (!lessonId || lessonId === 'landing-video') {
+        // Don't cleanup landing videos to maintain state during PiP
+        return;
       }
+      cleanupPlayer();
     };
   }, [
     lessonId,

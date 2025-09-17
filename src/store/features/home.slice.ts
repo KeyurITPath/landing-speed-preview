@@ -26,7 +26,6 @@ export const getAllPopularCoursesOnBrand = createAsyncThunk(
   'courseCategories/getAllPopularCoursesOnBrand',
   async (data: any = {}, { rejectWithValue, signal }) => {
     try {
-      console.log('Fetching popular courses for brand:', data);
       const response = await api.home.getAllPopularCoursesOnBrand({
         ...data,
         signal,

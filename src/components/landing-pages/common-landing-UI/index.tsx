@@ -10,6 +10,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import 'moment/locale/fr';
 import 'moment/locale/es';
 import VideoPlayer from '@/shared/video-player';
+import VimeoPlayer from '@/components/vimeo-player';
 import { ICONS } from '@/assets/icons';
 import { hover, warning } from '@/theme/color';
 import GetAccessWithReview from './components/access-plan-with-review';
@@ -33,6 +34,8 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
     course,
     videoContainerRef,
     videoPlayerOptions,
+    isVimeoVideo,
+    vimeoPlayerProps,
     pipMode,
     closePipMode,
     loading,
@@ -107,7 +110,8 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
                   }}
                 >
                   <Image
-                    loading='eager' priority
+                    loading='eager'
+                    priority
                     src={encodeURI(videoURL(data?.intro_thumbnail))}
                     alt='Video processing poster'
                     fill
@@ -149,19 +153,29 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
                 </div>
               )}
 
-            {/* Only render VideoPlayer when video is processed AND has valid video source */}
-            {is_video_processed && videoPlayerOptions?.sources?.[0]?.src && (
-              <VideoPlayer
-                options={{
-                  ...videoPlayerOptions,
-                  poster: data?.intro_thumbnail
-                    ? videoURL(data?.intro_thumbnail)
-                    : '',
-                }}
-                isVideoProcessed={is_video_processed}
-                {...{ pipMode, closePipMode }}
-              />
-            )}
+            {/* Render VimeoPlayer for when Vimeo URL is detected */}
+            {isVimeoVideo &&
+              is_video_processed &&
+              vimeoPlayerProps &&
+              vimeoPlayerProps?.videoUrl && (
+                <VimeoPlayer {...vimeoPlayerProps} />
+              )}
+
+            {/* Only render VideoPlayer when video is processed AND has valid video source AND NOT a Vimeo URL */}
+            {!isVimeoVideo &&
+              is_video_processed &&
+              videoPlayerOptions?.sources?.[0]?.src && (
+                <VideoPlayer
+                  options={{
+                    ...videoPlayerOptions,
+                    poster: data?.intro_thumbnail
+                      ? videoURL(data?.intro_thumbnail)
+                      : '',
+                  }}
+                  isVideoProcessed={is_video_processed}
+                  {...{ pipMode, closePipMode }}
+                />
+              )}
           </Box>
 
           {/* Rating Section */}

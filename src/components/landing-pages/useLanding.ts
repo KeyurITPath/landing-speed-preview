@@ -11,7 +11,7 @@ import { useMediaQuery } from '@mui/material';
 import momentTimezone from 'moment-timezone';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
-import cookies from 'js-cookie'
+import cookies from 'js-cookie';
 import {
   DOMAIN,
   LANDING_PAGE,
@@ -25,6 +25,7 @@ import {
   isEmptyObject,
   isHLS,
   videoURL,
+  getVideoId,
 } from '@utils/helper';
 import {
   fetchAllFbAnalyticsCredentials,
@@ -51,7 +52,14 @@ import { clearMetaPixelHandler, pixel } from '../../utils/pixel';
 
 let globalPipValue = false;
 
-const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVerified, isBecomeVerifiedAndSubscribed, ...otherData }: any) => {
+const useLanding = ({
+  activeLandingPage,
+  user,
+  isLoggedIn,
+  isBecomeAMemberWithVerified,
+  isBecomeVerifiedAndSubscribed,
+  ...otherData
+}: any) => {
   const { updateSocketOnLogin } = useSocket();
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(
@@ -158,7 +166,7 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
       params: {
         userId: user?.id || '',
       },
-      cookieToken: cookies.get('token') || ''
+      cookieToken: cookies.get('token') || '',
     });
     if (response?.data) {
       const token = response?.data?.data;
@@ -175,14 +183,15 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
     }
   }, [dispatch, setToken, updateSocketOnLogin, user]);
 
-
   const isUserPurchasedCourse = useMemo(() => {
     if (!otherData?.course?.id || !userData?.user_orders?.length) return false;
     const landingCourseId = otherData?.course?.id;
 
     return userData?.user_orders?.some((order: any) =>
       order?.user_order_details?.some(
-        (detail: any) => detail?.course_id === landingCourseId && detail?.payment_status === 'paid'
+        (detail: any) =>
+          detail?.course_id === landingCourseId &&
+          detail?.payment_status === 'paid'
       )
     );
   }, [otherData, userData]);
@@ -273,18 +282,23 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
         });
       }
 
-      cookies.set('course_data', JSON.stringify({
-        id: otherData?.course?.id || id,
-        slug: landingUrl || '',
-        course_title: otherData?.data?.header,
-        landing_page: LANDING_PAGE[activeLandingPage.name]
-      }))
+      cookies.set(
+        'course_data',
+        JSON.stringify({
+          id: otherData?.course?.id || id,
+          slug: landingUrl || '',
+          course_title: otherData?.data?.header,
+          landing_page:
+            LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
+        })
+      );
       dispatch(
         setCourse({
           id: otherData?.course?.id || id,
           slug: landingUrl || '',
           course_title: otherData?.data?.header,
-          landing_page: LANDING_PAGE[activeLandingPage.name],
+          landing_page:
+            LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
         })
       );
       dispatch(setCurrency({ id: currency?.id, code: currency?.name }));
@@ -333,27 +347,38 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
 
   // Replace the problematic useEffect with this updated version
 
-  const anotherPixelData = useMemo(() => ({
-    ...(otherData?.course?.course_prices?.[0]?.price ? { value : otherData?.course?.course_prices?.[0]?.price } : {}),
-    ...(otherData?.course?.course_prices?.[0]?.price ? { total_amount : otherData?.course?.course_prices?.[0]?.price } : {}),
-    ...(otherData?.course?.course_prices?.[0]?.currency?.name ? { currency: otherData?.course?.course_prices?.[0]?.currency?.name } : {}),
-    ...(otherData?.course?.id ? { content_ids: [otherData?.course?.id] } : {}),
-    content_type: 'course',
-    contents: [
-      {
-        id: otherData?.course?.id,
-        quantity: 1,
-        item_price: otherData?.course?.course_prices?.[0]?.price
-      }
-    ]
-  }), [otherData?.course?.course_prices, otherData?.course?.id])
+  const anotherPixelData = useMemo(
+    () => ({
+      ...(otherData?.course?.course_prices?.[0]?.price
+        ? { value: otherData?.course?.course_prices?.[0]?.price }
+        : {}),
+      ...(otherData?.course?.course_prices?.[0]?.price
+        ? { total_amount: otherData?.course?.course_prices?.[0]?.price }
+        : {}),
+      ...(otherData?.course?.course_prices?.[0]?.currency?.name
+        ? { currency: otherData?.course?.course_prices?.[0]?.currency?.name }
+        : {}),
+      ...(otherData?.course?.id
+        ? { content_ids: [otherData?.course?.id] }
+        : {}),
+      content_type: 'course',
+      contents: [
+        {
+          id: otherData?.course?.id,
+          quantity: 1,
+          item_price: otherData?.course?.course_prices?.[0]?.price,
+        },
+      ],
+    }),
+    [otherData?.course?.course_prices, otherData?.course?.id]
+  );
 
   useEffect(() => {
     if (
       !pixelViewTriggered.current &&
       isFbAnalyticsCredentialsAPICalled &&
       isTiktokAnalyticsCredentialsAPICalled &&
-      (pixelIds?.length) &&
+      pixelIds?.length &&
       otherData?.data?.id
     ) {
       pixel.view_content({
@@ -361,15 +386,23 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
         isAnalyticsCredentialsExists: true,
         ...(!isEmptyObject(utmData) && { utmData }),
         ...(user?.id ? { userId: user.id } : {}),
-        ...anotherPixelData
+        ...anotherPixelData,
       });
       pixelViewTriggered.current = true;
     } else {
       clearMetaPixelHandler();
     }
-  }, [anotherPixelData, isFbAnalyticsCredentialsAPICalled, isTiktokAnalyticsCredentialsAPICalled, otherData?.data?.id, pixelIds, user.id, utmData]);
+  }, [
+    anotherPixelData,
+    isFbAnalyticsCredentialsAPICalled,
+    isTiktokAnalyticsCredentialsAPICalled,
+    otherData?.data?.id,
+    pixelIds,
+    user.id,
+    utmData,
+  ]);
 
-  const translation = otherData?.data || {};
+  const translation = useMemo(() => otherData?.data || {}, [otherData?.data]);
 
   useEffect(() => {
     if (translation?.id) {
@@ -474,10 +507,42 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
     return null;
   }, [pipMode, translation]);
 
+  const isVimeoVideo = useMemo(() => {
+    if (isEmptyObject(translation)) return false;
+    const videoSource = translation?.video_source;
+    return videoSource === 'vimeo';
+  }, [translation]);
+
+  const vimeoVideoUrl = useMemo(() => {
+    if (!isVimeoVideo || !translation?.intro) return null;
+    const videoUrl = getVideoId(translation.intro);
+    return videoUrl;
+  }, [isVimeoVideo, translation?.intro]);
+
   const closePipMode = useCallback(() => {
     setPipMode(false);
     setPipModeClosed(true);
   }, []);
+
+  const vimeoPlayerProps = useMemo(() => {
+    if (!isVimeoVideo || !vimeoVideoUrl) return null;
+
+    return {
+      videoUrl: vimeoVideoUrl,
+      options: {
+        loop: true,
+        watchedTime: 0,
+      },
+      pipMode: pipMode,
+      autoplay: true,
+      closePipMode: closePipMode,
+      onReady: () => {},
+      videoEnded: () => {},
+      onTimeUpdate: () => {},
+      playerStarted: () => {},
+      lessonId: 'landing-video', // Fixed ID to prevent lesson switching logic
+    };
+  }, [isVimeoVideo, vimeoVideoUrl, pipMode, closePipMode]);
 
   //   const metaTagDetails = useMemo(() => {
   //     if (translation) {
@@ -589,11 +654,13 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
 
   const handleStartFree = useCallback(
     (id: string, title: string) => {
-      trialPopupOpen({
-        open: true,
-        course_id: id,
-        course_title: title,
-      });
+      if (typeof trialPopupOpen === 'function') {
+        trialPopupOpen({
+          open: true,
+          course_id: id,
+          course_title: title,
+        });
+      }
     },
     [trialPopupOpen]
   );
@@ -612,6 +679,8 @@ const useLanding = ({ activeLandingPage, user, isLoggedIn, isBecomeAMemberWithVe
   return {
     videoContainerRef,
     videoPlayerOptions,
+    isVimeoVideo,
+    vimeoPlayerProps,
     pipMode,
     closePipMode,
     queryParams,
