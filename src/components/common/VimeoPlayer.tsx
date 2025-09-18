@@ -1,5 +1,6 @@
 import '@/components/vimeo-player/vimeo-player.css';
 import { ICONS } from '@/assets/icons';
+import Image from 'next/image';
 
 interface VimeoPlayerProps {
   videoId: string;
@@ -15,6 +16,8 @@ interface VimeoPlayerProps {
   style?: React.CSSProperties;
   pipMode?: boolean;
   closePipMode?: () => void;
+  isVideoProcessed?: boolean;
+  thumbnailUrl?: string;
 }
 
 export default function VimeoPlayerSSR({
@@ -31,9 +34,10 @@ export default function VimeoPlayerSSR({
   style,
   pipMode = false,
   closePipMode,
+  isVideoProcessed,
+  thumbnailUrl,
 }: VimeoPlayerProps) {
   const params = new URLSearchParams();
-
   if (!showTitle) params.append('title', '0');
   if (!showByline) params.append('byline', '0');
   if (!showPortrait) params.append('portrait', '0');
@@ -44,75 +48,106 @@ export default function VimeoPlayerSSR({
 
   const src = `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
 
-  // PiP container styles - use CSS classes for responsive behavior
-  const containerStyle = pipMode ? {} : {
-    position: 'relative' as const,
-    width,
-    height,
-    ...style,
-  };
-
-  const iframeStyle = pipMode
-    ? {
-        border: 'none',
-        aspectRatio: '16/9',
-        width: '100%',
-        height: '100%',
-        objectFit: 'contain' as const,
-      }
-    : {
-        border: 'none',
-        ...style,
-      };
-
   return (
-    <div
-      style={containerStyle}
-      className={pipMode ? 'pip-mode-vimeo-player-custom' : className}
-    >
-      <iframe
-        src={src}
-        width={pipMode ? '100%' : width}
-        height={pipMode ? '100%' : height}
-        frameBorder='0'
-        allow='autoplay; fullscreen'
-        allowFullScreen
-        style={iframeStyle}
-        title='Vimeo video player'
-      />
-
-      {/* Close button for PiP mode */}
-      {pipMode && closePipMode && (
-        <button
-          onClick={closePipMode}
+    <div className={className} style={{ position: 'relative', ...style }}>
+      {/* Poster image until processed */}
+      {(!isVideoProcessed || pipMode) && thumbnailUrl && (
+        <div
           style={{
-            position: 'absolute',
-            top: '8px',
-            right: '8px',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            zIndex: 51,
-            opacity: 0,
-            transition: 'opacity 0.3s ease, background-color 0.2s ease',
-          }}
-          className='pip-close-button'
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+            width: '100%',
+            aspectRatio: '16/9',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            background: '#000',
+            position: 'relative',
           }}
         >
-          <ICONS.CLOSE size={20} color='white' />
-        </button>
+          <Image
+            src={encodeURI(thumbnailUrl)}
+            alt="Video poster"
+            fill
+            priority
+            style={{ objectFit: 'cover', opacity: 0.9 }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(0,0,0,0.2)',
+            }}
+          >
+            <div
+              style={{
+                width: 60,
+                height: 60,
+                border: '4px solid rgba(255,255,255,0.3)',
+                borderTop: '4px solid #fff',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Single iframe always mounted if processed */}
+      {isVideoProcessed && (
+        <div className={pipMode ? "pip-mode-vimeo-player-custom" : ""}>
+          <iframe
+            src={src}
+            width={pipMode ? "100%" : width}
+            height={pipMode ? "100%" : height}
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title="Vimeo video player"
+            style={{
+              border: 'none',
+              aspectRatio: '16/9',
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              borderRadius: '12px',
+            }}
+          />
+
+          {/* Close button for PiP mode */}
+          {pipMode && closePipMode && (
+            <button
+              onClick={closePipMode}
+              style={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 51,
+                opacity: 0,
+                transition: 'opacity 0.3s ease, background-color 0.2s ease',
+              }}
+              className="pip-close-button"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+              }}
+            >
+              <ICONS.CLOSE size={20} color="white" />
+            </button>
+          )}
+        </div>
       )}
 
     </div>
