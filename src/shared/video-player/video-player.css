@@ -46,12 +46,6 @@
   }
 }
 
-@media (max-width: 320px) {
-  .pip-mode-vimeo-player-custom {
-    width: 280px;
-  }
-}
-
 .pip-mode-video-player-custom .video-js .vjs-tech {
   border-radius: 12px !important;
   aspect-ratio: 16/9;
