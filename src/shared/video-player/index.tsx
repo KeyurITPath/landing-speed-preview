@@ -43,7 +43,7 @@ const VideoPlayer = ({
 
   return (
     <div className='video-player-container-main'>
-      {intro_thumbnail && pipMode ? (
+      {intro_thumbnail ? (
         <div className='video-player-box'>
           <Image
             src={intro_thumbnail}
@@ -63,6 +63,16 @@ const VideoPlayer = ({
             allow='autoplay; fullscreen;'
             allowFullScreen
             title='Vimeo Player'
+            onLoad={e => {
+              // hide thumbnail when iframe loaded
+              const wrapper = (e.target as HTMLIFrameElement).parentElement;
+              if (wrapper) {
+                const thumb = wrapper.querySelector(
+                  '.video-player-box'
+                ) as HTMLElement;
+                if (thumb) thumb.style.display = 'none';
+              }
+            }}
           />
         ) : (
           <video
@@ -90,6 +100,17 @@ const VideoPlayer = ({
 
                 node.muted = true; // ensure muted
 
+                // hide thumbnail when video metadata loaded
+                node.addEventListener('loadedmetadata', () => {
+                  const wrapper = node.parentElement;
+                  if (wrapper) {
+                    const thumb = wrapper.querySelector(
+                      '.video-player-box'
+                    ) as HTMLElement;
+                    if (thumb) thumb.style.display = 'none';
+                  }
+                });
+
                 playerInstance = videojs(node, {
                   fluid: true,
                   autoplay: true,
@@ -107,7 +128,11 @@ const VideoPlayer = ({
         )}
         {pipMode ? (
           <IconButton
-            className={introURL.includes('vimeo.com') ? 'cross-icon-pip-vimeo' : 'cross-icon-pip'}
+            className={
+              introURL.includes('vimeo.com')
+                ? 'cross-icon-pip-vimeo'
+                : 'cross-icon-pip'
+            }
             sx={{
               position: 'absolute',
               ...(introURL.includes('vimeo.com')

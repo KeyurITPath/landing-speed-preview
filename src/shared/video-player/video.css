@@ -17,7 +17,8 @@
 
 .video-player-container-main {
   width: 100%;
-  height: auto;
+  height: 100%;
+  position: relative;
 }
 
 .fallback {
