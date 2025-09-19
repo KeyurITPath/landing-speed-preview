@@ -32,7 +32,7 @@
     "countries-list": "^3.1.1",
     "crypto-js": "^4.2.0",
     "formik": "^2.4.6",
-    "hls.js": "^1.6.2",
+    "hls.js": "^1.6.12",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "libphonenumber-js": "^1.12.12",

@@ -3,16 +3,8 @@ import 'video.js/dist/video-js.css';
 import Hls from 'hls.js';
 import Image from 'next/image';
 import './video.css';
-
-type Props = {
-  is_video_processed: boolean;
-  intro_thumbnail: string;
-  intro: string;
-  pipMode: boolean;
-  autoplay?: boolean;
-  loop?: boolean;
-  muted?: boolean;
-};
+import { IconButton } from '@mui/material';
+import { ICONS } from '../../assets/icons';
 
 let playerInstance: any = null; // singleton player to prevent re-init
 
@@ -22,9 +14,11 @@ const VideoPlayer = ({
   intro,
   pipMode,
   autoplay = true,
-  loop = false,
+  loop = true,
   muted = true,
-}: Props) => {
+  closePipMode,
+}: any) => {
+
   if (!is_video_processed) {
     return (
       <div className='video-container'>
@@ -105,6 +99,25 @@ const VideoPlayer = ({
             }}
           />
         )}
+        {pipMode ? (
+          <IconButton
+            className='cross-icon-pip'
+            sx={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              padding: '4px',
+            }}
+            onClick={closePipMode}
+          >
+            <ICONS.CLOSE
+              style={{
+                color: 'white',
+                zIndex: 9999,
+              }}
+            />
+          </IconButton>
+        ) : null}
       </div>
     </div>
   );
