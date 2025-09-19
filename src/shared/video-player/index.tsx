@@ -59,6 +59,7 @@ const VideoPlayer = ({
       <div className={`video-player-container ${pipMode ? 'pip-active' : ''}`}>
         {introURL.includes('vimeo.com') ? (
           <iframe
+            key={Date.now()}
             src={introURL}
             className='video-frame'
             frameBorder='0'
