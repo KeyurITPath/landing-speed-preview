@@ -93,6 +93,12 @@ const MainLanding = ({
     isBecomeVerifiedAndSubscribed: isBecomeVerifiedAndSubscribed(),
   };
 
+  const vimeoSource = {
+    is_video_processed: courseResponse?.data?.landing_page_translations?.[0]?.is_video_processed,
+    intro_thumbnail: courseResponse?.data?.landing_page_translations?.[0]?.intro_thumbnail || '',
+    intro: courseResponse?.data?.landing_page_translations?.[0]?.intro || ''
+  }
+
   const activeLandingPage = courseResponse?.data?.landing_name;
 
   const anotherLandingData = useLanding({ ...landingData, activeLandingPage });
@@ -100,15 +106,15 @@ const MainLanding = ({
   switch (activeLandingPage.name) {
     case 'landing1':
       return (
-        <Landing1 landingData={{ ...landingData, ...anotherLandingData }} />
+        <Landing1 {...{ vimeoSource }} landingData={{ ...landingData, ...anotherLandingData }} />
       );
     case 'landing2':
       return (
-        <Landing2 landingData={{ ...landingData, ...anotherLandingData }} />
+        <Landing2 {...{ vimeoSource }} landingData={{ ...landingData, ...anotherLandingData }} />
       );
     case 'landing3':
       return (
-        <Landing3 landingData={{ ...landingData, ...anotherLandingData }} />
+        <Landing3 {...{ vimeoSource }} landingData={{ ...landingData, ...anotherLandingData }} />
       );
     default:
       return null;

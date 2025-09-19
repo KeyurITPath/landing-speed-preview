@@ -19,20 +19,38 @@
   position: relative;
   aspect-ratio: 16 / 9;
 }
+
+.pip-ifream-vimeo-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.no-pip-ifream-vimeo-video {
+   height: 0;
+}
+
+.cros-icon-pip{
+    z-index: 9999999999999999999999999999 !important;
+}
 /* Ensure the video element itself fills the container */
 .video-player-custom .video-js {
   width: 100%;
   height: 100% !important;
 }
 .pip-mode-video-player-custom {
-  max-width: 100%;
-  position: fixed;
-  bottom: 100px;
-  right: 30px;
-  z-index: 50;
-  width: 300px;
-  overflow: hidden;
-  border-radius: 12px;
+    max-width: 100%;
+    position: fixed;
+    bottom: 100px;
+    right: 10px;
+    z-index: 50;
+    width: 300px;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: red;
 }
 
 /* Center PiP mode only on mobile devices (phones) */

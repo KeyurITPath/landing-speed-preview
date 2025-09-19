@@ -5,7 +5,7 @@ import { videoURL } from '@utils/helper';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
-const CourseDetails = ({ landingData }: any) => {
+const CourseDetails = ({ vimeoSource, landingData }: any) => {
   const {
     data,
     course,
@@ -15,8 +15,10 @@ const CourseDetails = ({ landingData }: any) => {
     closePipMode,
     isMobile,
   } = landingData;
-  const { is_video_processed } = data;
+
   const t = useTranslations();
+
+  const { is_video_processed, intro_thumbnail, intro } = vimeoSource;
 
   return (
     <Grid2 size={{ xs: 12 }}>
@@ -39,28 +41,6 @@ const CourseDetails = ({ landingData }: any) => {
           </Typography>
         </Grid2>
         <Grid2 size={{ xs: 12 }}>
-          {!is_video_processed ? (
-            <Typography
-              variant='body1'
-              fontWeight={500}
-              sx={{
-                textAlign: 'right',
-                animation: 'pulse 1.5s infinite',
-                '@keyframes pulse': {
-                  '0%': { opacity: 1 },
-                  '50%': { opacity: 0.6 },
-                  '100%': { opacity: 1 },
-                },
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                gap: 1,
-              }}
-            >
-              <CircularProgress size={16} thickness={6} />
-              {t('video_processing')}
-            </Typography>
-          ) : null}
           <Box
             ref={videoContainerRef}
             sx={{
@@ -71,44 +51,10 @@ const CourseDetails = ({ landingData }: any) => {
               overflow: 'hidden',
             }}
           >
-            {/* Show poster when video is not processed OR data is still loading */}
-            {(!is_video_processed || !videoPlayerOptions?.sources?.[0]?.src) &&
-              data?.intro_thumbnail && (
-                <div
-                  style={{
-                    width: '100%',
-                    height: '375px',
-                    position: 'relative',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    backgroundColor: '#000',
-                  }}
-                >
-                  <Image
-                    loading='eager' priority
-                    src={videoURL(data?.intro_thumbnail)}
-                    alt='Video processing poster'
-                    fill
-                    sizes='100vw'
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </div>
-              )}
-
             {/* Only render VideoPlayer when video is processed AND has valid video source */}
-            {is_video_processed && videoPlayerOptions?.sources?.[0]?.src && (
+            {is_video_processed && intro && (
               <VideoPlayer
-                options={{
-                  ...videoPlayerOptions,
-                  poster: data?.intro_thumbnail
-                    ? videoURL(data?.intro_thumbnail)
-                    : '',
-                }}
-                isVideoProcessed={is_video_processed}
+                {...{ intro, intro_thumbnail, is_video_processed }}
                 {...{ pipMode, closePipMode }}
               />
             )}
