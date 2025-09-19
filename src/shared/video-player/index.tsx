@@ -416,7 +416,8 @@ const VideoPlayer = ({
         )}
 
         {/* Video.js container - Controls visibility and fade */}
-        <div
+
+        {/* <div
           ref={videoRef}
           style={{
             width: '100%',
@@ -429,11 +430,26 @@ const VideoPlayer = ({
                 : 'hidden',
             zIndex: 1,
           }}
-        />
-
-        {/* PiP Close Button */}
-        {pipMode && (
+        /> */}
+  <div className={pipMode ? 'pip-ifream-vimeo-container' : 'no-pip-ifream-vimeo-video'}>
+      <iframe
+        src="https://player.vimeo.com/video/1119799524?h=bf2e1a&autoplay=1&muted=1&playsinline=1&pip=0&dnt=1&loop=1"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          border: 0,
+          zIndex: 99999999,
+        }}
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+        title="Vimeo autoplay video"
+      />
+      {pipMode && (
           <IconButton
+          className='cros-icon-pip'
             sx={{
               position: 'absolute',
               top: '10px',
@@ -442,17 +458,23 @@ const VideoPlayer = ({
                 hoverPipMode || isMobile ? 'black' : 'transparent',
               opacity: 0.6,
               padding: '4px',
-              zIndex: 4,
+
             }}
+
             onClick={closePipMode}
           >
             <ICONS.CLOSE
               style={{
                 color: hoverPipMode || isMobile ? 'white' : 'transparent',
+                zIndex:99999999999999999999999999
               }}
             />
           </IconButton>
         )}
+      </div>
+
+        {/* PiP Close Button */}
+
       </div>
     </div>
   );
