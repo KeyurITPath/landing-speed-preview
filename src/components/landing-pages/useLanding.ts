@@ -507,10 +507,42 @@ const useLanding = ({
     return null;
   }, [pipMode, translation]);
 
+  const isVimeoVideo = useMemo(() => {
+    if (isEmptyObject(translation)) return false;
+    const videoSource = translation?.video_source;
+    return videoSource === 'vimeo';
+  }, [translation]);
+
+  const vimeoVideoUrl = useMemo(() => {
+    if (!isVimeoVideo || !translation?.intro) return null;
+    const videoUrl = getVideoId(translation.intro);
+    return videoUrl;
+  }, [isVimeoVideo, translation?.intro]);
+
   const closePipMode = useCallback(() => {
     setPipMode(false);
     setPipModeClosed(true);
   }, []);
+
+  const vimeoPlayerProps = useMemo(() => {
+    if (!isVimeoVideo || !vimeoVideoUrl) return null;
+
+    return {
+      videoUrl: vimeoVideoUrl,
+      options: {
+        loop: true,
+        watchedTime: 0,
+      },
+      pipMode: pipMode,
+      autoplay: true,
+      closePipMode: closePipMode,
+      onReady: () => {},
+      videoEnded: () => {},
+      onTimeUpdate: () => {},
+      playerStarted: () => {},
+      lessonId: 'landing-video', // Fixed ID to prevent lesson switching logic
+    };
+  }, [isVimeoVideo, vimeoVideoUrl, pipMode, closePipMode]);
 
   //   const metaTagDetails = useMemo(() => {
   //     if (translation) {
@@ -647,6 +679,8 @@ const useLanding = ({
   return {
     videoContainerRef,
     videoPlayerOptions,
+    isVimeoVideo,
+    vimeoPlayerProps,
     pipMode,
     closePipMode,
     queryParams,

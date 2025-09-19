@@ -27,7 +27,6 @@ import SuccessPaymentPopup from '../../success-payment-popup';
 import FailedPaymentPopup from '../../failed-payment-popup';
 import { videoURL } from '@/utils/helper';
 import Image from 'next/image';
-import VimeoPlayerSSR from '../../common/VimeoPlayer';
 
 const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
   const {
@@ -35,6 +34,8 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
     course,
     videoContainerRef,
     videoPlayerOptions,
+    isVimeoVideo,
+    vimeoPlayerProps,
     pipMode,
     closePipMode,
     loading,
@@ -45,10 +46,12 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
     BRAND_NAME,
     SUPPORT_MAIL,
   } = landingData;
+
   const t = useTranslations();
   const locale = useLocale();
   moment.locale(locale);
   const { is_video_processed } = data;
+
   return (
     <>
       <Box
@@ -150,76 +153,16 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
                 </div>
               )}
 
-            {/* Render Vimeo player for when Vimeo URL is detected */}
-            {data?.video_source === 'vimeo' && data?.intro && (
-              <div
-                style={{
-                  overflow: 'hidden',
-                  height: 'auto',
-                  aspectRatio: '16/9',
-                  width: '100%',
-                  background: '#000',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '12px',
-                  position: 'relative',
-                }}
-              >
-                {/* Show poster when PiP is active, similar to video processing state */}
-                {pipMode && data?.intro_thumbnail && (
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      position: 'absolute',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      backgroundColor: '#000',
-                      zIndex: 1,
-                    }}
-                  >
-                    <Image
-                      loading='eager'
-                      priority
-                      src={encodeURI(videoURL(data?.intro_thumbnail))}
-                      alt='Video poster'
-                      fill
-                      sizes='100vw'
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        opacity: 0.9,
-                      }}
-                    />
-                  </div>
-                )}
-
-                <VimeoPlayerSSR
-                  videoId={data?.intro?.replace('/videos/', '')}
-                  width='100%'
-                  height='100%'
-                  autoplay={true}
-                  muted={true}
-                  loop={true}
-                  showTitle={false}
-                  showByline={false}
-                  showPortrait={false}
-                  style={{
-                    aspectRatio: '16/9',
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                  pipMode={pipMode}
-                  closePipMode={closePipMode}
-                />
-              </div>
-            )}
+            {/* Render VimeoPlayer for when Vimeo URL is detected */}
+            {isVimeoVideo &&
+              is_video_processed &&
+              vimeoPlayerProps &&
+              vimeoPlayerProps?.videoUrl && (
+                <VimeoPlayer {...vimeoPlayerProps} />
+              )}
 
             {/* Only render VideoPlayer when video is processed AND has valid video source AND NOT a Vimeo URL */}
-            {data?.video_source !== 'vimeo' &&
+            {!isVimeoVideo &&
               is_video_processed &&
               videoPlayerOptions?.sources?.[0]?.src && (
                 <VideoPlayer
