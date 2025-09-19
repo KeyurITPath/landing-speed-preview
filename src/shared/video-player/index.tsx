@@ -44,7 +44,9 @@ const VideoPlayer = ({
   return (
     <div className='video-player-container-main'>
       {intro_thumbnail ? (
-        <div className='video-player-box'>
+        <div className='video-player-box' style={{
+          position: 'absolute'
+        }} >
           <Image
             src={intro_thumbnail}
             alt='Video thumbnail'
@@ -65,11 +67,13 @@ const VideoPlayer = ({
             title='Vimeo Player'
             onLoad={e => {
               // hide thumbnail when iframe loaded
-              const wrapper = (e.target as HTMLIFrameElement).parentElement;
+              console.log('event', event)
+              const wrapper = (e.target as HTMLIFrameElement);
               if (wrapper) {
                 const thumb = wrapper.querySelector(
                   '.video-player-box'
                 ) as HTMLElement;
+                console.log('thumb', thumb)
                 if (thumb) thumb.style.display = 'none';
               }
             }}
