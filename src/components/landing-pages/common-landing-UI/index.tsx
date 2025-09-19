@@ -152,17 +152,70 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
 
             {/* Render Vimeo player for when Vimeo URL is detected */}
             {data?.video_source === 'vimeo' && data?.intro && (
-              <VimeoPlayerSSR
-                videoId={data?.intro?.replace('/videos/', '')}
-                pipMode={pipMode}
-                closePipMode={closePipMode}
-                isVideoProcessed={is_video_processed}
-                thumbnailUrl={
-                  data?.intro_thumbnail
-                    ? videoURL(data?.intro_thumbnail)
-                    : undefined
-                }
-              />
+              <div
+                style={{
+                  overflow: 'hidden',
+                  height: 'auto',
+                  aspectRatio: '16/9',
+                  width: '100%',
+                  background: '#000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '12px',
+                  position: 'relative',
+                }}
+              >
+                {/* Show poster when PiP is active, similar to video processing state */}
+                {pipMode && data?.intro_thumbnail && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      backgroundColor: '#000',
+                      zIndex: 1,
+                    }}
+                  >
+                    <Image
+                      loading='eager'
+                      priority
+                      src={encodeURI(videoURL(data?.intro_thumbnail))}
+                      alt='Video poster'
+                      fill
+                      sizes='100vw'
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.9,
+                      }}
+                    />
+                  </div>
+                )}
+
+                <VimeoPlayerSSR
+                  videoId={data?.intro?.replace('/videos/', '')}
+                  width='100%'
+                  height='100%'
+                  autoplay={true}
+                  muted={true}
+                  loop={true}
+                  showTitle={false}
+                  showByline={false}
+                  showPortrait={false}
+                  style={{
+                    aspectRatio: '16/9',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                  pipMode={pipMode}
+                  closePipMode={closePipMode}
+                />
+              </div>
             )}
 
             {/* Only render VideoPlayer when video is processed AND has valid video source AND NOT a Vimeo URL */}
