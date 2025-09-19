@@ -27,7 +27,7 @@ import FailedPaymentPopup from '../../failed-payment-popup';
 import { videoURL } from '@/utils/helper';
 import Image from 'next/image';
 
-const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
+const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
   const {
     data,
     course,
@@ -47,7 +47,8 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
   const t = useTranslations();
   const locale = useLocale();
   moment.locale(locale);
-  const { is_video_processed } = data;
+
+  const { is_video_processed, intro_thumbnail, intro } = vimeoSource;
 
   return (
     <>
@@ -61,28 +62,6 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
         }}
       >
         <Container maxWidth='md' sx={{ my: 6 }}>
-          {!is_video_processed ? (
-            <Typography
-              variant='body1'
-              fontWeight={500}
-              sx={{
-                textAlign: 'right',
-                animation: 'pulse 1.5s infinite',
-                '@keyframes pulse': {
-                  '0%': { opacity: 1 },
-                  '50%': { opacity: 0.6 },
-                  '100%': { opacity: 1 },
-                },
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                gap: 1,
-              }}
-            >
-              <CircularProgress size={16} thickness={6} />
-              {t('video_processing')}
-            </Typography>
-          ) : null}
           <Box
             ref={videoContainerRef}
             sx={{
@@ -93,72 +72,11 @@ const CommonLandingUIOneAndTwo = ({ landingData }: any) => {
               overflow: 'hidden',
             }}
           >
-            {/* Show poster when video is not processed OR data is still loading */}
-            {(!is_video_processed || !videoPlayerOptions?.sources?.[0]?.src) &&
-              data?.intro_thumbnail && (
-                <div
-                  style={{
-                    width: '100%',
-                    height: '480px',
-                    position: 'relative',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    backgroundColor: '#000',
-                  }}
-                >
-                  <Image
-                    loading='eager' priority
-                    src={encodeURI(videoURL(data?.intro_thumbnail))}
-                    alt='Video processing poster'
-                    fill
-                    sizes='100vw'
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      opacity: 0.9,
-                    }}
-                  />
-                  {/* Video processing overlay */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                      zIndex: 2,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        border: '4px solid rgba(255, 255, 255, 0.3)',
-                        borderTop: '4px solid #ffffff',
-                        borderRadius: '50%',
-                        animation: 'spin 1s linear infinite',
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-
             {/* Only render VideoPlayer when video is processed AND has valid video source */}
-            {is_video_processed && videoPlayerOptions?.sources?.[0]?.src && (
-              <VideoPlayer
-                options={{
-                  ...videoPlayerOptions,
-                  poster: data?.intro_thumbnail
-                    ? videoURL(data?.intro_thumbnail)
-                    : '',
-                }}
-                isVideoProcessed={is_video_processed}
+            {is_video_processed && intro && (
+              <VideoPlayer {...{
+                is_video_processed, intro_thumbnail, intro
+              }}
                 {...{ pipMode, closePipMode }}
               />
             )}

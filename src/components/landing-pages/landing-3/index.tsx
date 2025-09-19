@@ -19,7 +19,7 @@ import FailedPaymentPopup from '../../failed-payment-popup';
 import TrialPopup from '../../trial-popup';
 import SuccessSubscriptionPopup from '../../success-subscription-popup';
 
-const Landing3 = ({ landingData }: any) => {
+const Landing3 = ({ landingData, vimeoSource }: any) => {
   const {
     isMobile,
     data,

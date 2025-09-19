@@ -1,9 +1,9 @@
 import React from 'react'
 import CommonLandingUIOneAndTwo from '../common-landing-UI'
 
-const Landing1 = ({ landingData }: any) => {
+const Landing1 = ({ vimeoSource, landingData }: any) => {
   return (
-    <CommonLandingUIOneAndTwo {...{ landingData }} />
+    <CommonLandingUIOneAndTwo {...{ vimeoSource }} {...{ landingData }} />
   )
 }
 
