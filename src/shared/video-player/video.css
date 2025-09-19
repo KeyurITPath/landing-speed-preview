@@ -97,14 +97,9 @@
   .video-player-container.pip-active {
     left: 50%;
     right: auto;
+    width: 100%;
+    height: auto;
     transform: translateX(-50%);
-    width: 300px;
     bottom: 80px;
-  }
-}
-
-@media (max-width: 320px) {
-  .video-player-container.pip-active {
-    width: 280px;
   }
 }

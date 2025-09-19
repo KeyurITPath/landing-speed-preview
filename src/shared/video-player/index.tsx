@@ -43,9 +43,9 @@ const VideoPlayer = ({
 
   return (
     <div className='video-player-container-main'>
-      {intro_thumbnail ? (
+      {intro_thumbnail || pipMode ? (
         <div className='video-player-box' style={{
-          position: 'absolute'
+          ...(pipMode ? { position: 'relative' } : { position: 'absolute' })
         }} >
           <Image
             src={intro_thumbnail}
@@ -53,31 +53,19 @@ const VideoPlayer = ({
             fill
             sizes='100%'
             className='thumbnail'
+            unoptimized
           />
         </div>
       ) : null}
       <div className={`video-player-container ${pipMode ? 'pip-active' : ''}`}>
         {introURL.includes('vimeo.com') ? (
           <iframe
-            key={Date.now()}
             src={introURL}
             className='video-frame'
             frameBorder='0'
             allow='autoplay; fullscreen;'
             allowFullScreen
             title='Vimeo Player'
-            onLoad={e => {
-              // hide thumbnail when iframe loaded
-              console.log('event', event)
-              const wrapper = (e.target as HTMLIFrameElement);
-              if (wrapper) {
-                const thumb = wrapper.querySelector(
-                  '.video-player-box'
-                ) as HTMLElement;
-                console.log('thumb', thumb)
-                if (thumb) thumb.style.display = 'none';
-              }
-            }}
           />
         ) : (
           <video
