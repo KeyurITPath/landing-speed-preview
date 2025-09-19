@@ -14,13 +14,11 @@ const VideoPlayer = ({
   intro_thumbnail,
   intro,
   pipMode,
-  autoplay = true,
-  loop = true,
-  muted = true,
   closePipMode,
 }: any) => {
-
-  const introURL = isValidUrl(intro) ? intro : `https://player.vimeo.com/video/${getVimeoId(intro)}?autoplay=1&muted=1&loop=1&playsinline=1&dnt=1`
+  const introURL = isValidUrl(intro)
+    ? intro
+    : `https://player.vimeo.com/video/${getVimeoId(intro)}?autoplay=1&muted=1&loop=1&playsinline=1&dnt=1`;
 
   if (!is_video_processed) {
     return (
@@ -112,9 +110,10 @@ const VideoPlayer = ({
             className='cross-icon-pip'
             sx={{
               position: 'absolute',
-              top: '10px',
-              right: '10px',
-              padding: '4px',
+              top: '6px',
+              right: '6px',
+              padding: '6px',
+              borderRadius: '4px',
             }}
             onClick={closePipMode}
           >
