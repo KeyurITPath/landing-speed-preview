@@ -16,6 +16,7 @@ const VideoPlayer = ({
   pipMode,
   closePipMode,
 }: any) => {
+
   const introURL = isValidUrl(intro)
     ? intro
     : `https://player.vimeo.com/video/${getVimeoId(intro)}?autoplay=1&muted=1&loop=1&playsinline=1&dnt=1`;
@@ -23,7 +24,7 @@ const VideoPlayer = ({
   if (!is_video_processed) {
     return (
       <div className='video-container'>
-        <p className='label'>Video Processing...</p>
+        <p className='label'>Video processing...</p>
         <div className='video-player-box'>
           {intro_thumbnail ? (
             <Image
