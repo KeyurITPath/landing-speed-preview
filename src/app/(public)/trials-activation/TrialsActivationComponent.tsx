@@ -64,32 +64,40 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
   const isVideoType = trialActivationDetails?.content_type === 'video';
   const isImageType = trialActivationDetails?.content_type === 'image';
 
-  const options = {
-    autoplay: 'muted',
-    controls: true,
-    responsive: true,
-    fluid: true,
-    enableSmoothSeeking: true,
-    loop: true,
-    autoSetup: true,
-    BigPlayButton: true,
-    disablePictureInPicture: false,
-    enableDocumentPictureInPicture: false,
-    muted: true,
-    ...(trialActivationDetails?.thumbnail && {
-      poster: videoURL(trialActivationDetails?.thumbnail),
-    }),
-    controlBar: {
-      pictureInPictureToggle: false,
-    },
-    sources: [
-      {
-        src:
-          videoURL(trialActivationDetails?.video) ||
-          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        type: 'video/mp4',
-      },
-    ],
+  // const options = {
+  //   autoplay: 'muted',
+  //   controls: true,
+  //   responsive: true,
+  //   fluid: true,
+  //   enableSmoothSeeking: true,
+  //   loop: true,
+  //   autoSetup: true,
+  //   BigPlayButton: true,
+  //   disablePictureInPicture: false,
+  //   enableDocumentPictureInPicture: false,
+  //   muted: true,
+  //   ...(trialActivationDetails?.thumbnail && {
+  //     poster: videoURL(trialActivationDetails?.thumbnail),
+  //   }),
+  //   controlBar: {
+  //     pictureInPictureToggle: false,
+  //   },
+  //   sources: [
+  //     {
+  //       src:
+  //         videoURL(trialActivationDetails?.video) ||
+  //         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  //       type: 'video/mp4',
+  //     },
+  //   ],
+  // };
+
+  const vimeoSource = {
+    is_video_processed: true,
+    intro:
+      encodeURI(videoURL(trialActivationDetails?.video)) ||
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    intro_thumbnail: null,
   };
 
   const price = formatCurrency(
@@ -177,9 +185,16 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
                     }}
                   />
                 ) : isVideoType ? (
-                  <VideoPlayer {...{ options }} pipMode={false} />
+                  <VideoPlayer
+                    {...{
+                      pipMode: false,
+                      ...vimeoSource,
+                    }}
+                  />
                 ) : isImageType && trialActivationDetails?.image ? (
-                  <Image loading='eager' priority
+                  <Image
+                    loading='eager'
+                    priority
                     src={videoURL(trialActivationDetails?.image) || ''}
                     alt='defaultBanner'
                   />
@@ -340,14 +355,14 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
 
       {/* Sales popups */}
       <SalesPopups
-                {...{ handleWarningSuccess, country_code }}
-                open={popupsState}
-                onClose={popupsClose}
-                rootHandleCancel={onPopupCancel}
-                rootHandleSuccess={onPopupSuccess}
-                isMobile={isMobile}
-                monthlySubscriptionData={monthlySubscriptionData}
-            />
+        {...{ handleWarningSuccess, country_code }}
+        open={popupsState}
+        onClose={popupsClose}
+        rootHandleCancel={onPopupCancel}
+        rootHandleSuccess={onPopupSuccess}
+        isMobile={isMobile}
+        monthlySubscriptionData={monthlySubscriptionData}
+      />
     </>
   );
 };

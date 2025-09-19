@@ -14,7 +14,7 @@ import { getDeviceType } from '@/utils/helper';
 const extractVimeoId = (url: string) => {
   if (!url) return null;
   const match = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url);
-  return match ? match[1] : url;
+  return match ? match?.[1] : url;
 };
 
 const VimeoPlayer = ({

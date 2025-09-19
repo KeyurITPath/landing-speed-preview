@@ -341,7 +341,7 @@ const arrayToKeyValueObject = (array = []) => {
 export const getTokenSync = (): string | undefined => {
   if (typeof window !== 'undefined') {
     // client
-    const match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+    const match = document?.cookie?.match(new RegExp('(^| )token=([^;]+)'));
     return match?.[2];
   }
   // For server-side, return undefined if cookies() is not available
@@ -363,11 +363,11 @@ export function isValidUrl(str: string): boolean {
 
 export function getVimeoId(input: string): number | null {
   // Case 1: Full Vimeo URL
-  const urlMatch = input.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  const urlMatch = input?.match(/vimeo\.com\/(?:video\/)?(\d+)/);
   if (urlMatch) return Number(urlMatch[1]);
 
   // Case 2: Path like "/videos/1120079550"
-  const pathMatch = input.match(/\/videos\/(\d+)/);
+  const pathMatch = input?.match(/\/videos\/(\d+)/);
   if (pathMatch) return Number(pathMatch[1]);
 
   // No match
