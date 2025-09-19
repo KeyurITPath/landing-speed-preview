@@ -352,6 +352,28 @@ export function generateEventId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
+export function isValidUrl(str: string): boolean {
+  try {
+    new URL(str);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+export function getVimeoId(input: string): string | null {
+  // Case 1: Full Vimeo URL
+  const urlMatch = input.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (urlMatch) return urlMatch[1];
+
+  // Case 2: Path like "/videos/1120079550"
+  const pathMatch = input.match(/\/videos\/(\d+)/);
+  if (pathMatch) return pathMatch[1];
+
+  // No match
+  return null;
+}
+
 export {
   getDomainName,
   isHLS,

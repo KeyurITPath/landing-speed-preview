@@ -5,6 +5,7 @@ import Image from 'next/image';
 import './video.css';
 import { IconButton } from '@mui/material';
 import { ICONS } from '../../assets/icons';
+import { getVimeoId, isValidUrl } from '../../utils/helper';
 
 let playerInstance: any = null; // singleton player to prevent re-init
 
@@ -18,6 +19,8 @@ const VideoPlayer = ({
   muted = true,
   closePipMode,
 }: any) => {
+
+  const introURL = isValidUrl(intro) ? intro : `https://player.vimeo.com/video/${getVimeoId(intro)}?autoplay=1&muted=1&loop=1&playsinline=1&dnt=1`
 
   if (!is_video_processed) {
     return (
@@ -54,11 +57,9 @@ const VideoPlayer = ({
         </div>
       ) : null}
       <div className={`video-player-container ${pipMode ? 'pip-active' : ''}`}>
-        {intro.includes('vimeo.com') ? (
+        {introURL.includes('vimeo.com') ? (
           <iframe
-            src={`${intro}&autoplay=${autoplay ? 1 : 0}&muted=${
-              muted ? 1 : 0
-            }&loop=${loop ? 1 : 0}&playsinline=1&pip=0&dnt=1`}
+            src={introURL}
             className='video-frame'
             frameBorder='0'
             allow='autoplay; fullscreen;'
@@ -72,28 +73,35 @@ const VideoPlayer = ({
             preload='auto'
             playsInline
             poster={intro_thumbnail}
-            muted={muted}
-            autoPlay={autoplay}
-            loop={loop}
+            muted
+            autoPlay
+            loop
             controls
             ref={node => {
               if (!node) return;
 
               // prevent re-initializing player
               if (!playerInstance) {
-                if (Hls.isSupported() && intro.endsWith('.m3u8')) {
+                if (Hls.isSupported() && introURL.endsWith('.m3u8')) {
                   const hls = new Hls();
-                  hls.loadSource(intro);
+                  hls.loadSource(introURL);
                   hls.attachMedia(node);
                 } else {
-                  node.src = intro;
+                  node.src = introURL;
                 }
+
+                node.muted = true; // ensure muted
 
                 playerInstance = videojs(node, {
                   fluid: true,
-                  autoplay,
+                  autoplay: true,
                   controls: true,
                   bigPlayButton: false,
+                });
+
+                // Force play to work around autoplay restrictions
+                node.play().catch(() => {
+                  console.log('Autoplay blocked by browser');
                 });
               }
             }}
