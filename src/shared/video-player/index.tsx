@@ -107,13 +107,21 @@ const VideoPlayer = ({
         )}
         {pipMode ? (
           <IconButton
-            className='cross-icon-pip'
+            className={introURL.includes('vimeo.com') ? 'cross-icon-pip-vimeo' : 'cross-icon-pip'}
             sx={{
               position: 'absolute',
-              top: '6px',
-              right: '6px',
-              padding: '6px',
-              borderRadius: '4px',
+              ...(introURL.includes('vimeo.com')
+                ? {
+                    top: '6px',
+                    right: '6px',
+                    padding: '6px',
+                    borderRadius: '4px',
+                  }
+                : {
+                    top: '10px',
+                    right: '10px',
+                    padding: '4px',
+                  }),
             }}
             onClick={closePipMode}
           >
