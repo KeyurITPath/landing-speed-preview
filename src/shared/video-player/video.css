@@ -91,3 +91,20 @@
   opacity: 0.7;
   z-index: 99999!important;
 }
+
+/* Center PiP mode only on mobile devices (phones) */
+@media (max-width: 480px) {
+  .video-player-container.pip-active {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 300px;
+    bottom: 80px;
+  }
+}
+
+@media (max-width: 320px) {
+  .video-player-container.pip-active {
+    width: 280px;
+  }
+}
