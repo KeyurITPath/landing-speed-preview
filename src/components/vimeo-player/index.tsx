@@ -264,7 +264,7 @@ const VimeoPlayer = ({
         // Don't cleanup landing videos to maintain state during PiP
         return;
       }
-      cleanupPlayer();
+      // cleanupPlayer();
     };
   }, [
     lessonId,
