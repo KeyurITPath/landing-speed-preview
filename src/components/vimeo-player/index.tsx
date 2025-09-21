@@ -140,6 +140,12 @@ const VimeoPlayer = ({
       });
     }
   }, [autoplay]);
+
+  useEffect(()=>{
+    console.log("get updated vimeo url",videoUrl)
+  },[videoUrl])
+
+
   useEffect(() => {
     const setupPlayer = async () => {
       if (!videoUrl || !playerContainerRef.current) return;
@@ -151,11 +157,14 @@ const VimeoPlayer = ({
         return;
       }
 
+      console.log("vimeo id is ----",vimeoId)
+
       try {
         let player = playerRef.current;
         const isNewPlayer = !player;
 
         if (isNewPlayer) {
+          console.log("come here to load vimeo video ------")
           player = new Player(playerContainerRef.current!, {
             id: parseInt(vimeoId),
             autoplay: autoplay,
@@ -206,12 +215,13 @@ const VimeoPlayer = ({
           setupEventListeners();
           playerRef.current = player;
         } else {
+          console.log("reusing existing vimeo player ------")
           // For existing player, check if it's a different video or just a mode change
           const currentVideoId = await player!.getVideoId();
           if (currentVideoId !== parseInt(vimeoId)) {
             // Show loader immediately when switching videos
             setLoader(true);
-
+            console.log("come here to load new vimeo video ------")
             // Load new video
             await player!.loadVideo({
               id: parseInt(vimeoId),
