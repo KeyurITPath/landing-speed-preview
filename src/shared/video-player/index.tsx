@@ -62,8 +62,8 @@ const VideoPlayer = ({
       ) : null}
       <div className={`video-player-container ${pipMode ? 'pip-active' : ''}`}>
         <div className='video-player-box'>
-          <div className='video-player-loader' >
-              <div className="ring"></div>
+          <div className='video-player-loader'>
+            <div className='ring'></div>
           </div>
           <Image
             src={intro_thumbnail}
@@ -103,6 +103,11 @@ const VideoPlayer = ({
             autoPlay
             loop
             controls
+            onLoad={e => {
+              const iframeElement = e.target;
+              const parentIframe = iframeElement?.parentElement;
+              console.log('parentIframe', parentIframe);
+            }}
             ref={node => {
               if (!node) return;
 
@@ -118,22 +123,22 @@ const VideoPlayer = ({
 
                 node.muted = true; // ensure muted
 
-                // hide thumbnail when video metadata loaded
-                node.addEventListener('loadedmetadata', () => {
-                  const wrapper = node.parentElement;
-                  if (wrapper) {
-                    const thumb = wrapper.querySelector(
-                      '.video-player-box'
-                    ) as HTMLElement;
-                    if (thumb) thumb.style.display = 'none';
-                  }
-                });
-
                 playerInstance = videojs(node, {
                   fluid: true,
                   autoplay: true,
                   controls: true,
                   bigPlayButton: false,
+                });
+
+                node.addEventListener('loadeddata', e => {
+                  const { target } = e;
+                  const container = target?.closest('.video-player-container');
+                  const box2 = container?.querySelector(
+                    '.video-player-box'
+                  ) as HTMLElement | null;
+                  if (box2) {
+                    box2.style.display = 'none';
+                  }
                 });
 
                 // Force play to work around autoplay restrictions
