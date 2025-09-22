@@ -76,7 +76,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
             }}
           >
             {/* Only render VideoPlayer when video is processed AND has valid video source */}
-            {intro && (
+            {(intro || intro_thumbnail) && (
               <VideoPlayer {...{
                 is_video_processed, intro_thumbnail, intro
               }}

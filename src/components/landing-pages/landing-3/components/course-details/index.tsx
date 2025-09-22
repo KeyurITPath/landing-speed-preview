@@ -52,7 +52,7 @@ const CourseDetails = ({ vimeoSource, landingData }: any) => {
             }}
           >
             {/* Only render VideoPlayer when video is processed AND has valid video source */}
-            {intro && (
+            {(intro || intro_thumbnail) && (
               <VideoPlayer
                 {...{ intro, intro_thumbnail, is_video_processed }}
                 {...{ pipMode, closePipMode }}
