@@ -62,10 +62,7 @@ const RenderCard = ({
       }}
       onClick={() => {
         if (redirectionUrl) {
-          window.location.href =
-            isBecomeAMemberWithVerified && isLoggedIn
-              ? redirectNewUrl
-              : redirectionUrl;
+          window.location.href = redirectNewUrl;
         }
       }}
     >

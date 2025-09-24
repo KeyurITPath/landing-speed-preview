@@ -56,9 +56,7 @@ const CourseOfTheWeek = ({
         }}
         onClick={() => {
           if (redirectionUrl) {
-            window.location.href = isBecomeAMemberWithVerified
-              ? redirectNewUrl
-              : redirectNewUrl;
+            window.location.href = redirectNewUrl;
           }
         }}
       >

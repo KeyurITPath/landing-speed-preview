@@ -69,10 +69,7 @@ const RenderCard = ({
           window.location.href = continueRedirectUrl;
           return;
         } else if (redirectionUrl) {
-          window.location.href =
-            isBecomeAMemberWithVerified && !is_purchased
-              ? redirectNewUrl
-              : redirectionUrl;
+          window.location.href = redirectNewUrl
         }
       }}
     >
