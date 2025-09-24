@@ -13,6 +13,7 @@ import IconButton from '@/shared/button/IconButton';
 import { ICONS } from '@/assets/icons';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { appendParamsToURL } from '../../../utils/helper';
 
 const RenderCard = ({
   course,
@@ -38,6 +39,16 @@ const RenderCard = ({
   const { avatar, name } = instructor || {};
   const t = useTranslations();
 
+  let redirectNewUrl = redirectionUrl;
+
+  if (typeof window !== 'undefined') {
+    const utm_data = sessionStorage.getItem('utm_params');
+    if (utm_data) {
+      const utmParams = JSON.parse(utm_data || '{}');
+      redirectNewUrl = appendParamsToURL(redirectionUrl, utmParams);
+    }
+  }
+
   return (
     <Card
       sx={{
@@ -58,7 +69,7 @@ const RenderCard = ({
           window.location.href = continueRedirectUrl;
           return;
         } else if (redirectionUrl) {
-          window.location.href = redirectionUrl;
+          window.location.href = redirectNewUrl
         }
       }}
     >
@@ -263,7 +274,7 @@ const RenderCard = ({
               onClick={e => {
                 e.stopPropagation();
                 if (redirectionUrl) {
-                  window.location.href = redirectionUrl;
+                  window.location.href = redirectNewUrl;
                 }
               }}
             >

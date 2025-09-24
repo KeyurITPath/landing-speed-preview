@@ -11,6 +11,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { ICONS } from '@/assets/icons';
 import IconButton from '@/shared/button/IconButton';
+import { appendParamsToURL } from '../../../utils/helper';
 
 const CourseOfTheWeek = ({
   handleStartFree,
@@ -25,6 +26,16 @@ const CourseOfTheWeek = ({
   const isBetween900And1380 = useMediaQuery(
     '(min-width:900px) and (max-width:1380px)'
   );
+
+  let redirectNewUrl = redirectionUrl;
+
+  if (typeof window !== 'undefined') {
+    const utm_data = sessionStorage.getItem('utm_params');
+    if (utm_data) {
+      const utmParams = JSON.parse(utm_data || '{}');
+      redirectNewUrl = appendParamsToURL(redirectionUrl, utmParams);
+    }
+  }
 
   return (
     <Box sx={{ px: { xs: 2, sm: 0 } }}>
@@ -45,7 +56,7 @@ const CourseOfTheWeek = ({
         }}
         onClick={() => {
           if (redirectionUrl) {
-            window.location.href = redirectionUrl;
+            window.location.href = redirectNewUrl;
           }
         }}
       >
@@ -211,7 +222,7 @@ const CourseOfTheWeek = ({
                   onClick={e => {
                     e.stopPropagation();
                     if (redirectionUrl) {
-                      window.location.href = redirectionUrl;
+                      window.location.href = redirectNewUrl;
                     }
                   }}
                 >
