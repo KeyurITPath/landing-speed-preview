@@ -35,14 +35,17 @@ const Search = async ({ searchParams }: any) => {
     courseData: [],
     pagination: { totalItems: 0 },
   };
-  if(search_params?.query) {
+  if (search_params?.query) {
     response = await fetchSearchCoursesData({
       params: {
         language_id,
         domain: domain_value,
-        ...(search_params?.query === 'all' ? {} : { search: search_params?.query }),
+        ...(search_params?.query === 'all'
+          ? {}
+          : { search: search_params?.query }),
         page: search_params?.page || 1,
-        limit: search_params?.limit || 8
+        limit: search_params?.limit || 8,
+        ...(user?.id ? { user_id: user?.id } : {}),
       },
       headers: {
         'req-from': country_code,
