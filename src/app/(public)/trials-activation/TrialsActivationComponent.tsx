@@ -185,7 +185,7 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
                     }}
                   />
                 ) : isVideoType ? (
-                  <VideoPlayer
+                  <VideoPlayer removeBg
                     {...{
                       pipMode: false,
                       ...vimeoSource,

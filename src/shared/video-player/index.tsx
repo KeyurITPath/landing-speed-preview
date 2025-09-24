@@ -15,8 +15,8 @@ const VideoPlayer = ({
   intro,
   pipMode,
   closePipMode,
+  removeBg = false,
 }: any) => {
-
   const introURL = isValidUrl(intro)
     ? intro
     : `https://player.vimeo.com/video/${getVimeoId(intro)}?autoplay=1&muted=1&loop=1&playsinline=1&dnt=1`;
@@ -43,7 +43,12 @@ const VideoPlayer = ({
   }
 
   return (
-    <div className='video-player-container-main'>
+    <div
+      style={{
+        ...(removeBg ? { aspectRatio: '16/9' } : {}),
+      }}
+      className='video-player-container-main'
+    >
       {intro_thumbnail || pipMode ? (
         <div
           className='video-player-box'
@@ -60,7 +65,14 @@ const VideoPlayer = ({
           />
         </div>
       ) : null}
-      <div className={`video-player-container ${pipMode ? 'pip-active' : ''}`}>
+      <div
+        className={`video-player-container ${pipMode ? 'pip-active' : ''}`}
+        style={{
+          ...(removeBg
+            ? { backgroundColor: 'transparent!important' }
+            : { backgroundColor: '#000' }),
+        }}
+      >
         <div className='video-player-box'>
           <div className='video-player-loader'>
             <div className='ring'></div>
