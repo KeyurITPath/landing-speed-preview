@@ -94,7 +94,7 @@ const Header = ({
       inputRef.current.focus();
     } else {
       router.push(
-        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim() + '&page=1&limit=10')
+        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim()) + '&page=1&limit=10'
       );
     }
   }, [router, searchTerm]);
