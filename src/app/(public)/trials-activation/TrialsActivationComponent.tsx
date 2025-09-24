@@ -97,7 +97,7 @@ const TrialsActivationComponent = ({ domainDetails, country_code }: any) => {
     intro:
       encodeURI(videoURL(trialActivationDetails?.video)) ||
       'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    intro_thumbnail: null,
+    intro_thumbnail: videoURL(trialActivationDetails?.thumbnail),
   };
 
   const price = formatCurrency(
