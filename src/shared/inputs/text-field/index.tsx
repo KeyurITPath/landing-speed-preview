@@ -18,7 +18,6 @@ const CustomInput = ({
   return (
     <TextField
       {...{ placeholder, name, value, error }}
-      {...props}
       fullWidth={true}
       onChange={handleChange}
       onBlur={handleBlur}
@@ -32,13 +31,14 @@ const CustomInput = ({
                   }
                   onClick={handleClickShowPassword}
                   edge="start"
-                >
+                  >
                   {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                 </IconButton>
             </InputAdornment>
           } : { endAdornment: props?.endAdornment || null }),
         }
       }}
+      {...props}
       type={
         props?.type === 'password'
           ? showPassword
