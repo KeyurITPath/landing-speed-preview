@@ -9,6 +9,7 @@ import { decodeToken, isEmptyObject, isTokenActive } from '@/utils/helper';
 import momentTimezone from 'moment-timezone';
 import moment from 'moment';
 import { useCookieSync } from '@/hooks/use-cookie-sync';
+import { useStoreAllUtmParams } from '../../../hooks/use-utm';
 
 const MainLanding = ({
   courseResponse,
@@ -23,6 +24,7 @@ const MainLanding = ({
 
   // Sync cookies with server-side values
   useCookieSync(language_id, country_code, languages);
+  useStoreAllUtmParams()
 
   if (token) {
     user = decodeToken(token);

@@ -1,8 +1,8 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { LOCAL_STORAGE_KEY, SECRET_KEY, SERVER_URL } from '@utils/constants';
 import moment from 'moment';
-import SHA256 from "crypto-js/sha256";
-import Hex from "crypto-js/enc-hex";
+import SHA256 from 'crypto-js/sha256';
+import Hex from 'crypto-js/enc-hex';
 
 interface CustomJwtPayload extends JwtPayload {
   token: string;
@@ -212,7 +212,6 @@ export function sha256Hash(value = '') {
   return SHA256(strValue).toString(Hex);
 }
 
-
 const shouldOfferTrial = (user: any) => {
   const { is_user_purchased_trial, subscription_end_date } = user;
 
@@ -372,6 +371,28 @@ export function getVimeoId(input: string): number | null {
 
   // No match
   return null;
+}
+
+export function appendParamsToURL(url: string, params: any) {
+
+  if (!params || Object.keys(params).length === 0) {
+    return url;
+  }
+
+  const urlObj = new URL(url);
+  Object.entries(params).forEach(([key, value]: any) => {
+    // Only append if the URL doesn't already have this key
+    if (!urlObj.searchParams.has(key)) {
+      urlObj.searchParams.set(key, value);
+    }
+  });
+
+  // For relative URLs, return relative string
+  if (url.startsWith('/')) {
+    return urlObj.pathname + urlObj.search + urlObj.hash;
+  }
+
+  return urlObj.toString();
 }
 
 export {
