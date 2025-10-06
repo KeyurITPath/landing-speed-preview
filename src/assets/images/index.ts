@@ -13,6 +13,7 @@ import meditation from './meditation.png';
 import laptopAccount from './laptop-account.png';
 import bookClockOutline from './book-clock-outline.png';
 import doubleQuotes from '../images/double-quotes.png';
+import priceTag from './price-tag.png';
 
 import author1 from './author-images/author-(1).jpg';
 import author2 from './author-images/author-(2).jpg';
@@ -120,6 +121,7 @@ export const IMAGES = {
   frenchFlag,
   FireCircle,
   doubleQuotes,
+  priceTag,
 };
 
 export const AUTHORS = {
