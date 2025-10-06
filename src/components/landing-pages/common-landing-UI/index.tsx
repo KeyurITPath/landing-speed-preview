@@ -4,6 +4,7 @@ import {
   Container,
   Stack,
   Typography,
+  Skeleton,
 } from '@mui/material';
 import moment from 'moment/moment';
 import { useTranslations, useLocale } from 'next-intl';
@@ -48,6 +49,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     BRAND_NAME,
     SUPPORT_MAIL,
     isMobile,
+    isLoading,
   } = landingData;
 
   const t = useTranslations();
@@ -115,7 +117,20 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
 
           {/* Rating Section */}
           <Box sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            {isMobile ? (
+            {isLoading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <>
+                  <Skeleton
+                    variant='rectangular'
+                    width={30}
+                    height={30}
+                    sx={{ borderRadius: 1 }}
+                  />
+                  <Skeleton variant='text' width={60} height={30} />
+                  <Skeleton variant='text' width={100} height={30} />
+                </>
+              </Box>
+            ) : isMobile ? (
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                 <Image
                   src={IMAGES.priceTag.src}
@@ -129,7 +144,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 1,
+                    gap: 0.5,
                     mt: 0.5,
                   }}
                 >
@@ -147,7 +162,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 1,
+                        gap: 0.5,
                         mt: 0.5,
                       }}
                     >
@@ -155,14 +170,14 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
                         sx={{
                           color: '#808080',
                           textDecoration: 'line-through',
-                          fontSize: 16,
+                          fontSize: 14,
                         }}
                       >
                         {withIncrease || ''}
                       </Typography>
                       <Typography
                         sx={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: 'error.main',
                         }}
                       >

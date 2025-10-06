@@ -58,6 +58,9 @@ const useLanding = ({
   isLoggedIn,
   isBecomeAMemberWithVerified,
   isBecomeVerifiedAndSubscribed,
+  data,
+  course,
+  loading,
   ...otherData
 }: any) => {
   const { updateSocketOnLogin } = useSocket();
@@ -124,6 +127,17 @@ const useLanding = ({
   const [pipMode, setPipMode] = useState(false);
   const [pipModeClosed, setPipModeClosed] = useState(false);
   const [activeForm, setActiveForm] = useState('access-form');
+
+  // Loading state for skeleton loader
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  useEffect(() => {
+    if (data?.id || course?.id) {
+      setIsInitialLoading(false);
+    }
+  }, [data?.id, course?.id]);
+
+  const isLoading = loading || isInitialLoading;
 
   const { setToken } = useContext(AuthContext);
 
@@ -693,6 +707,7 @@ const useLanding = ({
     isVisibleBuyBtn,
     isPaymentSuccess,
     isPaymentFailed,
+    isLoading,
     LOGO_URL,
     BRAND_NAME,
     SUPPORT_MAIL,
