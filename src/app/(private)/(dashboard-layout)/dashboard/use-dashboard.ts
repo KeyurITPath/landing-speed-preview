@@ -463,7 +463,7 @@ const useDashboard = ({
 
       if (fetchDashboardCoursesData) {
         fetchDashboardCoursesData({
-          params: { ...filteredParams, language_id, domain: DOMAIN, ...(user?.id && { user_id: user?.id })},
+          params: { ...filteredParams, language_id, domain: DOMAIN },
           headers: {
             'req-from': country_code,
           },
