@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import moment from 'moment/moment';
 import { useTranslations, useLocale } from 'next-intl';
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import 'moment/locale/fr';
 import 'moment/locale/es';
 import VideoPlayer from '@/shared/video-player';
@@ -49,13 +49,16 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     BRAND_NAME,
     SUPPORT_MAIL,
     isMobile,
-    isLoading,
   } = landingData;
-
   const t = useTranslations();
   const locale = useLocale();
   moment.locale(locale);
   const { is_video_processed, intro_thumbnail, intro } = vimeoSource;
+  const [isContentHydrated, setIsContentHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsContentHydrated(true);
+  }, []);
 
   // Price calculation logic
   const prices = useMemo(() => {
@@ -117,20 +120,14 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
 
           {/* Rating Section */}
           <Box sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            {isLoading ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <>
-                  <Skeleton
-                    variant='rectangular'
-                    width={30}
-                    height={30}
-                    sx={{ borderRadius: 1 }}
-                  />
-                  <Skeleton variant='text' width={60} height={30} />
-                  <Skeleton variant='text' width={100} height={30} />
-                </>
+            {!data?.id || !isContentHydrated ? (
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                <Skeleton variant='rectangular' width={30} height={30} sx={{ borderRadius: 1 }} />
+                <Skeleton variant='text' width={60} height={30} />
+                <Skeleton variant='text' width={100} height={30} />
               </Box>
-            ) : isMobile ? (
+            ) : isMobile &&
+              landingData?.activeLandingPage?.name === 'landing1' ? (
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                 <Image
                   src={IMAGES.priceTag.src}
@@ -189,7 +186,6 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
               </Box>
             ) : (
               <>
-                {' '}
                 <Typography sx={{ color: 'primary.typography', fontSize: 16 }}>
                   <ICONS.STAR size={16} color={warning.main} />
                   {Number(data?.rating).toFixed(1) || 0} /
