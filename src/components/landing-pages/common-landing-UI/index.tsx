@@ -4,11 +4,9 @@ import {
   Container,
   Stack,
   Typography,
-  Skeleton,
 } from '@mui/material';
 import moment from 'moment/moment';
 import { useTranslations, useLocale } from 'next-intl';
-import { useMemo } from 'react';
 import 'moment/locale/fr';
 import 'moment/locale/es';
 import VideoPlayer from '@/shared/video-player';
@@ -27,9 +25,6 @@ import GetAccessForm from './components/get-access-form';
 import AccessPlan from './components/access-plan';
 import SuccessPaymentPopup from '../../success-payment-popup';
 import FailedPaymentPopup from '../../failed-payment-popup';
-import { videoURL, formatCurrency } from '@/utils/helper';
-import Image from 'next/image';
-import { IMAGES } from '../../../assets/images';
 
 const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
   const {
@@ -48,35 +43,13 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     isPaymentFailed,
     BRAND_NAME,
     SUPPORT_MAIL,
-    isMobile,
   } = landingData;
+
   const t = useTranslations();
   const locale = useLocale();
   moment.locale(locale);
+
   const { is_video_processed, intro_thumbnail, intro } = vimeoSource;
-
-  // Price calculation logic
-  const prices = useMemo(() => {
-    const clone = { ...course };
-    if (clone?.course_prices?.length) {
-      const currentDefaultPrice = clone?.course_prices?.[0];
-      return {
-        price: currentDefaultPrice?.price || 0,
-        currency: currentDefaultPrice?.currency?.name || 'USD',
-      };
-    } else
-      return {
-        price: 0,
-        currency: 'USD',
-      };
-  }, [course]);
-
-  const withIncrease = useMemo(() => {
-    const calculatedDiscount = 100 - course?.discount;
-    const actualPrice = (prices.price / calculatedDiscount) * 100;
-
-    return formatCurrency(actualPrice, prices.currency);
-  }, [course?.discount, prices.currency, prices.price]);
 
   return (
     <>
@@ -89,7 +62,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
           alignItems: 'center',
         }}
       >
-        <Container maxWidth='md' sx={{ my: 3 }}>
+        <Container maxWidth='md' sx={{ my: 6 }}>
           <Box
             ref={videoContainerRef}
             sx={{
@@ -102,87 +75,23 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
           >
             {/* Only render VideoPlayer when video is processed AND has valid video source */}
             {(intro || intro_thumbnail) && (
-              <VideoPlayer
-                {...{
-                  is_video_processed,
-                  intro_thumbnail,
-                  intro,
-                }}
+              <VideoPlayer {...{
+                is_video_processed, intro_thumbnail, intro
+              }}
                 {...{ pipMode, closePipMode }}
               />
             )}
           </Box>
 
           {/* Rating Section */}
-          <Box sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            {landingData?.activeLandingPage?.name === 'landing1' ? (
-              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                <Image
-                  src={IMAGES.priceTag.src}
-                  alt='price-tag'
-                  width={30}
-                  height={30}
-                  style={{ objectFit: 'cover' }}
-                />
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 0.5,
-                    mt: 0.5,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: 500,
-                      fontSize: 22,
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {formatCurrency(prices.price, prices.currency)}
-                  </Typography>
-                  {course?.discount && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 0.5,
-                        mt: 0.5,
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: '#808080',
-                          textDecoration: 'line-through',
-                          fontSize: 14,
-                        }}
-                      >
-                        {withIncrease || ''}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: 14,
-                          color: 'error.main',
-                        }}
-                      >
-                        {`-${course?.discount}` || 0}%
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              </Box>
-            ) : (
-              <>
-                <Typography sx={{ color: 'primary.typography', fontSize: 16 }}>
-                  <ICONS.STAR size={16} color={warning.main} />
-                  {Number(data?.rating).toFixed(1) || 0} /
-                </Typography>
-                <Typography sx={{ color: 'success.main', fontSize: 16 }}>
-                  {data?.amount_of_review || 0} {t('reviews')}
-                </Typography>
-              </>
-            )}
+          <Box sx={{ my: 2.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography sx={{ color: 'primary.typography', fontSize: 16 }}>
+              <ICONS.STAR size={16} color={warning.main} />{' '}
+              {Number(data?.rating).toFixed(1) || 0} /
+            </Typography>
+            <Typography sx={{ color: 'success.main', fontSize: 16 }}>
+              {data?.amount_of_review || 0} {t('reviews')}
+            </Typography>
           </Box>
 
           {/* Title and Description */}
