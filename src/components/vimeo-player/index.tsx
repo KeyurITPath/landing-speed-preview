@@ -40,6 +40,7 @@ const VimeoPlayer = ({
   });
   const previousLessonIdRef = useRef(null);
   const latestVideoEnded = useRef(videoEnded);
+  const [playerMuted, setPlayerMuted] = useState(false);
 
   useEffect(() => {
     latestVideoEnded.current = videoEnded;
@@ -134,7 +135,6 @@ const VimeoPlayer = ({
 
   useEffect(() => {
     if (playerRef.current && autoplay) {
-      playerRef.current.setVolume(0);
       playerRef.current.play().catch((error: any) => {
         console.error('Error playing video:', error);
       });
@@ -175,7 +175,7 @@ const VimeoPlayer = ({
             controls: true,
             dnt: true,
             transparent: false,
-            muted: autoplay,
+            muted: false,
             playsinline: true,
           });
 
@@ -210,6 +210,11 @@ const VimeoPlayer = ({
             player!.on('bufferend', () => {
               setLoader(false);
             });
+
+            // Track mute state changes
+            player!.on('volumechange', ({ muted }: any) => {
+              setPlayerMuted(muted);
+            });
           };
 
           setupEventListeners();
@@ -226,6 +231,7 @@ const VimeoPlayer = ({
             await player!.loadVideo({
               id: parseInt(vimeoId),
               autoplay: autoplay,
+              muted: false,
             });
 
             // Loader will be hidden by the 'loaded' event listener
@@ -276,6 +282,7 @@ const VimeoPlayer = ({
     handleWatchedTime,
     cleanupPlayer,
     playerStarted,
+    playerMuted,
   ]);
 
   return (
