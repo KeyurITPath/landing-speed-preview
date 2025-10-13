@@ -16,6 +16,7 @@ const extractVimeoId = (url: string) => {
   const match = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url);
   return match ? match?.[1] : url;
 };
+let isFirstVideoLoaded = false;
 
 const VimeoPlayer = ({
   videoUrl,
@@ -157,12 +158,10 @@ const VimeoPlayer = ({
         return;
       }
 
-      console.log("vimeo id is ----",vimeoId)
-
       try {
         let player = playerRef.current;
         const isNewPlayer = !player;
-
+        const shouldMute = !isFirstVideoLoaded;
         if (isNewPlayer) {
           console.log("come here to load vimeo video ------")
           player = new Player(playerContainerRef.current!, {
@@ -175,7 +174,7 @@ const VimeoPlayer = ({
             controls: true,
             dnt: true,
             transparent: false,
-            muted: false,
+            muted: shouldMute,
             playsinline: true,
           });
 
@@ -242,6 +241,9 @@ const VimeoPlayer = ({
             setLoader(false);
             if (onReady) onReady(player);
           }
+        }
+        if (!isFirstVideoLoaded) {
+          isFirstVideoLoaded = true;
         }
       } catch (error) {
         console.error('Vimeo player setup error:', error);
