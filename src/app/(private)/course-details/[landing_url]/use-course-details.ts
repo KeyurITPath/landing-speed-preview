@@ -1475,7 +1475,6 @@ const useCourseDetails = ({
 
         const isLessonCompleted = cloneCurrentLession?.user_watch_time_histories?.[0]?.is_completed;
 
-        if (cloneCurrentLession?.total_duration) {
             if (cloneCurrentLession?.type === 'video' && !isLessonCompleted) {
                 const payload = {
                     course_id: getUserCourseProgressData?.id,
@@ -1609,7 +1608,6 @@ const useCourseDetails = ({
             handleModuleWiseChangeCourse(
                 getUserCourseProgressApiDataForCopy?.course_translations?.[0]?.course_modules
             );
-        }
     }, [
         selectedLesson,
         getUserCourseProgressData,
