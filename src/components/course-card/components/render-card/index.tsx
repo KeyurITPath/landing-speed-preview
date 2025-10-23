@@ -113,7 +113,8 @@ const RenderCard = ({
             mb: 1.9,
             mt: 2,
             fontWeight: 500,
-            display: '-webkit-box',
+            display: 'flex',
+            alignItems: 'center',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             WebkitLineClamp: 2,
@@ -133,13 +134,13 @@ const RenderCard = ({
           width='100%'
         >
           <Stack direction='row' alignItems='center' spacing={1}>
-            {' '}
             <Avatar
               alt={name}
               src={avatar}
               sx={{
                 height: { xs: 20, sm: 30 },
                 width: { xs: 20, sm: 30 },
+                flexShrink: 0,
               }}
             />
             <Typography
@@ -150,10 +151,10 @@ const RenderCard = ({
                 height: '50px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                display: '-webkit-box',
                 WebkitLineClamp: '2',
                 WebkitBoxOrient: 'vertical',
-                alignContent: 'center',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               {name}
