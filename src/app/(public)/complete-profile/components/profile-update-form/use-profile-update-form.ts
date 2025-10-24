@@ -177,7 +177,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
         placeholder: t('your_age'),
         handleChange,
         handleBlur,
-        error: touched.age && errors.age,
+        // error: touched.age && errors.age,
         type: 'autocomplete',
         options: [
           { value: 'under 18', label: t('age_range.label') },

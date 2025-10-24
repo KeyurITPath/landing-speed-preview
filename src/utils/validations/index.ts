@@ -141,7 +141,7 @@ export const profileUpdateValidation = (t: any) =>
       .max(50, t('errors.last_name_max'))
       .matches(/^[^\d]+$/u, t('errors.last_name_invalid')),
     // location: Yup.string().required(t('errors.location_required')),
-    age: Yup.string().required(t('errors.age_required')),
+    // age: Yup.string().required(t('errors.age_required')),
     gender: Yup.string().required(t('errors.gender_required')),
   });
 
