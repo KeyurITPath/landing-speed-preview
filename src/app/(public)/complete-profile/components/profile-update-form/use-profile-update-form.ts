@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { countries } from 'countries-list';
+// import { countries } from 'countries-list';
 import { profileUpdateValidation } from '@/utils/validations';
 import { AGE_RANGE, DOMAIN, GENDERS } from '@/utils/constants';
 import { api } from '@/api';
@@ -29,7 +29,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
   const initialValues = {
     first_name: userData?.first_name || '',
     last_name: userData?.last_name || '',
-    location: '',
+    // location: '',
     age: '',
     gender: 'male',
   };
@@ -130,12 +130,12 @@ const useProfileUpdateForm = ({ userData }: any) => {
     }));
   }, [userData, setValues]);
 
-  const countriesData = useMemo(() => {
-    return Object.values(countries).map(({ name }) => ({
-      label: name,
-      value: name,
-    }));
-  }, []);
+  // const countriesData = useMemo(() => {
+  //   return Object.values(countries).map(({ name }) => ({
+  //     label: name,
+  //     value: name,
+  //   }));
+  // }, []);
 
   const formData = useMemo(
     () => [
@@ -159,17 +159,17 @@ const useProfileUpdateForm = ({ userData }: any) => {
         error: touched.last_name && errors.last_name,
         type: 'text',
       },
-      {
-        id: 'location',
-        name: 'location',
-        value: values.location,
-        placeholder: t('country'),
-        handleChange,
-        handleBlur,
-        error: touched.location && errors.location,
-        type: 'autocomplete',
-        options: countriesData,
-      },
+      // {
+      //   id: 'location',
+      //   name: 'location',
+      //   value: values.location,
+      //   placeholder: t('country'),
+      //   handleChange,
+      //   handleBlur,
+      //   error: touched.location && errors.location,
+      //   type: 'autocomplete',
+      //   options: countriesData,
+      // },
       {
         id: 'age',
         name: 'age',
@@ -199,7 +199,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
         row: true,
       },
     ],
-    [countriesData, errors, handleBlur, handleChange, touched, values, t]
+    [errors, handleBlur, handleChange, touched, values, t]
   );
 
   return { handleSubmit, formData, loading };
