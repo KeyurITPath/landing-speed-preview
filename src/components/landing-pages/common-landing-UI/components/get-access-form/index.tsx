@@ -19,7 +19,7 @@ import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
 
 const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
-  const { data, course, activeForm, setActiveForm, SUPPORT_MAIL, utmData } =
+  const { data, course, activeForm, setActiveForm, SUPPORT_MAIL, utmData, activeLandingPage } =
     landingData;
   const queryParams = useSearchParams();
   const { upSaleCourses } = useSelector(({ course }: any) => course);
@@ -93,6 +93,7 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
                 queryParams,
                 isCourseUpsaleCoursesAvailable,
                 utmData,
+                activeLandingPage,
               }}
               landingData={data}
               courseData={course}

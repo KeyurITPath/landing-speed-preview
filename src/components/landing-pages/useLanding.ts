@@ -114,6 +114,7 @@ const useLanding = ({
   const { data: userData } = useSelector(({ user }: any) => user);
 
   const { getAccessState } = useSelector(({ course }: any) => course);
+  const { getStripeCheckoutOpenState } = useSelector(({ course }: any) => course);
 
   const pixelIds = useMemo(() => {
     return analyticsMetaCredentials && analyticsMetaCredentials?.length
@@ -708,6 +709,7 @@ const useLanding = ({
     isUserPurchasedCourse,
     handleProceedToWatch,
     utmData,
+    getStripeCheckoutOpenState,
   };
 };
 

@@ -27,6 +27,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
 import { useSearchParams } from 'next/navigation';
 import { gtm } from '@/utils/gtm';
+import { getStripeCheckoutOpen, getAccessClose } from '@/store/features/course.slice';
 
 const TermsLink = styled(Link)(() => ({
   color: 'black',
@@ -44,6 +45,7 @@ const OpenAccessForm = ({
   utmData,
   queryParams,
   isCourseUpsaleCoursesAvailable,
+  activeLandingPage,
 }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
@@ -93,7 +95,7 @@ const OpenAccessForm = ({
     });
     const { token } = res?.data?.data || {};
 
-    let registerUserData = {};
+    let registerUserData: any = {};
 
     if (token) {
       setToken(token);
@@ -110,7 +112,13 @@ const OpenAccessForm = ({
     }
 
     gtm.ecommerce.add_to_cart();
-    if (!isCourseUpsaleCoursesAvailable) {
+
+    const isLandingPage1 = activeLandingPage?.name === 'landing1';
+
+    if (isLandingPage1) {
+      dispatch(getAccessClose());
+      dispatch(getStripeCheckoutOpen());
+    } else if (!isCourseUpsaleCoursesAvailable) {
       let success_url = '';
       const { origin, pathname } = window.location;
       if (registerUserData?.is_verified) {

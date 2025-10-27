@@ -39,6 +39,7 @@ export const initialState = {
   defaultCoursePrice: {},
   upSaleCourses: [],
   failed: false,
+  getStripeCheckoutOpenState: false,
 };
 
 const courseSlice = createSlice({
@@ -50,6 +51,12 @@ const courseSlice = createSlice({
     },
     getAccessClose: state => {
       state.getAccessState = false;
+    },
+    getStripeCheckoutOpen: state => {
+      state.getStripeCheckoutOpenState = true;
+    },
+    getStripeCheckoutClose: state => {
+      state.getStripeCheckoutOpenState = false;
     },
   },
   extraReducers: builder => {
@@ -128,6 +135,6 @@ const courseSlice = createSlice({
       });
   },
 });
-export const { getAccessOpen, getAccessClose } = courseSlice.actions;
+export const { getAccessOpen, getAccessClose, getStripeCheckoutOpen, getStripeCheckoutClose } = courseSlice.actions;
 
 export default courseSlice.reducer;
