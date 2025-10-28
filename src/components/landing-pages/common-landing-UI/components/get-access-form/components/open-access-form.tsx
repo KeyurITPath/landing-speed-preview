@@ -27,7 +27,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
 import { useSearchParams } from 'next/navigation';
 import { gtm } from '@/utils/gtm';
-import { getStripeCheckoutOpen, getAccessClose, setRegisterUserData, setStripeEmail } from '@/store/features/course.slice';
+import { getStripeCheckoutOpen, getAccessClose, setRegisterUserData } from '@/store/features/course.slice';
 
 const TermsLink = styled(Link)(() => ({
   color: 'black',
@@ -116,9 +116,8 @@ const OpenAccessForm = ({
     const isLandingPage1 = activeLandingPage?.name === 'landing1';
 
     if (isLandingPage1) {
-      // Store registerUserData and email in Redux for Stripe checkout to use
+      // Store registerUserData in Redux for Stripe checkout to use
       dispatch(setRegisterUserData(registerUserData));
-      dispatch(setStripeEmail(values.email));
       dispatch(getAccessClose());
       dispatch(getStripeCheckoutOpen());
     } else if (!isCourseUpsaleCoursesAvailable) {

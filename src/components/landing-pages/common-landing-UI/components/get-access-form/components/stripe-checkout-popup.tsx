@@ -28,9 +28,7 @@ import { useTranslations } from 'next-intl';
 import { api } from '@/api';
 import {
   getStripeCheckoutClose,
-  setLandingPageForRedirect,
   clearRegisterUserData,
-  clearStripeEmail,
 } from '@/store/features/course.slice';
 import { pixel } from '@/utils/pixel';
 import { isEmptyObject } from '@/utils/helper';
@@ -76,11 +74,10 @@ const StripeInnerForm = ({
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
 
-  // Cleanup registerUserData and email when component unmounts
+  // Cleanup registerUserData when component unmounts
   useEffect(() => {
     return () => {
       dispatch(clearRegisterUserData());
-      dispatch(clearStripeEmail());
     };
   }, [dispatch]);
   const formattedPrice = formatCurrency(
@@ -92,6 +89,12 @@ const StripeInnerForm = ({
     e.preventDefault();
 
     if (!stripe || !elements || !clientSecret) {
+      return;
+    }
+
+    // Check if elements are complete before processing
+    const { error: elementsError } = await elements.submit();
+    if (elementsError) {
       return;
     }
 
@@ -110,10 +113,8 @@ const StripeInnerForm = ({
       );
 
       if (stripeError) {
-        console.error('Stripe error:', stripeError);
-        // Error will be handled by parent component
+        setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        // Track successful payment
         await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
@@ -139,7 +140,7 @@ const StripeInnerForm = ({
         // Close popup and redirect to email verification page
         dispatch(getStripeCheckoutClose());
         const queryString = new URLSearchParams(queryParams).toString();
-        window.location.href = `${window.location.origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+        window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
@@ -323,8 +324,9 @@ export default function StripeCheckoutPopup({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const paymentIntentCreated = useRef(false);
-
+  // Get registerUserData from Redux
   const { registerUserData } = useSelector(({ course }: any) => course);
+
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
 
@@ -348,7 +350,7 @@ export default function StripeCheckoutPopup({
         // Generate URLs for success and cancel
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(queryParams).toString();
-        const success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+        const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         const cancel_url = `${origin}${pathname}?payment=failed`;
 
         // Create params object like in checkout-form.tsx
