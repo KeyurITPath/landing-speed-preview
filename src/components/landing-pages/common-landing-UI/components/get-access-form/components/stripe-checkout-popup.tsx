@@ -20,18 +20,26 @@ import {
   Divider,
   styled,
   Skeleton,
+  Stack,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
 import { api } from '@/api';
-import { getStripeCheckoutClose } from '@/store/features/course.slice';
+import {
+  getStripeCheckoutClose,
+  setLandingPageForRedirect,
+  clearRegisterUserData,
+  clearStripeEmail,
+} from '@/store/features/course.slice';
 import { pixel } from '@/utils/pixel';
 import { isEmptyObject } from '@/utils/helper';
 import { formatCurrency } from '@/utils/helper';
 import { DOMAIN } from '../../../../../../utils/constants';
 import { routes } from '../../../../../../utils/constants/routes';
 import Link from 'next/link';
+import CustomButton from '../../../../../../shared/button';
+import { ICONS } from '../../../../../../assets/icons';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -51,22 +59,30 @@ const TermsLink = styled(Link)(() => ({
 const StripeInnerForm = ({
   onClose,
   courseData,
-  user,
   utmData,
   queryParams,
   clientSecret,
   isLoading,
   error,
+  activeLandingPage,
+  registerUserData,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
   const t = useTranslations();
-
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
+
+  // Cleanup registerUserData and email when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearRegisterUserData());
+      dispatch(clearStripeEmail());
+    };
+  }, [dispatch]);
   const formattedPrice = formatCurrency(
     coursePrice?.price,
     coursePrice?.currency?.name
@@ -99,7 +115,7 @@ const StripeInnerForm = ({
       } else if (paymentIntent.status === 'succeeded') {
         // Track successful payment
         await pixel.initial_checkout({
-          userId: user?.id,
+          userId: registerUserData?.id,
           content_type: 'course',
           content_ids: [courseData?.id],
           total_amount: coursePrice?.price,
@@ -115,7 +131,12 @@ const StripeInnerForm = ({
           ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
 
-        // Close popup and redirect to upsell-courses page
+        // Store landing page info in Redux for secure access
+        if (activeLandingPage?.name === 'landing1') {
+          sessionStorage.setItem('landingPageForRedirect', 'landing1');
+        }
+
+        // Close popup and redirect to email verification page
         dispatch(getStripeCheckoutClose());
         const queryString = new URLSearchParams(queryParams).toString();
         window.location.href = `${window.location.origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
@@ -133,26 +154,34 @@ const StripeInnerForm = ({
       onSubmit={handleSubmit}
       sx={{ width: '100%', minWidth: 400, mt: 1 }}
     >
-        {/* Security message */}
-        <Box
+      {/* Security message */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          mb: 2,
+          p: 1,
+          backgroundColor: '#f5f5f5',
+          borderRadius: 1,
+        }}
+      >
+        <LockIcon
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mb: 2,
-            p: 1,
-            backgroundColor: '#f5f5f5',
-            borderRadius: 1,
+            fontSize: 16,
+            mr: 1,
+            color: 'text.secondary',
+            alignSelf: 'flex-start',
+            mt: 0.2,
           }}
+        />
+        <Typography
+          variant='body2'
+          sx={{ color: 'text.secondary', fontSize: '12px', lineHeight: 1.4 }}
         >
-          <LockIcon sx={{ fontSize: 16, mr: 1, color: 'text.secondary', alignSelf: 'flex-start', mt: 0.2 }} />
-          <Typography
-            variant='body2'
-            sx={{ color: 'text.secondary', fontSize: '12px', lineHeight: 1.4 }}
-          >
-            All transactions are secure and encrypted. Credit Card information
-            is never stored.
-          </Typography>
-        </Box>
+          All transactions are secure and encrypted. Credit Card information is
+          never stored.
+        </Typography>
+      </Box>
 
       {/* Error message */}
       {error && (
@@ -285,7 +314,6 @@ export default function StripeCheckoutPopup({
   open,
   onClose,
   courseData,
-  user,
   utmData,
   queryParams,
   landingData,
@@ -296,6 +324,7 @@ export default function StripeCheckoutPopup({
   const [error, setError] = useState('');
   const paymentIntentCreated = useRef(false);
 
+  const { registerUserData } = useSelector(({ course }: any) => course);
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
 
@@ -315,7 +344,7 @@ export default function StripeCheckoutPopup({
       try {
         setIsLoading(true);
         setError('');
-
+        const { data: landingPageData, activeLandingPage } = landingData;
         // Generate URLs for success and cancel
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(queryParams).toString();
@@ -329,12 +358,10 @@ export default function StripeCheckoutPopup({
             params[key] = String(value);
           });
         }
-
-        const { data: landingPageData } = landingData;
         const data = {
           stripe_price_id: coursePrice?.stripe_price_id,
           selected_upsale_price_ids: [],
-          user_id: user?.id,
+          user_id: registerUserData?.id,
           success_url,
           cancel_url,
           domain: DOMAIN,
@@ -362,7 +389,7 @@ export default function StripeCheckoutPopup({
     if (
       open &&
       courseData &&
-      user &&
+      registerUserData?.id &&
       coursePrice?.stripe_price_id &&
       !clientSecret &&
       !paymentIntentCreated.current
@@ -370,15 +397,7 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [
-    open,
-    courseData,
-    user,
-    coursePrice?.stripe_price_id,
-    clientSecret,
-    queryParams,
-    landingData,
-  ]);
+  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, queryParams, landingData, registerUserData?.id]);
 
   const options = {
     clientSecret,
@@ -407,22 +426,56 @@ export default function StripeCheckoutPopup({
         Complete Your Payment
       </DialogTitle>
       <DialogContent sx={{ pt: 2 }}>
-        {error && (
-          <Alert severity='error' sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-        {clientSecret ? (
+        {error ? (
+          <>
+            <Box sx={{ py: 4, textAlign: 'center' }}>
+              <Box sx={{ mb: 3 }}>
+                <Stack sx={{ color: 'error.main', fontSize: 60 }}>
+                  <ICONS.CloseCircle />
+                </Stack>
+              </Box>
+              <Typography
+                variant='h6'
+                sx={{ mb: 1, color: 'text.primary', fontWeight: 600 }}
+              >
+                Payment Setup Failed
+              </Typography>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: 'text.secondary',
+                  maxWidth: 300,
+                  margin: '0 auto',
+                }}
+              >
+                We couldn&apos;t initialize your payment. Please try again or
+                contact support if the problem persists.
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+              <CustomButton
+                onClick={onClose}
+                variant='contained'
+                color='secondary'
+                sx={{ minWidth: 100 }}
+              >
+                Close
+              </CustomButton>
+            </Box>
+          </>
+        ) : clientSecret ? (
           <Elements stripe={stripePromise} options={options}>
             <StripeInnerForm
               onClose={onClose}
               courseData={courseData}
-              user={user}
               utmData={utmData}
               queryParams={queryParams}
               clientSecret={clientSecret}
               isLoading={isLoading}
               error={error}
+              activeLandingPage={landingData?.activeLandingPage}
+              registerUserData={registerUserData}
             />
           </Elements>
         ) : (
@@ -438,40 +491,66 @@ export default function StripeCheckoutPopup({
                 borderRadius: 1,
               }}
             >
-              <LockIcon sx={{ fontSize: 16, mr: 1, color: 'text.secondary', alignSelf: 'flex-start', mt: 0.2 }} />
+              <LockIcon
+                sx={{
+                  fontSize: 16,
+                  mr: 1,
+                  color: 'text.secondary',
+                  alignSelf: 'flex-start',
+                  mt: 0.2,
+                }}
+              />
               <Typography
                 variant='body2'
-                sx={{ color: 'text.secondary', fontSize: '12px', lineHeight: 1.4 }}
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '12px',
+                  lineHeight: 1.4,
+                }}
               >
-                All transactions are secure and encrypted. Credit Card information
-                is never stored.
+                All transactions are secure and encrypted. Credit Card
+                information is never stored.
               </Typography>
             </Box>
 
             {/* Payment form skeleton */}
             <Box sx={{ mb: 2 }}>
-              <Skeleton variant="rectangular" height={56} sx={{ mb: 2, borderRadius: 1 }} />
-              <Skeleton variant="rectangular" height={56} sx={{ mb: 2, borderRadius: 1 }} />
-              <Skeleton variant="rectangular" height={56} sx={{ mb: 2, borderRadius: 1 }} />
+              <Skeleton
+                variant='rectangular'
+                height={56}
+                sx={{ mb: 2, borderRadius: 1 }}
+              />
+              <Skeleton
+                variant='rectangular'
+                height={56}
+                sx={{ mb: 2, borderRadius: 1 }}
+              />
+              <Skeleton
+                variant='rectangular'
+                height={56}
+                sx={{ mb: 2, borderRadius: 1 }}
+              />
             </Box>
 
             {/* Payment summary skeleton */}
-            <Box sx={{ mb: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: 1 }}>
-              <Skeleton variant="text" width="60%" height={24} sx={{ mb: 1 }} />
-              <Skeleton variant="text" width="40%" height={20} />
+            <Box
+              sx={{ mb: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: 1 }}
+            >
+              <Skeleton variant='text' width='60%' height={24} sx={{ mb: 1 }} />
+              <Skeleton variant='text' width='40%' height={20} />
             </Box>
 
             <Box sx={{ textAlign: 'center', py: 3 }}>
               <CircularProgress size={32} sx={{ mb: 2 }} />
-              <Typography variant="h6" sx={{ mb: 1, fontWeight: 500 }}>
+              <Typography variant='h6' sx={{ mb: 1, fontWeight: 500 }}>
                 Setting up secure payment
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+              <Typography
+                variant='body2'
+                sx={{ color: 'text.secondary', mb: 2 }}
+              >
                 Please wait while we prepare your payment form...
               </Typography>
-              {/* <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
-                This may take a moment on slower connections
-              </Typography> */}
             </Box>
           </Box>
         )}

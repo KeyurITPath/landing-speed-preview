@@ -64,7 +64,8 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   }, [email]);
 
   useEffect(() => {
-    sessionStorage.removeItem('hasSalesFlowAccess', false);
+    sessionStorage.removeItem('hasSalesFlowAccess');
+    sessionStorage.removeItem('landingPageForRedirect');
   }, []);
 
   return (

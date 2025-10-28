@@ -40,6 +40,9 @@ export const initialState = {
   upSaleCourses: [],
   failed: false,
   getStripeCheckoutOpenState: false,
+  landingPageForRedirect: null,
+  registerUserData: null,
+  stripeEmail: null,
 };
 
 const courseSlice = createSlice({
@@ -57,6 +60,24 @@ const courseSlice = createSlice({
     },
     getStripeCheckoutClose: state => {
       state.getStripeCheckoutOpenState = false;
+    },
+    setLandingPageForRedirect: (state, action) => {
+      state.landingPageForRedirect = action.payload;
+    },
+    clearLandingPageForRedirect: state => {
+      state.landingPageForRedirect = null;
+    },
+    setRegisterUserData: (state, action) => {
+      state.registerUserData = action.payload;
+    },
+    clearRegisterUserData: state => {
+      state.registerUserData = null;
+    },
+    setStripeEmail: (state, action) => {
+      state.stripeEmail = action.payload;
+    },
+    clearStripeEmail: state => {
+      state.stripeEmail = null;
     },
   },
   extraReducers: builder => {
@@ -135,6 +156,6 @@ const courseSlice = createSlice({
       });
   },
 });
-export const { getAccessOpen, getAccessClose, getStripeCheckoutOpen, getStripeCheckoutClose } = courseSlice.actions;
+export const { getAccessOpen, getAccessClose, getStripeCheckoutOpen, getStripeCheckoutClose, setLandingPageForRedirect, clearLandingPageForRedirect, setRegisterUserData, clearRegisterUserData, setStripeEmail, clearStripeEmail } = courseSlice.actions;
 
 export default courseSlice.reducer;
