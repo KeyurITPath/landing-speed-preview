@@ -373,7 +373,6 @@ export default function StripeCheckoutPopup({
 
         console.log('Creating payment intent with data:', data);
         const response = await api.getAccess.orderCheckout({ data });
-        console.log('response', response);
 
         if (response?.data?.data?.clientSecret) {
           setClientSecret(response.data.data.clientSecret);

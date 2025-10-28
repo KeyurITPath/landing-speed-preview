@@ -29,7 +29,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Extract course ID and currency ID from course data
   const effectiveCourseId = courseData?.course?.id;
   const effectiveCurrencyId = effectiveCurrency?.id;
-  const effectiveLanguageId = courseData?.landing_page_translations?.[0]?.language_id || user?.language_id || 1;
+  const effectiveLanguageId = courseData?.landing_page_translations?.[0]?.language_id || user?.language_id;
 
   // Local state
   const [selectedUpsales, setSelectedUpsales] = useState<any[]>([]);
@@ -126,6 +126,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
         };
       });
   }, [upSaleCourses, mainCurrencyCode]);
+  console.log('processedUpsaleCourses :>> ', processedUpsaleCourses);
 
   // Handle checkout - call purchase upsale course API
   const handleCheckout = useCallback(async () => {
