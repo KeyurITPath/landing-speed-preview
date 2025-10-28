@@ -35,6 +35,8 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Local state
   const [selectedUpsales, setSelectedUpsales] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showPaymentError, setShowPaymentError] = useState(false);
+  const [paymentErrorMessage, setPaymentErrorMessage] = useState<string>('');
 
   // Dispatch actions
   const [fetchUpSales] = useDispatchWithAbort(fetchAllUpSales);
@@ -48,14 +50,8 @@ const useUpsale = (courseData?: any, currency?: any) => {
     return searchParams?.get('payment') === 'failed';
   }, [searchParams]);
 
-  // Get currency code
-  const mainCurrencyCode = effectiveCurrency?.code || 'USD';
 
-  // Debug currency information
-  console.log('CURRENCY DEBUG:');
-  console.log('effectiveCurrency:', effectiveCurrency);
-  console.log('mainCurrencyCode:', mainCurrencyCode);
-  console.log('reduxCurrency:', reduxCurrency);
+  const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
   // Fetch upsale courses (if not already fetched) - using same pattern as useLanding
   const fetchUpsaleCourses = useCallback(async () => {
@@ -90,42 +86,29 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Calculate total price
   const totalPrice = useMemo(() => {
     const mainCoursePrice = courseData?.course_prices?.[0]?.price || 0;
-    const mainCurrencyCode = courseData?.course_prices?.[0]?.currency?.name || 'USD';
+    const mainCurrencyCode = courseData?.course_prices?.[0]?.currency?.name || effectiveCurrency?.name || 'USD';
     const upsaleTotal = selectedUpsales.reduce((sum, item) => sum + (item?.priceAmount || 0), 0);
     const totalAmount = mainCoursePrice + upsaleTotal;
     return formatCurrency(totalAmount, mainCurrencyCode);
-  }, [selectedUpsales, courseData?.course_prices]);
+  }, [selectedUpsales, courseData?.course_prices, effectiveCurrency?.name]);
 
   // Process upsale courses data (same pattern as checkout form)
   const processedUpsaleCourses = useMemo(() => {
-    console.log('DEBUG - Processing upsale courses:');
-    console.log('upSaleCourses:', upSaleCourses);
-    console.log('upSaleCourses length:', upSaleCourses?.length);
-    console.log('mainCurrencyCode:', mainCurrencyCode);
-    console.log('effectiveCurrency:', effectiveCurrency);
-
     if (!upSaleCourses?.length) {
-      console.log('No upsale courses found');
       return [];
     }
 
     const getPriceData = (course_prices: any) => {
-      console.log('Checking course_prices:', course_prices);
-
       // First try to find exact currency match
       let found = course_prices?.find(
         ({ is_upsale_price, currency }: any) => {
-          console.log('Checking price:', { is_upsale_price, currencyName: currency?.name, mainCurrencyCode });
           return is_upsale_price && currency?.name === mainCurrencyCode;
         }
       );
 
-      // If no exact match, try case-insensitive match
       if (!found) {
-        console.log('No exact currency match, trying case-insensitive...');
         found = course_prices?.find(
           ({ is_upsale_price, currency }: any) => {
-            console.log('Checking case-insensitive price:', { is_upsale_price, currencyName: currency?.name, mainCurrencyCode });
             return is_upsale_price && currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase();
           }
         );
@@ -133,31 +116,24 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
       // If still no match, try to find any upsale price (fallback)
       if (!found) {
-        console.log('No currency match, trying fallback...');
         found = course_prices?.find(
           ({ is_upsale_price }: any) => {
-            console.log('Checking fallback price:', { is_upsale_price });
             return is_upsale_price;
           }
         );
       }
 
-      console.log('Found price data:', found);
       return found;
     };
 
     const filteredCourses = upSaleCourses.filter(({ course_prices }: any) => {
       const hasValidPrice = getPriceData(course_prices);
-      console.log('Course has valid price:', hasValidPrice);
       return hasValidPrice;
     });
-
-    console.log('Filtered courses count:', filteredCourses.length);
 
     const processed = filteredCourses.map(({ id, course_translation, course_prices }: any) => {
       const title = course_translation?.title;
       const image = resolveUrl(course_translation?.course_image);
-      console.log('image:', image, 'course_translation?.course_image:', course_translation?.course_image);
 
       const priceData = getPriceData(course_prices);
       const priceAmount = priceData?.price || 0;
@@ -178,19 +154,18 @@ const useUpsale = (courseData?: any, currency?: any) => {
         stripeId: priceData?.stripe_price_id,
       };
 
-      console.log('Processed course:', result);
       return result;
     });
 
-    console.log('Final processed courses:', processed);
     return processed;
-  }, [upSaleCourses, mainCurrencyCode, effectiveCurrency]);
-  console.log('processedUpsaleCourses :>> ', processedUpsaleCourses);
+  }, [upSaleCourses, mainCurrencyCode]);
 
   // Handle checkout - call purchase upsale course API
   const handleCheckout = useCallback(async () => {
     try {
       setLoading(true);
+      setShowPaymentError(false); // Clear any previous errors
+      setPaymentErrorMessage(''); // Clear any previous error messages
 
       if (!selectedUpsales.length) {
         return;
@@ -216,9 +191,21 @@ const useUpsale = (courseData?: any, currency?: any) => {
         // Redirect to email verification page after successful purchase
         window.location.href = routes.public.email_verification;
       } else {
-        console.error('Upsale purchase failed:', response);
+        // Extract error message from API response
+        const errorMessage = response?.data?.message ||
+                           response?.data?.error ||
+                           response?.message ||
+                           'Payment failed. Please try again.';
+        setPaymentErrorMessage(errorMessage);
+        setShowPaymentError(true);
       }
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message ||
+                          error?.response?.data?.error ||
+                          error?.message ||
+                          'Payment failed. Please try again.';
+      setPaymentErrorMessage(errorMessage);
+      setShowPaymentError(true);
       console.error('Upsale checkout failed:', error);
     } finally {
       setLoading(false);
@@ -230,12 +217,20 @@ const useUpsale = (courseData?: any, currency?: any) => {
     window.location.href = routes.public.email_verification;
   }, []);
 
+  const handleClosePaymentError = useCallback(() => {
+    setShowPaymentError(false);
+    setPaymentErrorMessage('');
+    window.location.href = routes.public.email_verification;
+  }, []);
+
   return {
     // State
     selectedUpsales,
     loading,
     isPaymentSuccess,
     isPaymentFailed,
+    showPaymentError,
+    paymentErrorMessage,
 
     // Data
     upsaleCourses: processedUpsaleCourses,
@@ -246,6 +241,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
     removeFromOrder,
     handleCheckout,
     handleDeclineUpsale,
+    handleClosePaymentError,
     fetchUpsaleCourses,
   };
 };

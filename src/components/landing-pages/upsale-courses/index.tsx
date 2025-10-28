@@ -18,6 +18,8 @@ import { useTranslations } from 'next-intl';
 import SuccessPaymentPopup from '../../success-payment-popup';
 import FailedPaymentPopup from '../../failed-payment-popup';
 import useUpsale from './useUpsale';
+import { formatCurrency } from '@/utils/helper';
+import UpsalePaymentErrorPopup from './upsale-payment-error-popup';
 
 const UpsaleCourses = ({
   courseData,
@@ -34,12 +36,15 @@ const UpsaleCourses = ({
     loading,
     isPaymentSuccess,
     isPaymentFailed,
+    showPaymentError,
+    paymentErrorMessage,
     upsaleCourses,
     totalPrice,
     handleAddToOrder,
     removeFromOrder,
     handleCheckout,
     handleDeclineUpsale,
+    handleClosePaymentError,
   } = useUpsale(courseData, currency);
 
   // Selected course (the one user originally purchased) - get from props or API
@@ -50,8 +55,8 @@ const UpsaleCourses = ({
            courseData?.course_title ||
            '',
     price: courseData?.course?.course_prices?.[0] ?
-      `${courseData.course.course_prices[0].currency?.name || '$'}${courseData.course.course_prices[0].price}` :
-      '$19',
+      formatCurrency(courseData.course.course_prices[0].price, courseData.course.course_prices[0].currency?.name) :
+      formatCurrency(19, 'USD'),
   };
 
   const UpsaleCourseCard = ({ course }: { course: any }) => {
@@ -349,6 +354,13 @@ const UpsaleCourses = ({
       {/* Payment popups */}
       <SuccessPaymentPopup open={isPaymentSuccess} />
       <FailedPaymentPopup open={isPaymentFailed} />
+
+      {/* Payment Error Popup for Upsale */}
+      <UpsalePaymentErrorPopup
+        open={showPaymentError}
+        errorMessage={paymentErrorMessage}
+        onClose={handleClosePaymentError}
+      />
     </Box>
   );
 };
