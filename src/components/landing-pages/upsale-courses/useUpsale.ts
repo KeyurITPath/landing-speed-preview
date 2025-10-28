@@ -22,9 +22,10 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   // Redux state
   const { upSaleCourses } = useSelector(({ course }: any) => course);
+  const { currency: reduxCurrency } = useSelector(({ defaults }: any) => defaults);
 
-  // Use passed currency (no need for Redux fallback since we get it from order history)
-  const effectiveCurrency = currency;
+  // Use passed currency with Redux fallback (same pattern as checkout form)
+  const effectiveCurrency = currency || reduxCurrency;
 
   // Extract course ID and currency ID from course data
   const effectiveCourseId = courseData?.course?.id;
@@ -50,6 +51,12 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Get currency code
   const mainCurrencyCode = effectiveCurrency?.code || 'USD';
 
+  // Debug currency information
+  console.log('CURRENCY DEBUG:');
+  console.log('effectiveCurrency:', effectiveCurrency);
+  console.log('mainCurrencyCode:', mainCurrencyCode);
+  console.log('reduxCurrency:', reduxCurrency);
+
   // Fetch upsale courses (if not already fetched) - using same pattern as useLanding
   const fetchUpsaleCourses = useCallback(async () => {
     if (fetchUpSales && !upSaleCourses?.length && effectiveCourseId && effectiveCurrencyId) {
@@ -59,7 +66,6 @@ const useUpsale = (courseData?: any, currency?: any) => {
           currency_id: effectiveCurrencyId,
           language_id: effectiveLanguageId
         },
-        headers: { 'req-from': 'upsale-page' },
       });
     }
   }, [fetchUpSales, upSaleCourses?.length, effectiveCourseId, effectiveCurrencyId, effectiveLanguageId]);
@@ -92,40 +98,93 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   // Process upsale courses data (same pattern as checkout form)
   const processedUpsaleCourses = useMemo(() => {
-    if (!upSaleCourses?.length) return [];
+    console.log('DEBUG - Processing upsale courses:');
+    console.log('upSaleCourses:', upSaleCourses);
+    console.log('upSaleCourses length:', upSaleCourses?.length);
+    console.log('mainCurrencyCode:', mainCurrencyCode);
+    console.log('effectiveCurrency:', effectiveCurrency);
 
-    const getPriceData = (course_prices: any) =>
-      course_prices?.find(
-        ({ is_upsale_price, currency }: any) =>
-          is_upsale_price && currency?.name === mainCurrencyCode
+    if (!upSaleCourses?.length) {
+      console.log('No upsale courses found');
+      return [];
+    }
+
+    const getPriceData = (course_prices: any) => {
+      console.log('Checking course_prices:', course_prices);
+
+      // First try to find exact currency match
+      let found = course_prices?.find(
+        ({ is_upsale_price, currency }: any) => {
+          console.log('Checking price:', { is_upsale_price, currencyName: currency?.name, mainCurrencyCode });
+          return is_upsale_price && currency?.name === mainCurrencyCode;
+        }
       );
 
-    return upSaleCourses
-      .filter(({ course_prices }: any) => getPriceData(course_prices))
-      .map(({ id, course_translation, course_prices }: any) => {
-        const title = course_translation?.title;
-        const image = resolveUrl(course_translation?.course_image);
+      // If no exact match, try case-insensitive match
+      if (!found) {
+        console.log('No exact currency match, trying case-insensitive...');
+        found = course_prices?.find(
+          ({ is_upsale_price, currency }: any) => {
+            console.log('Checking case-insensitive price:', { is_upsale_price, currencyName: currency?.name, mainCurrencyCode });
+            return is_upsale_price && currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase();
+          }
+        );
+      }
 
-        const priceData = getPriceData(course_prices);
-        const priceAmount = priceData?.price || 0;
-        const currencyCode = priceData?.currency?.name || mainCurrencyCode;
+      // If still no match, try to find any upsale price (fallback)
+      if (!found) {
+        console.log('No currency match, trying fallback...');
+        found = course_prices?.find(
+          ({ is_upsale_price }: any) => {
+            console.log('Checking fallback price:', { is_upsale_price });
+            return is_upsale_price;
+          }
+        );
+      }
 
-        const price = formatCurrency(priceAmount, currencyCode);
-        const discount = course_translation?.course?.discount || 0;
-        const actualPriceAmount = getActualPrice(priceAmount, discount);
-        const actualPrice = formatCurrency(actualPriceAmount, currencyCode);
+      console.log('Found price data:', found);
+      return found;
+    };
 
-        return {
-          id,
-          title,
-          image,
-          price,
-          actualPrice,
-          priceAmount,
-          stripeId: priceData?.stripe_price_id,
-        };
-      });
-  }, [upSaleCourses, mainCurrencyCode]);
+    const filteredCourses = upSaleCourses.filter(({ course_prices }: any) => {
+      const hasValidPrice = getPriceData(course_prices);
+      console.log('Course has valid price:', hasValidPrice);
+      return hasValidPrice;
+    });
+
+    console.log('Filtered courses count:', filteredCourses.length);
+
+    const processed = filteredCourses.map(({ id, course_translation, course_prices }: any) => {
+      const title = course_translation?.title;
+      const image = resolveUrl(course_translation?.course_image);
+      console.log('image:', image, 'course_translation?.course_image:', course_translation?.course_image);
+
+      const priceData = getPriceData(course_prices);
+      const priceAmount = priceData?.price || 0;
+      const currencyCode = priceData?.currency?.name || mainCurrencyCode;
+
+      const price = formatCurrency(priceAmount, currencyCode);
+      const discount = course_translation?.course?.discount || 0;
+      const actualPriceAmount = getActualPrice(priceAmount, discount);
+      const actualPrice = formatCurrency(actualPriceAmount, currencyCode);
+
+      const result = {
+        id,
+        title,
+        image,
+        price,
+        actualPrice,
+        priceAmount,
+        stripeId: priceData?.stripe_price_id,
+      };
+
+      console.log('Processed course:', result);
+      return result;
+    });
+
+    console.log('Final processed courses:', processed);
+    return processed;
+  }, [upSaleCourses, mainCurrencyCode, effectiveCurrency]);
   console.log('processedUpsaleCourses :>> ', processedUpsaleCourses);
 
   // Handle checkout - call purchase upsale course API
