@@ -12,6 +12,7 @@ export const routes = {
     redirecting_page: '/redirecting-page',
     terms_and_conditions: '/terms-and-conditions',
     upsale_courses: '/upsale-courses',
+    test_error: '/test-error',
   },
   auth: {
     login: '/login',

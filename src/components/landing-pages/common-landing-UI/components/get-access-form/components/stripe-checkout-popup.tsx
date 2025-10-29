@@ -443,7 +443,7 @@ export default function StripeCheckoutPopup({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ pt: 2 }}>
+      <DialogContent>
         {error ? (
           <>
             <Box sx={{ py: 4, textAlign: 'center' }}>
