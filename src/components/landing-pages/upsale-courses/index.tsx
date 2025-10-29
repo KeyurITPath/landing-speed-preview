@@ -45,6 +45,7 @@ const UpsaleCourses = ({
     handleCheckout,
     handleDeclineUpsale,
     handleClosePaymentError,
+    isCompleteButtonDisabled,
   } = useUpsale(courseData, currency);
 
   // Selected course (the one user originally purchased) - get from props or API
@@ -314,6 +315,7 @@ const UpsaleCourses = ({
                   fullWidth
                   sx={{ textTransform: 'capitalize' }}
                   loading={loading}
+                  disabled={isCompleteButtonDisabled}
                   onClick={handleCheckout}
                 >
                   COMPLETE

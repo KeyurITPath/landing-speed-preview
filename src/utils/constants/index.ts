@@ -161,6 +161,7 @@ const TRIAL_ACTIVATION_METHODS = {
   CANCEL_DISCOUNT_POPUP_1: 'cancel_discount_popup_1',
   CANCEL_DISCOUNT_POPUP_2: 'cancel_discount_popup_2',
   MONTHLY_SUBSCRIPTION_WITH_DISCOUNT: 'monthly_subscription_with_discount',
+  LANDING_1_COURSE_PURCHASE_AUTO_ACTIVATION: 'landing1_course_purchase_auto_activation'
 };
 export {
   METHODS,

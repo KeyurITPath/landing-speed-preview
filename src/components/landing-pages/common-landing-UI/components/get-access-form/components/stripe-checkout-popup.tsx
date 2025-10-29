@@ -132,11 +132,6 @@ const StripeInnerForm = ({
           ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
 
-        // Store landing page info in Redux for secure access
-        if (activeLandingPage?.name === 'landing1') {
-          sessionStorage.setItem('landingPageForRedirect', 'landing1');
-        }
-
         // Close popup and redirect to email verification page
         dispatch(getStripeCheckoutClose());
         const queryString = new URLSearchParams(queryParams).toString();

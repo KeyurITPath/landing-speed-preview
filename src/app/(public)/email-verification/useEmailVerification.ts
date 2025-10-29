@@ -93,9 +93,6 @@ const useEmailVerification = ({ data }: any) => {
           ? `${routes.public.complete_profile}?${queryString ? `${queryString}` : ''}`
           : `${routes.public.trial_activation}?${queryString ? `${queryString}` : ''}`;
 
-        // Clear the landing page redirect flag after use
-        sessionStorage.removeItem('landingPageForRedirect');
-
         router.push(redirectUrl);
       }
     }

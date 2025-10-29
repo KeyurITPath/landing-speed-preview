@@ -118,6 +118,8 @@ const OpenAccessForm = ({
     if (isLandingPage1) {
       // Store registerUserData in Redux for Stripe checkout to use
       dispatch(setRegisterUserData(registerUserData));
+      sessionStorage.setItem('landingPageForRedirect', 'landing1');
+      sessionStorage.setItem('landingCourseSlug', course?.slug);
       dispatch(getAccessClose());
       dispatch(getStripeCheckoutOpen());
     } else if (!isCourseUpsaleCoursesAvailable) {
