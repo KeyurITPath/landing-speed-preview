@@ -14,11 +14,11 @@ export async function generateMetadata({ params, searchParams }: any) {
   const response = await fetchCourseForLanding({
     params: {
       final_url: slug.landing_url,
-      ...(discountCode?.discount_code
-        ? { discount_code: discountCode?.discount_code }
-        : {}),
+      // ...(discountCode?.discount_code
+      //   ? { discount_code: discountCode?.discount_code }
+      //   : {}),
       domain: domain_value,
-      ...searchParams,
+      ...discountCode,
     },
     headers: {
       'req-from': country_code,
