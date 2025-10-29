@@ -36,6 +36,7 @@ const Landing = async ({ params, searchParams }: any) => {
           ? { discount_code: discountCode?.discount_code }
           : {}),
         domain: domain_value,
+        ...searchParams,
       },
       headers: {
         'req-from': country_code,

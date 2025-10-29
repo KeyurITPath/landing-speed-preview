@@ -78,7 +78,22 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
     if (typeof logoutClose === 'function') {
       logoutClose(false);
     }
-    router.refresh();
+    const privateRoutes = Object.values(routes.private);
+    const isPrivateRoute = privateRoutes.some(route => {
+      if (route.includes(':')) {
+        const baseRoute = route.split('/:')[0];
+        return pathname.startsWith(baseRoute);
+      }
+      // Handle static routes
+      return pathname.startsWith(route);
+    });
+
+    if (isPrivateRoute) {
+      window.location.href = routes.auth.login;
+    } else {
+      // If on public route, just refresh to update UI
+      router.refresh();
+    }
   };
 
   const NAVBAR_NAVIGATION_ITEMS = useMemo(() => {
@@ -92,7 +107,10 @@ const Header = ({ domainDetails, user, isLoggedIn }: any) => {
       inputRef.current.focus();
     } else {
       router.push(
-        routes.public.search + '?query=' + encodeURIComponent(searchTerm.trim()) + '&page=1&limit=10'
+        routes.public.search +
+          '?query=' +
+          encodeURIComponent(searchTerm.trim()) +
+          '&page=1&limit=10'
       );
     }
   }, [router, searchTerm]);

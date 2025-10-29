@@ -21,8 +21,10 @@ import {
   styled,
   Skeleton,
   Stack,
+  IconButton,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
+import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
 import { api } from '@/api';
@@ -46,8 +48,8 @@ const stripePromise = loadStripe(
 
 // Styled component for terms links
 const TermsLink = styled(Link)(() => ({
-  color: 'black',
-  textDecorationColor: 'black',
+  color: '#304BE0',
+  textDecorationColor: '#304BE0',
   ':hover': {
     opacity: 0.7,
   },
@@ -197,17 +199,55 @@ const StripeInnerForm = ({
         </Box>
       )}
 
-      {/* Payment summary - shown below card UI */}
-      <Box sx={{ mb: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: 1 }}>
-        <Typography
-          variant='h6'
-          sx={{ fontWeight: 600, mb: 1, color: 'text.primary' }}
+      {/* Payment summary - updated layout to match second image */}
+      <Box
+        sx={{
+          mb: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: '#F5F7FF',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
         >
-          Total Today: {formattedPrice}
-        </Typography>
-        <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-          {courseData?.title || 'Course Access'}
-        </Typography>
+          <Typography variant='subtitle1'>Total Today</Typography>
+          <Typography
+            variant='subtitle1'
+            sx={{ fontWeight: 700, color: '#304BE0' }}
+          >
+            {formattedPrice}
+          </Typography>
+        </Box>
+        <Button
+          type='submit'
+          variant='contained'
+          disabled={isLoading || isProcessing || !clientSecret}
+          sx={{
+            backgroundColor: '#49AE56',
+            '&:hover': { backgroundColor: '#42994C' },
+            minWidth: 120,
+            height: 40,
+            fontSize: '14px',
+            fontWeight: 400,
+          }}
+        >
+          {isProcessing ? (
+            <>
+              <CircularProgress size={20} sx={{ mr: 1 }} />
+              Processing...
+            </>
+          ) : (
+            'Pay Now'
+          )}
+        </Button>
       </Box>
 
       {/* Loading state */}
@@ -220,12 +260,9 @@ const StripeInnerForm = ({
 
       {/* Terms and conditions */}
       <Box sx={{ mb: 2 }}>
-        <Typography
-          variant='body2'
-          sx={{ color: 'text.secondary', fontSize: '12px', lineHeight: 1.4 }}
-        >
+        <Typography variant='caption' sx={{ color: '#747474' }}>
           By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for
-          your results, and 7 days access to Eduell platform. Also you accept
+          your results, and 7 days access to Eduelle platform. Also you accept
           our{' '}
           <TermsLink
             href='/terms-of-service'
@@ -244,22 +281,15 @@ const StripeInnerForm = ({
           </TermsLink>{' '}
           and subscription policy.
         </Typography>
-        <Typography
-          variant='body2'
-          sx={{
-            color: 'text.secondary',
-            fontSize: '12px',
-            lineHeight: 1.4,
-            mt: 1,
-          }}
-        >
+        <br />
+        <Typography variant='caption' sx={{ color: '#747474' }}>
           After 7 days, your subscription will begin automatically and renew at
           $29.99 every 4 weeks until canceled. You may cancel anytime via your
           Eduelle dashboard or by contacting us at{' '}
           <Box
             component='span'
             sx={{
-              color: '#1976d2',
+              color: '#304BE0',
               textDecoration: 'underline',
               cursor: 'pointer',
             }}
@@ -269,38 +299,6 @@ const StripeInnerForm = ({
           .
         </Typography>
       </Box>
-
-      <DialogActions sx={{ px: 0, gap: 1 }}>
-        <Button
-          onClick={onClose}
-          disabled={isLoading || isProcessing}
-          variant='outlined'
-          sx={{
-            backgroundColor: '#4caf50',
-            '&:hover': { backgroundColor: '#45a049' },
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          type='submit'
-          variant='contained'
-          disabled={isLoading || isProcessing || !clientSecret}
-          sx={{
-            backgroundColor: '#4caf50',
-            '&:hover': { backgroundColor: '#45a049' },
-          }}
-        >
-          {isProcessing ? (
-            <>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Processing...
-            </>
-          ) : (
-            'Pay Now'
-          )}
-        </Button>
-      </DialogActions>
     </Box>
   );
 };
@@ -392,7 +390,15 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, queryParams, landingData, registerUserData?.id]);
+  }, [
+    open,
+    courseData,
+    coursePrice?.stripe_price_id,
+    clientSecret,
+    queryParams,
+    landingData,
+    registerUserData?.id,
+  ]);
 
   const options = {
     clientSecret,
@@ -409,7 +415,7 @@ export default function StripeCheckoutPopup({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={() => {}} // Prevent closing on backdrop click
       fullWidth
       maxWidth='sm'
       aria-labelledby='stripe-dialog'
@@ -417,8 +423,25 @@ export default function StripeCheckoutPopup({
         sx: { borderRadius: 2 },
       }}
     >
-      <DialogTitle id='stripe-dialog' sx={{ pb: 1 }}>
+      <DialogTitle
+        id='stripe-dialog'
+        sx={{ pb: 1, position: 'relative', textAlign: 'center' }}
+      >
         Complete Your Payment
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: '#CD4141',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ pt: 2 }}>
         {error ? (
