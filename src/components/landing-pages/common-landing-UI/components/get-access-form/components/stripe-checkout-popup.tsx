@@ -150,7 +150,7 @@ const StripeInnerForm = ({
     <Box
       component='form'
       onSubmit={handleSubmit}
-      sx={{ width: '100%', minWidth: 400, mt: 1 }}
+      sx={{ width: '100%', minWidth: { xs: '100%', sm: 400 }, mt: 1 }}
     >
       {/* Security message */}
       <Box
@@ -216,12 +216,22 @@ const StripeInnerForm = ({
             display: 'flex',
             alignItems: 'center',
             gap: 1,
+            flexDirection: { xs: 'row', sm: 'row' },
           }}
         >
-          <Typography variant='subtitle1'>Total Today</Typography>
           <Typography
             variant='subtitle1'
-            sx={{ fontWeight: 700, color: '#304BE0' }}
+            sx={{ fontSize: { xs: '12px', sm: '16px' } }}
+          >
+            Total Today
+          </Typography>
+          <Typography
+            variant='subtitle1'
+            sx={{
+              fontWeight: 700,
+              color: '#304BE0',
+              fontSize: { xs: '12px', sm: '16px' },
+            }}
           >
             {formattedPrice}
           </Typography>
@@ -235,13 +245,13 @@ const StripeInnerForm = ({
             '&:hover': { backgroundColor: '#42994C' },
             minWidth: 120,
             height: 40,
-            fontSize: '14px',
+            fontSize: { xs: '12px', sm: '14px' },
             fontWeight: 400,
           }}
         >
           {isProcessing ? (
             <>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
+              <CircularProgress size={{xs: 16, sm: 20}} sx={{ mr: {xs: 0.5, sm: 1} }} />
               Processing...
             </>
           ) : (
@@ -260,7 +270,10 @@ const StripeInnerForm = ({
 
       {/* Terms and conditions */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant='caption' sx={{ color: '#747474' }}>
+        <Typography
+          variant='caption'
+          sx={{ color: '#747474', fontSize: { xs: '10px', sm: '12px' } }}
+        >
           By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for
           your results, and 7 days access to Eduelle platform. Also you accept
           our{' '}
@@ -281,8 +294,8 @@ const StripeInnerForm = ({
           </TermsLink>{' '}
           and subscription policy.
         </Typography>
-        <br />
-        <Typography variant='caption' sx={{ color: '#747474' }}>
+        {' '}
+        <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '10px', sm: '12px'} }}>
           After 7 days, your subscription will begin automatically and renew at
           $29.99 every 4 weeks until canceled. You may cancel anytime via your
           Eduelle dashboard or by contacting us at{' '}
@@ -522,7 +535,7 @@ export default function StripeCheckoutPopup({
                 variant='body2'
                 sx={{
                   color: 'text.secondary',
-                  fontSize: '12px',
+                  fontSize: {xs: '10px', sm: '12px'},
                   lineHeight: 1.4,
                 }}
               >
