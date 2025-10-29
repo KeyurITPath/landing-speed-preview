@@ -33,6 +33,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Local state
   const [selectedUpsales, setSelectedUpsales] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isLoadingUpsales, setIsLoadingUpsales] = useState(true); // Start with true to show skeleton initially
   const [showPaymentError, setShowPaymentError] = useState(false);
   const [paymentErrorMessage, setPaymentErrorMessage] = useState<string>('');
 
@@ -58,13 +59,27 @@ const useUpsale = (courseData?: any, currency?: any) => {
       effectiveCourseId &&
       effectiveCurrencyId
     ) {
-      await fetchUpSales({
-        params: {
-          course_id: effectiveCourseId,
-          currency_id: effectiveCurrencyId,
-          language_id: effectiveLanguageId,
-        },
-      });
+      setIsLoadingUpsales(true);
+      try {
+        // Add minimum loading time to show skeleton
+        const [result] = await Promise.all([
+          fetchUpSales({
+            params: {
+              course_id: effectiveCourseId,
+              currency_id: effectiveCurrencyId,
+              language_id: effectiveLanguageId,
+            },
+          }),
+          new Promise(resolve => setTimeout(resolve, 1000)) // Minimum 1 second loading
+        ]);
+      } catch (error) {
+        console.error('Error fetching upsale courses:', error);
+      } finally {
+        setIsLoadingUpsales(false);
+      }
+    } else if (upSaleCourses?.length === 0) {
+      // If we already know there are no courses, don't show loading
+      setIsLoadingUpsales(false);
     }
   }, [
     fetchUpSales,
@@ -73,11 +88,18 @@ const useUpsale = (courseData?: any, currency?: any) => {
     effectiveCurrencyId,
     effectiveLanguageId,
   ]);
-
   // Load upsale courses on mount if not already loaded
   useEffect(() => {
     fetchUpsaleCourses();
   }, [fetchUpsaleCourses]);
+
+  // Set loading to false when courses are loaded or when we know there are no courses
+  useEffect(() => {
+    // If we have courses or if we've tried to fetch and got no results
+    if (upSaleCourses?.length > 0 || (upSaleCourses?.length === 0 && !isLoadingUpsales)) {
+      setIsLoadingUpsales(false);
+    }
+  }, [upSaleCourses?.length, isLoadingUpsales]);
 
   // Handle adding course to order
   const handleAddToOrder = useCallback(
@@ -260,6 +282,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
     // State
     selectedUpsales,
     loading,
+    isLoadingUpsales,
     isPaymentSuccess,
     isPaymentFailed,
     showPaymentError,

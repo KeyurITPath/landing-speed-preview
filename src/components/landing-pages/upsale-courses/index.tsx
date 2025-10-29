@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Button,
@@ -10,7 +10,11 @@ import {
   Modal,
   Stack,
   Typography,
+  useMediaQuery,
+  Skeleton,
 } from '@mui/material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
 import CustomButton from '@shared/button';
 import { ICONS } from '@assets/icons';
 import Image from 'next/image';
@@ -23,17 +27,19 @@ import UpsalePaymentErrorPopup from './upsale-payment-error-popup';
 
 const UpsaleCourses = ({
   courseData,
-  currency
+  currency,
 }: {
   courseData?: any;
   currency?: any;
 }) => {
   const t = useTranslations();
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
   // Use the custom hook
   const {
     selectedUpsales,
     loading,
+    isLoadingUpsales,
     isPaymentSuccess,
     isPaymentFailed,
     showPaymentError,
@@ -47,17 +53,66 @@ const UpsaleCourses = ({
     handleClosePaymentError,
     isCompleteButtonDisabled,
   } = useUpsale(courseData, currency);
+  // Memoize the display condition for navigation buttons
+  const showNavigation = useMemo(
+    () => upsaleCourses?.length > 3,
+    [upsaleCourses?.length]
+  );
+
+  // Skeleton loading component for upsale courses
+  const UpsaleCourseSkeleton = () => (
+    <Box
+      sx={{
+        border: '1px solid #e9ecef',
+        borderRadius: '14px',
+        overflow: 'hidden',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Skeleton
+        variant='rectangular'
+        height={isMobile ? 130 : 170}
+        width='100%'
+        sx={{ borderRadius: '14px 14px 0 0' }}
+      />
+      <Stack
+        gap={1}
+        sx={{
+          p: 2,
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <Skeleton variant='text' height={40} width='100%' />
+        <Skeleton variant='text' height={24} width='80%' />
+        <Skeleton
+          variant='rectangular'
+          height={36}
+          width='100%'
+          sx={{ borderRadius: '8px', mt: 'auto' }}
+        />
+      </Stack>
+    </Box>
+  );
 
   // Selected course (the one user originally purchased) - get from props or API
   const selectedCourse = {
     id: courseData?.course?.id || courseData?.id || 'main-course',
-    title: courseData?.course?.course_translations?.[0]?.title ||
-           courseData?.course_translations?.[0]?.title ||
-           courseData?.course_title ||
-           '',
-    price: courseData?.course?.course_prices?.[0] ?
-      formatCurrency(courseData.course.course_prices[0].price, courseData.course.course_prices[0].currency?.name) :
-      formatCurrency(19, 'USD'),
+    title:
+      courseData?.course?.course_translations?.[0]?.title ||
+      courseData?.course_translations?.[0]?.title ||
+      courseData?.course_title ||
+      '',
+    price: courseData?.course?.course_prices?.[0]
+      ? formatCurrency(
+          courseData.course.course_prices[0].price,
+          courseData.course.course_prices[0].currency?.name
+        )
+      : formatCurrency(19, 'USD'),
   };
 
   const UpsaleCourseCard = ({ course }: { course: any }) => {
@@ -68,60 +123,73 @@ const UpsaleCourses = ({
       <Box
         sx={{
           border: '1px solid #e9ecef',
-          borderRadius: '8px',
+          borderRadius: '14px',
           overflow: 'hidden',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           transition: 'box-shadow 0.2s',
+          // maxWidth: { xs: '170px', sm: '200px' },
+          width: '100%',
           '&:hover': {
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           },
         }}
       >
-        <Box sx={{ position: 'relative' }}>
-          <Image
-            width={200}
-            height={120}
-            src={image}
-            alt={title}
-            style={{
-              objectFit: 'cover',
-              aspectRatio: '16/9',
-              width: '100%',
-              height: '120px',
-            }}
-          />
-        </Box>
+        <Image
+          width={200}
+          height={170}
+          src={image}
+          alt={title}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/9',
+            width: '100%',
+            height: isMobile ? '130px' : '170px',
+          }}
+        />
 
-        <Box sx={{ p: 2, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Stack
+          gap={1}
+          sx={{
+            p: 2,
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#FFFFFF',
+          }}
+        >
           <Typography
             variant='body2'
             sx={{
               fontWeight: 500,
-              fontSize: '13px',
+              fontSize: { xs: '14px' },
               lineHeight: 1.3,
               display: '-webkit-box',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
-              mb: 1,
-              minHeight: '32px',
             }}
           >
             {title}
           </Typography>
 
-          <Typography variant='subtitle2' sx={{ fontWeight: 600, fontSize: '14px', mb: 2 }}>
+          <Typography
+            variant='subtitle2'
+            sx={{
+              fontWeight: 500,
+              fontSize: { xs: '16px' },
+            }}
+          >
             {price}{' '}
             <Box
               component='span'
               sx={{
                 textDecoration: 'line-through',
-                color: '#757575',
-                fontSize: '12px',
-                fontWeight: 400,
+                color: '#747474',
+                fontSize: { xs: '16px' },
+                fontWeight: 500,
               }}
             >
               {actualPrice}
@@ -130,19 +198,30 @@ const UpsaleCourses = ({
 
           <CustomButton
             size='small'
-            onClick={() => handleAddToOrder(course)}
-            disabled={isSelected}
+            onClick={() =>
+              isSelected ? removeFromOrder(id) : handleAddToOrder(course)
+            }
+            variant={isSelected ? 'outlined' : 'contained'}
             sx={{
-              backgroundColor: isSelected ? '#e0e0e0' : undefined,
-              color: isSelected ? '#666' : undefined,
-              fontSize: '12px',
-              py: 0.5,
-              mt: 'auto',
+              color: isSelected ? '#FFFFFF' : '#FFFFFF',
+              border: isSelected ? '1px solid #ddd' : 'none',
+              fontSize: '14px',
+              fontWeight: 400,
+              '&.MuiButton-outlined': {
+                color: '#747474',
+                borderColor: '#747474',
+              },
+              '&.MuiButton-outlined:hover': {
+                color: '#747474',
+                borderColor: '#747474',
+                backgroundColor: '#ddd9d9 !important',
+                opacity: 0.8,
+              },
             }}
           >
-            {isSelected ? 'Added' : 'Add to order'}
+            {isSelected ? 'Delete' : 'Add to order'}
           </CustomButton>
-        </Box>
+        </Stack>
       </Box>
     );
   };
@@ -155,201 +234,164 @@ const UpsaleCourses = ({
         py: 6,
       }}
     >
-      <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 3 }}>
-        <Stack spacing={6}>
+      <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, sm: 3 } }}>
+        <Stack spacing={{ xs: 3, sm: 4 }}>
           {/* Header Section */}
-          <Box sx={{ textAlign: 'left' }}>
+          <Stack gap={2}>
             <Typography
               variant='h3'
               sx={{
-                fontSize: { xs: '28px', md: '36px' },
-                fontWeight: 700,
-                color: '#0E0E0E',
-                mb: 3,
-                lineHeight: 1.2,
+                fontSize: { xs: '24px', md: '28px' },
+                fontWeight: 600,
               }}
             >
               Add a Hot Pick, Save Big!
             </Typography>
             <Typography
               sx={{
-                fontSize: '16px',
-                color: '#666',
-                lineHeight: 1.5,
-                maxWidth: '600px',
+                fontSize: { xs: '14px', md: '16px' },
+                fontWeight: 400,
+                color: '#747474',
               }}
             >
-              Enhance your learning experience by adding these supplementary courses to the one you&apos;ve already purchased, and watch your
+              Enhance your learning experience by adding these supplementary
+              courses to the one you&apos;ve already purchased, and watch your
               progress accelerate to three times its previous pace.
             </Typography>
-          </Box>
+          </Stack>
 
-          {/* Selected Course Section */}
-          <Box
+          <Stack
             sx={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '12px',
-              p: 3,
-              border: '1px solid #e9ecef',
+              backgroundColor: '#F5F6FD',
+              borderRadius: '16px',
+              p: { xs: 2, sm: 3 },
             }}
           >
-            <Stack sx={{ gap: 2 }}>
-              <Typography
-                variant='h6'
-                sx={{ color: 'common.black', fontWeight: 600, mb: 2 }}
-              >
-                Your Selected Course
-              </Typography>
-              <Stack
+            {/* Available Upsale Courses */}
+            <Box>
+              <Box
                 sx={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  display: 'flex',
                   alignItems: 'center',
-                  minHeight: 35,
-                  gap: 2,
+                  justifyContent: 'flex-end',
+                  mb: 2,
                 }}
               >
-                <Typography
-                  variant='body1'
-                  sx={{ color: 'common.black', fontWeight: 500 }}
-                >
-                  {selectedCourse.title}
-                </Typography>
-                <Typography
-                  variant='body1'
-                  sx={{ color: 'common.black', fontWeight: 500, textWrap: 'nowrap' }}
-                >
-                  {selectedCourse.price}
-                </Typography>
-              </Stack>
-
-              {/* Selected Upsale Courses */}
-              {selectedUpsales.map(({ title, price, id }: { title: string; price: string; id: string }) => (
-                <Stack
-                  key={id}
+                <Box
+                  className='navigation-wrapper'
                   sx={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    display: {
+                      xs: 'none',
+                      md: showNavigation ? 'flex!important' : 'none!important',
+                    },
                     gap: 2,
-                    py: 1,
-                    borderTop: '1px solid #e9ecef',
                   }}
                 >
-                  <Typography
-                    variant='body1'
-                    sx={{ color: 'common.black', fontWeight: 500 }}
+                  <div
+                    className='swiper-button-prev upsale-courses-slider-swiper-button-prev'
+                    style={{ position: 'relative', top: '0px' }}
                   >
-                    {title}
-                  </Typography>
-                  <Stack
-                    sx={{ flexDirection: 'row', alignItems: 'center', gap: 0.5 }}
+                    <ICONS.KeyboardArrowLeft size={32} />
+                  </div>
+                  <div
+                    className='swiper-button-next upsale-courses-slider-swiper-button-next'
+                    style={{ position: 'relative', top: '0px' }}
                   >
-                    <Typography
-                      variant='body1'
-                      sx={{
-                        color: 'common.black',
-                        fontWeight: 500,
-                        textWrap: 'nowrap',
-                      }}
-                    >
-                      {price}
-                    </Typography>
-                    <IconButton
-                      size='small'
-                      sx={{ color: '#BFBFBF', fontSize: 25, mr: -1 }}
-                      onClick={() => removeFromOrder(id)}
-                    >
-                      <ICONS.CloseCircleOutline />
-                    </IconButton>
-                  </Stack>
-                </Stack>
-              ))}
-            </Stack>
-          </Box>
-
-          {/* Available Upsale Courses */}
-          <Box>
-            <Typography
-              variant='h5'
-              sx={{ color: 'common.black', fontWeight: 600, mb: 3 }}
-            >
-              Add These Premium Courses
-            </Typography>
-            <Grid2 container spacing={2}>
-              {upsaleCourses.map((course: any) => (
-                  <Grid2 key={course.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                  <UpsaleCourseCard course={course} />
-                </Grid2>
-              ))}
-            </Grid2>
-          </Box>
-
-          {/* Total and Checkout Section */}
-          <Box
-            sx={{
-              backgroundColor: '#f8f9fa',
-              borderRadius: '12px',
-              p: 3,
-              border: '1px solid #e9ecef',
-            }}
-          >
-            <Stack sx={{ gap: 3 }}>
-              <Typography
-                variant='h6'
-                sx={{ color: 'common.black', fontWeight: 600, textAlign: 'right' }}
+                    <ICONS.KeyboardArrowRight size={32} />
+                  </div>
+                </Box>
+              </Box>
+              <Swiper
+                modules={isMobile ? [Navigation, Pagination] : [Navigation]}
+                slidesPerView={2}
+                spaceBetween={16}
+                style={{ width: '100%' }}
+                pagination={{ clickable: isMobile && true }}
+                navigation={
+                  !isMobile
+                    ? {
+                        nextEl: '.upsale-courses-slider-swiper-button-next',
+                        prevEl: '.upsale-courses-slider-swiper-button-prev',
+                      }
+                    : false
+                }
+                breakpoints={{
+                  0: {
+                    slidesPerView: 2,
+                  },
+                  600: {
+                    slidesPerView: 2,
+                  },
+                  900: {
+                    slidesPerView: 3,
+                  },
+                }}
               >
-                Total: {totalPrice}
-              </Typography>
+                {isLoadingUpsales
+                  ? // Show skeleton loading when loading
+                    Array.from({ length: 3 }).map((_, index) => (
+                      <SwiperSlide key={index}>
+                        <Box pb={{ xs: 4, sm: 2 }}>
+                          <UpsaleCourseSkeleton />
+                        </Box>
+                      </SwiperSlide>
+                    ))
+                  : upsaleCourses?.length > 0
+                    ? // Show actual courses when available
+                      upsaleCourses?.map((course: any) => (
+                        <SwiperSlide key={course.id}>
+                          <Box pb={{ xs: 4, sm: 2 }}>
+                            <UpsaleCourseCard course={course} />
+                          </Box>
+                        </SwiperSlide>
+                      ))
+                    : null}
+              </Swiper>
+            </Box>
 
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <CustomButton
-                  fullWidth
-                  sx={{ textTransform: 'capitalize' }}
-                  color='secondary'
-                  onClick={handleDeclineUpsale}
-                >
-                  NO, I DON&apos;T NEED THIS
-                </CustomButton>
-                <CustomButton
-                  fullWidth
-                  sx={{ textTransform: 'capitalize' }}
-                  loading={loading}
-                  disabled={isCompleteButtonDisabled}
-                  onClick={handleCheckout}
-                >
-                  COMPLETE
-                </CustomButton>
-              </Stack>
-
-              {/* Footer Section */}
-              {/* <Stack sx={{ gap: 1, textAlign: 'center' }}>
-                <Typography
-                  variant='body2'
-                  sx={{ color: 'common.black', fontSize: '14px' }}
-                >
-                  Sign up today - start instantly and lock in the lowest price.
-                </Typography>
-                <Typography
-                  variant='body2'
-                  sx={{ color: 'common.black', fontSize: '14px' }}
-                >
-                  14 days money back guarantee: If the course isn&apos;t what you expected, request a full refund within 14 days - no questions asked. Just email us at{' '}
-                  <Box
-                    component='span'
+            {/* Total and Checkout Section */}
+            <Stack sx={{ gap: 2 }}>
+              <Divider sx={{ borderColor: '#dfdfdf' }} />
+              <Stack sx={{ gap: 3, mt: 2 }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <CustomButton
+                    fullWidth
+                    variant='outlined'
+                    onClick={handleDeclineUpsale}
                     sx={{
-                      color: '#1976d2',
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      '&.MuiButton-outlined': {
+                        color: '#49AE56',
+                        borderColor: '#49AE56',
+                      },
+                      '&:hover': {
+                        color: '#FFFFFF',
+                        borderColor: '#49AE56',
+                        opacity: 0.8,
+                      },
                     }}
                   >
-                    hello@eduelle.com
-                  </Box>
-                  .
-                </Typography>
-              </Stack> */}
+                    No, I don&apos;t Need
+                  </CustomButton>
+                  <CustomButton
+                    fullWidth
+                    loading={loading}
+                    disabled={isCompleteButtonDisabled}
+                    onClick={handleCheckout}
+                    variant='contained'
+                    sx={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: '#FFFFFF',
+                    }}
+                  >
+                    Complete
+                  </CustomButton>
+                </Stack>
+              </Stack>
             </Stack>
-          </Box>
+          </Stack>
         </Stack>
       </Box>
 

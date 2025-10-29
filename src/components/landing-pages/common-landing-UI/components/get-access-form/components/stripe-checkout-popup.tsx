@@ -251,7 +251,7 @@ const StripeInnerForm = ({
         >
           {isProcessing ? (
             <>
-              <CircularProgress size={{xs: 16, sm: 20}} sx={{ mr: {xs: 0.5, sm: 1} }} />
+              <CircularProgress size={16} sx={{ mr: {xs: 0.5, sm: 1} }} />
               Processing...
             </>
           ) : (
