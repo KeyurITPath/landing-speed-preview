@@ -28,7 +28,7 @@ export default function UpsellCoursesPage() {
       const courseDataCookie = cookies.get('course_data');
       if (courseDataCookie) {
         const parsedData = JSON.parse(courseDataCookie);
-        return parsedData?.landing_page_name || null;
+        return parsedData?.landing_page_name?.name || null;
       }
       return null;
     } catch (error) {
