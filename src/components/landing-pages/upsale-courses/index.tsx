@@ -433,6 +433,7 @@ const UpsaleCourses = ({
               borderRadius: '16px',
               p: { xs: 1, sm: 3 },
             }}
+            spacing={{ xs: 1 }}
           >
             {/* Available Upsale Courses */}
             <Box>
