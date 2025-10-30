@@ -227,7 +227,7 @@ const StripeInnerForm = ({
         >
           <Typography
             variant='subtitle1'
-            sx={{ fontSize: { xs: '16px', sm: '22px' } }}
+            sx={{ fontSize: { xs: '16px', sm: '20px' } }}
           >
             Total Today
           </Typography>
@@ -249,9 +249,9 @@ const StripeInnerForm = ({
           sx={{
             backgroundColor: '#49AE56',
             '&:hover': { backgroundColor: '#42994C' },
-            minWidth: 150,
+            minWidth: 140,
             height: 50,
-            fontSize: { xs: '16px', sm: '22px' },
+            fontSize: { xs: '16px', sm: '20px' },
             fontWeight: 400,
           }}
         >
