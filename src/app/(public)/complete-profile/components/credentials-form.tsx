@@ -165,7 +165,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
                     <Typography variant='body2' sx={{ fontWeight: 400 }}>
                       {t('trial_explore_message')}
                     </Typography>
-                    <Typography variant='body2' sx={{ fontWeight: 400 }}>
+                    {/* <Typography variant='body2' sx={{ fontWeight: 400 }}>
                       {t.rich('trial_charge_message', {
                         trial_days: trailDays,
                         price: `${subscriptionPrice}/month`,
@@ -178,7 +178,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
                     </Typography>
                     <Typography variant='body2' sx={{ fontWeight: 400 }}>
                       {t('trial_cancel_message')}
-                    </Typography>
+                    </Typography> */}
                   </Stack>
                 </Stack>
               </ProductsCard>
