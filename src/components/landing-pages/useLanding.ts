@@ -291,6 +291,10 @@ const useLanding = ({
           course_title: otherData?.data?.header,
           landing_page:
             LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
+          landing_page_name: activeLandingPage?.name || '',
+          currency_id: currency?.id,
+          currency_name: currency?.name,
+          language_id: otherData?.data?.language_id,
         })
       );
       dispatch(
@@ -300,6 +304,7 @@ const useLanding = ({
           course_title: otherData?.data?.header,
           landing_page:
             LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
+          landing_page_name: activeLandingPage?.name || '',
         })
       );
       dispatch(setCurrency({ id: currency?.id, code: currency?.name }));

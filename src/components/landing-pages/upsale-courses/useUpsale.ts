@@ -29,7 +29,6 @@ const useUpsale = (courseData?: any, currency?: any) => {
   const effectiveLanguageId =
     courseData?.landing_page_translations?.[0]?.language_id ||
     user?.language_id;
-
   // Local state
   const [selectedUpsales, setSelectedUpsales] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -53,6 +52,13 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   // Fetch upsale courses (if not already fetched) - using same pattern as useLanding
   const fetchUpsaleCourses = useCallback(async () => {
+    // Check if all required params are available
+    if (!effectiveCourseId || !effectiveCurrencyId || !effectiveLanguageId) {
+      // Don't show loading if we're missing required params
+      setIsLoadingUpsales(false);
+      return;
+    }
+
     if (
       fetchUpSales &&
       !upSaleCourses?.length &&

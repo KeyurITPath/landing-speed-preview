@@ -17,6 +17,25 @@ export default function UpsellCoursesPage() {
     ({ user: userState }: any) => userState
   );
 
+  // Get landing page name from cookie (stored during landing page visit)
+  const landingPageName = useMemo(() => {
+    try {
+      // First try to get from the Redux courseData
+      if (courseData?.landing_page_name) {
+        return courseData.landing_page_name;
+      }
+      // Then try from cookie
+      const courseDataCookie = cookies.get('course_data');
+      if (courseDataCookie) {
+        const parsedData = JSON.parse(courseDataCookie);
+        return parsedData?.landing_page_name || null;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }, [courseData]);
+
   // Dispatch action to fetch user data
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
 
@@ -38,6 +57,17 @@ export default function UpsellCoursesPage() {
       ? courseData
       : JSON.parse(cookies.get('course_data') || '{}');
 
+  // Extract currency from cookie
+  const currencyFromCookie = useMemo(() => {
+    if (courseDataFromCookie?.currency_id && courseDataFromCookie?.currency_name) {
+      return {
+        id: courseDataFromCookie.currency_id,
+        name: courseDataFromCookie.currency_name,
+      };
+    }
+    return null;
+  }, [courseDataFromCookie]);
+
   // Use cookie data as fallback with proper structure
   const courseDataFromCookieStructured =
     courseDataFromCookie && Object.keys(courseDataFromCookie).length > 0
@@ -50,6 +80,11 @@ export default function UpsellCoursesPage() {
               },
             ],
           },
+          landing_page_translations: [
+            {
+              language_id: courseDataFromCookie.language_id,
+            },
+          ],
           final_url: courseDataFromCookie.slug,
         }
       : null;
@@ -95,9 +130,13 @@ export default function UpsellCoursesPage() {
   }, [userData]);
   // Use the best available data source
   const finalCourseData = courseDataFromOrder || courseDataFromCookieStructured;
-  const finalCurrency = currencyFromOrder || currency;
+  const finalCurrency = currencyFromOrder || currencyFromCookie || currency;
 
   return (
-    <UpsaleCourses courseData={finalCourseData} currency={finalCurrency} />
+    <UpsaleCourses
+      courseData={finalCourseData}
+      currency={finalCurrency}
+      landingPageName={landingPageName}
+    />
   );
 }

@@ -140,6 +140,21 @@ const StripeInnerForm = ({
           ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
 
+        // Store course data in cookie before redirecting to ensure upsale page has all required data
+        cookies.set(
+          'course_data',
+          JSON.stringify({
+            id: courseData?.course?.id || courseData?.id,
+            slug: courseData?.slug || courseData?.final_url,
+            course_title: courseData?.course_translations?.[0]?.title || courseData?.title,
+            landing_page: activeLandingPage,
+            landing_page_name: activeLandingPage,
+            currency_id: coursePrice?.currency?.id,
+            currency_name: coursePrice?.currency?.name,
+            language_id: courseData?.language_id || registerUserData?.language_id,
+          })
+        );
+
         // Close popup and redirect to email verification page
         dispatch(getStripeCheckoutClose());
         const queryString = new URLSearchParams(queryParams).toString();
@@ -212,6 +227,8 @@ const StripeInnerForm = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          flexDirection:{xs: 'column', sm: 'row'},
+          gap:{xs: 1, sm: 0},
         }}
       >
         <Box
@@ -222,12 +239,13 @@ const StripeInnerForm = ({
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            flexDirection: { xs: 'row', sm: 'row' },
+            flexDirection:'row',
+            minWidth:{xs: '100%', sm: 'auto'},
           }}
         >
           <Typography
             variant='subtitle1'
-            sx={{ fontSize: { xs: '16px', sm: '20px' } }}
+            sx={{ fontSize: { xs: '16px', sm: '18px' } }}
           >
             Total Today
           </Typography>
@@ -236,7 +254,7 @@ const StripeInnerForm = ({
             sx={{
               fontWeight: 700,
               color: '#304BE0',
-              fontSize: { xs: '16px', sm: '22px' },
+              fontSize: { xs: '16px', sm: '20px' },
             }}
           >
             {formattedPrice}
@@ -249,9 +267,9 @@ const StripeInnerForm = ({
           sx={{
             backgroundColor: '#49AE56',
             '&:hover': { backgroundColor: '#42994C' },
-            minWidth: 140,
-            height: 50,
-            fontSize: { xs: '16px', sm: '20px' },
+            minWidth: {xs:'100%', sm: 140},
+            height: {xs: 40, sm: 50},
+            fontSize: { xs: '16px', sm: '18px' },
             fontWeight: 400,
           }}
         >
