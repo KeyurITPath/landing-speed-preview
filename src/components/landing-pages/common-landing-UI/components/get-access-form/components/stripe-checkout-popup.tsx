@@ -22,6 +22,8 @@ import {
   Skeleton,
   Stack,
   IconButton,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
@@ -40,6 +42,10 @@ import { routes } from '../../../../../../utils/constants/routes';
 import Link from 'next/link';
 import CustomButton from '../../../../../../shared/button';
 import { ICONS } from '../../../../../../assets/icons';
+import useDispatchWithAbort from '../../../../../../hooks/use-dispatch-with-abort';
+import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.slice';
+import cookies from 'js-cookie';
+
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -66,6 +72,7 @@ const StripeInnerForm = ({
   error,
   activeLandingPage,
   registerUserData,
+  subscriptionPrice,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -75,7 +82,6 @@ const StripeInnerForm = ({
 
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
-
   // Cleanup registerUserData when component unmounts
   useEffect(() => {
     return () => {
@@ -221,7 +227,7 @@ const StripeInnerForm = ({
         >
           <Typography
             variant='subtitle1'
-            sx={{ fontSize: { xs: '12px', sm: '16px' } }}
+            sx={{ fontSize: { xs: '13px', sm: '16px' } }}
           >
             Total Today
           </Typography>
@@ -230,7 +236,7 @@ const StripeInnerForm = ({
             sx={{
               fontWeight: 700,
               color: '#304BE0',
-              fontSize: { xs: '12px', sm: '16px' },
+              fontSize: { xs: '13px', sm: '16px' },
             }}
           >
             {formattedPrice}
@@ -272,7 +278,7 @@ const StripeInnerForm = ({
       <Box sx={{ mb: 2 }}>
         <Typography
           variant='caption'
-          sx={{ color: '#747474', fontSize: { xs: '10px', sm: '12px' } }}
+          sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
         >
           By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for
           your results, and 7 days access to Eduelle platform. Also you accept
@@ -295,9 +301,9 @@ const StripeInnerForm = ({
           and subscription policy.
         </Typography>
         {' '}
-        <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '10px', sm: '12px'} }}>
-          After 7 days, your subscription will begin automatically and renew at
-          $29.99 every 4 weeks until canceled. You may cancel anytime via your
+        <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '11px', sm: '12px'} }}>
+          After 7 days, your subscription will begin automatically and renew at{' '}
+          {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime via your
           Eduelle dashboard or by contacting us at{' '}
           <Box
             component='span'
@@ -324,6 +330,7 @@ export default function StripeCheckoutPopup({
   utmData,
   queryParams,
   landingData,
+  ...props
 }: any) {
   const t = useTranslations();
   const [clientSecret, setClientSecret] = useState('');
@@ -333,9 +340,22 @@ export default function StripeCheckoutPopup({
   // Get registerUserData from Redux
   const { registerUserData } = useSelector(({ course }: any) => course);
 
+  // Get monthlySubscriptionData from Redux (for subscription price in terms)
+  const { data: monthlySubscriptionData } = useSelector(
+    ({ popup }: any) => popup?.monthlySubscription
+  );
+
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
 
+  // Format subscription price from monthlySubscriptionData
+  const subscriptionPrice = formatCurrency(
+    monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount,
+    monthlySubscriptionData?.subscription_plan_prices?.[0]?.currency?.name
+  );
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // Reset payment intent when popup closes
   useEffect(() => {
     if (!open) {
@@ -344,7 +364,8 @@ export default function StripeCheckoutPopup({
       setError('');
     }
   }, [open]);
-
+  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
+  const country_code = cookies.get('country_code') || '';
   // Create payment intent when component mounts
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -419,11 +440,25 @@ export default function StripeCheckoutPopup({
       theme: 'stripe' as const,
       variables: {
         colorPrimary: '#4caf50',
-        fontFamily: 'Inter, system-ui, sans-serif',
+        fontFamily: '"Rubik", sans-serif',
         borderRadius: '8px',
+        fontSizeBase: isMobile ? '12px' : '14px',  // Base font size
+        fontSizeSm: isMobile ? '12px' : '14px',    // Small text
+        fontSizeXs: isMobile ? '12px' : '14px',    // Extra small text
+        spacingUnit: isMobile ? '4px' : '6px',
       },
     },
   };
+
+  useEffect(() => {
+    if (fetchFreeTrialPopupsData) {
+      fetchFreeTrialPopupsData({
+        headers: {
+          'req-from': country_code,
+        },
+      });
+    }
+  }, [fetchFreeTrialPopupsData, country_code]);
 
   return (
     <Dialog
@@ -431,10 +466,19 @@ export default function StripeCheckoutPopup({
       onClose={() => {}} // Prevent closing on backdrop click
       fullWidth
       maxWidth='sm'
+      scroll='body'
       aria-labelledby='stripe-dialog'
       PaperProps={{
-        sx: { borderRadius: 2 },
+        sx: {
+          borderRadius: {xs: 0, sm: 2},
+          m: { xs: 0, sm: '50px' },
+          width: { xs: '100%', sm: 'calc(100% - 100px)' },
+          maxWidth: { xs: '100% !important', sm: '600px !important' },
+          position: 'relative',
+        },
       }}
+      sx={{ bgcolor: 'common.black' }}
+      {...props}
     >
       <DialogTitle
         id='stripe-dialog'
@@ -507,6 +551,7 @@ export default function StripeCheckoutPopup({
               error={error}
               activeLandingPage={landingData?.activeLandingPage}
               registerUserData={registerUserData}
+              subscriptionPrice={subscriptionPrice}
             />
           </Elements>
         ) : (

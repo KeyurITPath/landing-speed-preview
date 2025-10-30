@@ -10,14 +10,18 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 import { ICONS } from '@/assets/icons';
 import CustomButton from '@/shared/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { IMAGES } from '@/assets/images';
-import { decrypt } from '@/utils/helper';
+import { decrypt, formatCurrency } from '@/utils/helper';
 import { useTranslations } from 'next-intl';
 import { routes } from '../../../../utils/constants/routes';
 import Image from 'next/image';
+import useDispatchWithAbort from '../../../../hooks/use-dispatch-with-abort';
+import { fetchFreeTrialPopups } from '../../../../store/features/popup.slice';
+import cookies from 'js-cookie';
 
 const CredentialsCard = styled(Stack)(() => ({
   border: '1px solid #E5E5E5',
@@ -43,9 +47,22 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
   const router = useRouter();
   const t = useTranslations();
 
+  const { data: monthlySubscriptionData } = useSelector(
+    ({ popup }: any) => popup?.monthlySubscription
+  );
+  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
+  const country_code = cookies.get('country_code');
   const plainPassword = useMemo(() => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
+
+  // Format subscription price
+  const subscriptionPrice = useMemo(() => {
+    return formatCurrency(
+      monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount,
+      monthlySubscriptionData?.subscription_plan_prices?.[0]?.currency?.name
+    );
+  }, [monthlySubscriptionData]);
 
   const isFreeTrial = useMemo(() => {
     return (
@@ -65,12 +82,12 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
 
   const orderHistory = useMemo(() => {
     return (
-      userData?.user_orders?.[0]?.user_order_details?.map(
-        ({ id, course_translation }: any) => ({
+      userData?.user_orders?.[0]?.user_order_details
+        ?.filter(({ payment_status }: any) => payment_status === 'paid')
+        ?.map(({ id, course_translation }: any) => ({
           id,
           title: course_translation?.title,
-        })
-      ) || []
+        })) || []
     );
   }, [userData]);
 
@@ -79,6 +96,16 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
       router.push(routes.public.home);
     }
   }, [userData?.id, router]);
+
+  useEffect(() => {
+    if (fetchFreeTrialPopupsData) {
+      fetchFreeTrialPopupsData({
+        headers: {
+          'req-from': country_code,
+        },
+      });
+    }
+  }, [fetchFreeTrialPopupsData, country_code]);
 
   return (
     <>
@@ -118,23 +145,42 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
               );
             })}
             {isFreeTrial && (
-              <ProductsCard>
-                <Image
-                  src={IMAGES.FireEmoji}
-                  alt='FireEmoji'
-                  width={40}
-                  height={40}
-                  style={{
-                    width: 'auto',
-                    height: '40px'
-                  }}
-                />
-                <Typography variant='subtitle1' sx={{ fontWeight: 400 }}>
-                  <Box component='span' sx={{ fontWeight: 500 }}>
-                    {t('trial_access_message', { trial_days: trailDays })}
-                  </Box>{' '}
-                  {t('trial_message', { trial_days: trailDays })}
-                </Typography>
+              <ProductsCard sx={{ flexDirection: 'column', gap: 1.5 }}>
+                <Stack direction='row' spacing={1.5} alignItems='flex-start'>
+                  <Image
+                    src={IMAGES.FireEmoji}
+                    alt='FireEmoji'
+                    width={40}
+                    height={40}
+                    style={{
+                      width: 'auto',
+                      height: '40px',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Stack spacing={1}>
+                    <Typography variant='subtitle1' sx={{ fontWeight: 500 }}>
+                      {t('trial_access_title', { trial_days: trailDays })}
+                    </Typography>
+                    <Typography variant='body2' sx={{ fontWeight: 400 }}>
+                      {t('trial_explore_message')}
+                    </Typography>
+                    <Typography variant='body2' sx={{ fontWeight: 400 }}>
+                      {t.rich('trial_charge_message', {
+                        trial_days: trailDays,
+                        price: `${subscriptionPrice}/month`,
+                        b: (chunks) => (
+                          <Box component='span' sx={{ fontWeight: 500 }}>
+                            {chunks}
+                          </Box>
+                        ),
+                      })}
+                    </Typography>
+                    <Typography variant='body2' sx={{ fontWeight: 400 }}>
+                      {t('trial_cancel_message')}
+                    </Typography>
+                  </Stack>
+                </Stack>
               </ProductsCard>
             )}
           </Stack>

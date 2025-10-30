@@ -25,6 +25,174 @@ import useUpsale from './useUpsale';
 import { formatCurrency } from '@/utils/helper';
 import UpsalePaymentErrorPopup from './upsale-payment-error-popup';
 
+// Skeleton loading component for upsale courses - moved outside to prevent recreation
+const UpsaleCourseSkeleton = ({ isMobile }: { isMobile: boolean }) => (
+  <Box
+    sx={{
+      border: '1px solid #e9ecef',
+      borderRadius: '14px',
+      overflow: 'hidden',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+  >
+    <Skeleton
+      variant='rectangular'
+      height={isMobile ? 130 : 170}
+      width='100%'
+      sx={{ borderRadius: '14px 14px 0 0' }}
+    />
+    <Stack
+      gap={1}
+      sx={{
+        p: 2,
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#FFFFFF',
+      }}
+    >
+      <Skeleton variant='text' height={40} width='100%' />
+      <Skeleton variant='text' height={24} width='80%' />
+      <Skeleton
+        variant='rectangular'
+        height={36}
+        width='100%'
+        sx={{ borderRadius: '8px', mt: 'auto' }}
+      />
+    </Stack>
+  </Box>
+);
+
+// Upsale Course Card - moved outside and memoized to prevent unnecessary rerenders
+const UpsaleCourseCard = React.memo(
+  ({
+    course,
+    isSelected,
+    isMobile,
+    onAddToOrder,
+    onRemove,
+  }: {
+    course: any;
+    isSelected: boolean;
+    isMobile: boolean;
+    onAddToOrder: (course: any) => void;
+    onRemove: (id: string) => void;
+  }) => {
+    const { title, image, price, actualPrice, id } = course;
+
+    return (
+      <Box
+        sx={{
+          border: '1px solid #e9ecef',
+          borderRadius: '14px',
+          overflow: 'hidden',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          transition: 'box-shadow 0.2s',
+          width: '100%',
+          '&:hover': {
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          },
+        }}
+      >
+        <Image
+          width={200}
+          height={170}
+          src={image}
+          alt={title}
+          style={{
+            objectFit: 'cover',
+            aspectRatio: '16/9',
+            width: '100%',
+            height: isMobile ? '130px' : '170px',
+          }}
+          priority={false}
+          loading='lazy'
+        />
+
+        <Stack
+          gap={1}
+          sx={{
+            p: 2,
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#FFFFFF',
+          }}
+        >
+          <Typography
+            variant='body2'
+            sx={{
+              fontWeight: 500,
+              fontSize: { xs: '14px' },
+              lineHeight: 1.3,
+              display: '-webkit-box',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              mb: 1,
+              height: '40px',
+            }}
+          >
+            {title}
+          </Typography>
+
+          <Typography
+            variant='subtitle2'
+            sx={{
+              fontWeight: 500,
+              fontSize: { xs: '16px' },
+            }}
+          >
+            {price}{' '}
+            <Box
+              component='span'
+              sx={{
+                textDecoration: 'line-through',
+                color: '#747474',
+                fontSize: { xs: '16px' },
+                fontWeight: 500,
+              }}
+            >
+              {actualPrice}
+            </Box>
+          </Typography>
+
+          <CustomButton
+            size='small'
+            onClick={() => (isSelected ? onRemove(id) : onAddToOrder(course))}
+            variant={isSelected ? 'outlined' : 'contained'}
+            sx={{
+              color: isSelected ? '#FFFFFF' : '#FFFFFF',
+              border: isSelected ? '1px solid #ddd' : 'none',
+              fontSize: '14px',
+              fontWeight: 400,
+              '&.MuiButton-outlined': {
+                color: '#747474',
+                borderColor: '#747474',
+              },
+              '&.MuiButton-outlined:hover': {
+                color: '#747474',
+                borderColor: '#747474',
+                backgroundColor: '#ddd9d9 !important',
+                opacity: 0.8,
+              },
+            }}
+          >
+            {isSelected ? 'Delete' : 'Add to order'}
+          </CustomButton>
+        </Stack>
+      </Box>
+    );
+  }
+);
+
+UpsaleCourseCard.displayName = 'UpsaleCourseCard';
+
 const UpsaleCourses = ({
   courseData,
   currency,
@@ -58,173 +226,6 @@ const UpsaleCourses = ({
     () => upsaleCourses?.length > 3,
     [upsaleCourses?.length]
   );
-
-  // Skeleton loading component for upsale courses
-  const UpsaleCourseSkeleton = () => (
-    <Box
-      sx={{
-        border: '1px solid #e9ecef',
-        borderRadius: '14px',
-        overflow: 'hidden',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <Skeleton
-        variant='rectangular'
-        height={isMobile ? 130 : 170}
-        width='100%'
-        sx={{ borderRadius: '14px 14px 0 0' }}
-      />
-      <Stack
-        gap={1}
-        sx={{
-          p: 2,
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <Skeleton variant='text' height={40} width='100%' />
-        <Skeleton variant='text' height={24} width='80%' />
-        <Skeleton
-          variant='rectangular'
-          height={36}
-          width='100%'
-          sx={{ borderRadius: '8px', mt: 'auto' }}
-        />
-      </Stack>
-    </Box>
-  );
-
-  // Selected course (the one user originally purchased) - get from props or API
-  const selectedCourse = {
-    id: courseData?.course?.id || courseData?.id || 'main-course',
-    title:
-      courseData?.course?.course_translations?.[0]?.title ||
-      courseData?.course_translations?.[0]?.title ||
-      courseData?.course_title ||
-      '',
-    price: courseData?.course?.course_prices?.[0]
-      ? formatCurrency(
-          courseData.course.course_prices[0].price,
-          courseData.course.course_prices[0].currency?.name
-        )
-      : formatCurrency(19, 'USD'),
-  };
-
-  const UpsaleCourseCard = ({ course }: { course: any }) => {
-    const { title, image, price, actualPrice, id } = course;
-    const isSelected = selectedUpsales.find((item: any) => item.id === id);
-
-    return (
-      <Box
-        sx={{
-          border: '1px solid #e9ecef',
-          borderRadius: '14px',
-          overflow: 'hidden',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'box-shadow 0.2s',
-          // maxWidth: { xs: '170px', sm: '200px' },
-          width: '100%',
-          '&:hover': {
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          },
-        }}
-      >
-        <Image
-          width={200}
-          height={170}
-          src={image}
-          alt={title}
-          style={{
-            objectFit: 'cover',
-            aspectRatio: '16/9',
-            width: '100%',
-            height: isMobile ? '130px' : '170px',
-          }}
-        />
-
-        <Stack
-          gap={1}
-          sx={{
-            p: 2,
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#FFFFFF',
-          }}
-        >
-          <Typography
-            variant='body2'
-            sx={{
-              fontWeight: 500,
-              fontSize: { xs: '14px' },
-              lineHeight: 1.3,
-              display: '-webkit-box',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            {title}
-          </Typography>
-
-          <Typography
-            variant='subtitle2'
-            sx={{
-              fontWeight: 500,
-              fontSize: { xs: '16px' },
-            }}
-          >
-            {price}{' '}
-            <Box
-              component='span'
-              sx={{
-                textDecoration: 'line-through',
-                color: '#747474',
-                fontSize: { xs: '16px' },
-                fontWeight: 500,
-              }}
-            >
-              {actualPrice}
-            </Box>
-          </Typography>
-
-          <CustomButton
-            size='small'
-            onClick={() =>
-              isSelected ? removeFromOrder(id) : handleAddToOrder(course)
-            }
-            variant={isSelected ? 'outlined' : 'contained'}
-            sx={{
-              color: isSelected ? '#FFFFFF' : '#FFFFFF',
-              border: isSelected ? '1px solid #ddd' : 'none',
-              fontSize: '14px',
-              fontWeight: 400,
-              '&.MuiButton-outlined': {
-                color: '#747474',
-                borderColor: '#747474',
-              },
-              '&.MuiButton-outlined:hover': {
-                color: '#747474',
-                borderColor: '#747474',
-                backgroundColor: '#ddd9d9 !important',
-                opacity: 0.8,
-              },
-            }}
-          >
-            {isSelected ? 'Delete' : 'Add to order'}
-          </CustomButton>
-        </Stack>
-      </Box>
-    );
-  };
 
   return (
     <Box
@@ -332,19 +333,30 @@ const UpsaleCourses = ({
                     Array.from({ length: 3 }).map((_, index) => (
                       <SwiperSlide key={index}>
                         <Box pb={{ xs: 4, sm: 2 }}>
-                          <UpsaleCourseSkeleton />
+                          <UpsaleCourseSkeleton isMobile={isMobile} />
                         </Box>
                       </SwiperSlide>
                     ))
                   : upsaleCourses?.length > 0
                     ? // Show actual courses when available
-                      upsaleCourses?.map((course: any) => (
-                        <SwiperSlide key={course.id}>
-                          <Box pb={{ xs: 4, sm: 2 }}>
-                            <UpsaleCourseCard course={course} />
-                          </Box>
-                        </SwiperSlide>
-                      ))
+                      upsaleCourses?.map((course: any) => {
+                        const isSelected = selectedUpsales.find(
+                          (item: any) => item.id === course.id
+                        );
+                        return (
+                          <SwiperSlide key={course.id}>
+                            <Box pb={{ xs: 4, sm: 2 }}>
+                              <UpsaleCourseCard
+                                course={course}
+                                isSelected={!!isSelected}
+                                isMobile={isMobile}
+                                onAddToOrder={handleAddToOrder}
+                                onRemove={removeFromOrder}
+                              />
+                            </Box>
+                          </SwiperSlide>
+                        );
+                      })
                     : null}
               </Swiper>
             </Box>
