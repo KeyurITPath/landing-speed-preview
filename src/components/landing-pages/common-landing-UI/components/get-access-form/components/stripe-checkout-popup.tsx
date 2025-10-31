@@ -332,16 +332,16 @@ const StripeInnerForm = ({
           After 7 days, your subscription will begin automatically and renew at{' '}
           {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime via your
           Eduelle dashboard or by contacting us at{' '}
-          <Box
-            component='span'
-            sx={{
+          <a
+            href="mailto:support@eduelle.com"
+            style={{
               color: '#304BE0',
               textDecoration: 'underline',
               cursor: 'pointer',
             }}
           >
-            hello@eduelle.com
-          </Box>
+            support@eduelle.com
+          </a>
           .
         </Typography>
       </Box>
