@@ -687,5 +687,19 @@
   "extend_trial_initial": "Explora gratis por {trial_days}-días",
   "decline_the_opportunity": "Ahora no",
   "video_processing": "Procesando video...",
-  "disclaimer": "{BRAND} no se hace responsable de lesiones o daños derivados de la realización de los ejercicios en este video. Practica bajo tu propia responsabilidad."
+  "disclaimer": "{BRAND} no se hace responsable de lesiones o daños derivados de la realización de los ejercicios en este video. Practica bajo tu propia responsabilidad.",
+  "stripe_checkout": {
+    "secure_transaction": "Todas las transacciones son seguras y cifradas. La información de la tarjeta de crédito nunca se almacena.",
+    "total_today": "Total Hoy",
+    "processing": "Procesando...",
+    "pay_now": "Pagar Ahora",
+    "initializing_payment": "Inicializando pago...",
+    "complete_payment": "Completa Tu Pago",
+    "payment_setup_failed": "Falló la Configuración del Pago",
+    "payment_setup_error": "No pudimos inicializar tu pago. Por favor, inténtalo de nuevo o contacta al soporte si el problema persiste.",
+    "setting_up_payment": "Configurando pago seguro",
+    "preparing_form": "Por favor espera mientras preparamos tu formulario de pago...",
+    "payment_agreement": "Al hacer clic en \"Pagar Ahora\", aceptas pagar {price} por el acceso al curso y 7 días de acceso a la plataforma Eduelle. También aceptas nuestros <terms>Términos de Uso</terms> y <privacy>Política de Privacidad</privacy>",
+    "subscription_renewal": "Después de 7 días, tu suscripción comenzará automáticamente y se renovará por {price} cada 4 semanas hasta que la canceles. Puedes cancelar en cualquier momento a través de tu panel de Eduelle o contactándonos en <email>support@eduelle.com</email>."
+  }
 }

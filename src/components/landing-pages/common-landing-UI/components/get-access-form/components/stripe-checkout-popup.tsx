@@ -197,8 +197,7 @@ const StripeInnerForm = ({
           variant='body2'
           sx={{ color: 'text.secondary', fontSize: '12px', lineHeight: 1.4 }}
         >
-          All transactions are secure and encrypted. Credit Card information is
-          never stored.
+          {t('stripe_checkout.secure_transaction')}
         </Typography>
       </Box>
 
@@ -260,7 +259,7 @@ const StripeInnerForm = ({
             variant='subtitle1'
             sx={{ fontSize: { xs: '16px', sm: '18px' } }}
           >
-            Total Today
+            {t('stripe_checkout.total_today')}
           </Typography>
           <Typography
             variant='subtitle1'
@@ -289,10 +288,10 @@ const StripeInnerForm = ({
           {isProcessing ? (
             <>
               <CircularProgress size={16} sx={{ mr: {xs: 0.5, sm: 1} }} />
-              Processing...
+              {t('stripe_checkout.processing')}
             </>
           ) : (
-            'Pay Now'
+            t('stripe_checkout.pay_now')
           )}
         </Button>
       </Box>
@@ -301,7 +300,7 @@ const StripeInnerForm = ({
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
           <CircularProgress size={24} />
-          <Typography sx={{ ml: 1 }}>Initializing payment...</Typography>
+          <Typography sx={{ ml: 1 }}>{t('stripe_checkout.initializing_payment')}</Typography>
         </Box>
       )}
 
@@ -311,38 +310,44 @@ const StripeInnerForm = ({
           variant='caption'
           sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
         >
-          By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for your course access and a 7 days access to Eduelle platform. You also accept our{' '}
-          <TermsLink
-            href='/terms-of-service'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Terms of Use
-          </TermsLink>
-          ,{' '}and{' '}
-          <TermsLink
-            href='/privacy-policy'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Privacy Policy
-          </TermsLink>{' '}
+          {t.rich('stripe_checkout.payment_agreement', {
+            price: formattedPrice,
+            terms: (chunks) => (
+              <TermsLink
+                href='/terms-of-service'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {chunks}
+              </TermsLink>
+            ),
+            privacy: (chunks) => (
+              <TermsLink
+                href='/privacy-policy'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {chunks}
+              </TermsLink>
+            ),
+          })}
         </Typography>
         <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '11px', sm: '12px'} }}>
-          After 7 days, your subscription will begin automatically and renew at{' '}
-          {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime through your
-          Eduelle dashboard or by contacting us at{' '}
-          <a
-            href="mailto:support@eduelle.com"
-            style={{
-              color: '#304BE0',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}
-          >
-            support@eduelle.com
-          </a>
-          .
+          {t.rich('stripe_checkout.subscription_renewal', {
+            price: subscriptionPrice,
+            email: (chunks) => (
+              <a
+                href="mailto:support@eduelle.com"
+                style={{
+                  color: '#304BE0',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </Typography>
       </Box>
     </Box>
@@ -511,7 +516,7 @@ export default function StripeCheckoutPopup({
         id='stripe-dialog'
         sx={{ pb: 1, position: 'relative', textAlign: 'center' }}
       >
-        Complete Your Payment
+        {t('stripe_checkout.complete_payment')}
         <IconButton
           onClick={onClose}
           sx={{
@@ -540,7 +545,7 @@ export default function StripeCheckoutPopup({
                 variant='h6'
                 sx={{ mb: 1, color: 'text.primary', fontWeight: 600 }}
               >
-                Payment Setup Failed
+                {t('stripe_checkout.payment_setup_failed')}
               </Typography>
               <Typography
                 variant='body2'
@@ -550,8 +555,7 @@ export default function StripeCheckoutPopup({
                   margin: '0 auto',
                 }}
               >
-                We couldn&apos;t initialize your payment. Please try again or
-                contact support if the problem persists.
+                {t('stripe_checkout.payment_setup_error')}
               </Typography>
             </Box>
 
@@ -562,7 +566,7 @@ export default function StripeCheckoutPopup({
                 color='secondary'
                 sx={{ minWidth: 100 }}
               >
-                Close
+                {t('close')}
               </CustomButton>
             </Box>
           </>
@@ -611,8 +615,7 @@ export default function StripeCheckoutPopup({
                   lineHeight: 1.4,
                 }}
               >
-                All transactions are secure and encrypted. Credit Card
-                information is never stored.
+                {t('stripe_checkout.secure_transaction')}
               </Typography>
             </Box>
 
@@ -646,13 +649,13 @@ export default function StripeCheckoutPopup({
             <Box sx={{ textAlign: 'center', py: 3 }}>
               <CircularProgress size={32} sx={{ mb: 2 }} />
               <Typography variant='h6' sx={{ mb: 1, fontWeight: 500 }}>
-                Setting up secure payment
+                {t('stripe_checkout.setting_up_payment')}
               </Typography>
               <Typography
                 variant='body2'
                 sx={{ color: 'text.secondary', mb: 2 }}
               >
-                Please wait while we prepare your payment form...
+                {t('stripe_checkout.preparing_form')}
               </Typography>
             </Box>
           </Box>
