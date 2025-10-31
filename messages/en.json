@@ -699,7 +699,7 @@
     "payment_setup_error": "We couldn't initialize your payment. Please try again or contact support if the problem persists.",
     "setting_up_payment": "Setting up secure payment",
     "preparing_form": "Please wait while we prepare your payment form...",
-    "payment_agreement": "By clicking \"Pay Now\", you agree to pay {price} for your course access and a 7 days access to Eduelle platform. You also accept our <terms>Terms of Use</terms>, and <privacy>Privacy Policy</privacy>",
-    "subscription_renewal": "After 7 days, your subscription will begin automatically and renew at {price} every 4 weeks until canceled. You may cancel anytime through your Eduelle dashboard or by contacting us at <email>support@eduelle.com</email>."
+    "payment_agreement": "By clicking \"Pay Now\", you agree to pay {price} for your course access and a 7-day free trial to all {domain} courses. You also accept our <terms>Terms of Use</terms>, and <privacy>Privacy Policy</privacy>",
+    "subscription_renewal": "After 7 days, your subscription will begin automatically and renew at {price} every 4 weeks until canceled. You may cancel anytime through your {domain} dashboard or by contacting us at <email>support@eduelle.com</email>."
   }
 }

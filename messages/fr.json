@@ -699,7 +699,7 @@
     "payment_setup_error": "Nous n'avons pas pu initialiser votre paiement. Veuillez réessayer ou contacter le support si le problème persiste.",
     "setting_up_payment": "Configuration du paiement sécurisé",
     "preparing_form": "Veuillez patienter pendant que nous préparons votre formulaire de paiement...",
-    "payment_agreement": "En cliquant sur \"Payer Maintenant\", vous acceptez de payer {price} pour l'accès à votre cours et 7 jours d'accès à la plateforme Eduelle. Vous acceptez également nos <terms>Conditions d'Utilisation</terms> et notre <privacy>Politique de Confidentialité</privacy>",
-    "subscription_renewal": "Après 7 jours, votre abonnement commencera automatiquement et se renouvellera à {price} toutes les 4 semaines jusqu'à annulation. Vous pouvez annuler à tout moment via votre tableau de bord Eduelle ou en nous contactant à <email>support@eduelle.com</email>."
+    "payment_agreement": "En cliquant sur \"Payer Maintenant\", vous acceptez de payer {price} pour l'accès à votre cours et un essai gratuit de 7 jours à tous les cours {domain}. Vous acceptez également nos <terms>Conditions d'Utilisation</terms> et notre <privacy>Politique de Confidentialité</privacy>",
+    "subscription_renewal": "Après 7 jours, votre abonnement commencera automatiquement et se renouvellera à {price} toutes les 4 semaines jusqu'à annulation. Vous pouvez annuler à tout moment via votre tableau de bord {domain} ou en nous contactant à <email>support@eduelle.com</email>."
   }
 }

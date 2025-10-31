@@ -46,7 +46,6 @@ import useDispatchWithAbort from '../../../../../../hooks/use-dispatch-with-abor
 import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.slice';
 import cookies from 'js-cookie';
 
-
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
@@ -63,7 +62,6 @@ const TermsLink = styled(Link)(() => ({
 
 // Inner form component that handles payment processing
 const StripeInnerForm = ({
-  onClose,
   courseData,
   utmData,
   queryParams,
@@ -73,6 +71,7 @@ const StripeInnerForm = ({
   activeLandingPage,
   registerUserData,
   subscriptionPrice,
+  brandName,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -80,7 +79,6 @@ const StripeInnerForm = ({
   const t = useTranslations();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
   // Cleanup registerUserData when component unmounts
   useEffect(() => {
@@ -146,12 +144,14 @@ const StripeInnerForm = ({
           JSON.stringify({
             id: courseData?.course?.id || courseData?.id,
             slug: courseData?.slug || courseData?.final_url,
-            course_title: courseData?.course_translations?.[0]?.title || courseData?.title,
+            course_title:
+              courseData?.course_translations?.[0]?.title || courseData?.title,
             landing_page: activeLandingPage,
             landing_page_name: activeLandingPage,
             currency_id: coursePrice?.currency?.id,
             currency_name: coursePrice?.currency?.name,
-            language_id: courseData?.language_id || registerUserData?.language_id,
+            language_id:
+              courseData?.language_id || registerUserData?.language_id,
           })
         );
 
@@ -225,7 +225,7 @@ const StripeInnerForm = ({
                 bancontact: 'never',
                 sepaDebit: 'never',
                 sofort: 'never',
-                cashapp: 'never'
+                cashapp: 'never',
               },
             }}
           />
@@ -239,8 +239,8 @@ const StripeInnerForm = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexDirection:{xs: 'column', sm: 'row'},
-          gap:{xs: 1, sm: 0},
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 1, sm: 0 },
         }}
       >
         <Box
@@ -251,8 +251,8 @@ const StripeInnerForm = ({
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            flexDirection:'row',
-            minWidth:{xs: '100%', sm: 'auto'},
+            flexDirection: 'row',
+            minWidth: { xs: '100%', sm: 'auto' },
           }}
         >
           <Typography
@@ -279,15 +279,15 @@ const StripeInnerForm = ({
           sx={{
             backgroundColor: '#49AE56',
             '&:hover': { backgroundColor: '#42994C' },
-            minWidth: {xs:'100%', sm: 140},
-            height: {xs: 40, sm: 50},
+            minWidth: { xs: '100%', sm: 140 },
+            height: { xs: 40, sm: 50 },
             fontSize: { xs: '16px', sm: '18px' },
             fontWeight: 400,
           }}
         >
           {isProcessing ? (
             <>
-              <CircularProgress size={16} sx={{ mr: {xs: 0.5, sm: 1} }} />
+              <CircularProgress size={16} sx={{ mr: { xs: 0.5, sm: 1 } }} />
               {t('stripe_checkout.processing')}
             </>
           ) : (
@@ -300,7 +300,9 @@ const StripeInnerForm = ({
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
           <CircularProgress size={24} />
-          <Typography sx={{ ml: 1 }}>{t('stripe_checkout.initializing_payment')}</Typography>
+          <Typography sx={{ ml: 1 }}>
+            {t('stripe_checkout.initializing_payment')}
+          </Typography>
         </Box>
       )}
 
@@ -312,7 +314,8 @@ const StripeInnerForm = ({
         >
           {t.rich('stripe_checkout.payment_agreement', {
             price: formattedPrice,
-            terms: (chunks) => (
+            domain: brandName,
+            terms: chunks => (
               <TermsLink
                 href='/terms-of-service'
                 target='_blank'
@@ -321,7 +324,7 @@ const StripeInnerForm = ({
                 {chunks}
               </TermsLink>
             ),
-            privacy: (chunks) => (
+            privacy: chunks => (
               <TermsLink
                 href='/privacy-policy'
                 target='_blank'
@@ -331,13 +334,17 @@ const StripeInnerForm = ({
               </TermsLink>
             ),
           })}
-        </Typography>
-        <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '11px', sm: '12px'} }}>
+        </Typography>{' '}
+        <Typography
+          variant='caption'
+          sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
+        >
           {t.rich('stripe_checkout.subscription_renewal', {
             price: subscriptionPrice,
-            email: (chunks) => (
+            domain: brandName,
+            email: chunks => (
               <a
-                href="mailto:support@eduelle.com"
+                href='mailto:support@eduelle.com'
                 style={{
                   color: '#304BE0',
                   textDecoration: 'underline',
@@ -388,6 +395,7 @@ export default function StripeCheckoutPopup({
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const brandName = landingData?.BRAND_NAME || '';
   // Reset payment intent when popup closes
   useEffect(() => {
     if (!open) {
@@ -474,9 +482,9 @@ export default function StripeCheckoutPopup({
         colorPrimary: '#4caf50',
         fontFamily: '"Rubik", sans-serif',
         borderRadius: '8px',
-        fontSizeBase: isMobile ? '12px' : '14px',  // Base font size
-        fontSizeSm: isMobile ? '12px' : '14px',    // Small text
-        fontSizeXs: isMobile ? '12px' : '14px',    // Extra small text
+        fontSizeBase: isMobile ? '12px' : '14px', // Base font size
+        fontSizeSm: isMobile ? '12px' : '14px', // Small text
+        fontSizeXs: isMobile ? '12px' : '14px', // Extra small text
         spacingUnit: isMobile ? '4px' : '6px',
       },
     },
@@ -502,7 +510,7 @@ export default function StripeCheckoutPopup({
       aria-labelledby='stripe-dialog'
       PaperProps={{
         sx: {
-          borderRadius: {xs: 0, sm: 2},
+          borderRadius: { xs: 0, sm: 2 },
           m: { xs: 0, sm: '50px' },
           width: { xs: '100%', sm: 'calc(100% - 100px)' },
           maxWidth: { xs: '100% !important', sm: '600px !important' },
@@ -583,6 +591,7 @@ export default function StripeCheckoutPopup({
               activeLandingPage={landingData?.activeLandingPage}
               registerUserData={registerUserData}
               subscriptionPrice={subscriptionPrice}
+              brandName={brandName}
             />
           </Elements>
         ) : (
@@ -611,7 +620,7 @@ export default function StripeCheckoutPopup({
                 variant='body2'
                 sx={{
                   color: 'text.secondary',
-                  fontSize: {xs: '10px', sm: '12px'},
+                  fontSize: { xs: '10px', sm: '12px' },
                   lineHeight: 1.4,
                 }}
               >
