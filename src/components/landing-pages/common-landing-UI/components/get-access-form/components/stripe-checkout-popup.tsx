@@ -215,6 +215,19 @@ const StripeInnerForm = ({
           <PaymentElement
             options={{
               layout: 'tabs',
+              terms: {
+                card: 'never',
+                applePay: 'never',
+                googlePay: 'never',
+                paypal: 'never',
+                ideal: 'never',
+                auBecsDebit: 'never',
+                usBankAccount: 'never',
+                bancontact: 'never',
+                sepaDebit: 'never',
+                sofort: 'never',
+                cashapp: 'never'
+              },
             }}
           />
         </Box>
@@ -298,9 +311,7 @@ const StripeInnerForm = ({
           variant='caption'
           sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
         >
-          By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for
-          your results, and 7 days access to Eduelle platform. Also you accept
-          our{' '}
+          By clicking &quot;Pay Now&quot;, you agree to pay {formattedPrice} for your course access and a 7 days access to Eduelle platform. You also accept our{' '}
           <TermsLink
             href='/terms-of-service'
             target='_blank'
@@ -308,7 +319,7 @@ const StripeInnerForm = ({
           >
             Terms of Use
           </TermsLink>
-          ,{' '}
+          ,{' '}and{' '}
           <TermsLink
             href='/privacy-policy'
             target='_blank'
@@ -316,9 +327,7 @@ const StripeInnerForm = ({
           >
             Privacy Policy
           </TermsLink>{' '}
-          and subscription policy.
         </Typography>
-        {' '}
         <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '11px', sm: '12px'} }}>
           After 7 days, your subscription will begin automatically and renew at{' '}
           {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime via your
