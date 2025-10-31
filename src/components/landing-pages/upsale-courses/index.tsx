@@ -121,6 +121,7 @@ const MobileUpsaleCourseCard = React.memo(
     onAddToOrder: (course: any) => void;
     onRemove: (id: string) => void;
   }) => {
+    const t = useTranslations();
     const { title, image, price, actualPrice, id } = course;
 
     return (
@@ -219,7 +220,7 @@ const MobileUpsaleCourseCard = React.memo(
               }),
             }}
           >
-            {isSelected ? 'Delete' : 'Add to order'}
+            {isSelected ? t('upsale.delete') : t('upsale.add_to_order')}
           </CustomButton>
         </Stack>
       </Box>
@@ -244,6 +245,7 @@ const UpsaleCourseCard = React.memo(
     onAddToOrder: (course: any) => void;
     onRemove: (id: string) => void;
   }) => {
+    const t = useTranslations();
     const { title, image, price, actualPrice, id } = course;
 
     return (
@@ -347,7 +349,7 @@ const UpsaleCourseCard = React.memo(
               },
             }}
           >
-            {isSelected ? 'Delete' : 'Add to order'}
+            {isSelected ? t('upsale.delete') : t('upsale.add_to_order')}
           </CustomButton>
         </Stack>
       </Box>
@@ -412,7 +414,7 @@ const UpsaleCourses = ({
                 fontWeight: 600,
               }}
             >
-              Add a Hot Pick, Save Big!
+              {t('upsale.title')}
             </Typography>
             <Typography
               sx={{
@@ -421,9 +423,7 @@ const UpsaleCourses = ({
                 color: '#747474',
               }}
             >
-              Enhance your learning experience by adding these supplementary
-              courses to the one you&apos;ve already purchased, and watch your
-              progress accelerate to three times its previous pace.
+              {t('upsale.description')}
             </Typography>
           </Stack>
 
@@ -584,7 +584,7 @@ const UpsaleCourses = ({
                       },
                     }}
                   >
-                    No, I don&apos;t Need
+                    {t('upsale.no_need')}
                   </CustomButton>
                   <CustomButton
                     fullWidth
@@ -598,7 +598,7 @@ const UpsaleCourses = ({
                       color: '#FFFFFF',
                     }}
                   >
-                    Complete
+                    {t('upsale.complete')}
                   </CustomButton>
                 </Stack>
               </Stack>

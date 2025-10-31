@@ -107,12 +107,13 @@ const StripeInnerForm = ({
     setIsProcessing(true);
 
     try {
+      const queryString = new URLSearchParams(queryParams).toString();
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
         {
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}${window.location.pathname}?payment=success`,
+            return_url: `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`,
           },
           redirect: 'if_required',
         }
@@ -157,7 +158,6 @@ const StripeInnerForm = ({
 
         // Close popup and redirect to email verification page
         dispatch(getStripeCheckoutClose());
-        const queryString = new URLSearchParams(queryParams).toString();
         window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
       }
     } catch (err) {
@@ -419,7 +419,6 @@ export default function StripeCheckoutPopup({
         const queryString = new URLSearchParams(queryParams).toString();
         const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         const cancel_url = `${origin}${pathname}?payment=failed`;
-
         // Create params object like in checkout-form.tsx
         const params: Record<string, string> = {};
         if (queryParams) {
