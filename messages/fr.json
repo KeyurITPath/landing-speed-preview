@@ -701,5 +701,13 @@
     "preparing_form": "Veuillez patienter pendant que nous préparons votre formulaire de paiement...",
     "payment_agreement": "En cliquant sur \"Payer Maintenant\", vous acceptez de payer {price} pour l'accès à votre cours et un essai gratuit de 7 jours à tous les cours {domain}. Vous acceptez également nos <terms>Conditions d'Utilisation</terms> et notre <privacy>Politique de Confidentialité</privacy>",
     "subscription_renewal": "Après 7 jours, votre abonnement commencera automatiquement et se renouvellera à {price} toutes les 4 semaines jusqu'à annulation. Vous pouvez annuler à tout moment via votre tableau de bord {domain} ou en nous contactant à <email>support@eduelle.com</email>."
+  },
+  "upsale": {
+    "title": "Ajoutez un Cours Vedette et Économisez!",
+    "description": "Améliorez votre expérience d'apprentissage en ajoutant ces cours complémentaires à celui que vous avez déjà acheté, et regardez votre progression s'accélérer jusqu'à trois fois plus vite.",
+    "add_to_order": "Ajouter à la commande",
+    "delete": "Supprimer",
+    "no_need": "Non, je n'en ai pas besoin",
+    "complete": "Terminer"
   }
 }

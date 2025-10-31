@@ -701,5 +701,13 @@
     "preparing_form": "Please wait while we prepare your payment form...",
     "payment_agreement": "By clicking \"Pay Now\", you agree to pay {price} for your course access and a 7-day free trial to all {domain} courses. You also accept our <terms>Terms of Use</terms>, and <privacy>Privacy Policy</privacy>",
     "subscription_renewal": "After 7 days, your subscription will begin automatically and renew at {price} every 4 weeks until canceled. You may cancel anytime through your {domain} dashboard or by contacting us at <email>support@eduelle.com</email>."
+  },
+  "upsale": {
+    "title": "Add a Hot Pick, Save Big!",
+    "description": "Enhance your learning experience by adding these supplementary courses to the one you've already purchased, and watch your progress accelerate to three times its previous pace.",
+    "add_to_order": "Add to order",
+    "delete": "Delete",
+    "no_need": "No, I don't Need",
+    "complete": "Complete"
   }
 }

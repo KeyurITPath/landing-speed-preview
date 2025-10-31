@@ -701,5 +701,13 @@
     "preparing_form": "Por favor espera mientras preparamos tu formulario de pago...",
     "payment_agreement": "Al hacer clic en \"Pagar Ahora\", aceptas pagar {price} por el acceso al curso y una prueba gratuita de 7 días a todos los cursos de {domain}. También aceptas nuestros <terms>Términos de Uso</terms> y <privacy>Política de Privacidad</privacy>",
     "subscription_renewal": "Después de 7 días, tu suscripción comenzará automáticamente y se renovará por {price} cada 4 semanas hasta que la canceles. Puedes cancelar en cualquier momento a través de tu panel de {domain} o contactándonos en <email>support@eduelle.com</email>."
+  },
+  "upsale": {
+    "title": "¡Añade un Curso Destacado y Ahorra!",
+    "description": "Mejora tu experiencia de aprendizaje añadiendo estos cursos complementarios al que ya has comprado, y observa cómo tu progreso se acelera hasta tres veces más rápido.",
+    "add_to_order": "Añadir al pedido",
+    "delete": "Eliminar",
+    "no_need": "No, no lo necesito",
+    "complete": "Completar"
   }
 }
