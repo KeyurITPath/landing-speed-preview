@@ -30,7 +30,6 @@ const useEmailVerification = ({ data }: any) => {
     useToggleState(false);
   const { languages } = useSelector(({ defaults }: any) => defaults);
   const { data: languagesData } = languages || {};
-
   const initialValues = useMemo(
     () => ({ email: user?.email || '', confirmEmail: '', phone: '' }),
     [user?.email]
@@ -86,9 +85,15 @@ const useEmailVerification = ({ data }: any) => {
         }
 
         const queryString = new URLSearchParams(queryParams)?.toString();
-        router.push(
-          `${routes.public.trial_activation}?${queryString ? `${queryString}` : ''}`
-        );
+
+        // Check if user came from landing page 1 (stripe checkout flow)
+        const isFromLanding1 = sessionStorage.getItem('landingPageForRedirect') === 'landing1';
+
+        const redirectUrl = isFromLanding1
+          ? `${routes.public.complete_profile}?${queryString ? `${queryString}` : ''}`
+          : `${routes.public.trial_activation}?${queryString ? `${queryString}` : ''}`;
+
+        router.push(redirectUrl);
       }
     }
   );

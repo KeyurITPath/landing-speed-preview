@@ -279,8 +279,10 @@
   "thank_you": "¡Gracias por tu confianza!",
   "purchase_message": "Acabas de comprar",
   "access_message": "Acceso a",
-  "trial_access_message": "{trial_days} días de acceso de prueba a más de 50 cursos de desarrollo personal.",
-  "trial_message": "Prueba varios cursos y selecciona los que sean adecuados para ti. Después de {trial_days} días, tu tarjeta se cobrará automáticamente por el próximo mes. Si es necesario, cancela futuros cargos en tu cuenta personal.",
+  "trial_access_title": "Acceso de prueba de {trial_days} días a más de 100 cursos de desarrollo personal.",
+  "trial_explore_message": "Explora cualquier curso que te guste y encuentra el que mejor se adapte a ti.",
+  "trial_charge_message": "Después de {trial_days} días, se cobrará <b>{price}</b> en tu tarjeta para continuar con el acceso ilimitado.",
+  "trial_cancel_message": "Cancela en cualquier momento en tu cuenta personal.",
   "login_text": "Tu inicio de sesión",
   "password_text": "Tu contraseña",
   "email_support_message_new": "Te hemos enviado el login y la contraseña por correo electrónico y SMS. Puede que quieras hacer una captura de pantalla para asegurarte de no perderlos. Si no has recibido el correo, revisa tu carpeta de spam o contacta con nuestro soporte inmediatamente: <a>{email}</a>",
@@ -685,5 +687,19 @@
   "extend_trial_initial": "Explora gratis por {trial_days}-días",
   "decline_the_opportunity": "Ahora no",
   "video_processing": "Procesando video...",
-  "disclaimer": "{BRAND} no se hace responsable de lesiones o daños derivados de la realización de los ejercicios en este video. Practica bajo tu propia responsabilidad."
+  "disclaimer": "{BRAND} no se hace responsable de lesiones o daños derivados de la realización de los ejercicios en este video. Practica bajo tu propia responsabilidad.",
+  "stripe_checkout": {
+    "secure_transaction": "Todas las transacciones son seguras y cifradas. La información de la tarjeta de crédito nunca se almacena.",
+    "total_today": "Total Hoy",
+    "processing": "Procesando...",
+    "pay_now": "Pagar Ahora",
+    "initializing_payment": "Inicializando pago...",
+    "complete_payment": "Completa Tu Pago",
+    "payment_setup_failed": "Falló la Configuración del Pago",
+    "payment_setup_error": "No pudimos inicializar tu pago. Por favor, inténtalo de nuevo o contacta al soporte si el problema persiste.",
+    "setting_up_payment": "Configurando pago seguro",
+    "preparing_form": "Por favor espera mientras preparamos tu formulario de pago...",
+    "payment_agreement": "Al hacer clic en \"Pagar Ahora\", aceptas pagar {price} por el acceso al curso y una prueba gratuita de 7 días a todos los cursos de {domain}. También aceptas nuestros <terms>Términos de Uso</terms> y <privacy>Política de Privacidad</privacy>",
+    "subscription_renewal": "Después de 7 días, tu suscripción comenzará automáticamente y se renovará por {price} cada 4 semanas hasta que la canceles. Puedes cancelar en cualquier momento a través de tu panel de {domain} o contactándonos en <email>support@eduelle.com</email>."
+  }
 }

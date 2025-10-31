@@ -39,6 +39,8 @@ export const initialState = {
   defaultCoursePrice: {},
   upSaleCourses: [],
   failed: false,
+  getStripeCheckoutOpenState: false,
+  registerUserData: null,
 };
 
 const courseSlice = createSlice({
@@ -50,6 +52,18 @@ const courseSlice = createSlice({
     },
     getAccessClose: state => {
       state.getAccessState = false;
+    },
+    getStripeCheckoutOpen: state => {
+      state.getStripeCheckoutOpenState = true;
+    },
+    getStripeCheckoutClose: state => {
+      state.getStripeCheckoutOpenState = false;
+    },
+    setRegisterUserData: (state, action) => {
+      state.registerUserData = action.payload;
+    },
+    clearRegisterUserData: state => {
+      state.registerUserData = null;
     },
   },
   extraReducers: builder => {
@@ -128,6 +142,6 @@ const courseSlice = createSlice({
       });
   },
 });
-export const { getAccessOpen, getAccessClose } = courseSlice.actions;
+export const { getAccessOpen, getAccessClose, getStripeCheckoutOpen, getStripeCheckoutClose, setRegisterUserData, clearRegisterUserData } = courseSlice.actions;
 
 export default courseSlice.reducer;

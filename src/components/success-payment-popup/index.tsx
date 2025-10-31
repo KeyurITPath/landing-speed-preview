@@ -12,7 +12,7 @@ import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
 import cookies from 'js-cookie';
 
-const SuccessPaymentPopup = ({ open }: any) => {
+const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -24,6 +24,8 @@ const SuccessPaymentPopup = ({ open }: any) => {
   const { data } = useSelector(({ user }: any) => user);
 
   const country_code = cookies.get('country_code') || '';
+
+  const shouldFirePixel = landingPageName !== 'landing1';
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -126,10 +128,12 @@ const SuccessPaymentPopup = ({ open }: any) => {
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
       }
-      pixel.purchase({
-        ...metaParams,
-        ...(!isEmptyObject(utmData) && { utmData }),
-      });
+      if (shouldFirePixel) {
+        pixel.purchase({
+          ...metaParams,
+          ...(!isEmptyObject(utmData) && { utmData }),
+        });
+      }
 
       hasFired.current = true; // prevent duplicate firing
     }
@@ -138,15 +142,7 @@ const SuccessPaymentPopup = ({ open }: any) => {
     if (!open) {
       hasFired.current = false;
     }
-  }, [
-    courseAmount,
-    data?.id,
-    isExistUpsale,
-    metaParams,
-    open,
-    upSaleAmount,
-    utmData,
-  ]);
+  }, [courseAmount, data?.id, isExistUpsale, landingPageName, metaParams, open, shouldFirePixel, upSaleAmount, utmData]);
 
   return (
     <PopUpModal

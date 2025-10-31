@@ -25,7 +25,7 @@ import {
 import { AuthContext } from '@/context/auth-provider';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import useToggleState from '@/hooks/use-toggle-state';
 import { api } from '@/api';
 import { logout } from '@/store/features/auth.slice';
@@ -68,6 +68,7 @@ const SidebarContent = ({ sidebar, domainDetails, user, isLoggedIn }: any) => {
   const t = useTranslations();
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
 
@@ -129,7 +130,22 @@ const SidebarContent = ({ sidebar, domainDetails, user, isLoggedIn }: any) => {
     if (typeof logoutClose === 'function') {
       logoutClose(false);
     }
-    router.refresh();
+    const privateRoutes = Object.values(routes.private);
+    const isPrivateRoute = privateRoutes.some(route => {
+      if (route.includes(':')) {
+        const baseRoute = route.split('/:')[0];
+        return pathname.startsWith(baseRoute);
+      }
+      // Handle static routes
+      return pathname.startsWith(route);
+    });
+
+    if (isPrivateRoute) {
+      window.location.href = routes.auth.login;
+    } else {
+      // If on public route, just refresh to update UI
+      router.refresh();
+    }
   };
 
   return (

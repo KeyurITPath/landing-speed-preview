@@ -32,10 +32,11 @@ const Landing = async ({ params, searchParams }: any) => {
     fetchCourseForLanding({
       params: {
         final_url: slug.landing_url,
-        ...(discountCode?.discount_code
-          ? { discount_code: discountCode?.discount_code }
-          : {}),
+        // ...(discountCode?.discount_code
+        //   ? { discount_code: discountCode?.discount_code }
+        //   : {}),
         domain: domain_value,
+        ...discountCode,
       },
       headers: {
         'req-from': country_code,

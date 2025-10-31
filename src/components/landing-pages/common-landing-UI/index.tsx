@@ -14,7 +14,7 @@ import VimeoPlayer from '@/components/vimeo-player';
 import { ICONS } from '@/assets/icons';
 import { hover, warning } from '@/theme/color';
 import GetAccessWithReview from './components/access-plan-with-review';
-import { getAccessClose, getAccessOpen } from '@/store/features/course.slice';
+import { getAccessClose, getAccessOpen, getStripeCheckoutClose, getStripeCheckoutOpen } from '@/store/features/course.slice';
 import CourseDetails from './components/course-details';
 import AcademicPlan from './components/academic-plan';
 import CourseAuthor from './components/course-author';
@@ -25,6 +25,7 @@ import GetAccessForm from './components/get-access-form';
 import AccessPlan from './components/access-plan';
 import SuccessPaymentPopup from '../../success-payment-popup';
 import FailedPaymentPopup from '../../failed-payment-popup';
+import StripeCheckoutPopup from './components/get-access-form/components/stripe-checkout-popup';
 
 const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
   const {
@@ -43,6 +44,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     isPaymentFailed,
     BRAND_NAME,
     SUPPORT_MAIL,
+    getStripeCheckoutOpenState,
   } = landingData;
 
   const t = useTranslations();
@@ -190,6 +192,18 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
         onClose={() => {
           dispatch(getAccessClose());
         }}
+      />
+
+      <StripeCheckoutPopup
+        open={getStripeCheckoutOpenState}
+        onClose={() => {
+          dispatch(getStripeCheckoutClose());
+        }}
+        courseData={landingData?.course}
+        user={landingData?.user}
+        utmData={landingData?.utmData}
+        queryParams={landingData?.queryParams}
+        landingData={landingData}
       />
 
       {/* Payment popups */}

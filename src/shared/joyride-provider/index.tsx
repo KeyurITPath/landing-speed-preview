@@ -29,15 +29,17 @@ const JoyrideContext = createContext({});
 
 export const JoyrideProvider = ({ children }: any) => {
   const token = cookies.get('token');
-  let user = {};
   const isSidebarOpen = useSelector(
     (state: any) => state.sidebar.isSidebarOpen
   );
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
-  if (token) {
-    user = decodeToken(token);
-  }
+  const user = useMemo(() => {
+    if (token) {
+      return decodeToken(token) || {};
+    }
+    return {};
+  }, [token]);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -49,7 +51,7 @@ export const JoyrideProvider = ({ children }: any) => {
       {
         target: 'body',
         content: t('joyride_tour.welcome_message'),
-        placement: 'center',
+        placement: 'center' as const,
         disableBeacon: true,
         spotlightClicks: false,
         showSkipButton: true,
@@ -57,7 +59,7 @@ export const JoyrideProvider = ({ children }: any) => {
       {
         target: '.continue-watching-courses',
         content: t('joyride_tour.continue_watching_hint'),
-        placement: 'top',
+        placement: 'top' as const,
         disableBeacon: true,
         showSkipButton: true,
         route: routes.private.dashboard,
@@ -65,7 +67,7 @@ export const JoyrideProvider = ({ children }: any) => {
       {
         target: '.popular-course-by-categories',
         content: t('joyride_tour.explore_categories_hint'),
-        placement: 'top',
+        placement: 'top' as const,
         disableBeacon: true,
         showSkipButton: true,
         route: routes.private.dashboard,
@@ -73,7 +75,7 @@ export const JoyrideProvider = ({ children }: any) => {
       {
         target: '.popular-course-on-brand',
         content: t('joyride_tour.top_rated_courses_hint'),
-        placement: 'top',
+        placement: 'top' as const,
         disableBeacon: true,
         showSkipButton: true,
         route: routes.private.dashboard,
@@ -82,7 +84,7 @@ export const JoyrideProvider = ({ children }: any) => {
         ? {
             target: '#mobile-menu-icon',
             content: t('joyride_tour.support_via_menu_hint'),
-            placement: 'bottom-end',
+            placement: 'bottom-end' as const,
             disableBeacon: true,
             showSkipButton: true,
             route: routes.private.dashboard,
@@ -90,7 +92,7 @@ export const JoyrideProvider = ({ children }: any) => {
         : {
             target: '#support',
             content: t('joyride_tour.support_via_menu_hint'),
-            placement: 'right',
+            placement: 'right' as const,
             disableBeacon: true,
             showSkipButton: true,
             route: routes.private.dashboard,
@@ -99,7 +101,7 @@ export const JoyrideProvider = ({ children }: any) => {
         // This is the 6th step (index 5)
         target: '#profile-avatar',
         content: t('joyride_tour.profile_avatar_hint'),
-        placement: 'right',
+        placement: 'right' as const,
         disableBeacon: true,
         showSkipButton: true,
         hideCloseButton: true,
@@ -122,26 +124,42 @@ export const JoyrideProvider = ({ children }: any) => {
 
   const isNewUser = useMemo(() => {
     if (isEmptyObject(userData)) return false;
-    return user?.is_verified && !userData?.has_completed_onboarding;
+    return (user as any)?.is_verified && !userData?.has_completed_onboarding;
   }, [user, userData]);
 
+  // Check if current page is landing1 using existing sessionStorage
+  const isLandingPage1 = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('landingPageForRedirect') === 'landing1';
+    }
+    return false;
+  }, []);
+
+  // Get stored course slug from sessionStorage
+  const storedCourseSlug = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('landingCourseSlug');
+    }
+    return null;
+  }, []);
+
   useEffect(() => {
-    if (user?.id && fetchUserData) {
+    if ((user as any)?.id && fetchUserData) {
       fetchUserData({
         params: {
-          user_id: user?.id,
+          user_id: (user as any)?.id,
           domain: DOMAIN,
         },
         cookieToken: cookies.get('token') || '',
       });
     }
-  }, [fetchUserData, user?.id]);
+  }, [fetchUserData, user]);
 
   const updateOnboardingStatus = useCallback(async () => {
     try {
       const response = await api.user.update({
         data: { has_completed_onboarding: true },
-        params: { user_id: user?.id },
+        params: { user_id: (user as any)?.id },
         cookieToken: cookies.get('token') || '',
       });
 
@@ -217,7 +235,21 @@ export const JoyrideProvider = ({ children }: any) => {
       if (status === STATUS.FINISHED || action === 'reset') {
         setRun(false);
         if (status === STATUS.FINISHED) {
-          updateOnboardingStatus();
+          updateOnboardingStatus().then(async () => {
+            setTimeout(async () => {
+              // For landing page 1, redirect to course details using stored course slug
+              if (isLandingPage1 && storedCourseSlug) {
+                router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
+                // Clean up session storage after successful redirect
+                if (typeof window !== 'undefined') {
+                  sessionStorage.removeItem('landingPageForRedirect');
+                  sessionStorage.removeItem('landingCourseSlug');
+                }
+              } else {
+                router.push(routes.private.dashboard);
+              }
+            }, 500);
+          });
           gtm.onboarding.onboarding_completed({
             label: 'Onboarding completed',
             description: 'User completed the onboarding tour',
@@ -302,9 +334,19 @@ export const JoyrideProvider = ({ children }: any) => {
         const isLastStep = index === TOUR_STEPS.length - 1;
 
         if (isLastStep) {
-          updateOnboardingStatus().then(() => {
-            setTimeout(() => {
-              router.push(routes.private.dashboard);
+          updateOnboardingStatus().then(async () => {
+            setTimeout(async () => {
+              // For landing page 1, redirect to course details using stored course slug
+              if (isLandingPage1 && storedCourseSlug) {
+                router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
+                // Clean up session storage after successful redirect
+                if (typeof window !== 'undefined') {
+                  sessionStorage.removeItem('landingPageForRedirect');
+                  sessionStorage.removeItem('landingCourseSlug');
+                }
+              } else {
+                router.push(routes.private.dashboard);
+              }
             }, 500);
           });
           setRun(false);
@@ -387,6 +429,8 @@ export const JoyrideProvider = ({ children }: any) => {
       isSidebarOpen,
       dispatch,
       router,
+      isLandingPage1,
+      storedCourseSlug,
     ]
   );
 

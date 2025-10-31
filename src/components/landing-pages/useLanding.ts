@@ -114,6 +114,7 @@ const useLanding = ({
   const { data: userData } = useSelector(({ user }: any) => user);
 
   const { getAccessState } = useSelector(({ course }: any) => course);
+  const { getStripeCheckoutOpenState } = useSelector(({ course }: any) => course);
 
   const pixelIds = useMemo(() => {
     return analyticsMetaCredentials && analyticsMetaCredentials?.length
@@ -290,6 +291,10 @@ const useLanding = ({
           course_title: otherData?.data?.header,
           landing_page:
             LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
+          landing_page_name: activeLandingPage?.name || '',
+          currency_id: currency?.id,
+          currency_name: currency?.name,
+          language_id: otherData?.data?.language_id,
         })
       );
       dispatch(
@@ -299,6 +304,7 @@ const useLanding = ({
           course_title: otherData?.data?.header,
           landing_page:
             LANDING_PAGE[activeLandingPage.name as keyof typeof LANDING_PAGE],
+          landing_page_name: activeLandingPage?.name || '',
         })
       );
       dispatch(setCurrency({ id: currency?.id, code: currency?.name }));
@@ -708,6 +714,7 @@ const useLanding = ({
     isUserPurchasedCourse,
     handleProceedToWatch,
     utmData,
+    getStripeCheckoutOpenState,
   };
 };
 

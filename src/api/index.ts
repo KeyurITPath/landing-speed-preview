@@ -150,6 +150,13 @@ export const api = {
         data,
         ...configs,
       }),
+    purchaseUpsaleCourse: ({ data, ...configs }: any) =>
+      client({
+        url: `/purchase-upsale-course`,
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
     droppedCart: ({ data, ...configs }: any) =>
       client({
         url: `/droppedcart`,

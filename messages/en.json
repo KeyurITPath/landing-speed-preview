@@ -279,8 +279,10 @@
   "thank_you": "Thank You for Your Trust!",
   "purchase_message": "You've Just purchased",
   "access_message": "Access to the",
-  "trial_access_message": "{trial_days} day trial access to 50+ self-development courses.",
-  "trial_message": "Test various courses and select ones suitable for you. After {trial_days} days, your card will be automatically billed for the next month. If needed, cancel future charges at personal account.",
+  "trial_access_title": "{trial_days}-day trial access to 100+ self-development courses.",
+  "trial_explore_message": "Explore any course you like and find what fits you best.",
+  "trial_charge_message": "After {trial_days} days, your card will be charged <b>{price}</b> for continued unlimited access.",
+  "trial_cancel_message": "Cancel anytime in your personal account.",
   "login_text": "Your login",
   "password_text": "Your password",
   "email_support_message_new": "We’ve emailed your login and password. Consider taking a screenshot so you don’t lose them. If you don’t see the email, check your spam folder or contact our support team right away: <a>{email}</a>",
@@ -685,5 +687,19 @@
   "extend_trial_initial": "Explore Free for {trial_days} Days",
   "decline_the_opportunity": "Not Now",
   "video_processing": "Video processing...",
-  "disclaimer": "{BRAND} is not responsible for injuries or damages from performing the exercises in this video. Practice at your own risk."
+  "disclaimer": "{BRAND} is not responsible for injuries or damages from performing the exercises in this video. Practice at your own risk.",
+  "stripe_checkout": {
+    "secure_transaction": "All transactions are secure and encrypted. Credit Card information is never stored.",
+    "total_today": "Total Today",
+    "processing": "Processing...",
+    "pay_now": "Pay Now",
+    "initializing_payment": "Initializing payment...",
+    "complete_payment": "Complete Your Payment",
+    "payment_setup_failed": "Payment Setup Failed",
+    "payment_setup_error": "We couldn't initialize your payment. Please try again or contact support if the problem persists.",
+    "setting_up_payment": "Setting up secure payment",
+    "preparing_form": "Please wait while we prepare your payment form...",
+    "payment_agreement": "By clicking \"Pay Now\", you agree to pay {price} for your course access and a 7-day free trial to all {domain} courses. You also accept our <terms>Terms of Use</terms>, and <privacy>Privacy Policy</privacy>",
+    "subscription_renewal": "After 7 days, your subscription will begin automatically and renew at {price} every 4 weeks until canceled. You may cancel anytime through your {domain} dashboard or by contacting us at <email>support@eduelle.com</email>."
+  }
 }
