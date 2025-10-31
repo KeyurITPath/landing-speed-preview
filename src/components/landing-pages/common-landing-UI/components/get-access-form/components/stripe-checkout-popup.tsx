@@ -330,7 +330,7 @@ const StripeInnerForm = ({
         </Typography>
         <Typography variant='caption' sx={{ color: '#747474', fontSize: {xs: '11px', sm: '12px'} }}>
           After 7 days, your subscription will begin automatically and renew at{' '}
-          {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime via your
+          {subscriptionPrice} every 4 weeks until canceled. You may cancel anytime through your
           Eduelle dashboard or by contacting us at{' '}
           <a
             href="mailto:support@eduelle.com"
