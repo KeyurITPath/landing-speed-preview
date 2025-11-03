@@ -50,6 +50,11 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
   // Fetch upsale courses (if not already fetched) - using same pattern as useLanding
   const fetchUpsaleCourses = useCallback(async () => {
     // Check if all required params are available
@@ -233,6 +238,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
         user_id: user?.id,
         domain: DOMAIN,
         final_url: courseData?.final_url || courseData?.slug,
+        ...params,
       };
 
       // Use .then() and .catch() for better error handling
@@ -271,7 +277,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
     } finally {
       setLoading(false);
     }
-  }, [selectedUpsales, user?.id, courseData?.final_url, courseData?.slug]);
+  }, [selectedUpsales, user?.id, courseData?.final_url, courseData?.slug, params]);
 
   // Handle decline upsale
   const handleDeclineUpsale = useCallback(() => {
