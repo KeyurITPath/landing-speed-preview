@@ -45,6 +45,7 @@ import { ICONS } from '../../../../../../assets/icons';
 import useDispatchWithAbort from '../../../../../../hooks/use-dispatch-with-abort';
 import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.slice';
 import cookies from 'js-cookie';
+import { useSearchParams } from 'next/navigation';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -376,18 +377,16 @@ export default function StripeCheckoutPopup({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const paymentIntentCreated = useRef(false);
-  // Get registerUserData from Redux
   const { registerUserData } = useSelector(({ course }: any) => course);
 
-  // Get monthlySubscriptionData from Redux (for subscription price in terms)
   const { data: monthlySubscriptionData } = useSelector(
     ({ popup }: any) => popup?.monthlySubscription
   );
 
   // Get course price for display
   const coursePrice = courseData?.course_prices?.[0];
+  const searchParams = useSearchParams();
 
-  // Format subscription price from monthlySubscriptionData
   const subscriptionPrice = formatCurrency(
     monthlySubscriptionData?.subscription_plan_prices?.[0]?.amount,
     monthlySubscriptionData?.subscription_plan_prices?.[0]?.currency?.name
@@ -396,7 +395,13 @@ export default function StripeCheckoutPopup({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const brandName = landingData?.BRAND_NAME || '';
-  // Reset payment intent when popup closes
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
+
   useEffect(() => {
     if (!open) {
       paymentIntentCreated.current = false;
@@ -406,26 +411,19 @@ export default function StripeCheckoutPopup({
   }, [open]);
   const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
   const country_code = cookies.get('country_code') || '';
-  // Create payment intent when component mounts
+
   useEffect(() => {
     const createPaymentIntent = async () => {
-      if (!open) return; // Ensure API is only called when modal is open
+      if (!open) return;
       try {
         setIsLoading(true);
         setError('');
         const { data: landingPageData, activeLandingPage } = landingData;
-        // Generate URLs for success and cancel
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(queryParams).toString();
         const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         const cancel_url = `${origin}${pathname}?payment=failed`;
-        // Create params object like in checkout-form.tsx
-        const params: Record<string, string> = {};
-        if (queryParams) {
-          Object.entries(queryParams).forEach(([key, value]) => {
-            params[key] = String(value);
-          });
-        }
+
         const data = {
           stripe_price_id: coursePrice?.stripe_price_id,
           selected_upsale_price_ids: [],
@@ -463,15 +461,7 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [
-    open,
-    courseData,
-    coursePrice?.stripe_price_id,
-    clientSecret,
-    queryParams,
-    landingData,
-    registerUserData?.id,
-  ]);
+  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, queryParams, landingData, registerUserData?.id, params]);
 
   const options = {
     clientSecret,
