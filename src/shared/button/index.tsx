@@ -3,6 +3,7 @@ import { CircularProgress, Button as MuiButton } from '@mui/material';
 import { linearGradients } from '../../theme/color';
 
 import { ButtonProps as MuiButtonProps } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 interface CustomButtonProps extends Omit<MuiButtonProps, 'variant'> {
   loading?: boolean | undefined;
@@ -37,7 +38,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
       width: '100%',
       bgcolor: 'rgba(255, 255, 255, 0.3)',
     };
-
+    const t = useTranslations();
     return (
       <MuiButton
         ref={ref}
@@ -71,7 +72,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         }}
         {...props}
       >
-        {loading ? 'SUBMITTING...' : children}
+        {loading ? t('submitting') : children}
       </MuiButton>
     );
   }
