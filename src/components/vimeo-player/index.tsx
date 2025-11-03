@@ -176,6 +176,7 @@ const VimeoPlayer = ({
             transparent: false,
             muted: shouldMute,
             playsinline: true,
+            ...(lessonId !== 'landing-video' && { texttrack: 'en-x-autogen' }),
           });
 
           const setupEventListeners = () => {
@@ -231,6 +232,7 @@ const VimeoPlayer = ({
               id: parseInt(vimeoId),
               autoplay: autoplay,
               muted: false,
+              ...(lessonId !== 'landing-video' && { texttrack: 'en-x-autogen' }),
             });
 
             // Loader will be hidden by the 'loaded' event listener
