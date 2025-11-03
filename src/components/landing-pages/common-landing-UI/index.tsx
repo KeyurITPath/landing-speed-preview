@@ -45,6 +45,8 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     BRAND_NAME,
     SUPPORT_MAIL,
     getStripeCheckoutOpenState,
+    utmData,
+    user,
   } = landingData;
 
   const t = useTranslations();
@@ -199,10 +201,9 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
         onClose={() => {
           dispatch(getStripeCheckoutClose());
         }}
-        courseData={landingData?.course}
-        user={landingData?.user}
-        utmData={landingData?.utmData}
-        queryParams={landingData?.queryParams}
+        courseData={course}
+        user={user}
+        utmData={utmData}
         landingData={landingData}
       />
 

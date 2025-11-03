@@ -64,8 +64,6 @@ const TermsLink = styled(Link)(() => ({
 // Inner form component that handles payment processing
 const StripeInnerForm = ({
   courseData,
-  utmData,
-  queryParams,
   clientSecret,
   isLoading,
   error,
@@ -73,6 +71,8 @@ const StripeInnerForm = ({
   registerUserData,
   subscriptionPrice,
   brandName,
+  utmData,
+  params
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -108,7 +108,7 @@ const StripeInnerForm = ({
     setIsProcessing(true);
 
     try {
-      const queryString = new URLSearchParams(queryParams).toString();
+      const queryString = new URLSearchParams(params).toString();
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
         {
@@ -368,8 +368,8 @@ export default function StripeCheckoutPopup({
   onClose,
   courseData,
   utmData,
-  queryParams,
   landingData,
+  user,
   ...props
 }: any) {
   const t = useTranslations();
@@ -395,6 +395,7 @@ export default function StripeCheckoutPopup({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const brandName = landingData?.BRAND_NAME || '';
+  const { data: landingPageData, activeLandingPage } = landingData;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
@@ -418,9 +419,8 @@ export default function StripeCheckoutPopup({
       try {
         setIsLoading(true);
         setError('');
-        const { data: landingPageData, activeLandingPage } = landingData;
         const { origin, pathname } = window.location;
-        const queryString = new URLSearchParams(queryParams).toString();
+        const queryString = new URLSearchParams(params).toString();
         const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         const cancel_url = `${origin}${pathname}?payment=failed`;
 
@@ -461,7 +461,7 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, queryParams, landingData, registerUserData?.id, params]);
+  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, registerUserData?.id, params, landingPageData?.final_url]);
 
   const options = {
     clientSecret,
@@ -572,15 +572,16 @@ export default function StripeCheckoutPopup({
             <StripeInnerForm
               onClose={onClose}
               courseData={courseData}
-              utmData={utmData}
-              queryParams={queryParams}
               clientSecret={clientSecret}
               isLoading={isLoading}
               error={error}
-              activeLandingPage={landingData?.activeLandingPage}
+              activeLandingPage={activeLandingPage}
               registerUserData={registerUserData}
               subscriptionPrice={subscriptionPrice}
               brandName={brandName}
+              utmData={utmData}
+              user={user}
+              params={params}
             />
           </Elements>
         ) : (
