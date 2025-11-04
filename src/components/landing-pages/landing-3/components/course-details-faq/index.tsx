@@ -80,7 +80,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-const CourseDetailsForFAQ = ({ BRAND_NAME, SUPPORT_MAIL }: any) => {
+const CourseDetailsForFAQ = ({ landingData }: any) => {
+  const { BRAND_NAME, SUPPORT_MAIL } = landingData;
   const t = useTranslations();
   const messages = useMessages();
 
