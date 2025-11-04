@@ -64,13 +64,13 @@ const triggerEvent = async ({
   const external_id = user?.id ? sha256Hash(user?.id || '') : null;
 
   let userData = {};
-  console.log("555555 user", user);
+  console.log("user data", user);
   if (user?.id) {
     const response = await api.user.get({
       params: { user_id: user?.id },
       headers: { 'req-from': country_code },
     });
-    console.log("666666 response", response);
+    console.log("user api response", response);
     userData = response?.data?.data || {};
   }
 
@@ -101,11 +101,10 @@ const triggerEvent = async ({
     ...(fbc ? { fbc } : {}),
     ...data, // 👈 include extra event data (value, currency, content_ids, etc.)
   };
-console.log("777777 fbParams", fbParams);
+
   // ---- Send to backend analytics (CAPI)
   apiAsyncHandler(async () => {
     if (meta_pixels()?.length || isAnalyticsCredentials) {
-      console.log("888888 meta_pixels()?.length || isAnalyticsCredentials", meta_pixels()?.length , isAnalyticsCredentials);
       await api.pixel.event({
         data: { ...fbParams },
       });
@@ -145,7 +144,7 @@ const ensurePixelInitialized = (
 
   // If pixel script not loaded yet, load it first
   if (!window.fbq) {
-    console.log("111111 window.fbq not found, initializing...");
+    console.log("window.fbq not found, initializing...");
     window.fbq = function () {
       window.fbq.callMethod
         ? window.fbq.callMethod.apply(window.fbq, arguments)
@@ -162,7 +161,7 @@ const ensurePixelInitialized = (
     fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
 
     fbScript.onload = () => {
-      console.log("222222 fbScript loaded, initializing...");
+      console.log("fbScript loaded, initializing...");
       if (!window._fbq_initialized) {
         landingMetaPixelId.forEach((pixelId: string) => {
           window.fbq('init', pixelId);
@@ -181,7 +180,7 @@ const ensurePixelInitialized = (
   } else {
     // Pixel script loaded, check if initialized
     if (!window._fbq_initialized) {
-      console.log("333333 window._fbq_initialized not found, initializing...");
+      console.log("window._fbq_initialized not found, initializing...");
       landingMetaPixelId.forEach((pixelId: string) => {
         window.fbq('init', pixelId);
         window.fbq('track', 'PageView');
@@ -194,7 +193,7 @@ const ensurePixelInitialized = (
       }, 2000);
     } else {
       // Already initialized, trigger immediately
-      console.log("444444 Already initialized, triggering immediately...");
+      console.log("Already initialized, triggering immediately...");
       callback();
     }
   }
