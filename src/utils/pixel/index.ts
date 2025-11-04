@@ -124,6 +124,72 @@ const triggerEvent = async ({
 };
 
 /**
+ * Helper function to ensure FB Pixel is initialized before triggering events
+ */
+const ensurePixelInitialized = (
+  landingMetaPixelId: string[] | undefined,
+  callback: () => void
+) => {
+  // If no pixel IDs provided, just trigger the event
+  if (!landingMetaPixelId || landingMetaPixelId.length === 0) {
+    callback();
+    return;
+  }
+
+  // If pixel script not loaded yet, load it first
+  if (!window.fbq) {
+    window.fbq = function () {
+      window.fbq.callMethod
+        ? window.fbq.callMethod.apply(window.fbq, arguments)
+        : window.fbq.queue.push(arguments);
+    };
+    window.fbq.push = window.fbq;
+    window.fbq.loaded = true;
+    window.fbq.version = '2.0';
+    window.fbq.queue = [];
+    window.fbq.l = +new Date();
+
+    const fbScript = document.createElement('script');
+    fbScript.async = true;
+    fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+
+    fbScript.onload = () => {
+      if (!window._fbq_initialized) {
+        landingMetaPixelId.forEach((pixelId: string) => {
+          window.fbq('init', pixelId);
+          window.fbq('track', 'PageView');
+        });
+        window._fbq_initialized = true;
+      }
+
+      // Wait for _fbp cookie to be set
+      setTimeout(() => {
+        callback();
+      }, 5000);
+    };
+
+    document.head.appendChild(fbScript);
+  } else {
+    // Pixel script loaded, check if initialized
+    if (!window._fbq_initialized) {
+      landingMetaPixelId.forEach((pixelId: string) => {
+        window.fbq('init', pixelId);
+        window.fbq('track', 'PageView');
+      });
+      window._fbq_initialized = true;
+
+      // Wait for _fbp cookie to be set on first init
+      setTimeout(() => {
+        callback();
+      }, 5000);
+    } else {
+      // Already initialized, trigger immediately
+      callback();
+    }
+  }
+};
+
+/**
  * Public pixel API
  */
 export const pixel = {
@@ -187,28 +253,43 @@ export const pixel = {
     }
   },
 
-  add_to_cart: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.add_to_cart,
-      ...props,
-    }),
-  initial_checkout: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.initial_checkout,
-      ...props,
-    }),
-  purchase: ({ total_amount, currency = 'USD', ...props }: any) =>
-    triggerEvent({
-      eventName: EVENTS.purchase,
-      value: total_amount,
-      currency,
-      ...props,
-    }),
-  start_trial: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.start_trial,
-      ...props,
-    }),
+  add_to_cart: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelInitialized(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.add_to_cart,
+        ...props,
+      });
+    });
+  },
+
+  initial_checkout: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelInitialized(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.initial_checkout,
+        ...props,
+      });
+    });
+  },
+
+  purchase: ({ total_amount, currency = 'USD', landingMetaPixelId, ...props }: any) => {
+    ensurePixelInitialized(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.purchase,
+        value: total_amount,
+        currency,
+        ...props,
+      });
+    });
+  },
+
+  start_trial: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelInitialized(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.start_trial,
+        ...props,
+      });
+    });
+  },
 };
 
 /**
