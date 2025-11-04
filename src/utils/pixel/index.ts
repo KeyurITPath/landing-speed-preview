@@ -87,8 +87,12 @@ const triggerEvent = async ({
           ...(email ? { em: email } : {}),
           ...(phone ? { ph: phone } : {}),
           ...(external_id ? { external_id } : {}),
-          ...(userData?.first_name ? { fn: sha256Hash(userData.first_name) } : {}),
-          ...(userData?.last_name ? { ln: sha256Hash(userData.last_name) } : {}),
+          ...(userData?.first_name
+            ? { fn: sha256Hash(userData.first_name) }
+            : {}),
+          ...(userData?.last_name
+            ? { ln: sha256Hash(userData.last_name) }
+            : {}),
         }
       : {}),
     ...(fbp ? { fbp } : {}),
@@ -165,7 +169,7 @@ const ensurePixelInitialized = (
       // Wait for _fbp cookie to be set
       setTimeout(() => {
         callback();
-      }, 5000);
+      }, 2000);
     };
 
     document.head.appendChild(fbScript);
@@ -181,7 +185,7 @@ const ensurePixelInitialized = (
       // Wait for _fbp cookie to be set on first init
       setTimeout(() => {
         callback();
-      }, 5000);
+      }, 2000);
     } else {
       // Already initialized, trigger immediately
       callback();
@@ -197,7 +201,7 @@ export const pixel = {
     isAnalyticsCredentialsExists,
     landingMetaPixelId,
     ...rest
-  }: any) =>{
+  }: any) => {
     if (!window.fbq) {
       // Initialize fbq
       window.fbq = function () {
@@ -219,7 +223,7 @@ export const pixel = {
         if (!window._fbq_initialized) {
           landingMetaPixelId.forEach((pixelId: string) => {
             window.fbq('init', pixelId);
-            window.fbq('track', "PageView")
+            window.fbq('track', 'PageView');
           });
           window._fbq_initialized = true;
         }
@@ -231,8 +235,8 @@ export const pixel = {
             landingMetaPixelId,
             toCheckLandingMetaPixelId: true,
             ...rest,
-          })
-        }, 5000);
+          });
+        }, 3000);
       };
 
       document.head.appendChild(fbScript);
@@ -240,16 +244,19 @@ export const pixel = {
       if (!window._fbq_initialized) {
         landingMetaPixelId.forEach((pixelId: string) => {
           window.fbq('init', pixelId);
+          window.fbq('track', 'PageView');
         });
         window._fbq_initialized = true;
       }
-      triggerEvent({
-        isAnalyticsCredentialsExists,
-        eventName: EVENTS.view_content,
-        landingMetaPixelId,
-        toCheckLandingMetaPixelId: true,
-        ...rest,
-      })
+      setTimeout(() => {
+        triggerEvent({
+          isAnalyticsCredentialsExists,
+          eventName: EVENTS.view_content,
+          landingMetaPixelId,
+          toCheckLandingMetaPixelId: true,
+          ...rest,
+        });
+      }, 3000);
     }
   },
 
@@ -271,7 +278,12 @@ export const pixel = {
     });
   },
 
-  purchase: ({ total_amount, currency = 'USD', landingMetaPixelId, ...props }: any) => {
+  purchase: ({
+    total_amount,
+    currency = 'USD',
+    landingMetaPixelId,
+    ...props
+  }: any) => {
     ensurePixelInitialized(landingMetaPixelId, () => {
       triggerEvent({
         eventName: EVENTS.purchase,
@@ -307,45 +319,44 @@ export const loadFacebookPixel = ({
   trackFbqEvent(eventName, params, pixelIds);
   // setTimeout(() => {
   //   console.log("adding intentional delay to load facebook pixel")
-    // if (!window.fbq) {
-    //   // Initialize fbq
-    //   window.fbq = function () {
-    //     window.fbq.callMethod
-    //       ? window.fbq.callMethod.apply(window.fbq, arguments)
-    //       : window.fbq.queue.push(arguments);
-    //   };
-    //   window.fbq.push = window.fbq;
-    //   window.fbq.loaded = true;
-    //   window.fbq.version = '2.0';
-    //   window.fbq.queue = [];
-    //   window.fbq.l = +new Date();
+  // if (!window.fbq) {
+  //   // Initialize fbq
+  //   window.fbq = function () {
+  //     window.fbq.callMethod
+  //       ? window.fbq.callMethod.apply(window.fbq, arguments)
+  //       : window.fbq.queue.push(arguments);
+  //   };
+  //   window.fbq.push = window.fbq;
+  //   window.fbq.loaded = true;
+  //   window.fbq.version = '2.0';
+  //   window.fbq.queue = [];
+  //   window.fbq.l = +new Date();
 
-    //   const fbScript = document.createElement('script');
-    //   fbScript.async = true;
-    //   fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+  //   const fbScript = document.createElement('script');
+  //   fbScript.async = true;
+  //   fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
 
-    //   fbScript.onload = () => {
-    //     if (!window._fbq_initialized) {
-    //       pixelIds.forEach((pixelId: string) => {
-    //         window.fbq('init', pixelId);
-    //       });
-    //       window._fbq_initialized = true;
-    //     }
-    //     trackFbqEvent(eventName, params, pixelIds);
-    //   };
+  //   fbScript.onload = () => {
+  //     if (!window._fbq_initialized) {
+  //       pixelIds.forEach((pixelId: string) => {
+  //         window.fbq('init', pixelId);
+  //       });
+  //       window._fbq_initialized = true;
+  //     }
+  //     trackFbqEvent(eventName, params, pixelIds);
+  //   };
 
-    //   document.head.appendChild(fbScript);
-    // } else {
-    //   if (!window._fbq_initialized) {
-    //     pixelIds.forEach((pixelId: string) => {
-    //       window.fbq('init', pixelId);
-    //     });
-    //     window._fbq_initialized = true;
-    //   }
-    //   trackFbqEvent(eventName, params, pixelIds);
-    // }
+  //   document.head.appendChild(fbScript);
+  // } else {
+  //   if (!window._fbq_initialized) {
+  //     pixelIds.forEach((pixelId: string) => {
+  //       window.fbq('init', pixelId);
+  //     });
+  //     window._fbq_initialized = true;
+  //   }
+  //   trackFbqEvent(eventName, params, pixelIds);
+  // }
   // }, 5000);
-
 };
 
 /**
