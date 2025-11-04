@@ -121,9 +121,11 @@ const StripeInnerForm = ({
       );
 
       if (stripeError) {
+        console.log("stripeError", stripeError);
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        await pixel.initial_checkout({
+        console.log("paymentIntent", paymentIntent);
+        pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
           content_ids: [courseData?.id],
@@ -158,8 +160,8 @@ const StripeInnerForm = ({
         );
 
         // Close popup and redirect to email verification page
-        dispatch(getStripeCheckoutClose());
-        window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        // dispatch(getStripeCheckoutClose());
+        // window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
