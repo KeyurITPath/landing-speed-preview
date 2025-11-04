@@ -124,57 +124,12 @@ const triggerEvent = async ({
 };
 
 /**
- * Public pixel API
+ * Initialize FB Pixel and track PageView (needed to generate _fbp cookie)
  */
-export const pixel = {
-  view_content: ({
-    isAnalyticsCredentialsExists,
-    landingMetaPixelId,
-    ...rest
-  }: any) =>
-    triggerEvent({
-      isAnalyticsCredentialsExists,
-      eventName: EVENTS.view_content,
-      landingMetaPixelId,
-      toCheckLandingMetaPixelId: true,
-      ...rest,
-    }),
-  add_to_cart: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.add_to_cart,
-      ...props,
-    }),
-  initial_checkout: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.initial_checkout,
-      ...props,
-    }),
-  purchase: ({ total_amount, currency = 'USD', ...props }: any) =>
-    triggerEvent({
-      eventName: EVENTS.purchase,
-      value: total_amount,
-      currency,
-      ...props,
-    }),
-  start_trial: ({ ...props }) =>
-    triggerEvent({
-      eventName: EVENTS.start_trial,
-      ...props,
-    }),
-};
-
-/**
- * FB Pixel Loader
- */
-export const loadFacebookPixel = ({
-  pixelIds = [],
-  eventName,
-  params = {},
-}: {
-  pixelIds: string[];
-  eventName: string;
-  params?: Record<string, any>;
-}) => {
+const initializeFacebookPixel = (
+  pixelIds: string[],
+  callback: () => void
+) => {
   if (!window.fbq) {
     // Initialize fbq
     window.fbq = function () {
@@ -196,10 +151,15 @@ export const loadFacebookPixel = ({
       if (!window._fbq_initialized) {
         pixelIds.forEach((pixelId: string) => {
           window.fbq('init', pixelId);
+          window.fbq('track', 'PageView');
         });
         window._fbq_initialized = true;
       }
-      trackFbqEvent(eventName, params, pixelIds);
+
+      // Wait for _fbp cookie to be set before triggering event
+      setTimeout(() => {
+        callback();
+      }, 3000);
     };
 
     document.head.appendChild(fbScript);
@@ -207,11 +167,158 @@ export const loadFacebookPixel = ({
     if (!window._fbq_initialized) {
       pixelIds.forEach((pixelId: string) => {
         window.fbq('init', pixelId);
+        window.fbq('track', 'PageView');
       });
       window._fbq_initialized = true;
+
+      // Wait for _fbp cookie to be set on first initialization
+      setTimeout(() => {
+        callback();
+      }, 3000);
+    } else {
+      // Already initialized, no need to wait
+      callback();
     }
-    trackFbqEvent(eventName, params, pixelIds);
   }
+};
+
+/**
+ * Ensure FB Pixel is ready before triggering event
+ */
+const ensurePixelReady = (
+  landingMetaPixelId: string[] | undefined,
+  callback: () => void
+) => {
+  // If pixel IDs are provided, ensure pixel is initialized
+  if (landingMetaPixelId && landingMetaPixelId.length > 0) {
+    initializeFacebookPixel(landingMetaPixelId, callback);
+  } else {
+    // No pixel IDs, just trigger immediately
+    callback();
+  }
+};
+
+/**
+ * Public pixel API
+ */
+export const pixel = {
+  view_content: ({
+    isAnalyticsCredentialsExists,
+    landingMetaPixelId,
+    ...rest
+  }: any) => {
+    ensurePixelReady(landingMetaPixelId, () => {
+      triggerEvent({
+        isAnalyticsCredentialsExists,
+        eventName: EVENTS.view_content,
+        landingMetaPixelId,
+        toCheckLandingMetaPixelId: true,
+        ...rest,
+      });
+    });
+  },
+
+  add_to_cart: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelReady(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.add_to_cart,
+        landingMetaPixelId,
+        toCheckLandingMetaPixelId: !!landingMetaPixelId,
+        ...props,
+      });
+    });
+  },
+
+  initial_checkout: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelReady(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.initial_checkout,
+        landingMetaPixelId,
+        toCheckLandingMetaPixelId: !!landingMetaPixelId,
+        ...props,
+      });
+    });
+  },
+
+  purchase: ({ total_amount, currency = 'USD', landingMetaPixelId, ...props }: any) => {
+    ensurePixelReady(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.purchase,
+        value: total_amount,
+        currency,
+        landingMetaPixelId,
+        toCheckLandingMetaPixelId: !!landingMetaPixelId,
+        ...props,
+      });
+    });
+  },
+
+  start_trial: ({ landingMetaPixelId, ...props }: any) => {
+    ensurePixelReady(landingMetaPixelId, () => {
+      triggerEvent({
+        eventName: EVENTS.start_trial,
+        landingMetaPixelId,
+        toCheckLandingMetaPixelId: !!landingMetaPixelId,
+        ...props,
+      });
+    });
+  },
+};
+
+/**
+ * FB Pixel Loader
+ */
+export const loadFacebookPixel = ({
+  pixelIds = [],
+  eventName,
+  params = {},
+}: {
+  pixelIds: string[];
+  eventName: string;
+  params?: Record<string, any>;
+}) => {
+  trackFbqEvent(eventName, params, pixelIds);
+  // setTimeout(() => {
+  //   console.log("adding intentional delay to load facebook pixel")
+    // if (!window.fbq) {
+    //   // Initialize fbq
+    //   window.fbq = function () {
+    //     window.fbq.callMethod
+    //       ? window.fbq.callMethod.apply(window.fbq, arguments)
+    //       : window.fbq.queue.push(arguments);
+    //   };
+    //   window.fbq.push = window.fbq;
+    //   window.fbq.loaded = true;
+    //   window.fbq.version = '2.0';
+    //   window.fbq.queue = [];
+    //   window.fbq.l = +new Date();
+
+    //   const fbScript = document.createElement('script');
+    //   fbScript.async = true;
+    //   fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+
+    //   fbScript.onload = () => {
+    //     if (!window._fbq_initialized) {
+    //       pixelIds.forEach((pixelId: string) => {
+    //         window.fbq('init', pixelId);
+    //       });
+    //       window._fbq_initialized = true;
+    //     }
+    //     trackFbqEvent(eventName, params, pixelIds);
+    //   };
+
+    //   document.head.appendChild(fbScript);
+    // } else {
+    //   if (!window._fbq_initialized) {
+    //     pixelIds.forEach((pixelId: string) => {
+    //       window.fbq('init', pixelId);
+    //     });
+    //     window._fbq_initialized = true;
+    //   }
+    //   trackFbqEvent(eventName, params, pixelIds);
+    // }
+  // }, 5000);
+
 };
 
 /**
