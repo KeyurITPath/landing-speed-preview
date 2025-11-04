@@ -38,11 +38,7 @@ const MobileUpsaleCourseSkeleton = () => (
       backgroundColor: '#FFFFFF',
     }}
   >
-    <Skeleton
-      variant='rectangular'
-      height={92}
-      width='100%'
-    />
+    <Skeleton variant='rectangular' height={92} width='100%' />
     <Stack
       sx={{
         gap: 0.5,
@@ -450,7 +446,9 @@ const UpsaleCourses = ({
                   <Box
                     className='navigation-wrapper'
                     sx={{
-                      display: showNavigation ? 'flex!important' : 'none!important',
+                      display: showNavigation
+                        ? 'flex!important'
+                        : 'none!important',
                       gap: 2,
                     }}
                   >
@@ -481,7 +479,11 @@ const UpsaleCourses = ({
                   {isLoadingUpsales
                     ? // Show skeleton loading when loading
                       Array.from({ length: 3 }).map((_, index) => (
-                        <Grid2 key={index} size={{ xs: 4 }} sx={{ minWidth: '160px' }}>
+                        <Grid2
+                          key={index}
+                          size={{ xs: 4 }}
+                          sx={{ minWidth: '160px' }}
+                        >
                           <MobileUpsaleCourseSkeleton />
                         </Grid2>
                       ))
@@ -492,7 +494,11 @@ const UpsaleCourses = ({
                             (item: any) => item.id === course.id
                           );
                           return (
-                            <Grid2 key={course.id} size={{ xs: 4 }} sx={{ minWidth: '160px' }}>
+                            <Grid2
+                              key={course.id}
+                              size={{ xs: 4 }}
+                              sx={{ minWidth: '160px' }}
+                            >
                               <MobileUpsaleCourseCard
                                 course={course}
                                 isSelected={!!isSelected}
@@ -566,26 +572,28 @@ const UpsaleCourses = ({
               <Divider sx={{ borderColor: '#dfdfdf' }} />
               <Stack sx={{ gap: 3, mt: 2 }}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                  <CustomButton
-                    fullWidth
-                    variant='outlined'
-                    onClick={handleDeclineUpsale}
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      '&.MuiButton-outlined': {
-                        color: '#49AE56',
-                        borderColor: '#49AE56',
-                      },
-                      '&:hover': {
-                        color: '#FFFFFF',
-                        borderColor: '#49AE56',
-                        opacity: 0.8,
-                      },
-                    }}
-                  >
-                    {t('upsale.no_need')}
-                  </CustomButton>
+                  {!isMobile && (
+                    <CustomButton
+                      fullWidth
+                      variant='outlined'
+                      onClick={handleDeclineUpsale}
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        '&.MuiButton-outlined': {
+                          color: '#49AE56',
+                          borderColor: '#49AE56',
+                        },
+                        '&:hover': {
+                          color: '#FFFFFF',
+                          borderColor: '#49AE56',
+                          opacity: 0.8,
+                        },
+                      }}
+                    >
+                      {t('upsale.no_need')}
+                    </CustomButton>
+                  )}
                   <CustomButton
                     fullWidth
                     loading={loading}
@@ -600,6 +608,28 @@ const UpsaleCourses = ({
                   >
                     {t('upsale.complete')}
                   </CustomButton>
+                  {isMobile && (
+                    <CustomButton
+                      fullWidth
+                      variant='outlined'
+                      onClick={handleDeclineUpsale}
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        '&.MuiButton-outlined': {
+                          color: '#49AE56',
+                          borderColor: '#49AE56',
+                        },
+                        '&:hover': {
+                          color: '#FFFFFF',
+                          borderColor: '#49AE56',
+                          opacity: 0.8,
+                        },
+                      }}
+                    >
+                      {t('upsale.no_need')}
+                    </CustomButton>
+                  )}
                 </Stack>
               </Stack>
             </Stack>
@@ -608,7 +638,10 @@ const UpsaleCourses = ({
       </Box>
 
       {/* Payment popups */}
-      <SuccessPaymentPopup open={isPaymentSuccess} landingPageName={landingPageName}/>
+      <SuccessPaymentPopup
+        open={isPaymentSuccess}
+        landingPageName={landingPageName}
+      />
       <FailedPaymentPopup open={isPaymentFailed} />
 
       {/* Payment Error Popup for Upsale */}

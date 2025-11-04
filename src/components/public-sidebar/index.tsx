@@ -82,6 +82,17 @@ const Sidebar = ({
               </ListItem>
             )}
 
+            <ListItem onClick={() => {
+              setDrawerOpen(false);
+              window.open(routes.public.support, '_blank', 'noopener,noreferrer');
+            }}>
+              <ListItemText primary={toCapitalCase(t('sidebar.support'))} />
+            </ListItem>
+
+            <ListItem onClick={() => router.push(routes.private.settings_and_subscription)}>
+              <ListItemText primary={toCapitalCase(t('sidebar.settings_and_subscription'))} />
+            </ListItem>
+
             <ListItem onClick={logoutOpen}>
               <ListItemText primary={toCapitalCase(t('logout'))} />
             </ListItem>

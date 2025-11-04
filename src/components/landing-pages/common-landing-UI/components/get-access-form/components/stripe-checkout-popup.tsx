@@ -123,7 +123,8 @@ const StripeInnerForm = ({
       if (stripeError) {
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        await pixel.initial_checkout({
+        // Call pixel event first
+        pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
           content_ids: [courseData?.id],
@@ -157,9 +158,11 @@ const StripeInnerForm = ({
           })
         );
 
-        // Close popup and redirect to email verification page
-        dispatch(getStripeCheckoutClose());
-        window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        // Wait for pixel events to be sent before redirecting
+        setTimeout(() => {
+          dispatch(getStripeCheckoutClose());
+          window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        }, 2000);
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
