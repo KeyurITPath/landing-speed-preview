@@ -64,13 +64,11 @@ const triggerEvent = async ({
   const external_id = user?.id ? sha256Hash(user?.id || '') : null;
 
   let userData = {};
-  console.log("user data", user);
   if (user?.id) {
     const response = await api.user.get({
       params: { user_id: user?.id },
       headers: { 'req-from': country_code },
     });
-    console.log("user api response", response);
     userData = response?.data?.data || {};
   }
 
