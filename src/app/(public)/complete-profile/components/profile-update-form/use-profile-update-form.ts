@@ -85,7 +85,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   }, [courseData]);
 
   // Only fire pixel for landing1
-  const shouldFirePixel = landingPageName === 'landing1';
+  const shouldFirePixel = landingPageName === 'landing1' || landingPageName === 'landing2';
 
   const plainPassword = useMemo(() => {
     return decrypt(userData?.passwordforUI);
