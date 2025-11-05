@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
@@ -72,7 +72,9 @@ const StripeInnerForm = ({
   subscriptionPrice,
   brandName,
   utmData,
-  params
+  params,
+  selectedUpsaleCourses,
+  setActiveForm,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -114,7 +116,12 @@ const StripeInnerForm = ({
         {
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`,
+            return_url:
+              activeLandingPage?.name === 'landing2'
+                ? `${window.location.origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
+                : activeLandingPage?.name === 'landing1'
+                  ? `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
+                  : `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`,
           },
           redirect: 'if_required',
         }
@@ -123,13 +130,29 @@ const StripeInnerForm = ({
       if (stripeError) {
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        // Call pixel event first
+        const upsaleContents =
+          selectedUpsaleCourses?.map((upsale: any) => ({
+            id: upsale.id,
+            quantity: 1,
+            item_price: upsale.priceAmount,
+          })) || [];
+
+        const totalAmount =
+          (coursePrice?.price || 0) +
+          (selectedUpsaleCourses?.reduce(
+            (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
+            0
+          ) || 0);
+
         pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
-          content_ids: [courseData?.id],
-          total_amount: coursePrice?.price,
-          value: coursePrice?.price,
+          content_ids: [
+            courseData?.id,
+            ...(selectedUpsaleCourses?.map((upsale: any) => upsale.id) || []),
+          ],
+          total_amount: totalAmount,
+          value: totalAmount,
           currency: coursePrice?.currency?.name,
           contents: [
             {
@@ -137,6 +160,7 @@ const StripeInnerForm = ({
               quantity: 1,
               item_price: coursePrice?.price,
             },
+            ...upsaleContents,
           ],
           ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
@@ -160,8 +184,15 @@ const StripeInnerForm = ({
 
         // Wait for pixel events to be sent before redirecting
         setTimeout(() => {
+          sessionStorage.removeItem('selectedUpsaleIds');
+          setActiveForm('');
           dispatch(getStripeCheckoutClose());
-          window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+          window.location.href =
+            activeLandingPage?.name === 'landing2'
+              ? `${window.location.origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
+              : activeLandingPage?.name === 'landing1'
+                ? `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
+                : `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         }, 2000);
       }
     } catch (err) {
@@ -373,6 +404,7 @@ export default function StripeCheckoutPopup({
   utmData,
   landingData,
   user,
+  setActiveForm,
   ...props
 }: any) {
   const t = useTranslations();
@@ -380,7 +412,9 @@ export default function StripeCheckoutPopup({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const paymentIntentCreated = useRef(false);
-  const { registerUserData } = useSelector(({ course }: any) => course);
+  const { registerUserData, upSaleCourses } = useSelector(
+    ({ course }: any) => course
+  );
 
   const { data: monthlySubscriptionData } = useSelector(
     ({ popup }: any) => popup?.monthlySubscription
@@ -400,21 +434,62 @@ export default function StripeCheckoutPopup({
   const brandName = landingData?.BRAND_NAME || '';
   const { data: landingPageData, activeLandingPage } = landingData;
 
+  const { currency } = useSelector(({ defaults }: any) => defaults);
+  const mainCurrencyCode = currency.code;
+
+  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
+
+  const country_code = cookies.get('country_code') || '';
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
   });
 
+  // Get selected upsale courses with full data (for landing2)
+  const selectedUpsaleCourses = useMemo(() => {
+    try {
+      const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+      if (!storedUpsaleIds || !upSaleCourses || upSaleCourses.length === 0) {
+        return [];
+      }
+
+      const selectedIds = JSON.parse(storedUpsaleIds);
+      return upSaleCourses
+        .map((course: any) => {
+          const priceData = course.course_prices?.find(
+            ({ is_upsale_price, currency, stripe_price_id }: any) =>
+              is_upsale_price &&
+              currency?.name === mainCurrencyCode &&
+              selectedIds.includes(stripe_price_id)
+          );
+
+          if (!priceData) return null;
+
+          return {
+            id: course.id,
+            priceAmount: priceData?.price || 0,
+            stripeId: priceData?.stripe_price_id,
+          };
+        })
+        .filter((item: any) => item !== null);
+    } catch (e) {
+      console.error('Failed to get selected upsale courses:', e);
+      return [];
+    }
+  }, [upSaleCourses, mainCurrencyCode]);
+
   useEffect(() => {
     if (!open) {
       paymentIntentCreated.current = false;
       setClientSecret('');
       setError('');
+      // Clean up selectedUpsaleIds when popup closes
+      sessionStorage.removeItem('selectedUpsaleIds');
     }
   }, [open]);
-  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
-  const country_code = cookies.get('country_code') || '';
+
 
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -424,12 +499,28 @@ export default function StripeCheckoutPopup({
         setError('');
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(params).toString();
-        const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        const success_url =
+          activeLandingPage?.name === 'landing2'
+            ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
+            : activeLandingPage?.name === 'landing1'
+              ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
+              : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
         const cancel_url = `${origin}${pathname}?payment=failed`;
+
+        // Get selected upsale IDs from sessionStorage (for landing2)
+        let selectedUpsaleIds = [];
+        try {
+          const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+          if (storedUpsaleIds) {
+            selectedUpsaleIds = JSON.parse(storedUpsaleIds);
+          }
+        } catch (e) {
+          console.error('Failed to parse selectedUpsaleIds:', e);
+        }
 
         const data = {
           stripe_price_id: coursePrice?.stripe_price_id,
-          selected_upsale_price_ids: [],
+          selected_upsale_price_ids: selectedUpsaleIds || [],
           user_id: registerUserData?.id,
           success_url,
           cancel_url,
@@ -439,7 +530,6 @@ export default function StripeCheckoutPopup({
         };
 
         const response = await api.getAccess.orderCheckout({ data });
-
         if (response?.data?.data?.clientSecret) {
           setClientSecret(response.data.data.clientSecret);
         } else {
@@ -464,7 +554,17 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, registerUserData?.id, params, landingPageData?.final_url]);
+  }, [
+    open,
+    courseData,
+    coursePrice?.stripe_price_id,
+    clientSecret,
+    registerUserData?.id,
+    params,
+    landingPageData?.final_url,
+    registerUserData,
+    activeLandingPage?.name,
+  ]);
 
   const options = {
     clientSecret,
@@ -516,7 +616,7 @@ export default function StripeCheckoutPopup({
         id='stripe-dialog'
         sx={{ pb: 1, position: 'relative', textAlign: 'center' }}
       >
-        {t('stripe_checkout.complete_payment')}
+        {!error && t('stripe_checkout.complete_payment')}
         <IconButton
           onClick={onClose}
           sx={{
@@ -537,7 +637,13 @@ export default function StripeCheckoutPopup({
           <>
             <Box sx={{ py: 4, textAlign: 'center' }}>
               <Box sx={{ mb: 3 }}>
-                <Stack sx={{ color: 'error.main', fontSize: 60 }}>
+                <Stack
+                  sx={{
+                    color: 'error.main',
+                    fontSize: 60,
+                    alignItems: 'center',
+                  }}
+                >
                   <ICONS.CloseCircle />
                 </Stack>
               </Box>
@@ -585,6 +691,8 @@ export default function StripeCheckoutPopup({
               utmData={utmData}
               user={user}
               params={params}
+              selectedUpsaleCourses={selectedUpsaleCourses}
+              setActiveForm={setActiveForm}
             />
           </Elements>
         ) : (

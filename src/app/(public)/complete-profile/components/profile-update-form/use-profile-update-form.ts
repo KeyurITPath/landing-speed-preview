@@ -21,7 +21,7 @@ import { fetchUser } from '@/store/features/user.slice';
 import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
 
-const useProfileUpdateForm = ({ userData }: any) => {
+const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
@@ -35,7 +35,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
     last_name: userData?.last_name || '',
     // location: '',
     age: '',
-    gender: 'male',
+    gender: '',
   };
 
   const { enqueueSnackbar } = useSnackbar();
@@ -231,7 +231,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
       resetForm();
 
       if (decodeData?.is_verified) {
-        router.push(routes.private.dashboard);
+        setActiveTab(2);
       } else {
         router.push(routes.public.home);
       }
@@ -343,7 +343,7 @@ const useProfileUpdateForm = ({ userData }: any) => {
         value: values.gender,
         handleChange,
         handleBlur,
-        error: touched.gender && errors.gender,
+        // error: touched.gender && errors.gender,
         type: 'radio',
         options: GENDERS.map(gender => ({
           ...gender,

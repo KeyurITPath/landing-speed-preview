@@ -41,8 +41,8 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   const { email } = domainDetails?.data?.domain_detail || {};
 
   const tabs = [
-    { id: 1, Component: CredentialsForm },
-    { id: 2, Component: ProfileUpdateForm },
+    { id: 1, Component: ProfileUpdateForm },
+    { id: 2, Component: CredentialsForm },
   ];
 
   const [activeTab, setActiveTab] = useState(1);

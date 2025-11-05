@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   formatCurrency,
   getActualPrice,
@@ -26,12 +26,15 @@ import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
 import { useSearchParams } from 'next/navigation';
+import { getStripeCheckoutOpen } from '@/store/features/course.slice';
 
 const CheckoutForm = ({
   landingData,
   courseData,
   queryParams,
   utmData,
+  activeLandingPage,
+  setActiveForm,
 }: any) => {
   const [cartUpSalesOrders, setCartUpSalesOrder] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,8 +43,10 @@ const CheckoutForm = ({
 
   const { enqueueSnackbar } = useSnackbar();
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
 
   const { user } = useContext(AuthContext);
+  const isLandingPage2 = activeLandingPage?.name === 'landing2';
 
   const { currency } = useSelector(({ defaults }: any) => defaults);
 
@@ -185,35 +190,42 @@ const CheckoutForm = ({
       if (user?.is_verified) {
         success_url = `${origin}${pathname}?payment=success`;
       } else {
-        sessionStorage.setItem('hasSalesFlowAccess', true);
-        const queryString = new URLSearchParams(queryParams).toString();
-        success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+        if (isLandingPage2) {
+          sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsaleIds));
+          setActiveForm('');
+          dispatch(getStripeCheckoutOpen());
+          setLoading(false);
+          return;
+        }
+        // sessionStorage.setItem('hasSalesFlowAccess', true);
+        // const queryString = new URLSearchParams(queryParams).toString();
+        // success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
       }
 
-      const cancel_url = `${origin}${pathname}?payment=failed`;
+      // const cancel_url = `${origin}${pathname}?payment=failed`;
 
-      const data = {
-        stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
-        selected_upsale_price_ids: upsaleIds || [],
-        user_id: user?.id,
-        success_url,
-        cancel_url,
-        domain: DOMAIN,
-        final_url: landingData?.final_url,
-        ...params,
-      };
+      // const data = {
+      //   stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
+      //   selected_upsale_price_ids: upsaleIds || [],
+      //   user_id: user?.id,
+      //   success_url,
+      //   cancel_url,
+      //   domain: DOMAIN,
+      //   final_url: landingData?.final_url,
+      //   ...params,
+      // };
 
-      console.log('data1', data);
+      // console.log('data1', data);
 
-      const res = await api.getAccess.orderCheckout({ data });
-      if (res?.data?.data?.checkoutUrl) {
-        await pixel.initial_checkout({
-          userId: user?.id,
-          ...otherMeta,
-          ...(!isEmptyObject(utmData) ? { utmData } : {}),
-        });
-        window.location.href = res?.data?.data?.checkoutUrl;
-      }
+      // const res = await api.getAccess.orderCheckout({ data });
+      // if (res?.data?.data?.checkoutUrl) {
+      //   await pixel.initial_checkout({
+      //     userId: user?.id,
+      //     ...otherMeta,
+      //     ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      //   });
+      //   window.location.href = res?.data?.data?.checkoutUrl;
+      // }
     } catch (error) {
       setLoading(false);
       enqueueSnackbar((error as Error)?.message || ERROR_MESSAGES.common, {

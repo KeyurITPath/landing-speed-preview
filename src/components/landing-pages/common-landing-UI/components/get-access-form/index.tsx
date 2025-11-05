@@ -101,7 +101,7 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
             />
           ) : (
             <CheckoutForm
-              {...{ setActiveForm, queryParams, utmData }}
+              {...{ setActiveForm, queryParams, utmData, activeLandingPage }}
               landingData={data}
               courseData={course}
             />

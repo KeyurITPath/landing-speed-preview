@@ -206,6 +206,11 @@ export const JoyrideProvider = ({ children }: any) => {
         description: 'User skipped the onboarding tour',
       });
       setShowSkipConfirmation(false);
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('landingPageForRedirect');
+        sessionStorage.removeItem('landingCourseSlug');
+      }
     } catch (error) {
       console.error('Error while skipping tour:', error);
     } finally {

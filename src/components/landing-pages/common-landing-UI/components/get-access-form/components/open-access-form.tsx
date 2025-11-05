@@ -66,6 +66,8 @@ const OpenAccessForm = ({
 
   const t = useTranslations();
 
+  const isLandingPage1 = activeLandingPage?.name === 'landing1';
+
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -113,13 +115,12 @@ const OpenAccessForm = ({
 
     gtm.ecommerce.add_to_cart();
 
-    const isLandingPage1 = activeLandingPage?.name === 'landing1';
+    // Store registerUserData in Redux for Stripe checkout to use (for all landing pages)
+    dispatch(setRegisterUserData(registerUserData));
+    sessionStorage.setItem('landingCourseSlug', course?.slug);
+    sessionStorage.setItem('landingPageForRedirect', activeLandingPage?.name);
 
     if (isLandingPage1) {
-      // Store registerUserData in Redux for Stripe checkout to use
-      dispatch(setRegisterUserData(registerUserData));
-      sessionStorage.setItem('landingPageForRedirect', 'landing1');
-      sessionStorage.setItem('landingCourseSlug', course?.slug);
       dispatch(getAccessClose());
       dispatch(getStripeCheckoutOpen());
     } else if (!isCourseUpsaleCoursesAvailable) {

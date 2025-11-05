@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchAllUpSales } from '@/store/features/course.slice';
@@ -13,7 +13,7 @@ import { routes } from '@/utils/constants/routes';
 const useUpsale = (courseData?: any, currency?: any) => {
   const searchParams = useSearchParams();
   const { user } = useContext(AuthContext);
-
+  const router = useRouter();
   // Redux state
   const { upSaleCourses } = useSelector(({ course }: any) => course);
   const { currency: reduxCurrency } = useSelector(
@@ -50,7 +50,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -81,7 +81,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
               language_id: effectiveLanguageId,
             },
           }),
-          new Promise(resolve => setTimeout(resolve, 1000)) // Minimum 1 second loading
+          new Promise(resolve => setTimeout(resolve, 1000)), // Minimum 1 second loading
         ]);
       } catch (error) {
         console.error('Error fetching upsale courses:', error);
@@ -107,7 +107,10 @@ const useUpsale = (courseData?: any, currency?: any) => {
   // Set loading to false when courses are loaded or when we know there are no courses
   useEffect(() => {
     // If we have courses or if we've tried to fetch and got no results
-    if (upSaleCourses?.length > 0 || (upSaleCourses?.length === 0 && !isLoadingUpsales)) {
+    if (
+      upSaleCourses?.length > 0 ||
+      (upSaleCourses?.length === 0 && !isLoadingUpsales)
+    ) {
       setIsLoadingUpsales(false);
     }
   }, [upSaleCourses?.length, isLoadingUpsales]);
@@ -245,9 +248,8 @@ const useUpsale = (courseData?: any, currency?: any) => {
       await api.getAccess
         .purchaseUpsaleCourse({ data })
         .then((response: any) => {
-
           if (response?.data?.data?.status === 'succeeded') {
-            window.location.href = routes.public.email_verification;
+            router.push(routes.public.complete_profile);
           } else {
             const errorMessage =
               response?.data?.message ||
@@ -261,10 +263,10 @@ const useUpsale = (courseData?: any, currency?: any) => {
         })
         .catch((error: any) => {
           const errorMessage =
-          error?.data?.message ||
-          error?.apiError?.message ||
-          error?.message ||
-          'Payment failed. Please try again.';
+            error?.data?.message ||
+            error?.apiError?.message ||
+            error?.message ||
+            'Payment failed. Please try again.';
           console.log('Error message extracted:', errorMessage);
           setPaymentErrorMessage(errorMessage);
           setShowPaymentError(true);
@@ -277,7 +279,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
     } finally {
       setLoading(false);
     }
-  }, [selectedUpsales, user?.id, courseData?.final_url, courseData?.slug, params]);
+  }, [selectedUpsales, user?.id, courseData?.final_url, courseData?.slug, params, router]);
 
   // Handle decline upsale
   const handleDeclineUpsale = useCallback(() => {
