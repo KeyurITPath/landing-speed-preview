@@ -138,12 +138,16 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       );
   }, [userOrderData]);
 
-  const course_content =
-    userOrderData?.user_orders?.[0]?.user_order_details?.map((item: any) => ({
-      id: item?.course_id,
-      quantity: 1,
-      item_price: item?.course_price?.price || 0,
-    }));
+  const course_content = useMemo(
+    () =>
+      userOrderData?.user_orders?.[0]?.user_order_details?.map((item: any) => ({
+        id: item?.course_id,
+        quantity: 1,
+        item_price: item?.course_price?.price || 0,
+      })) || [],
+    [userOrderData]
+  );
+
   const upsaleContents = useMemo(
     () =>
       selectedUpsaleCourses?.map((item: any) => ({
@@ -177,6 +181,20 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       ...(selectedUpsaleCourses?.map((item: any) => item?.id) || []),
     ];
   }, [course_content, selectedUpsaleCourses]);
+
+  const totalCoursePrice = useMemo(() => {
+    return (
+      course_content?.reduce(
+        (sum: number, item: any) => sum + item?.item_price || 0,
+        0
+      ) +
+      upsaleContents?.reduce(
+        (sum: number, item: any) => sum + item?.item_price || 0,
+        0
+      )
+    );
+  }, [course_content, upsaleContents]);
+
   const metaParams = useMemo(() => {
     return {
       content_type: 'course',
@@ -184,10 +202,10 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       content_ids: contentIds,
       currency: currencyName,
       contents: [...course_content, ...upsaleContents],
-      value: totalPrice,
-      total_amount: totalPrice,
+      value: totalCoursePrice,
+      total_amount: totalCoursePrice,
     };
-  }, [userOrderData?.id, contentIds, currencyName, course_content, upsaleContents, totalPrice]);
+  }, [userOrderData?.id, contentIds, currencyName, course_content, upsaleContents, totalCoursePrice]);
 
   const utmData = useMemo(() => {
     const utmSources =
