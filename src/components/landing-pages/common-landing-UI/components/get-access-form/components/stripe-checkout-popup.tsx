@@ -144,7 +144,7 @@ const StripeInnerForm = ({
             0
           ) || 0);
 
-        pixel.initial_checkout({
+        await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
           content_ids: [
@@ -448,15 +448,21 @@ export default function StripeCheckoutPopup({
   });
 
   // Get selected upsale courses with full data (for landing2)
-  const selectedUpsaleCourses = useMemo(() => {
+  const [selectedUpsaleCourses, setSelectedUpsaleCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!open) return;
+
     try {
       const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
       if (!storedUpsaleIds || !upSaleCourses || upSaleCourses.length === 0) {
-        return [];
+        setSelectedUpsaleCourses([]);
+        return;
       }
 
       const selectedIds = JSON.parse(storedUpsaleIds);
-      return upSaleCourses
+
+      const courses = upSaleCourses
         .map((course: any) => {
           const priceData = course.course_prices?.find(
             ({ is_upsale_price, currency, stripe_price_id }: any) =>
@@ -474,11 +480,13 @@ export default function StripeCheckoutPopup({
           };
         })
         .filter((item: any) => item !== null);
+
+      setSelectedUpsaleCourses(courses);
     } catch (e) {
       console.error('Failed to get selected upsale courses:', e);
-      return [];
+      setSelectedUpsaleCourses([]);
     }
-  }, [upSaleCourses, mainCurrencyCode]);
+  }, [upSaleCourses, mainCurrencyCode, open]);
 
   useEffect(() => {
     if (!open) {
