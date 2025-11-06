@@ -50,7 +50,6 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
-
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -236,6 +235,8 @@ const useUpsale = (courseData?: any, currency?: any) => {
         return;
       }
 
+      sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsalePriceIds));
+
       const data = {
         selected_upsale_price_ids: upsalePriceIds,
         user_id: user?.id,
@@ -279,7 +280,14 @@ const useUpsale = (courseData?: any, currency?: any) => {
     } finally {
       setLoading(false);
     }
-  }, [selectedUpsales, user?.id, courseData?.final_url, courseData?.slug, params, router]);
+  }, [
+    selectedUpsales,
+    user?.id,
+    courseData?.final_url,
+    courseData?.slug,
+    params,
+    router,
+  ]);
 
   // Handle decline upsale
   const handleDeclineUpsale = useCallback(() => {

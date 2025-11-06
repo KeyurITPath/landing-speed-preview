@@ -67,6 +67,7 @@ const OpenAccessForm = ({
   const t = useTranslations();
 
   const isLandingPage1 = activeLandingPage?.name === 'landing1';
+  const isLandingPage2 = activeLandingPage?.name === 'landing2';
 
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
@@ -120,57 +121,33 @@ const OpenAccessForm = ({
     sessionStorage.setItem('landingCourseSlug', course?.slug);
     sessionStorage.setItem('landingPageForRedirect', activeLandingPage?.name);
 
-    if (isLandingPage1) {
-      dispatch(getAccessClose());
-      dispatch(getStripeCheckoutOpen());
-    } else if (!isCourseUpsaleCoursesAvailable) {
-      let success_url = '';
-      const { origin, pathname } = window.location;
-      if (registerUserData?.is_verified) {
-        success_url = `${origin}${pathname}?payment=success`;
-      } else {
-        sessionStorage.setItem('hasSalesFlowAccess', true);
-        const queryString = new URLSearchParams(queryParams).toString();
-        success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+    // If upsale not available
+    if (!isCourseUpsaleCoursesAvailable) {
+      // If L1: close popup and show stripe popup
+      if (isLandingPage1) {
+        dispatch(getAccessClose());
+        dispatch(getStripeCheckoutOpen());
       }
-
-      const cancel_url = `${origin}${pathname}?payment=failed`;
-
-      const data = {
-        stripe_price_id: courseData?.course_prices?.[0]?.stripe_price_id,
-        selected_upsale_price_ids: [],
-        user_id: registerUserData?.id,
-        final_url: course?.slug,
-        success_url,
-        cancel_url,
-        domain: DOMAIN,
-        ...params,
-      };
-
-      console.log('data2', data);
-
-      const resOrderCheckout = await api.getAccess.orderCheckout({ data });
-      if (resOrderCheckout?.data?.data?.checkoutUrl) {
-        await pixel.initial_checkout({
-          userId: registerUserData?.id,
-          content_type: 'course',
-          content_ids: [courseData?.id],
-          total_amount: courseData?.course_prices?.[0]?.price,
-          value: courseData?.course_prices?.[0]?.price,
-          currency: courseData?.course_prices?.[0]?.currency?.name,
-          contents: [
-            {
-              id: courseData?.id,
-              quantity: 1,
-              item_price: courseData.course_prices?.[0]?.price,
-            },
-          ],
-          ...(!isEmptyObject(utmData) ? { utmData } : {}),
-        });
-        window.location.href = resOrderCheckout?.data?.data?.checkoutUrl;
+      // If L2: show checkout form
+      else if (isLandingPage2) {
+        setActiveForm('checkout-form');
       }
-    } else {
-      setActiveForm('checkout-form');
+      // Default: show checkout form
+      else {
+        setActiveForm('checkout-form');
+      }
+    }
+    // If upsale available
+    else {
+      // If L1: close popup and show stripe popup
+      if (isLandingPage1) {
+        dispatch(getAccessClose());
+        dispatch(getStripeCheckoutOpen());
+      }
+      // If L2: show checkout form
+      else {
+        setActiveForm('checkout-form');
+      }
     }
   });
 

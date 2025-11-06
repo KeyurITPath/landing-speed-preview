@@ -99,42 +99,46 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
               courseData={course}
               utm_source={queryParams?.get('utm_source')}
             />
-          ) : (
+          ) : activeForm === 'checkout-form' ? (
             <CheckoutForm
               {...{ setActiveForm, queryParams, utmData, activeLandingPage }}
               landingData={data}
               courseData={course}
             />
-          )}
+          ) : null}
 
-          <Typography variant='body2' sx={{ color: 'common.black' }}>
-            {t.rich('start_practicing', {
-              strong: chunks => (
-                <Box component='span' sx={{ fontWeight: 500 }}>
-                  {chunks}
-                </Box>
-              ),
-            })}
-          </Typography>
-          <Typography variant='body2' sx={{ color: 'common.black' }}>
-            {t.rich('money_back_guarantee', {
-              support_email: SUPPORT_MAIL,
-              strong: chunks => (
-                <Box component='span' sx={{ fontWeight: 500 }}>
-                  {chunks}
-                </Box>
-              ),
-              email: chunks => (
-                <Link
-                  href={`mailto:${SUPPORT_MAIL}`}
-                  underline='hover'
-                  sx={{ color: '#2588e4' }}
-                >
-                  {chunks}
-                </Link>
-              ),
-            })}
-          </Typography>
+          {(activeForm === 'access-form' || activeForm === 'checkout-form') && (
+            <>
+              <Typography variant='body2' sx={{ color: 'common.black' }}>
+                {t.rich('start_practicing', {
+                  strong: chunks => (
+                    <Box component='span' sx={{ fontWeight: 500 }}>
+                      {chunks}
+                    </Box>
+                  ),
+                })}
+              </Typography>
+              <Typography variant='body2' sx={{ color: 'common.black' }}>
+                {t.rich('money_back_guarantee', {
+                  support_email: SUPPORT_MAIL,
+                  strong: chunks => (
+                    <Box component='span' sx={{ fontWeight: 500 }}>
+                      {chunks}
+                    </Box>
+                  ),
+                  email: chunks => (
+                    <Link
+                      href={`mailto:${SUPPORT_MAIL}`}
+                      underline='hover'
+                      sx={{ color: '#2588e4' }}
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
+              </Typography>
+            </>
+          )}
         </Stack>
       </DialogContent>
     </Dialog>

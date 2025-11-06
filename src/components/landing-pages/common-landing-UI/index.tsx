@@ -201,7 +201,6 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
           dispatch(getStripeCheckoutClose());
         }}
         courseData={course}
-        user={user}
         utmData={utmData}
         landingData={landingData}
       />

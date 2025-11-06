@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
@@ -46,6 +46,7 @@ import useDispatchWithAbort from '../../../../../../hooks/use-dispatch-with-abor
 import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.slice';
 import cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
+import { AuthContext } from '@/context/auth-provider';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -75,6 +76,7 @@ const StripeInnerForm = ({
   params,
   selectedUpsaleCourses,
   setActiveForm,
+  user,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -111,17 +113,27 @@ const StripeInnerForm = ({
 
     try {
       const queryString = new URLSearchParams(params).toString();
+      const { origin, pathname } = window.location;
+
+      // Determine return URL based on user verification status
+      let returnUrl = '';
+      if (user?.is_verified) {
+        returnUrl = `${origin}${pathname}?payment=success`;
+      } else {
+        // If user is not verified, use existing redirect logic
+        returnUrl =
+          activeLandingPage?.name === 'landing2'
+            ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
+            : activeLandingPage?.name === 'landing1'
+              ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
+              : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+      }
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
         {
           elements,
           confirmParams: {
-            return_url:
-              activeLandingPage?.name === 'landing2'
-                ? `${window.location.origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
-                : activeLandingPage?.name === 'landing1'
-                  ? `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
-                  : `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`,
+            return_url: returnUrl,
           },
           redirect: 'if_required',
         }
@@ -187,13 +199,21 @@ const StripeInnerForm = ({
           sessionStorage.removeItem('selectedUpsaleIds');
           setActiveForm('');
           dispatch(getStripeCheckoutClose());
-          window.location.href =
-            activeLandingPage?.name === 'landing2'
-              ? `${window.location.origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
-              : activeLandingPage?.name === 'landing1'
-                ? `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
-                : `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
-        }, 2000);
+
+          // Determine redirect URL based on user verification status
+          let redirectUrl = '';
+          if (user?.is_verified) {
+            redirectUrl = `${origin}${pathname}?payment=success`;
+          } else {
+            redirectUrl =
+              activeLandingPage?.name === 'landing2'
+                ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
+                : activeLandingPage?.name === 'landing1'
+                  ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
+                  : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+          }
+          window.location.href = redirectUrl;
+        }, 1500);
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
@@ -403,10 +423,10 @@ export default function StripeCheckoutPopup({
   courseData,
   utmData,
   landingData,
-  user,
   setActiveForm,
   ...props
 }: any) {
+  const { user } = useContext(AuthContext);
   const t = useTranslations();
   const [clientSecret, setClientSecret] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -415,7 +435,6 @@ export default function StripeCheckoutPopup({
   const { registerUserData, upSaleCourses } = useSelector(
     ({ course }: any) => course
   );
-
   const { data: monthlySubscriptionData } = useSelector(
     ({ popup }: any) => popup?.monthlySubscription
   );
@@ -483,7 +502,7 @@ export default function StripeCheckoutPopup({
 
       setSelectedUpsaleCourses(courses);
     } catch (e) {
-      console.error('Failed to get selected upsale courses:', e);
+
       setSelectedUpsaleCourses([]);
     }
   }, [upSaleCourses, mainCurrencyCode, open]);
@@ -545,7 +564,7 @@ export default function StripeCheckoutPopup({
         }
       } catch (err) {
         setError('Failed to initialize payment. Please try again.');
-        console.error('Payment intent creation failed:', err);
+
       } finally {
         setIsLoading(false);
       }

@@ -26,7 +26,10 @@ import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
 import { useSearchParams } from 'next/navigation';
-import { getStripeCheckoutOpen } from '@/store/features/course.slice';
+import {
+  getAccessClose,
+  getStripeCheckoutOpen,
+} from '@/store/features/course.slice';
 
 const CheckoutForm = ({
   landingData,
@@ -183,24 +186,25 @@ const CheckoutForm = ({
     try {
       setLoading(true);
 
-      let success_url = '';
+      // let success_url = '';
 
-      const { origin, pathname } = window.location;
+      // const { origin, pathname } = window.location;
 
-      if (user?.is_verified) {
-        success_url = `${origin}${pathname}?payment=success`;
-      } else {
-        if (isLandingPage2) {
-          sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsaleIds));
-          setActiveForm('');
-          dispatch(getStripeCheckoutOpen());
-          setLoading(false);
-          return;
-        }
-        // sessionStorage.setItem('hasSalesFlowAccess', true);
-        // const queryString = new URLSearchParams(queryParams).toString();
-        // success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
-      }
+      // if (user?.is_verified) {
+      //   success_url = `${origin}${pathname}?payment=success`;
+      // } else {
+      // if (isLandingPage2) {
+      sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsaleIds));
+      setActiveForm('');
+      setLoading(false);
+      dispatch(getAccessClose());
+      dispatch(getStripeCheckoutOpen());
+      // return;
+      // }
+      // sessionStorage.setItem('hasSalesFlowAccess', true);
+      // const queryString = new URLSearchParams(queryParams).toString();
+      // success_url = `${origin}${routes.public.email_verification}?payment=success${queryString ? `&${queryString}` : ''}`;
+      // }
 
       // const cancel_url = `${origin}${pathname}?payment=failed`;
 

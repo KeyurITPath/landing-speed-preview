@@ -44,7 +44,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
 
   // State to track if profile is completed (trigger for fetching user data)
   const [isProfileCompleted, setIsProfileCompleted] = useState(false);
-
+  const [selectedUpsaleCourses, setSelectedUpsaleCourses] = useState([]);
   // 🔑 Flag to prevent duplicate pixel.purchase firing
   const hasFired = useRef(false);
 
@@ -54,12 +54,14 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     }
   }, [fetchAllLanguages]);
 
-
   const { languages } = useSelector(({ defaults }: any) => defaults);
   const { data: languagesData } = languages || {};
 
   const { data: userOrderData } = useSelector(({ user }: any) => user);
-  const { data: courseData } = useSelector(({ course }: any) => course);
+  const { data: courseData, upSaleCourses } = useSelector(
+    ({ course }: any) => course
+  );
+  const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
 
   const selectedLanguage = languagesData?.find(
     (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
@@ -85,22 +87,49 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   }, [courseData]);
 
   // Only fire pixel for landing1
-  const shouldFirePixel = landingPageName === 'landing1' || landingPageName === 'landing2';
+  const shouldFirePixel =
+    landingPageName === 'landing1' || landingPageName === 'landing2';
 
   const plainPassword = useMemo(() => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
 
-  const currency = useMemo(
+  const currencyName = useMemo(
     () =>
-      userOrderData?.user_orders?.[0]?.user_order_details?.[0]?.course_price?.currency
-        ?.name || 'USD',
+      userOrderData?.user_orders?.[0]?.user_order_details?.[0]?.course_price
+        ?.currency?.name || 'USD',
     [userOrderData]
   );
 
+  useEffect(() => {
+    let selectedIds = [];
+    if (storedUpsaleIds && storedUpsaleIds.length > 0) {
+      selectedIds = JSON.parse(storedUpsaleIds || '[]');
+    }
+    const courses = upSaleCourses
+      .map((course: any) => {
+        const priceData = course.course_prices?.find(
+          ({ is_upsale_price, currency, stripe_price_id }: any) =>
+            is_upsale_price &&
+            currency?.name === currencyName &&
+            selectedIds.includes(stripe_price_id)
+        );
+        if (!priceData) return null;
+
+        return {
+          id: course.id,
+          priceAmount: priceData?.price || 0,
+          stripeId: priceData?.stripe_price_id,
+        };
+      })
+      .filter((item: any) => item !== null);
+    setSelectedUpsaleCourses(courses);
+  }, [currencyName, storedUpsaleIds, upSaleCourses]);
+
   // Sum all payment_histories total_amount where payment_status is 'paid'
   const totalPrice = useMemo(() => {
-    const paymentHistories = userOrderData?.user_orders?.[0]?.payment_histories || [];
+    const paymentHistories =
+      userOrderData?.user_orders?.[0]?.payment_histories || [];
     return paymentHistories
       .filter((history: any) => history?.payment_status === 'paid')
       .reduce(
@@ -109,13 +138,20 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       );
   }, [userOrderData]);
 
-
-  const course_content = userOrderData?.user_orders?.[0]?.user_order_details?.map(
-    (item: any) => ({
+  const course_content =
+    userOrderData?.user_orders?.[0]?.user_order_details?.map((item: any) => ({
       id: item?.course_id,
       quantity: 1,
       item_price: item?.course_price?.price || 0,
-    })
+    }));
+  const upsaleContents = useMemo(
+    () =>
+      selectedUpsaleCourses?.map((item: any) => ({
+        id: item?.id,
+        quantity: 1,
+        item_price: item?.priceAmount || 0,
+      })) || [],
+    [selectedUpsaleCourses]
   );
 
   const courseAmount = userOrderData?.user_orders?.[0]?.user_order_details
@@ -124,32 +160,38 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       (sum: any, { course_price }: any) => sum + course_price?.price || 0,
       0
     );
-
   const upSaleAmount = userOrderData?.user_orders?.[0]?.user_order_details
     ?.filter(({ is_upsale }: any) => is_upsale)
     ?.reduce(
       (sum: any, { course_price }: any) => sum + course_price?.price || 0,
       0
     );
+  const isExistUpsale =
+    userOrderData?.user_orders?.[0]?.user_order_details?.some(
+      ({ is_upsale }: any) => is_upsale
+    );
 
-  const isExistUpsale = userOrderData?.user_orders?.[0]?.user_order_details?.some(
-    ({ is_upsale }: any) => is_upsale
-  );
-
+  const contentIds = useMemo(() => {
+    return [
+      ...(course_content?.map((item: any) => item?.id) || []),
+      ...(selectedUpsaleCourses?.map((item: any) => item?.id) || []),
+    ];
+  }, [course_content, selectedUpsaleCourses]);
   const metaParams = useMemo(() => {
     return {
       content_type: 'course',
       userId: userOrderData?.id,
-      content_ids: course_content?.map((item: any) => item?.id) || [],
-      currency: currency,
-      contents: course_content,
-      value: courseAmount + upSaleAmount,
+      content_ids: contentIds,
+      currency: currencyName,
+      contents: [...course_content, ...upsaleContents],
+      value: totalPrice,
       total_amount: totalPrice,
     };
-  }, [userOrderData?.id, course_content, currency, courseAmount, upSaleAmount, totalPrice]);
+  }, [userOrderData?.id, contentIds, currencyName, course_content, upsaleContents, totalPrice]);
 
   const utmData = useMemo(() => {
-    const utmSources = userOrderData?.user_orders?.[0]?.payment_histories?.[0] || {};
+    const utmSources =
+      userOrderData?.user_orders?.[0]?.payment_histories?.[0] || {};
     const utm_campaign = utmSources?.utm_campaign || '';
     const utm_source = utmSources?.utm_source || '';
     const utm_medium = utmSources?.utm_medium || '';
@@ -179,11 +221,17 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         cookieToken: cookies.get('token'),
       });
     }
-  }, [isProfileCompleted, fetchUserData, user?.id, country_code, shouldFirePixel]);
+  }, [
+    isProfileCompleted,
+    fetchUserData,
+    user?.id,
+    country_code,
+    shouldFirePixel,
+  ]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     await api.user.update({
-      data: values,
+      data: { ...values, is_verified: true },
       params: { user_id: user?.id },
       cookieToken: cookies.get('token'),
     });
@@ -213,7 +261,10 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         updateSocketOnLogin(token);
       }
       const decodeData = decodeToken(token);
-      cookies.set('is_cancellation_request', decodeData?.is_cancellation_request ? 'true' : 'false');
+      cookies.set(
+        'is_cancellation_request',
+        decodeData?.is_cancellation_request ? 'true' : 'false'
+      );
       dispatch(
         updateUser({
           token,
@@ -264,7 +315,12 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
 
   // Fire pixel.purchase when user order data is available (only once and only for landing1)
   useEffect(() => {
-    if (userOrderData?.id && isProfileCompleted && !hasFired.current && shouldFirePixel) {
+    if (
+      userOrderData?.id &&
+      isProfileCompleted &&
+      !hasFired.current &&
+      shouldFirePixel
+    ) {
       gtm.ecommerce.purchase({ value: courseAmount });
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
@@ -281,7 +337,16 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     if (!isProfileCompleted) {
       hasFired.current = false;
     }
-  }, [courseAmount, isExistUpsale, isProfileCompleted, metaParams, shouldFirePixel, upSaleAmount, userOrderData?.id, utmData]);
+  }, [
+    courseAmount,
+    isExistUpsale,
+    isProfileCompleted,
+    metaParams,
+    shouldFirePixel,
+    upSaleAmount,
+    userOrderData?.id,
+    utmData,
+  ]);
 
   // const countriesData = useMemo(() => {
   //   return Object.values(countries).map(({ name }) => ({
