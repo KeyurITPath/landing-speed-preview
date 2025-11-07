@@ -77,6 +77,7 @@ const StripeInnerForm = ({
   selectedUpsaleCourses,
   setActiveForm,
   user,
+  isCourseUpsaleCoursesAvailable,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -136,18 +137,18 @@ const StripeInnerForm = ({
       const queryString = new URLSearchParams(params).toString();
       const { origin, pathname } = window.location;
 
-      // Determine return URL based on user verification status
+      // Determine return URL based on user verification status and upsale availability
       let returnUrl = '';
       if (user?.is_verified) {
         returnUrl = `${origin}${pathname}?payment=success`;
       } else {
-        // If user is not verified, use existing redirect logic
-        returnUrl =
-          activeLandingPage?.name === 'landing2'
-            ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
-            : activeLandingPage?.name === 'landing1'
-              ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
-              : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        if (!isCourseUpsaleCoursesAvailable) {
+          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (activeLandingPage?.name === 'landing2') {
+          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          returnUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        }
       }
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
@@ -207,17 +208,18 @@ const StripeInnerForm = ({
           setActiveForm('');
           dispatch(getStripeCheckoutClose());
 
-          // Determine redirect URL based on user verification status
+          // Determine redirect URL based on user verification status and upsale availability
           let redirectUrl = '';
           if (user?.is_verified) {
             redirectUrl = `${origin}${pathname}?payment=success`;
           } else {
-            redirectUrl =
-              activeLandingPage?.name === 'landing2'
-                ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
-                : activeLandingPage?.name === 'landing1'
-                  ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
-                  : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+            if (!isCourseUpsaleCoursesAvailable) {
+              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else if (activeLandingPage?.name === 'landing2') {
+              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else {
+              redirectUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+            }
           }
           window.location.href = redirectUrl;
         }, 1500);
@@ -442,6 +444,7 @@ export default function StripeCheckoutPopup({
   const { registerUserData, upSaleCourses } = useSelector(
     ({ course }: any) => course
   );
+
   const { data: monthlySubscriptionData } = useSelector(
     ({ popup }: any) => popup?.monthlySubscription
   );
@@ -467,6 +470,9 @@ export default function StripeCheckoutPopup({
 
   const country_code = cookies.get('country_code') || '';
 
+  const isCourseUpsaleCoursesAvailable = useMemo(() => {
+    return Boolean(upSaleCourses?.length > 0);
+  }, [upSaleCourses?.length]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
@@ -531,12 +537,19 @@ export default function StripeCheckoutPopup({
         setError('');
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(params).toString();
-        const success_url =
-          activeLandingPage?.name === 'landing2'
-            ? `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`
-            : activeLandingPage?.name === 'landing1'
-              ? `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`
-              : `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+
+        // Determine success URL based on upsale availability and landing page
+        let success_url = '';
+        if (!isCourseUpsaleCoursesAvailable) {
+          // If upsales are not available, redirect to complete_profile
+          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (activeLandingPage?.name === 'landing2') {
+          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          // For landing1 or default, redirect to upsale_courses
+          success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        }
+
         const cancel_url = `${origin}${pathname}?payment=failed`;
 
         // Get selected upsale IDs from sessionStorage (for landing2)
@@ -595,6 +608,7 @@ export default function StripeCheckoutPopup({
     landingPageData?.final_url,
     registerUserData,
     activeLandingPage?.name,
+    isCourseUpsaleCoursesAvailable,
   ]);
 
   const options = {
@@ -724,6 +738,7 @@ export default function StripeCheckoutPopup({
               params={params}
               selectedUpsaleCourses={selectedUpsaleCourses}
               setActiveForm={setActiveForm}
+              isCourseUpsaleCoursesAvailable={isCourseUpsaleCoursesAvailable}
             />
           </Elements>
         ) : (
