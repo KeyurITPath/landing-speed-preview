@@ -129,8 +129,8 @@ const useSettingAndSubscription = ({
   }, [user]);
 
   useEffect(() => {
-    setIsSubscriptionCancelled(cookies.get('is_cancellation_request') === 'true');
-  }, []);
+    setIsSubscriptionCancelled(cookies.get('is_cancellation_request') === 'true' || userData?.isCancellationRequest);
+  }, [userData?.isCancellationRequest]);
 
   const {
     errors,
