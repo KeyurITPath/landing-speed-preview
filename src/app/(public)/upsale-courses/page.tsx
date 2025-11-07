@@ -7,6 +7,7 @@ import { useContext, useEffect, useMemo } from 'react';
 import { AuthContext } from '@/context/auth-provider';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchUser } from '@/store/features/user.slice';
+import { routes } from '../../../utils/constants/routes';
 
 export default function UpsellCoursesPage() {
   // Get course data from Redux state (populated from landing page)
@@ -50,6 +51,17 @@ export default function UpsellCoursesPage() {
       });
     }
   }, [user?.id, fetchUserData]);
+
+  // Update onboarding redirection cookie to point to next step (complete-profile)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && user && !user?.is_verified) {
+      const { origin } = window.location;
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryString = searchParams.toString();
+      const nextStepUrl = `${origin}${routes.public.complete_profile}${queryString ? `?${queryString}` : ''}`;
+      cookies.set('onboarding_redirection_url', nextStepUrl, { expires: 7, path: '/' });
+    }
+  }, [user]);
 
   // Fallback: Get course data from cookies if Redux state is empty
   const courseDataFromCookie =

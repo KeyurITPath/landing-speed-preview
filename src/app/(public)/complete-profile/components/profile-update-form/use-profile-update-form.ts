@@ -306,6 +306,9 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       enqueueSnackbar('Data submitted successfully.', { variant: 'success' });
       resetForm();
 
+      // Clear onboarding redirection cookie when profile is completed
+      cookies.remove('onboarding_redirection_url', { path: '/' });
+
       if (decodeData?.is_verified) {
         setActiveTab(2);
       } else {

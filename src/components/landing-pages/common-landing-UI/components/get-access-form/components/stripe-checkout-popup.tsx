@@ -162,8 +162,14 @@ const StripeInnerForm = ({
       );
 
       if (stripeError) {
+        if (!user?.is_verified) {
+          cookies.remove('onboarding_redirection_url', { path: '/' });
+        }
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
+        if (!user?.is_verified) {
+          cookies.set('onboarding_redirection_url', returnUrl, { expires: 7, path: '/' });
+        }
         await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
@@ -212,6 +218,7 @@ const StripeInnerForm = ({
           let redirectUrl = '';
           if (user?.is_verified) {
             redirectUrl = `${origin}${pathname}?payment=success`;
+            cookies.remove('onboarding_redirection_url', { path: '/' });
           } else {
             if (!isCourseUpsaleCoursesAvailable) {
               redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
@@ -473,6 +480,7 @@ export default function StripeCheckoutPopup({
   const isCourseUpsaleCoursesAvailable = useMemo(() => {
     return Boolean(upSaleCourses?.length > 0);
   }, [upSaleCourses?.length]);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
@@ -524,8 +532,8 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = false;
       setClientSecret('');
       setError('');
-      // Clean up selectedUpsaleIds when popup closes
       sessionStorage.removeItem('selectedUpsaleIds');
+      cookies.remove('onboarding_redirection_url', { path: '/' });
     }
   }, [open]);
 

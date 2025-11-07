@@ -9,6 +9,7 @@ import { formatCurrency, getActualPrice, resolveUrl } from '@/utils/helper';
 import { api } from '@/api';
 import { DOMAIN } from '../../../utils/constants';
 import { routes } from '@/utils/constants/routes';
+import cookies from 'js-cookie';
 
 const useUpsale = (courseData?: any, currency?: any) => {
   const searchParams = useSearchParams();
@@ -50,6 +51,7 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -102,6 +104,22 @@ const useUpsale = (courseData?: any, currency?: any) => {
   useEffect(() => {
     fetchUpsaleCourses();
   }, [fetchUpsaleCourses]);
+
+  // Update onboarding redirection cookie to point to next step (complete-profile)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && user && !user?.is_verified) {
+      const { origin } = window.location;
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryString = searchParams.toString();
+      const nextStepUrl = `${origin}${routes.public.complete_profile}${queryString ? `?${queryString}` : ''}`;
+      cookies.set('onboarding_redirection_url', nextStepUrl, {
+        expires: 7,
+        path: '/',
+      });
+    } else if (user?.is_verified) {
+      cookies.remove('onboarding_redirection_url', { path: '/' });
+    }
+  }, [user]);
 
   // Set loading to false when courses are loaded or when we know there are no courses
   useEffect(() => {
@@ -235,7 +253,10 @@ const useUpsale = (courseData?: any, currency?: any) => {
         return;
       }
 
-      sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsalePriceIds));
+      sessionStorage.setItem(
+        'selectedUpsaleIds',
+        JSON.stringify(upsalePriceIds)
+      );
 
       const data = {
         selected_upsale_price_ids: upsalePriceIds,
