@@ -26,6 +26,7 @@ import { AuthContext } from '@/context/auth-provider';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
 import { useSearchParams } from 'next/navigation';
+import cookies from 'js-cookie';
 import {
   getAccessClose,
   getStripeCheckoutOpen,
@@ -185,7 +186,10 @@ const CheckoutForm = ({
   const onSubmit = async () => {
     try {
       setLoading(true);
-      sessionStorage.setItem('selectedUpsaleIds', JSON.stringify(upsaleIds));
+      cookies.set('selectedUpsaleIds', JSON.stringify(upsaleIds), {
+        expires: 7,
+        path: '/',
+      });
       setActiveForm('access-form');
       setLoading(false);
       dispatch(getAccessClose());

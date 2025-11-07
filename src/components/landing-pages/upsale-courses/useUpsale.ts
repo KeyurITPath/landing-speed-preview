@@ -253,10 +253,11 @@ const useUpsale = (courseData?: any, currency?: any) => {
         return;
       }
 
-      sessionStorage.setItem(
-        'selectedUpsaleIds',
-        JSON.stringify(upsalePriceIds)
-      );
+      // Store in cookies so it persists across sessions
+      cookies.set('selectedUpsaleIds', JSON.stringify(upsalePriceIds), {
+        expires: 7,
+        path: '/',
+      });
 
       const data = {
         selected_upsale_price_ids: upsalePriceIds,

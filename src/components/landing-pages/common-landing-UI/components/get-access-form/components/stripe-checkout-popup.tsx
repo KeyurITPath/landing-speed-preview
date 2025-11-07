@@ -170,6 +170,8 @@ const StripeInnerForm = ({
         if (!user?.is_verified) {
           cookies.set('onboarding_redirection_url', returnUrl, { expires: 7, path: '/' });
         }
+        // Clear selected upsale IDs cookie after successful payment
+        cookies.remove('selectedUpsaleIds', { path: '/' });
         await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
@@ -210,7 +212,7 @@ const StripeInnerForm = ({
 
         // Wait for pixel events to be sent before redirecting
         setTimeout(() => {
-          sessionStorage.removeItem('selectedUpsaleIds');
+          // Keep cookie for now, will be cleared after successful payment processing
           setActiveForm('');
           dispatch(getStripeCheckoutClose());
 
@@ -494,7 +496,7 @@ export default function StripeCheckoutPopup({
     if (!open) return;
 
     try {
-      const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+      const storedUpsaleIds = cookies.get('selectedUpsaleIds');
       if (!storedUpsaleIds || !upSaleCourses || upSaleCourses.length === 0) {
         setSelectedUpsaleCourses([]);
         return;
@@ -532,8 +534,7 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = false;
       setClientSecret('');
       setError('');
-      sessionStorage.removeItem('selectedUpsaleIds');
-      // cookies.remove('onboarding_redirection_url', { path: '/' });
+      // Don't remove cookie here - keep it for when user returns
     }
   }, [open]);
 
@@ -560,10 +561,10 @@ export default function StripeCheckoutPopup({
 
         const cancel_url = `${origin}${pathname}?payment=failed`;
 
-        // Get selected upsale IDs from sessionStorage (for landing2)
+        // Get selected upsale IDs from cookies (for landing2)
         let selectedUpsaleIds = [];
         try {
-          const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+          const storedUpsaleIds = cookies.get('selectedUpsaleIds');
           if (storedUpsaleIds) {
             selectedUpsaleIds = JSON.parse(storedUpsaleIds);
           }

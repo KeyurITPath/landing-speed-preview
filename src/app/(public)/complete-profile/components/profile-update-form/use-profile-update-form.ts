@@ -62,7 +62,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const { data: courseData, upSaleCourses } = useSelector(
     ({ course }: any) => course
   );
-  const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+  const storedUpsaleIds = cookies.get('selectedUpsaleIds');
 
   const selectedLanguage = languagesData?.find(
     (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
@@ -308,6 +308,8 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
 
       // Clear onboarding redirection cookie when profile is completed
       cookies.remove('onboarding_redirection_url', { path: '/' });
+      // Clear selected upsale IDs cookie after profile completion
+      cookies.remove('selectedUpsaleIds', { path: '/' });
 
       if (decodeData?.is_verified) {
         setActiveTab(2);
