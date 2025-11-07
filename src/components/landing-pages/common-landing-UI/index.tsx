@@ -32,9 +32,6 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     data,
     course,
     videoContainerRef,
-    videoPlayerOptions,
-    isVimeoVideo,
-    vimeoPlayerProps,
     pipMode,
     closePipMode,
     loading,
@@ -47,6 +44,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
     getStripeCheckoutOpenState,
     utmData,
     user,
+    setActiveForm,
   } = landingData;
 
   const t = useTranslations();
@@ -82,7 +80,7 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
               <VideoPlayer {...{
                 is_video_processed, intro_thumbnail, intro
               }}
-                {...{ pipMode, closePipMode }}
+                // {...{ pipMode, closePipMode }}
               />
             )}
           </Box>
@@ -198,11 +196,11 @@ const CommonLandingUIOneAndTwo = ({ vimeoSource, landingData }: any) => {
 
       <StripeCheckoutPopup
         open={getStripeCheckoutOpenState}
+        setActiveForm={setActiveForm}
         onClose={() => {
           dispatch(getStripeCheckoutClose());
         }}
         courseData={course}
-        user={user}
         utmData={utmData}
         landingData={landingData}
       />

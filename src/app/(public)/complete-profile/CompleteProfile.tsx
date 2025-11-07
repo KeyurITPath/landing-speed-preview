@@ -13,6 +13,8 @@ import LandingLayoutContainer from '@/shared/landing-layout-container';
 import { useSearchParams } from 'next/navigation';
 import SuccessPaymentPopup from '@/components/success-payment-popup';
 import FailedPaymentPopup from '@/components/failed-payment-popup';
+import { useSelector } from 'react-redux';
+import cookies from 'js-cookie';
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   height: 20,
@@ -41,11 +43,12 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   const { email } = domainDetails?.data?.domain_detail || {};
 
   const tabs = [
-    { id: 1, Component: CredentialsForm },
-    { id: 2, Component: ProfileUpdateForm },
+    { id: 1, Component: ProfileUpdateForm },
+    { id: 2, Component: CredentialsForm },
   ];
 
   const [activeTab, setActiveTab] = useState(1);
+  const { data: courseData } = useSelector(({ course }: any) => course);
 
   const barValue = useMemo(() => {
     return (activeTab / tabs.length) * 100;
@@ -67,6 +70,24 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
     sessionStorage.removeItem('hasSalesFlowAccess');
   }, []);
 
+  const landingPageName = useMemo(() => {
+    try {
+      // First try to get from Redux courseData
+      if (courseData?.landing_page_name) {
+        return courseData.landing_page_name;
+      }
+      // Then try from cookie
+      const courseDataCookie = cookies.get('course_data');
+      if (courseDataCookie) {
+        const parsedData = JSON.parse(courseDataCookie);
+        return parsedData?.landing_page_name?.name || null;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }, [courseData]);
+
   return (
     <>
       <LandingLayoutContainer>
@@ -80,7 +101,7 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
         })}
       </LandingLayoutContainer>
       {/* Payment popups */}
-      <SuccessPaymentPopup open={isPaymentSuccess} />
+      <SuccessPaymentPopup open={isPaymentSuccess} landingPageName={landingPageName}/>
       <FailedPaymentPopup open={isPaymentFailed} />
     </>
   );

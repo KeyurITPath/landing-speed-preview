@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
@@ -46,6 +46,7 @@ import useDispatchWithAbort from '../../../../../../hooks/use-dispatch-with-abor
 import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.slice';
 import cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
+import { AuthContext } from '@/context/auth-provider';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -72,7 +73,11 @@ const StripeInnerForm = ({
   subscriptionPrice,
   brandName,
   utmData,
-  params
+  params,
+  selectedUpsaleCourses,
+  setActiveForm,
+  user,
+  isCourseUpsaleCoursesAvailable,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -87,6 +92,27 @@ const StripeInnerForm = ({
       dispatch(clearRegisterUserData());
     };
   }, [dispatch]);
+
+  const upsaleContents = useMemo(() => {
+    return (
+      selectedUpsaleCourses?.map((upsale: any) => ({
+        id: upsale.id,
+        quantity: 1,
+        item_price: upsale.priceAmount,
+      })) || []
+    );
+  }, [selectedUpsaleCourses]);
+
+  const totalAmount = useMemo(() => {
+    return (
+      (coursePrice?.price || 0) +
+      (selectedUpsaleCourses?.reduce(
+        (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
+        0
+      ) || 0)
+    );
+  }, [coursePrice?.price, selectedUpsaleCourses]);
+
   const formattedPrice = formatCurrency(
     coursePrice?.price,
     coursePrice?.currency?.name
@@ -109,12 +135,27 @@ const StripeInnerForm = ({
 
     try {
       const queryString = new URLSearchParams(params).toString();
+      const { origin, pathname } = window.location;
+
+      // Determine return URL based on user verification status and upsale availability
+      let returnUrl = '';
+      if (user?.is_verified) {
+        returnUrl = `${origin}${pathname}?payment=success`;
+      } else {
+        if (!isCourseUpsaleCoursesAvailable) {
+          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (activeLandingPage?.name === 'landing2') {
+          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          returnUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        }
+      }
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment(
         {
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`,
+            return_url: returnUrl,
           },
           redirect: 'if_required',
         }
@@ -123,13 +164,15 @@ const StripeInnerForm = ({
       if (stripeError) {
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        // Call pixel event first
-        pixel.initial_checkout({
+        await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
-          content_ids: [courseData?.id],
-          total_amount: coursePrice?.price,
-          value: coursePrice?.price,
+          content_ids: [
+            courseData?.id,
+            ...(selectedUpsaleCourses?.map((upsale: any) => upsale.id) || []),
+          ],
+          total_amount: totalAmount,
+          value: totalAmount,
           currency: coursePrice?.currency?.name,
           contents: [
             {
@@ -137,6 +180,7 @@ const StripeInnerForm = ({
               quantity: 1,
               item_price: coursePrice?.price,
             },
+            ...upsaleContents,
           ],
           ...(!isEmptyObject(utmData) ? { utmData } : {}),
         });
@@ -160,9 +204,25 @@ const StripeInnerForm = ({
 
         // Wait for pixel events to be sent before redirecting
         setTimeout(() => {
+          sessionStorage.removeItem('selectedUpsaleIds');
+          setActiveForm('');
           dispatch(getStripeCheckoutClose());
-          window.location.href = `${window.location.origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
-        }, 2000);
+
+          // Determine redirect URL based on user verification status and upsale availability
+          let redirectUrl = '';
+          if (user?.is_verified) {
+            redirectUrl = `${origin}${pathname}?payment=success`;
+          } else {
+            if (!isCourseUpsaleCoursesAvailable) {
+              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else if (activeLandingPage?.name === 'landing2') {
+              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else {
+              redirectUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+            }
+          }
+          window.location.href = redirectUrl;
+        }, 1500);
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
@@ -273,7 +333,7 @@ const StripeInnerForm = ({
               fontSize: { xs: '16px', sm: '20px' },
             }}
           >
-            {formattedPrice}
+            {formatCurrency(totalAmount, coursePrice?.currency?.name)}
           </Typography>
         </Box>
         <Button
@@ -317,7 +377,7 @@ const StripeInnerForm = ({
           sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
         >
           {t.rich('stripe_checkout.payment_agreement', {
-            price: formattedPrice,
+            price: formatCurrency(totalAmount, coursePrice?.currency?.name),
             domain: brandName,
             terms: chunks => (
               <TermsLink
@@ -372,15 +432,18 @@ export default function StripeCheckoutPopup({
   courseData,
   utmData,
   landingData,
-  user,
+  setActiveForm,
   ...props
 }: any) {
+  const { user } = useContext(AuthContext);
   const t = useTranslations();
   const [clientSecret, setClientSecret] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const paymentIntentCreated = useRef(false);
-  const { registerUserData } = useSelector(({ course }: any) => course);
+  const { registerUserData, upSaleCourses } = useSelector(
+    ({ course }: any) => course
+  );
 
   const { data: monthlySubscriptionData } = useSelector(
     ({ popup }: any) => popup?.monthlySubscription
@@ -400,21 +463,71 @@ export default function StripeCheckoutPopup({
   const brandName = landingData?.BRAND_NAME || '';
   const { data: landingPageData, activeLandingPage } = landingData;
 
+  const { currency } = useSelector(({ defaults }: any) => defaults);
+  const mainCurrencyCode = currency.code;
+
+  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
+
+  const country_code = cookies.get('country_code') || '';
+
+  const isCourseUpsaleCoursesAvailable = useMemo(() => {
+    return Boolean(upSaleCourses?.length > 0);
+  }, [upSaleCourses?.length]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
   });
 
+  // Get selected upsale courses with full data (for landing2)
+  const [selectedUpsaleCourses, setSelectedUpsaleCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    try {
+      const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+      if (!storedUpsaleIds || !upSaleCourses || upSaleCourses.length === 0) {
+        setSelectedUpsaleCourses([]);
+        return;
+      }
+
+      const selectedIds = JSON.parse(storedUpsaleIds);
+
+      const courses = upSaleCourses
+        .map((course: any) => {
+          const priceData = course.course_prices?.find(
+            ({ is_upsale_price, currency, stripe_price_id }: any) =>
+              is_upsale_price &&
+              currency?.name === mainCurrencyCode &&
+              selectedIds.includes(stripe_price_id)
+          );
+
+          if (!priceData) return null;
+
+          return {
+            id: course.id,
+            priceAmount: priceData?.price || 0,
+            stripeId: priceData?.stripe_price_id,
+          };
+        })
+        .filter((item: any) => item !== null);
+
+      setSelectedUpsaleCourses(courses);
+    } catch (e) {
+      setSelectedUpsaleCourses([]);
+    }
+  }, [upSaleCourses, mainCurrencyCode, open]);
+
   useEffect(() => {
     if (!open) {
       paymentIntentCreated.current = false;
       setClientSecret('');
       setError('');
+      // Clean up selectedUpsaleIds when popup closes
+      sessionStorage.removeItem('selectedUpsaleIds');
     }
   }, [open]);
-  const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
-  const country_code = cookies.get('country_code') || '';
 
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -424,12 +537,35 @@ export default function StripeCheckoutPopup({
         setError('');
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(params).toString();
-        const success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+
+        // Determine success URL based on upsale availability and landing page
+        let success_url = '';
+        if (!isCourseUpsaleCoursesAvailable) {
+          // If upsales are not available, redirect to complete_profile
+          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (activeLandingPage?.name === 'landing2') {
+          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          // For landing1 or default, redirect to upsale_courses
+          success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        }
+
         const cancel_url = `${origin}${pathname}?payment=failed`;
+
+        // Get selected upsale IDs from sessionStorage (for landing2)
+        let selectedUpsaleIds = [];
+        try {
+          const storedUpsaleIds = sessionStorage.getItem('selectedUpsaleIds');
+          if (storedUpsaleIds) {
+            selectedUpsaleIds = JSON.parse(storedUpsaleIds);
+          }
+        } catch (e) {
+          console.error('Failed to parse selectedUpsaleIds:', e);
+        }
 
         const data = {
           stripe_price_id: coursePrice?.stripe_price_id,
-          selected_upsale_price_ids: [],
+          selected_upsale_price_ids: selectedUpsaleIds || [],
           user_id: registerUserData?.id,
           success_url,
           cancel_url,
@@ -439,7 +575,6 @@ export default function StripeCheckoutPopup({
         };
 
         const response = await api.getAccess.orderCheckout({ data });
-
         if (response?.data?.data?.clientSecret) {
           setClientSecret(response.data.data.clientSecret);
         } else {
@@ -447,7 +582,6 @@ export default function StripeCheckoutPopup({
         }
       } catch (err) {
         setError('Failed to initialize payment. Please try again.');
-        console.error('Payment intent creation failed:', err);
       } finally {
         setIsLoading(false);
       }
@@ -464,7 +598,18 @@ export default function StripeCheckoutPopup({
       paymentIntentCreated.current = true;
       createPaymentIntent();
     }
-  }, [open, courseData, coursePrice?.stripe_price_id, clientSecret, registerUserData?.id, params, landingPageData?.final_url]);
+  }, [
+    open,
+    courseData,
+    coursePrice?.stripe_price_id,
+    clientSecret,
+    registerUserData?.id,
+    params,
+    landingPageData?.final_url,
+    registerUserData,
+    activeLandingPage?.name,
+    isCourseUpsaleCoursesAvailable,
+  ]);
 
   const options = {
     clientSecret,
@@ -516,7 +661,7 @@ export default function StripeCheckoutPopup({
         id='stripe-dialog'
         sx={{ pb: 1, position: 'relative', textAlign: 'center' }}
       >
-        {t('stripe_checkout.complete_payment')}
+        {!error && t('stripe_checkout.complete_payment')}
         <IconButton
           onClick={onClose}
           sx={{
@@ -537,7 +682,13 @@ export default function StripeCheckoutPopup({
           <>
             <Box sx={{ py: 4, textAlign: 'center' }}>
               <Box sx={{ mb: 3 }}>
-                <Stack sx={{ color: 'error.main', fontSize: 60 }}>
+                <Stack
+                  sx={{
+                    color: 'error.main',
+                    fontSize: 60,
+                    alignItems: 'center',
+                  }}
+                >
                   <ICONS.CloseCircle />
                 </Stack>
               </Box>
@@ -585,6 +736,9 @@ export default function StripeCheckoutPopup({
               utmData={utmData}
               user={user}
               params={params}
+              selectedUpsaleCourses={selectedUpsaleCourses}
+              setActiveForm={setActiveForm}
+              isCourseUpsaleCoursesAvailable={isCourseUpsaleCoursesAvailable}
             />
           </Elements>
         ) : (

@@ -25,7 +25,7 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
 
   const country_code = cookies.get('country_code') || '';
 
-  const shouldFirePixel = landingPageName !== 'landing1';
+  const shouldFirePixel = landingPageName !== 'landing1' && landingPageName !== 'landing2';
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -123,17 +123,15 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
   const hasFired = useRef(false);
 
   useEffect(() => {
-    if (data?.id && open && !hasFired.current) {
+    if (data?.id && open && !hasFired.current && shouldFirePixel) {
       gtm.ecommerce.purchase({ value: courseAmount });
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
       }
-      if (shouldFirePixel) {
-        pixel.purchase({
+      pixel.purchase({
           ...metaParams,
           ...(!isEmptyObject(utmData) && { utmData }),
-        });
-      }
+      });
 
       hasFired.current = true; // prevent duplicate firing
     }

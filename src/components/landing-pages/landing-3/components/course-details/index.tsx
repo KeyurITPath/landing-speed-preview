@@ -1,16 +1,13 @@
-import { Box, CircularProgress, Grid2, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import VideoPlayer from '@shared/video-player';
 import CoursePurchaseDetails from '../course-purchase-details';
-import { videoURL } from '@utils/helper';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 
 const CourseDetails = ({ vimeoSource, landingData }: any) => {
   const {
     data,
     course,
     videoContainerRef,
-    videoPlayerOptions,
     pipMode,
     closePipMode,
     isMobile,
@@ -55,7 +52,7 @@ const CourseDetails = ({ vimeoSource, landingData }: any) => {
             {(intro || intro_thumbnail) && (
               <VideoPlayer
                 {...{ intro, intro_thumbnail, is_video_processed }}
-                {...{ pipMode, closePipMode }}
+                // {...{ pipMode, closePipMode }}
               />
             )}
           </Box>

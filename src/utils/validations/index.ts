@@ -142,7 +142,7 @@ export const profileUpdateValidation = (t: any) =>
       .matches(/^[^\d]+$/u, t('errors.last_name_invalid')),
     // location: Yup.string().required(t('errors.location_required')),
     // age: Yup.string().required(t('errors.age_required')),
-    gender: Yup.string().required(t('errors.gender_required')),
+    // gender: Yup.string().required(t('errors.gender_required')),
   });
 
 export const cancelFeedbackValidation = (t: any) =>

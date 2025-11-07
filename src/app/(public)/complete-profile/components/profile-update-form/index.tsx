@@ -4,8 +4,8 @@ import FormControl from '@/shared/inputs/form-control';
 import CustomButton from '@/shared/button';
 import { useTranslations } from 'next-intl';
 
-const ProfileUpdateForm = ({ userData }: any) => {
-  const { handleSubmit, formData, loading } = useProfileUpdateForm({ userData })
+const ProfileUpdateForm = ({ setActiveTab, userData }: any) => {
+  const { handleSubmit, formData, loading } = useProfileUpdateForm({ setActiveTab, userData })
   const t = useTranslations();
 
   return (

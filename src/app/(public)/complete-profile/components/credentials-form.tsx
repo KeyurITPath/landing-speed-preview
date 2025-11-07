@@ -290,7 +290,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
           maxWidth: { sm: '320px' },
         }}
         onClick={() => {
-          setActiveTab(2);
+          router.push(routes.private.dashboard);
         }}
         disabled={!userData?.id}
       >

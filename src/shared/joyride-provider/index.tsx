@@ -128,9 +128,9 @@ export const JoyrideProvider = ({ children }: any) => {
   }, [user, userData]);
 
   // Check if current page is landing1 using existing sessionStorage
-  const isLandingPage1 = useMemo(() => {
+  const isLandingPage1Or2 = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('landingPageForRedirect') === 'landing1';
+      return sessionStorage.getItem('landingPageForRedirect') === 'landing1' || sessionStorage.getItem('landingPageForRedirect') === 'landing2';
     }
     return false;
   }, []);
@@ -206,6 +206,11 @@ export const JoyrideProvider = ({ children }: any) => {
         description: 'User skipped the onboarding tour',
       });
       setShowSkipConfirmation(false);
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('landingPageForRedirect');
+        sessionStorage.removeItem('landingCourseSlug');
+      }
     } catch (error) {
       console.error('Error while skipping tour:', error);
     } finally {
@@ -238,7 +243,7 @@ export const JoyrideProvider = ({ children }: any) => {
           updateOnboardingStatus().then(async () => {
             setTimeout(async () => {
               // For landing page 1, redirect to course details using stored course slug
-              if (isLandingPage1 && storedCourseSlug) {
+              if (isLandingPage1Or2 && storedCourseSlug) {
                 router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
                 // Clean up session storage after successful redirect
                 if (typeof window !== 'undefined') {
@@ -337,7 +342,7 @@ export const JoyrideProvider = ({ children }: any) => {
           updateOnboardingStatus().then(async () => {
             setTimeout(async () => {
               // For landing page 1, redirect to course details using stored course slug
-              if (isLandingPage1 && storedCourseSlug) {
+              if (isLandingPage1Or2 && storedCourseSlug) {
                 router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
                 // Clean up session storage after successful redirect
                 if (typeof window !== 'undefined') {
@@ -429,7 +434,7 @@ export const JoyrideProvider = ({ children }: any) => {
       isSidebarOpen,
       dispatch,
       router,
-      isLandingPage1,
+      isLandingPage1Or2,
       storedCourseSlug,
     ]
   );
