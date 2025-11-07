@@ -291,13 +291,13 @@ const useUpsale = (courseData?: any, currency?: any) => {
 
   // Handle decline upsale
   const handleDeclineUpsale = useCallback(() => {
-    window.location.href = routes.public.email_verification;
+    window.location.href = routes.public.complete_profile;
   }, []);
 
   const handleClosePaymentError = useCallback(() => {
     setShowPaymentError(false);
     setPaymentErrorMessage('');
-    window.location.href = routes.public.email_verification;
+    window.location.href = routes.public.complete_profile;
   }, []);
 
   return {
