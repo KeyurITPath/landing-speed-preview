@@ -91,6 +91,27 @@ const StripeInnerForm = ({
       dispatch(clearRegisterUserData());
     };
   }, [dispatch]);
+
+  const upsaleContents = useMemo(() => {
+    return (
+      selectedUpsaleCourses?.map((upsale: any) => ({
+        id: upsale.id,
+        quantity: 1,
+        item_price: upsale.priceAmount,
+      })) || []
+    );
+  }, [selectedUpsaleCourses]);
+
+  const totalAmount = useMemo(() => {
+    return (
+      (coursePrice?.price || 0) +
+      (selectedUpsaleCourses?.reduce(
+        (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
+        0
+      ) || 0)
+    );
+  }, [coursePrice?.price, selectedUpsaleCourses]);
+
   const formattedPrice = formatCurrency(
     coursePrice?.price,
     coursePrice?.currency?.name
@@ -142,20 +163,6 @@ const StripeInnerForm = ({
       if (stripeError) {
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
-        const upsaleContents =
-          selectedUpsaleCourses?.map((upsale: any) => ({
-            id: upsale.id,
-            quantity: 1,
-            item_price: upsale.priceAmount,
-          })) || [];
-
-        const totalAmount =
-          (coursePrice?.price || 0) +
-          (selectedUpsaleCourses?.reduce(
-            (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
-            0
-          ) || 0);
-
         await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
@@ -324,7 +331,7 @@ const StripeInnerForm = ({
               fontSize: { xs: '16px', sm: '20px' },
             }}
           >
-            {formattedPrice}
+            {formatCurrency(totalAmount, coursePrice?.currency?.name)}
           </Typography>
         </Box>
         <Button
@@ -368,7 +375,7 @@ const StripeInnerForm = ({
           sx={{ color: '#747474', fontSize: { xs: '11px', sm: '12px' } }}
         >
           {t.rich('stripe_checkout.payment_agreement', {
-            price: formattedPrice,
+            price: formatCurrency(totalAmount, coursePrice?.currency?.name),
             domain: brandName,
             terms: chunks => (
               <TermsLink
@@ -502,7 +509,6 @@ export default function StripeCheckoutPopup({
 
       setSelectedUpsaleCourses(courses);
     } catch (e) {
-
       setSelectedUpsaleCourses([]);
     }
   }, [upSaleCourses, mainCurrencyCode, open]);
@@ -516,7 +522,6 @@ export default function StripeCheckoutPopup({
       sessionStorage.removeItem('selectedUpsaleIds');
     }
   }, [open]);
-
 
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -564,7 +569,6 @@ export default function StripeCheckoutPopup({
         }
       } catch (err) {
         setError('Failed to initialize payment. Please try again.');
-
       } finally {
         setIsLoading(false);
       }

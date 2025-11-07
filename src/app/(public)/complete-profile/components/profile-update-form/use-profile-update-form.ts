@@ -33,6 +33,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const initialValues = {
     first_name: userData?.first_name || '',
     last_name: userData?.last_name || '',
+    phone: '',
     // location: '',
     age: '',
     gender: '',
@@ -248,8 +249,14 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   ]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
+    const { phone, ...restValues } = values;
+    const updateData = {
+      ...restValues,
+      phone: phone ? '+' + phone : null,
+      is_verified: true,
+    };
     await api.user.update({
-      data: { ...values, is_verified: true },
+      data: updateData,
       params: { user_id: user?.id },
       cookieToken: cookies.get('token'),
     });
@@ -324,10 +331,15 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   });
 
   useEffect(() => {
+    const phoneValue = userData?.phone || '';
+    const phoneWithoutPrefix = phoneValue.startsWith('+')
+      ? phoneValue.substring(1)
+      : phoneValue;
     setValues(prev => ({
       ...prev,
       first_name: userData?.first_name || '',
       last_name: userData?.last_name || '',
+      phone: phoneWithoutPrefix,
     }));
   }, [userData, setValues]);
 
@@ -394,6 +406,16 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         handleBlur,
         error: touched.last_name && errors.last_name,
         type: 'text',
+      },
+      {
+        id: 'phone',
+        name: 'phone',
+        value: values.phone,
+        placeholder: t('enter_phone'),
+        handleChange,
+        handleBlur,
+        error: touched.phone && errors.phone,
+        type: 'phone',
       },
       // {
       //   id: 'location',
