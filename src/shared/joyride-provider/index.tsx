@@ -127,18 +127,17 @@ export const JoyrideProvider = ({ children }: any) => {
     return (user as any)?.is_verified && !userData?.has_completed_onboarding;
   }, [user, userData]);
 
-  // Check if current page is landing1 using existing sessionStorage
   const isLandingPage1Or2 = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('landingPageForRedirect') === 'landing1' || sessionStorage.getItem('landingPageForRedirect') === 'landing2';
+      const landingPage = cookies.get('landingPageForRedirect');
+      return landingPage === 'landing1' || landingPage === 'landing2';
     }
     return false;
   }, []);
 
-  // Get stored course slug from sessionStorage
   const storedCourseSlug = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('landingCourseSlug');
+      return cookies.get('landingCourseSlug') || null;
     }
     return null;
   }, []);
@@ -207,10 +206,8 @@ export const JoyrideProvider = ({ children }: any) => {
       });
       setShowSkipConfirmation(false);
 
-      if (typeof window !== 'undefined') {
-        sessionStorage.removeItem('landingPageForRedirect');
-        sessionStorage.removeItem('landingCourseSlug');
-      }
+      cookies.remove('landingPageForRedirect', { path: '/' });
+      cookies.remove('landingCourseSlug', { path: '/' });
     } catch (error) {
       console.error('Error while skipping tour:', error);
     } finally {
@@ -245,11 +242,8 @@ export const JoyrideProvider = ({ children }: any) => {
               // For landing page 1, redirect to course details using stored course slug
               if (isLandingPage1Or2 && storedCourseSlug) {
                 router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
-                // Clean up session storage after successful redirect
-                if (typeof window !== 'undefined') {
-                  sessionStorage.removeItem('landingPageForRedirect');
-                  sessionStorage.removeItem('landingCourseSlug');
-                }
+                cookies.remove('landingPageForRedirect', { path: '/' });
+                cookies.remove('landingCourseSlug', { path: '/' });
               } else {
                 router.push(routes.private.dashboard);
               }
@@ -344,11 +338,8 @@ export const JoyrideProvider = ({ children }: any) => {
               // For landing page 1, redirect to course details using stored course slug
               if (isLandingPage1Or2 && storedCourseSlug) {
                 router.push(`${routes.private.course_details.replace(':slug', storedCourseSlug)}`);
-                // Clean up session storage after successful redirect
-                if (typeof window !== 'undefined') {
-                  sessionStorage.removeItem('landingPageForRedirect');
-                  sessionStorage.removeItem('landingCourseSlug');
-                }
+                cookies.remove('landingPageForRedirect', { path: '/' });
+                cookies.remove('landingCourseSlug', { path: '/' });
               } else {
                 router.push(routes.private.dashboard);
               }

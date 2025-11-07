@@ -27,7 +27,12 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
 import { useSearchParams } from 'next/navigation';
 import { gtm } from '@/utils/gtm';
-import { getStripeCheckoutOpen, getAccessClose, setRegisterUserData } from '@/store/features/course.slice';
+import {
+  getStripeCheckoutOpen,
+  getAccessClose,
+  setRegisterUserData,
+} from '@/store/features/course.slice';
+import cookies from 'js-cookie';
 
 const TermsLink = styled(Link)(() => ({
   color: 'black',
@@ -118,8 +123,14 @@ const OpenAccessForm = ({
 
     // Store registerUserData in Redux for Stripe checkout to use (for all landing pages)
     dispatch(setRegisterUserData(registerUserData));
-    sessionStorage.setItem('landingCourseSlug', course?.slug);
-    sessionStorage.setItem('landingPageForRedirect', activeLandingPage?.name);
+    cookies.set('landingCourseSlug', course?.slug || '', {
+      expires: 7,
+      path: '/',
+    });
+    cookies.set('landingPageForRedirect', activeLandingPage?.name || '', {
+      expires: 7,
+      path: '/',
+    });
 
     // If upsale not available
     if (!isCourseUpsaleCoursesAvailable) {

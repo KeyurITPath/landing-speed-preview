@@ -86,12 +86,7 @@ const useEmailVerification = ({ data }: any) => {
 
         const queryString = new URLSearchParams(queryParams)?.toString();
 
-        // Check if user came from landing page 1 (stripe checkout flow)
-        const isFromLanding1 = sessionStorage.getItem('landingPageForRedirect') === 'landing1';
-
-        const redirectUrl = isFromLanding1
-          ? `${routes.public.complete_profile}?${queryString ? `${queryString}` : ''}`
-          : `${routes.public.trial_activation}?${queryString ? `${queryString}` : ''}`;
+        const redirectUrl = `${routes.public.complete_profile}?${queryString ? `${queryString}` : ''}`
 
         router.push(redirectUrl);
       }

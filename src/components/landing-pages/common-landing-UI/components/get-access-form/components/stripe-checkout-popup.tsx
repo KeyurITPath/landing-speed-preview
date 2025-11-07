@@ -533,7 +533,7 @@ export default function StripeCheckoutPopup({
       setClientSecret('');
       setError('');
       sessionStorage.removeItem('selectedUpsaleIds');
-      cookies.remove('onboarding_redirection_url', { path: '/' });
+      // cookies.remove('onboarding_redirection_url', { path: '/' });
     }
   }, [open]);
 
