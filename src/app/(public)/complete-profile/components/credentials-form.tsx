@@ -81,36 +81,15 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
   }, [userData?.subscription_purchase_histories]);
 
   const orderHistory = useMemo(() => {
-    if (!userData?.user_orders?.[0]?.user_order_details) {
-      return [];
-    }
-    const allOrderDetails = userData.user_orders[0].user_order_details;
-
-    const paidCourses = allOrderDetails
-      .filter((item: any) => {
-        return item?.payment_status === 'paid';
-      })
-      .map((item: any) => {
-        const { id, course_translation } = item;
-        let title = '';
-        if (course_translation) {
-          if (typeof course_translation === 'string') {
-            title = course_translation;
-          } else if (course_translation?.title) {
-            title = course_translation.title;
-          }
-        }
-
-        return {
-          id: id,
-          title: title,
-        };
-      })
-      .filter((item: any) => item.title && item.title.trim() !== '');
-
-    return paidCourses;
-  }, [userData.user_orders]);
-console.log(orderHistory, "orderHistory")
+    return (
+      userData?.user_orders?.[0]?.user_order_details
+        ?.filter(({ payment_status }: any) => payment_status === 'paid')
+        ?.map(({ id, course_translation }: any) => ({
+          id,
+          title: course_translation?.title,
+        })) || []
+    );
+  }, [userData]);
 
   useEffect(() => {
     if (!userData?.id) {

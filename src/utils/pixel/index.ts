@@ -101,7 +101,7 @@ const triggerEvent = async ({
   };
 
   // ---- Send to backend analytics (CAPI)
-  apiAsyncHandler(async () => {
+  await apiAsyncHandler(async () => {
     if (meta_pixels()?.length || isAnalyticsCredentials) {
       await api.pixel.event({
         data: { ...fbParams },
@@ -132,69 +132,73 @@ const triggerEvent = async ({
  */
 const ensurePixelInitialized = (
   landingMetaPixelId: string[] | undefined,
-  callback: () => void
-) => {
-  // If no pixel IDs provided, just trigger the event
-  if (!landingMetaPixelId || landingMetaPixelId.length === 0) {
-    callback();
-    return;
-  }
+  callback: () => void | Promise<void>
+): Promise<void> => {
+  return new Promise<void>((resolve) => {
+    // If no pixel IDs provided, just trigger the event
+    if (!landingMetaPixelId || landingMetaPixelId.length === 0) {
+      Promise.resolve(callback()).then(() => resolve());
+      return;
+    }
 
-  // If pixel script not loaded yet, load it first
-  if (!window.fbq) {
-    console.log("window.fbq not found, initializing...");
-    window.fbq = function () {
-      window.fbq.callMethod
-        ? window.fbq.callMethod.apply(window.fbq, arguments)
-        : window.fbq.queue.push(arguments);
-    };
-    window.fbq.push = window.fbq;
-    window.fbq.loaded = true;
-    window.fbq.version = '2.0';
-    window.fbq.queue = [];
-    window.fbq.l = +new Date();
+    // If pixel script not loaded yet, load it first
+    if (!window.fbq) {
+      console.log("window.fbq not found, initializing...");
+      window.fbq = function () {
+        window.fbq.callMethod
+          ? window.fbq.callMethod.apply(window.fbq, arguments)
+          : window.fbq.queue.push(arguments);
+      };
+      window.fbq.push = window.fbq;
+      window.fbq.loaded = true;
+      window.fbq.version = '2.0';
+      window.fbq.queue = [];
+      window.fbq.l = +new Date();
 
-    const fbScript = document.createElement('script');
-    fbScript.async = true;
-    fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      const fbScript = document.createElement('script');
+      fbScript.async = true;
+      fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
 
-    fbScript.onload = () => {
-      console.log("fbScript loaded, initializing...");
+      fbScript.onload = () => {
+        console.log("fbScript loaded, initializing...");
+        if (!window._fbq_initialized) {
+          landingMetaPixelId.forEach((pixelId: string) => {
+            window.fbq('init', pixelId);
+            window.fbq('track', 'PageView');
+          });
+          window._fbq_initialized = true;
+        }
+
+        // Wait for _fbp cookie to be set
+        setTimeout(async () => {
+          await callback();
+          resolve();
+        }, 2000);
+      };
+
+      document.head.appendChild(fbScript);
+    } else {
+      // Pixel script loaded, check if initialized
       if (!window._fbq_initialized) {
+        console.log("window._fbq_initialized not found, initializing...");
         landingMetaPixelId.forEach((pixelId: string) => {
           window.fbq('init', pixelId);
           window.fbq('track', 'PageView');
         });
         window._fbq_initialized = true;
+
+        // Wait for _fbp cookie to be set on first init
+        setTimeout(async () => {
+          await callback();
+          resolve();
+        }, 2000);
+      } else {
+        // Already initialized, trigger immediately
+        console.log("Already initialized, triggering immediately...");
+        Promise.resolve(callback()).then(() => resolve());
       }
-
-      // Wait for _fbp cookie to be set
-      setTimeout(() => {
-        callback();
-      }, 2000);
-    };
-
-    document.head.appendChild(fbScript);
-  } else {
-    // Pixel script loaded, check if initialized
-    if (!window._fbq_initialized) {
-      console.log("window._fbq_initialized not found, initializing...");
-      landingMetaPixelId.forEach((pixelId: string) => {
-        window.fbq('init', pixelId);
-        window.fbq('track', 'PageView');
-      });
-      window._fbq_initialized = true;
-
-      // Wait for _fbp cookie to be set on first init
-      setTimeout(() => {
-        callback();
-      }, 2000);
-    } else {
-      // Already initialized, trigger immediately
-      console.log("Already initialized, triggering immediately...");
-      callback();
     }
-  }
+  });
 };
 
 /**
@@ -274,8 +278,8 @@ export const pixel = {
   },
 
   initial_checkout: ({ landingMetaPixelId, ...props }: any) => {
-    ensurePixelInitialized(landingMetaPixelId, () => {
-      triggerEvent({
+    return ensurePixelInitialized(landingMetaPixelId, async () => {
+      await triggerEvent({
         eventName: EVENTS.initial_checkout,
         ...props,
       });

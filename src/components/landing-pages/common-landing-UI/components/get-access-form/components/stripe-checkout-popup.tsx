@@ -210,13 +210,10 @@ const StripeInnerForm = ({
           })
         );
 
-        // Wait for pixel events to be sent before redirecting
         setTimeout(() => {
-          // Keep cookie for now, will be cleared after successful payment processing
           setActiveForm('');
           dispatch(getStripeCheckoutClose());
 
-          // Determine redirect URL based on user verification status and upsale availability
           let redirectUrl = '';
           if (user?.is_verified) {
             redirectUrl = `${origin}${pathname}?payment=success`;
@@ -231,7 +228,7 @@ const StripeInnerForm = ({
             }
           }
           window.location.href = redirectUrl;
-        }, 1500);
+        }, 2000);
       }
     } catch (err) {
       console.error('Payment confirmation failed:', err);
@@ -491,7 +488,6 @@ export default function StripeCheckoutPopup({
 
   // Get selected upsale courses with full data (for landing2)
   const [selectedUpsaleCourses, setSelectedUpsaleCourses] = useState<any[]>([]);
-
   useEffect(() => {
     if (!open) return;
 
