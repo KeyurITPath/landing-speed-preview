@@ -1,5 +1,12 @@
 'use client';
-import { useCallback, useMemo, useState, useRef, useEffect, useContext } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+} from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@/api';
@@ -105,7 +112,10 @@ const useLogin = () => {
             const decodeData = decodeToken(token);
             setToken(token);
             updateSocketOnLogin(token);
-            cookies.set('is_cancellation_request', decodeData?.is_cancellation_request ? 'true' : 'false');
+            cookies.set(
+              'is_cancellation_request',
+              decodeData?.is_cancellation_request ? 'true' : 'false'
+            );
             dispatch(
               updateUser({
                 token,
@@ -127,14 +137,25 @@ const useLogin = () => {
       } catch (error) {
         handleToast({
           message:
-            (error as any)?.data?.message || (error as any)?.message || 'Something went wrong.',
+            (error as any)?.apiError?.message ||
+            (error as any)?.data?.message ||
+            (error as any)?.message ||
+            'Something went wrong.',
           variant: 'error',
         });
       } finally {
         setIsLoading(false);
       }
     },
-    [dispatch, handleToast, isLoading, router, setToken, user]
+    [
+      dispatch,
+      handleToast,
+      isLoading,
+      router,
+      setToken,
+      updateSocketOnLogin,
+      user,
+    ]
   );
 
   // Cleanup timeout on unmount
