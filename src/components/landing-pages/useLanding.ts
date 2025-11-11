@@ -48,7 +48,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchAllUpSales } from '@/store/features/course.slice';
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
-import { clearMetaPixelHandler, pixel } from '../../utils/pixel';
+import { clearMetaPixelHandler, pixel, prepareMetaFunction } from '../../utils/pixel';
 
 let globalPipValue = false;
 
@@ -127,6 +127,10 @@ const useLanding = ({
   const [activeForm, setActiveForm] = useState('access-form');
 
   const { setToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    prepareMetaFunction();
+  }, []);
 
   useEffect(() => {
     if (otherData?.data?.final_url) {
@@ -379,34 +383,31 @@ const useLanding = ({
     [otherData?.course?.course_prices, otherData?.course?.id]
   );
 
-  useEffect(() => {
-    if (
-      !pixelViewTriggered.current &&
-      isFbAnalyticsCredentialsAPICalled &&
-      isTiktokAnalyticsCredentialsAPICalled &&
-      pixelIds?.length &&
-      otherData?.data?.id
-    ) {
-      pixel.view_content({
-        landingMetaPixelId: pixelIds,
-        isAnalyticsCredentialsExists: true,
-        ...(!isEmptyObject(utmData) && { utmData }),
-        ...(user?.id ? { userId: user.id } : {}),
-        ...anotherPixelData,
-      });
-      pixelViewTriggered.current = true;
-    } else {
-      clearMetaPixelHandler();
-    }
-  }, [
-    anotherPixelData,
-    isFbAnalyticsCredentialsAPICalled,
-    isTiktokAnalyticsCredentialsAPICalled,
-    otherData?.data?.id,
-    pixelIds,
-    user.id,
-    utmData,
-  ]);
+
+ useEffect(() => {
+  if (
+    !pixelViewTriggered.current &&
+    isFbAnalyticsCredentialsAPICalled &&
+    isTiktokAnalyticsCredentialsAPICalled &&
+    pixelIds?.length &&
+    otherData?.data?.id
+  ) {
+    pixelViewTriggered.current = true;
+    pixel.view_content({
+      landingMetaPixelId: pixelIds,
+      isAnalyticsCredentialsExists: true,
+      ...(!isEmptyObject(utmData) && { utmData }),
+      ...(user?.id ? { userId: user.id } : {}),
+      ...anotherPixelData,
+    });
+  }
+
+  return () => {
+    clearMetaPixelHandler();
+  };
+}, [isFbAnalyticsCredentialsAPICalled, isTiktokAnalyticsCredentialsAPICalled, pixelIds, otherData?.data?.id, utmData, user.id, anotherPixelData]);
+
+
 
   const translation = useMemo(() => otherData?.data || {}, [otherData?.data]);
 
