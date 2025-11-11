@@ -425,7 +425,6 @@ const Bundles = ({
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         backgroundColor: '#ffffff',
         py: { xs: 4, sm: 6 },
         px: { xs: 0.5, sm: 1 },
@@ -531,7 +530,7 @@ const Bundles = ({
             sx={{
               backgroundColor: '#F5F5F5',
               borderRadius: '16px',
-              p: { xs: 2, sm: 3 },
+              p: { xs: 1, sm: 3 },
             }}
             spacing={{ xs: 2, sm: 4 }}
           >
@@ -542,7 +541,7 @@ const Bundles = ({
                 <Box
                   sx={{
                     position: 'relative',
-                    minHeight: '220px', // Adjusted for compact mobile card height
+                    minHeight: '220px'
                   }}
                 >
                   <Box
@@ -560,7 +559,7 @@ const Bundles = ({
                       ? Array.from({ length: 3 }).map((_, index) => (
                           <Box
                             key={index}
-                            sx={{ maxWidth: '270px', flexShrink: 0 }}
+                            sx={{ maxWidth: '220px', flexShrink: 0 }}
                           >
                             <MobileBundleCourseSkeleton />
                           </Box>
@@ -568,7 +567,7 @@ const Bundles = ({
                       : bundleCourses?.length > 0
                         ? bundleCourses.map((course: any, index: number) => (
                             <React.Fragment key={course.id}>
-                              <Box sx={{ maxWidth: '270px', flexShrink: 0 }}>
+                              <Box sx={{ maxWidth: '220px', flexShrink: 0 }}>
                                 <MobileBundleCourseCard course={course} />
                               </Box>
                               {/* Plus icon between cards - only show if not last card */}
@@ -621,8 +620,10 @@ const Bundles = ({
                         <React.Fragment key={course.id}>
                           <Box
                             sx={{
-                              flex: '1 1 0',
-                              maxWidth: '100%',
+                              flex: bundleCourses.length === 2 ? '0 1 auto' : '1 1 0',
+                              minWidth: bundleCourses.length === 2 ? '280px' : 0,
+                              maxWidth: bundleCourses.length === 2 ? '350px' : '100%',
+                              width: bundleCourses.length === 2 ? 'auto' : '100%',
                             }}
                           >
                             <BundleCourseCard

@@ -25,7 +25,6 @@ import cookies from 'js-cookie';
 const useLogin = () => {
   const { setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
-
   const { handleToast } = useToast();
   const router = useRouter();
   const domainDetails = useDomain();
@@ -110,12 +109,28 @@ const useLogin = () => {
           const responseMessage = response?.data?.message;
           if (token) {
             const decodeData = decodeToken(token);
-            setToken(token);
-            updateSocketOnLogin(token);
             cookies.set(
               'is_cancellation_request',
               decodeData?.is_cancellation_request ? 'true' : 'false'
             );
+            setToken(token);
+            updateSocketOnLogin(token);
+
+            const userResponse = await api.user.get({
+              params: { user_id: decodeData?.id },
+              headers: { 'req-from': cookies.get('country_code') || '' },
+              cookieToken: token,
+            });
+            const hasPaidOrders = userResponse?.data?.data?.user_orders?.some(
+              (order: any) =>
+                order?.user_order_details?.some(
+                  (history: any) => history?.payment_status === 'paid'
+                )
+            );
+            if (!decodeData?.is_verified && hasPaidOrders) {
+              router.push(routes.public.complete_profile);
+            }
+
             dispatch(
               updateUser({
                 token,
@@ -125,7 +140,6 @@ const useLogin = () => {
                 ...decodeData,
               })
             );
-
             if (decodeData.is_verified) {
               router.push(routes.private.dashboard);
             } else {

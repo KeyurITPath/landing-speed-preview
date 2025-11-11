@@ -57,7 +57,10 @@ const useBundles = (courseData?: any, currency?: any) => {
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
-  // Fetch bundle courses
+  const countryCode = useMemo(() => {
+    return cookies.get('country_code') || 'US';
+  }, []);
+
   const fetchBundleCourses = useCallback(async () => {
     // Check if all required params are available
     if (!effectiveCourseId || !effectiveCurrencyId || !effectiveLanguageId) {
@@ -77,7 +80,7 @@ const useBundles = (courseData?: any, currency?: any) => {
               domain: DOMAIN,
             },
           }),
-          new Promise(resolve => setTimeout(resolve, 1000)), // Minimum 1 second loading
+          new Promise(resolve => setTimeout(resolve, 1000)),
         ]);
       } catch (error) {
         console.error('Error fetching bundle courses:', error);
@@ -221,7 +224,6 @@ const useBundles = (courseData?: any, currency?: any) => {
 
     return processed;
   }, [bundleCourses, mainCurrencyCode, effectiveLanguageId]);
-
   // Calculate bundle pricing
   const bundlePricing = useMemo(() => {
     if (!processedBundleCourses?.length) {
@@ -249,15 +251,18 @@ const useBundles = (courseData?: any, currency?: any) => {
       discountPercentage = Math.round((discountAmount / totalActualPrice) * 100);
     }
 
-    const originalPrice = formatCurrency(totalActualPrice, mainCurrencyCode);
-    const discountPrice = formatCurrency(totalBundlePrice, mainCurrencyCode);
+    const formattedOriginalPrice = formatCurrency(totalActualPrice, mainCurrencyCode);
+    const formattedDiscountPrice = formatCurrency(totalBundlePrice, mainCurrencyCode);
+
+    const originalPrice = `${countryCode} ${formattedOriginalPrice}`;
+    const discountPrice = `${countryCode} ${formattedDiscountPrice}`;
 
     return {
       originalPrice,
       discountPrice,
       discountPercentage: `${discountPercentage}%`,
     };
-  }, [processedBundleCourses, mainCurrencyCode]);
+  }, [processedBundleCourses, mainCurrencyCode, countryCode]);
 
   const handleCheckout = useCallback(async () => {
     try {

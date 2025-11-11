@@ -15,7 +15,10 @@ import { updateUser } from '@/store/features/auth.slice';
 import { useTranslations } from 'next-intl';
 import useSocket from '@/hooks/use-socket';
 import cookies from 'js-cookie';
-import { getAllLanguages } from '@/store/features/defaults.slice';
+import {
+  fetchAllFbAnalyticsCredentials,
+  getAllLanguages,
+} from '@/store/features/defaults.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchUser } from '@/store/features/user.slice';
 import { pixel } from '@/utils/pixel';
@@ -25,6 +28,9 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const { user, setToken } = useContext(AuthContext);
   const [fetchAllLanguages] = useDispatchWithAbort(getAllLanguages);
   const [fetchUserData] = useDispatchWithAbort(fetchUser);
+  const [fetchAllFbAnalyticsCredentialsData] = useDispatchWithAbort(
+    fetchAllFbAnalyticsCredentials
+  );
   const { updateSocketOnLogin } = useSocket();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -87,10 +93,6 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     }
   }, [courseData]);
 
-  // Only fire pixel for landing1
-  const shouldFirePixel =
-    landingPageName === 'landing1' || landingPageName === 'landing2';
-
   const plainPassword = useMemo(() => {
     return decrypt(userData?.passwordforUI);
   }, [userData?.passwordforUI]);
@@ -101,6 +103,34 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         ?.currency?.name || 'USD',
     [userOrderData]
   );
+
+  const purchasedCourseWithoutUpsale = useMemo(() => {
+    const course = userOrderData?.user_orders?.[0]?.user_order_details?.find(
+      (item: any) => !item?.is_upsale
+    );
+    if (course) {
+      const clone = { ...course };
+      const landingPageTranslation =
+        clone?.course?.landing_pages?.[0]?.landing_page_translations?.find(
+          (item: any) =>
+            item?.language_id === Number(cookies.get('language_id'))
+        );
+      if (landingPageTranslation) {
+        return landingPageTranslation;
+      }
+    }
+    return null;
+  }, [userOrderData]);
+
+  useEffect(() => {
+    if (purchasedCourseWithoutUpsale && fetchAllFbAnalyticsCredentialsData) {
+      fetchAllFbAnalyticsCredentialsData({
+        params: {
+          landing_page_translation_id: purchasedCourseWithoutUpsale?.id,
+        },
+      });
+    }
+  }, [purchasedCourseWithoutUpsale, fetchAllFbAnalyticsCredentialsData]);
 
   useEffect(() => {
     let selectedIds = [];
@@ -205,8 +235,17 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       contents: [...course_content, ...upsaleContents],
       value: totalCoursePrice,
       total_amount: totalCoursePrice,
+      final_url: purchasedCourseWithoutUpsale?.final_url,
     };
-  }, [userOrderData?.id, contentIds, currencyName, course_content, upsaleContents, totalCoursePrice]);
+  }, [
+    userOrderData?.id,
+    contentIds,
+    currencyName,
+    course_content,
+    upsaleContents,
+    totalCoursePrice,
+    purchasedCourseWithoutUpsale?.final_url,
+  ]);
 
   const utmData = useMemo(() => {
     const utmSources =
@@ -233,20 +272,14 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
 
   // Fetch user data when profile is completed AND only for landing1
   useEffect(() => {
-    if (isProfileCompleted && user?.id && fetchUserData && shouldFirePixel) {
+    if (isProfileCompleted && user?.id && fetchUserData) {
       fetchUserData({
         params: { user_id: user?.id },
         headers: { 'req-from': country_code },
         cookieToken: cookies.get('token'),
       });
     }
-  }, [
-    isProfileCompleted,
-    fetchUserData,
-    user?.id,
-    country_code,
-    shouldFirePixel,
-  ]);
+  }, [isProfileCompleted, fetchUserData, user?.id, country_code]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     try {
@@ -302,7 +335,6 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
           'is_cancellation_request',
           decodeData?.is_cancellation_request ? 'true' : 'false'
         );
-
         dispatch(
           updateUser({
             token,
@@ -329,14 +361,13 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       console.error('Profile submission error:', err);
       enqueueSnackbar(
         err?.response?.data?.message ||
-        err?.message ||
-        'Something went wrong. Please try again.',
+          err?.message ||
+          'Something went wrong. Please try again.',
         { variant: 'error' }
       );
-      return null
+      return null;
     }
   });
-
 
   const {
     errors,
@@ -367,14 +398,8 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     }));
   }, [userData, setValues]);
 
-  // Fire pixel.purchase when user order data is available (only once and only for landing1)
   useEffect(() => {
-    if (
-      userOrderData?.id &&
-      isProfileCompleted &&
-      !hasFired.current &&
-      shouldFirePixel
-    ) {
+    if (userOrderData?.id && isProfileCompleted && !hasFired.current) {
       gtm.ecommerce.purchase({ value: courseAmount });
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
@@ -396,7 +421,6 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     isExistUpsale,
     isProfileCompleted,
     metaParams,
-    shouldFirePixel,
     upSaleAmount,
     userOrderData?.id,
     utmData,

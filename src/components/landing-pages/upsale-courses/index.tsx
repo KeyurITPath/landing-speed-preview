@@ -394,7 +394,6 @@ const UpsaleCourses = ({
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         backgroundColor: '#ffffff',
         py: { xs: 4, sm: 6 },
       }}
