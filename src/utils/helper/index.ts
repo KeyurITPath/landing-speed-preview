@@ -204,11 +204,8 @@ const isEmptyArray = (arr = []) => {
   return arr.length === 0;
 };
 
-export function sha256Hash(value = '') {
-  if (!value) return null;
-  // Convert to string, normalize for FB compliance
+export function sha256Hash(value = ''): string {
   const strValue = String(value).trim().toLowerCase();
-
   return SHA256(strValue).toString(Hex);
 }
 
@@ -393,6 +390,44 @@ export function appendParamsToURL(url: string, params: any) {
   }
 
   return urlObj.toString();
+}
+
+export async function getOrCreateExternalId(): Promise<string> {
+  if (typeof window === 'undefined') {
+    try {
+      const { cookies } = await import('next/headers');
+      const cookieStore = cookies();
+      const existing = cookieStore.get('external_id')?.value;
+      if (existing) return existing;
+
+      const randomBase = `${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+      const hashed = sha256Hash(randomBase);
+
+      cookieStore.set('external_id', hashed, {
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        path: '/',
+      });
+
+      return hashed;
+    } catch (err) {
+      const randomBase = `${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+      return sha256Hash(randomBase);
+    }
+  }
+
+  try {
+    const match = document.cookie.match(/(?:^| )external_id=([^;]+)/);
+    if (match) return match[1];
+
+    const randomBase = `${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+    const hashed = sha256Hash(randomBase);
+    const maxAge = 30 * 24 * 60 * 60;
+    document.cookie = `external_id=${hashed}; max-age=${maxAge}; path=/`;
+    return hashed;
+  } catch {
+    const randomBase = `${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+    return sha256Hash(randomBase);
+  }
 }
 
 export {
