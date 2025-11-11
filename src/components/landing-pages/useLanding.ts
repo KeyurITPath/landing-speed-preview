@@ -290,6 +290,7 @@ const useLanding = ({
             course_id: course?.id,
             currency_id: currency?.id,
             language_id: otherData?.data?.language_id,
+            domain: DOMAIN,
           },
         });
       }

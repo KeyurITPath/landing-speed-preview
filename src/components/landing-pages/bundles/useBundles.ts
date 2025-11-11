@@ -74,6 +74,7 @@ const useBundles = (courseData?: any, currency?: any) => {
               course_id: effectiveCourseId,
               currency_id: effectiveCurrencyId,
               language_id: effectiveLanguageId,
+              domain: DOMAIN,
             },
           }),
           new Promise(resolve => setTimeout(resolve, 1000)), // Minimum 1 second loading
@@ -116,44 +117,88 @@ const useBundles = (courseData?: any, currency?: any) => {
     }
 
     const processed = bundleCourses.map(
-      ({ id, course_translation, course_prices, instructor, rating }: any) => {
+      ({ id, course_translation, course_prices }: any) => {
         const title = course_translation?.title;
         const image = resolveUrl(course_translation?.course_image);
+        const { course } = course_translation;
+        const { rating } =
+          course?.landing_pages?.[0]?.landing_page_translations?.[0] || {};
+        const { name: instructorName, profile_image: instructorAvatar } =
+          course?.user || {};
 
-        // Get price data (similar to upsale processing)
-        const getPriceData = (course_prices: any) => {
-          let found = course_prices?.find(({ currency }: any) => {
-            return currency?.name === mainCurrencyCode;
-          });
+        const getBundlePriceData = (course_prices: any) => {
+          let found = course_prices?.find(
+            ({ is_bundle_price, currency }: any) => {
+              return (
+                is_bundle_price &&
+                currency?.name === mainCurrencyCode
+              );
+            }
+          );
 
           if (!found) {
-            found = course_prices?.find(({ currency }: any) => {
-              return (
-                currency?.name?.toLowerCase() ===
-                mainCurrencyCode?.toLowerCase()
-              );
-            });
+            found = course_prices?.find(
+              ({ is_bundle_price, currency }: any) => {
+                return (
+                  is_bundle_price &&
+                  currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase()
+                );
+              }
+            );
           }
 
           if (!found) {
-            found = course_prices?.[0];
+            found = course_prices?.find(({ is_bundle_price }: any) => {
+              return is_bundle_price;
+            });
           }
 
           return found;
         };
 
-        const priceData = getPriceData(course_prices);
-        const priceAmount = priceData?.price || 0;
-        const currencyCode = priceData?.currency?.name || mainCurrencyCode;
+        const getActualPriceData = (innerCoursePrices: any) => {
+          let found = innerCoursePrices?.find(
+            ({ isDefault, currency, language_id }: any) => {
+              return (
+                isDefault &&
+                (currency?.name === mainCurrencyCode ||
+                  !currency) &&
+                language_id === effectiveLanguageId
+              );
+            }
+          );
 
-        // Instructor data
-        const instructorName =
-          instructor?.instructor_translations?.[0]?.name ||
-          instructor?.name ||
-          '';
-        const instructorAvatar = resolveUrl(
-          instructor?.avatar || instructor?.instructor_image
-        );
+          if (!found) {
+            found = innerCoursePrices?.find(
+              ({ isDefault, currency }: any) => {
+                return (
+                  isDefault &&
+                  currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase()
+                );
+              }
+            );
+          }
+
+          if (!found) {
+            found = innerCoursePrices?.find(({ isDefault }: any) => {
+              return isDefault;
+            });
+          }
+
+          if (!found) {
+            found = innerCoursePrices?.[0];
+          }
+
+          return found;
+        };
+
+        const bundlePriceData = getBundlePriceData(course_prices);
+        const bundlePriceAmount = bundlePriceData?.price || 0;
+        const currencyCode = bundlePriceData?.currency?.name || mainCurrencyCode;
+
+        // Get actual price (original price)
+        const actualPriceData = getActualPriceData(course?.course_prices);
+        const actualPriceAmount = actualPriceData?.price || 0;
 
         const result = {
           id,
@@ -164,9 +209,10 @@ const useBundles = (courseData?: any, currency?: any) => {
             avatar: instructorAvatar,
           },
           rating: rating?.toString() || '0',
-          priceAmount,
+          bundlePriceAmount,
+          actualPriceAmount,
           currencyCode,
-          stripeId: priceData?.stripe_price_id,
+          stripeId: bundlePriceData?.stripe_price_id,
         };
 
         return result;
@@ -174,31 +220,37 @@ const useBundles = (courseData?: any, currency?: any) => {
     );
 
     return processed;
-  }, [bundleCourses, mainCurrencyCode]);
+  }, [bundleCourses, mainCurrencyCode, effectiveLanguageId]);
 
-  // Calculate bundle pricing (if needed)
+  // Calculate bundle pricing
   const bundlePricing = useMemo(() => {
     if (!processedBundleCourses?.length) {
       return {
-        originalPrice: 'US $0.00',
-        discountPrice: 'US $0.00',
+        originalPrice: formatCurrency(0, mainCurrencyCode),
+        discountPrice: formatCurrency(0, mainCurrencyCode),
         discountPercentage: '0%',
       };
     }
 
-    // Calculate total original price
-    const totalOriginalPrice = processedBundleCourses.reduce(
-      (sum: number, course: any) => sum + (course.priceAmount || 0),
+    const totalActualPrice = processedBundleCourses.reduce(
+      (sum: number, course: any) => sum + (course.actualPriceAmount || 0),
       0
     );
 
-    // For now, using static discount values - can be made dynamic later
-    const discountPercentage = 90;
-    const discountMultiplier = discountPercentage / 100;
-    const totalDiscountPrice = totalOriginalPrice * (1 - discountMultiplier);
+    const totalBundlePrice = processedBundleCourses.reduce(
+      (sum: number, course: any) => sum + (course.bundlePriceAmount || 0),
+      0
+    );
 
-    const originalPrice = formatCurrency(totalOriginalPrice, mainCurrencyCode);
-    const discountPrice = formatCurrency(totalDiscountPrice, mainCurrencyCode);
+    // Calculate discount percentage
+    let discountPercentage = 0;
+    if (totalActualPrice > 0) {
+      const discountAmount = totalActualPrice - totalBundlePrice;
+      discountPercentage = Math.round((discountAmount / totalActualPrice) * 100);
+    }
+
+    const originalPrice = formatCurrency(totalActualPrice, mainCurrencyCode);
+    const discountPrice = formatCurrency(totalBundlePrice, mainCurrencyCode);
 
     return {
       originalPrice,
@@ -207,7 +259,6 @@ const useBundles = (courseData?: any, currency?: any) => {
     };
   }, [processedBundleCourses, mainCurrencyCode]);
 
-  // Handle bundle purchase - call purchase bundle course API
   const handleCheckout = useCallback(async () => {
     try {
       setLoading(true);
@@ -218,7 +269,6 @@ const useBundles = (courseData?: any, currency?: any) => {
         return;
       }
 
-      // Get bundle course price IDs (stripe_price_id)
       const bundlePriceIds = processedBundleCourses
         .map((course: any) => course.stripeId)
         .filter(Boolean);
@@ -235,7 +285,6 @@ const useBundles = (courseData?: any, currency?: any) => {
         ...params,
       };
 
-      // Use .then() and .catch() for better error handling
       await api.getAccess
         .purchaseBundleCourse({ data })
         .then((response: any) => {
