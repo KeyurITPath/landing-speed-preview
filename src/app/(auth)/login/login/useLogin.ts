@@ -142,8 +142,6 @@ const useLogin = () => {
             );
             if (decodeData.is_verified) {
               router.push(routes.private.dashboard);
-            } else {
-              router.push(routes.public.home);
             }
             handleToast({ message: responseMessage, variant: 'success' });
           }
