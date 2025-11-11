@@ -88,6 +88,13 @@ export const api = {
         params,
         ...configs,
       }),
+    getAllBundles: ({ params, ...configs }: any) =>
+      client({
+        url: `/bundleCourses`,
+        method: METHODS.GET,
+        params,
+        ...configs,
+      }),
     getAllAnalyticsCredentials: ({ params, ...configs }: any) =>
       client({
         url: `/analyticsCredentials`,
@@ -153,6 +160,13 @@ export const api = {
     purchaseUpsaleCourse: ({ data, ...configs }: any) =>
       client({
         url: `/purchase-upsale-course`,
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
+    purchaseBundleCourse: ({ data, ...configs }: any) =>
+      client({
+        url: `/purchase-bundle-course`,
         method: METHODS.POST,
         data,
         ...configs,

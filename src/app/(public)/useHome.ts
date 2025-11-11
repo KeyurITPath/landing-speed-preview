@@ -364,23 +364,6 @@ const useHome = ({ user, isLoggedIn, isBecomeAMemberWithVerified }: any) => {
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && user) {
-      const redirectionUrl = cookies.get('onboarding_redirection_url');
-
-      // If redirection URL exists and user is not verified, redirect them
-      if (redirectionUrl && !user?.is_verified) {
-        // Clear the cookie before redirecting to prevent loops
-        cookies.remove('onboarding_redirection_url', { path: '/' });
-        // Redirect to the stored URL
-        window.location.href = redirectionUrl;
-      } else if (redirectionUrl && user?.is_verified) {
-        // If user is verified but cookie exists, clear it
-        cookies.remove('onboarding_redirection_url', { path: '/' });
-      }
-    }
-  }, [user]);
-
   const handleRedirect = useCallback(
     (path: string) => {
       router.push(path);

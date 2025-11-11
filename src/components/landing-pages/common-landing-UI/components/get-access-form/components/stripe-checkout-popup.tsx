@@ -78,6 +78,7 @@ const StripeInnerForm = ({
   setActiveForm,
   user,
   isCourseUpsaleCoursesAvailable,
+  isCourseBundleCoursesAvailable,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -137,17 +138,28 @@ const StripeInnerForm = ({
       const queryString = new URLSearchParams(params).toString();
       const { origin, pathname } = window.location;
 
-      // Determine return URL based on user verification status and upsale availability
       let returnUrl = '';
       if (user?.is_verified) {
         returnUrl = `${origin}${pathname}?payment=success`;
       } else {
-        if (!isCourseUpsaleCoursesAvailable) {
-          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-        } else if (activeLandingPage?.name === 'landing2') {
-          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-        } else {
+        if (activeLandingPage?.name === 'landing2') {
+          const hasPurchasedUpsales = selectedUpsaleCourses?.length > 0;
+          if (hasPurchasedUpsales) {
+            returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+          } else if (isCourseBundleCoursesAvailable) {
+            returnUrl = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+          } else {
+            returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+          }
+        } else if (
+          isCourseBundleCoursesAvailable &&
+          activeLandingPage?.name === 'landing1'
+        ) {
+          returnUrl = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (isCourseUpsaleCoursesAvailable) {
           returnUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          returnUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
         }
       }
       // Confirm payment with Stripe
@@ -168,10 +180,14 @@ const StripeInnerForm = ({
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
         if (!user?.is_verified) {
-          cookies.set('onboarding_redirection_url', returnUrl, { expires: 7, path: '/' });
+          cookies.set('onboarding_redirection_url', routes.public.complete_profile, {
+              expires: 7,
+              path: '/',
+            }
+          );
         }
         // Clear selected upsale IDs cookie after successful payment
-        cookies.remove('selectedUpsaleIds', { path: '/' });
+        cookies.remove('selectedUpsaleIds');
         await pixel.initial_checkout({
           userId: registerUserData?.id,
           content_type: 'course',
@@ -219,12 +235,24 @@ const StripeInnerForm = ({
             redirectUrl = `${origin}${pathname}?payment=success`;
             cookies.remove('onboarding_redirection_url', { path: '/' });
           } else {
-            if (!isCourseUpsaleCoursesAvailable) {
-              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-            } else if (activeLandingPage?.name === 'landing2') {
-              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-            } else {
+            if (activeLandingPage?.name === 'landing2') {
+              const hasPurchasedUpsales = selectedUpsaleCourses?.length > 0;
+              if (hasPurchasedUpsales) {
+                redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+              } else if (isCourseBundleCoursesAvailable) {
+                redirectUrl = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+              } else {
+                redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+              }
+            } else if (
+              isCourseBundleCoursesAvailable &&
+              activeLandingPage?.name === 'landing1'
+            ) {
+              redirectUrl = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else if (isCourseUpsaleCoursesAvailable) {
               redirectUrl = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+            } else {
+              redirectUrl = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
             }
           }
           window.location.href = redirectUrl;
@@ -472,6 +500,8 @@ export default function StripeCheckoutPopup({
   const { currency } = useSelector(({ defaults }: any) => defaults);
   const mainCurrencyCode = currency.code;
 
+  const { bundleCourses } = useSelector(({ course }: any) => course);
+
   const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
 
   const country_code = cookies.get('country_code') || '';
@@ -479,6 +509,10 @@ export default function StripeCheckoutPopup({
   const isCourseUpsaleCoursesAvailable = useMemo(() => {
     return Boolean(upSaleCourses?.length > 0);
   }, [upSaleCourses?.length]);
+
+  const isCourseBundleCoursesAvailable = useMemo(() => {
+    return Boolean(bundleCourses?.length > 0);
+  }, [bundleCourses?.length]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const params: Record<string, string> = {};
@@ -542,17 +576,25 @@ export default function StripeCheckoutPopup({
         setError('');
         const { origin, pathname } = window.location;
         const queryString = new URLSearchParams(params).toString();
-
-        // Determine success URL based on upsale availability and landing page
         let success_url = '';
-        if (!isCourseUpsaleCoursesAvailable) {
-          // If upsales are not available, redirect to complete_profile
-          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-        } else if (activeLandingPage?.name === 'landing2') {
-          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
-        } else {
-          // For landing1 or default, redirect to upsale_courses
+        if (activeLandingPage?.name === 'landing2') {
+          const hasPurchasedUpsales = selectedUpsaleCourses?.length > 0;
+          if (hasPurchasedUpsales) {
+            success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+          } else if (isCourseBundleCoursesAvailable) {
+            success_url = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+          } else {
+            success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
+          }
+        } else if (
+          isCourseBundleCoursesAvailable &&
+          activeLandingPage?.name === 'landing1'
+        ) {
+          success_url = `${origin}${routes.public.bundles}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else if (isCourseUpsaleCoursesAvailable) {
           success_url = `${origin}${routes.public.upsale_courses}?payment=success${queryString ? `&${queryString}` : ''}`;
+        } else {
+          success_url = `${origin}${routes.public.complete_profile}?payment=success${queryString ? `&${queryString}` : ''}`;
         }
 
         const cancel_url = `${origin}${pathname}?payment=failed`;
@@ -614,6 +656,8 @@ export default function StripeCheckoutPopup({
     registerUserData,
     activeLandingPage?.name,
     isCourseUpsaleCoursesAvailable,
+    isCourseBundleCoursesAvailable,
+    selectedUpsaleCourses?.length,
   ]);
 
   const options = {
@@ -744,6 +788,7 @@ export default function StripeCheckoutPopup({
               selectedUpsaleCourses={selectedUpsaleCourses}
               setActiveForm={setActiveForm}
               isCourseUpsaleCoursesAvailable={isCourseUpsaleCoursesAvailable}
+              isCourseBundleCoursesAvailable={isCourseBundleCoursesAvailable}
             />
           </Elements>
         ) : (

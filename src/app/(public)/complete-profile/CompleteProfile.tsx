@@ -41,7 +41,6 @@ const Tab = ({ id, value, children }: any) => {
 const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   const queryParams = useSearchParams();
   const { user } = useContext(AuthContext);
-
   const { email } = domainDetails?.data?.domain_detail || {};
 
   const tabs = [
@@ -51,17 +50,6 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
 
   const [activeTab, setActiveTab] = useState(1);
   const { data: courseData } = useSelector(({ course }: any) => course);
-
-  // Update onboarding redirection cookie to point to complete-profile (current step)
-  useEffect(() => {
-    if (typeof window !== 'undefined' && user && !user?.is_verified) {
-      const { origin, pathname, search } = window.location;
-      const currentUrl = `${origin}${pathname}${search}`;
-      cookies.set('onboarding_redirection_url', currentUrl, { expires: 7, path: '/' });
-    } else if (user?.is_verified) {
-      cookies.remove('onboarding_redirection_url', { path: '/' });
-    }
-  }, [user]);
 
   const barValue = useMemo(() => {
     return (activeTab / tabs.length) * 100;

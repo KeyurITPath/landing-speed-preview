@@ -45,7 +45,7 @@ import {
 import { api } from '@/api';
 import { updateUser } from '@/store/features/auth.slice';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-import { fetchAllUpSales } from '@/store/features/course.slice';
+import { fetchAllBundles, fetchAllUpSales } from '@/store/features/course.slice';
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
 import { clearMetaPixelHandler, pixel } from '../../utils/pixel';
@@ -62,6 +62,7 @@ const useLanding = ({
 }: any) => {
   const { updateSocketOnLogin } = useSocket();
   const [fetchAllUpSalesData] = useDispatchWithAbort(fetchAllUpSales);
+  const [fetchAllBundlesData] = useDispatchWithAbort(fetchAllBundles);
   const [fetchAllAnalyticsCredentialsData] = useDispatchWithAbort(
     fetchAllAnalyticsCredentials
   );
@@ -283,6 +284,15 @@ const useLanding = ({
         });
       }
 
+      if (fetchAllBundlesData) {
+        fetchAllBundlesData({
+          params: {
+            course_id: course?.id,
+            currency_id: currency?.id,
+            language_id: otherData?.data?.language_id,
+          },
+        });
+      }
       cookies.set(
         'course_data',
         JSON.stringify({

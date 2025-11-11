@@ -709,5 +709,11 @@
     "delete": "Eliminar",
     "no_need": "No, no lo necesito",
     "complete": "Completar"
+  },
+  "bundles": {
+    "title": "Encuentra Tu Flujo: Paquetes Completos de Bienestar",
+    "description": "Mejora tu experiencia de aprendizaje añadiendo estos cursos complementarios al que ya has comprado, y observa cómo tu progreso se acelera hasta tres veces más rápido por solo <originalPriceTag>{originalPrice}</originalPriceTag> <discountPercentageTag>{discountPercentage} </discountPercentageTag><courseCountTag>de descuento</courseCountTag> <discountPriceTag>{discountPrice}</discountPriceTag> <courseCountTag>por {courseCount} cursos</courseCountTag>. Descubre tu máximo potencial hoy.",
+    "confirm_and_add_to_order": "Confirmar y añadir estos cursos a mi pedido",
+    "no_i_dont_need_this": "No, no lo necesito"
   }
 }

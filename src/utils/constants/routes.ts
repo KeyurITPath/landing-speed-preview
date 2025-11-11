@@ -13,6 +13,7 @@ export const routes = {
     terms_and_conditions: '/terms-and-conditions',
     upsale_courses: '/upsale-courses',
     test_error: '/test-error',
+    bundles: '/bundles',
   },
   auth: {
     login: '/login',

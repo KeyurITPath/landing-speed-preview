@@ -709,5 +709,11 @@
     "delete": "Delete",
     "no_need": "No, I don't Need",
     "complete": "Complete"
+  },
+  "bundles": {
+    "title": "Find Your Flow: Complete Wellness Bundles",
+    "description": "Enhance your learning experience by adding these supplementary courses to the one you've already purchased, and watch your progress accelerate to three times its previous pace for just <originalPriceTag>{originalPrice}</originalPriceTag> <discountPercentageTag>{discountPercentage} </discountPercentageTag><courseCountTag>discount</courseCountTag> <discountPriceTag>{discountPrice}</discountPriceTag> <courseCountTag>for {courseCount} courses</courseCountTag>. Discover your full potential today.",
+    "confirm_and_add_to_order": "Confirm and add these course to my order",
+    "no_i_dont_need_this": "No, I don't need this"
   }
 }

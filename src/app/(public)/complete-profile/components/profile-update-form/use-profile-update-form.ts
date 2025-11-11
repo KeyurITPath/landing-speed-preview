@@ -249,75 +249,94 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   ]);
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
-    const { phone, ...restValues } = values;
-    const updateData = {
-      ...restValues,
-      phone: phone ? '+' + phone : null,
-      is_verified: true,
-    };
-    await api.user.update({
-      data: updateData,
-      params: { user_id: user?.id },
-      cookieToken: cookies.get('token'),
-    });
-    const { first_name, last_name, age } = values;
+    try {
+      const { phone, ...restValues } = values;
+      const updateData = {
+        ...restValues,
+        phone: phone ? '+' + phone : null,
+        is_verified: true,
+      };
 
-    await api.getAccess.openAccess({
-      data: {
-        email: userData?.email,
-        first_name,
-        last_name,
-        age,
-        user_language: selectedLanguage?.name,
-        domain: DOMAIN,
-      },
-    });
+      // Update user basic data
+      await api.user.update({
+        data: updateData,
+        params: { user_id: user?.id },
+        cookieToken: cookies.get('token'),
+      });
 
-    const response = await api.auth.login({
-      auth: {
-        username: userData?.email,
-        password: plainPassword,
-      },
-    });
-    if (response?.data) {
-      const token = response?.data?.data?.token;
-      if (token) {
-        setToken(token);
-        updateSocketOnLogin(token);
+      const { first_name, last_name, age } = values;
+
+      // Allow access API call
+      await api.getAccess.openAccess({
+        data: {
+          email: userData?.email,
+          first_name,
+          last_name,
+          age,
+          user_language: selectedLanguage?.name,
+          domain: DOMAIN,
+        },
+      });
+
+      // Re-login the user
+      const response = await api.auth.login({
+        auth: {
+          username: userData?.email,
+          password: plainPassword,
+        },
+      });
+
+      if (response?.data) {
+        const token = response?.data?.data?.token;
+
+        if (token) {
+          setToken(token);
+          updateSocketOnLogin(token);
+        }
+
+        const decodeData = decodeToken(token);
+
+        cookies.remove('onboarding_redirection_url');
+        cookies.remove('selectedUpsaleIds', { path: '/' });
+        cookies.set(
+          'is_cancellation_request',
+          decodeData?.is_cancellation_request ? 'true' : 'false'
+        );
+
+        dispatch(
+          updateUser({
+            token,
+            activeUI: '',
+            isLoggedIn: true,
+            ...user,
+            ...decodeData,
+          })
+        );
+
+        setIsProfileCompleted(true);
+
+        enqueueSnackbar('Data submitted successfully.', { variant: 'success' });
+        resetForm();
+
+        // Navigate user after success
+        if (decodeData?.is_verified) {
+          setActiveTab(2);
+        } else {
+          router.push(routes.public.home);
+        }
       }
-      const decodeData = decodeToken(token);
-      cookies.set(
-        'is_cancellation_request',
-        decodeData?.is_cancellation_request ? 'true' : 'false'
+    } catch (err: any) {
+      console.error('Profile submission error:', err);
+      enqueueSnackbar(
+        err?.response?.data?.message ||
+        err?.message ||
+        'Something went wrong. Please try again.',
+        { variant: 'error' }
       );
-      dispatch(
-        updateUser({
-          token,
-          activeUI: '',
-          isLoggedIn: true,
-          ...user,
-          ...decodeData,
-        })
-      );
-
-      // Trigger useEffect to fetch user data (similar to success popup pattern)
-      setIsProfileCompleted(true);
-
-      enqueueSnackbar('Data submitted successfully.', { variant: 'success' });
-      resetForm();
-
-      // Clear onboarding redirection cookie when profile is completed
-      cookies.remove('onboarding_redirection_url', { path: '/' });
-      // Clear selected upsale IDs cookie after profile completion
-      cookies.remove('selectedUpsaleIds', { path: '/' });
-
-      if (decodeData?.is_verified) {
-        setActiveTab(2);
-      } else {
-        router.push(routes.public.home);
-      }
+      return null
     }
   });
+
 
   const {
     errors,

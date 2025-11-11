@@ -105,22 +105,6 @@ const useUpsale = (courseData?: any, currency?: any) => {
     fetchUpsaleCourses();
   }, [fetchUpsaleCourses]);
 
-  // Update onboarding redirection cookie to point to next step (complete-profile)
-  useEffect(() => {
-    if (typeof window !== 'undefined' && user && !user?.is_verified) {
-      const { origin } = window.location;
-      const searchParams = new URLSearchParams(window.location.search);
-      const queryString = searchParams.toString();
-      const nextStepUrl = `${origin}${routes.public.complete_profile}${queryString ? `?${queryString}` : ''}`;
-      cookies.set('onboarding_redirection_url', nextStepUrl, {
-        expires: 7,
-        path: '/',
-      });
-    } else if (user?.is_verified) {
-      cookies.remove('onboarding_redirection_url', { path: '/' });
-    }
-  }, [user]);
-
   // Set loading to false when courses are loaded or when we know there are no courses
   useEffect(() => {
     // If we have courses or if we've tried to fetch and got no results

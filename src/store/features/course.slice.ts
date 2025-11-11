@@ -32,12 +32,28 @@ export const fetchAllUpSales = createAsyncThunk(
   }
 );
 
+export const fetchAllBundles = createAsyncThunk(
+  'course/fetchAllBundles',
+  async (data: any, { rejectWithValue, signal }) => {
+    try {
+      const response = await api.home.getAllBundles({ ...data, signal, headers: {
+        ...data?.headers,
+        'req-from': data?.headers?.['req-from'] || cookie.get('country_code') || ''
+      } });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const initialState = {
   loading: true,
   data: {},
   getAccessState: false,
   defaultCoursePrice: {},
   upSaleCourses: [],
+  bundleCourses: [],
   failed: false,
   getStripeCheckoutOpenState: false,
   registerUserData: null,
@@ -139,6 +155,18 @@ const courseSlice = createSlice({
           return;
         }
         state.upSaleCourses = [];
+      });
+
+    // Bundle Courses
+    builder
+      .addCase(fetchAllBundles.fulfilled, (state, action) => {
+        state.bundleCourses = action.payload?.data || [];
+      })
+      .addCase(fetchAllBundles.rejected, (state, action) => {
+        if (action.meta.aborted) {
+          return;
+        }
+        state.bundleCourses = [];
       });
   },
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSelector } from 'react-redux';
-import UpsaleCourses from '@/components/landing-pages/upsale-courses';
+import Bundles from '@/components/landing-pages/bundles';
 import cookies from 'js-cookie';
 import { useContext, useEffect, useMemo } from 'react';
 import { AuthContext } from '@/context/auth-provider';
@@ -9,7 +9,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchUser } from '@/store/features/user.slice';
 import { routes } from '../../../utils/constants/routes';
 
-export default function UpsellCoursesPage() {
+export default function BundlesPage() {
   // Get course data from Redux state (populated from landing page)
   const { data: courseData } = useSelector(({ course }: any) => course);
   const { currency } = useSelector(({ defaults }: any) => defaults);
@@ -134,10 +134,11 @@ export default function UpsellCoursesPage() {
   const finalCurrency = currencyFromOrder || currencyFromCookie || currency;
 
   return (
-    <UpsaleCourses
+    <Bundles
       courseData={finalCourseData}
       currency={finalCurrency}
       landingPageName={landingPageName}
     />
   );
 }
+
