@@ -711,8 +711,8 @@
     "complete": "Completar"
   },
   "bundles": {
-    "title": "Encuentra Tu Flujo: Paquetes Completos de Bienestar",
-    "description": "Mejora tu experiencia de aprendizaje añadiendo estos cursos complementarios al que ya has comprado, y observa cómo tu progreso se acelera hasta tres veces más rápido por solo <originalPriceTag>{originalPrice}</originalPriceTag> <discountPercentageTag>{discountPercentage} </discountPercentageTag><courseCountTag>de descuento</courseCountTag> <discountPriceTag>{discountPrice}</discountPriceTag> <courseCountTag>por {courseCount} cursos</courseCountTag>. Descubre tu máximo potencial hoy.",
+    "title": "¡Pago exitoso!",
+    "description": "Después de tu compra, nos gustaría ofrecerte la oportunidad de desbloquear el Paquete de Expansión de {courseCount} Cursos por solo {discountPrice}.\nEsta oferta exclusiva te da acceso a tres cursos seleccionados especialmente que complementan perfectamente tu práctica actual, ayudándote a profundizar en tu progreso y mantenerte inspirado.",
     "confirm_and_add_to_order": "Confirmar y añadir estos cursos a mi pedido",
     "no_i_dont_need_this": "No, no lo necesito"
   }

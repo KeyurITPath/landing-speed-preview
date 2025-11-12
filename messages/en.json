@@ -711,8 +711,8 @@
     "complete": "Complete"
   },
   "bundles": {
-    "title": "Find Your Flow: Complete Wellness Bundles",
-    "description": "Enhance your learning experience by adding these supplementary courses to the one you've already purchased, and watch your progress accelerate to three times its previous pace for just <originalPriceTag>{originalPrice}</originalPriceTag> <discountPercentageTag>{discountPercentage} </discountPercentageTag><courseCountTag>discount</courseCountTag> <discountPriceTag>{discountPrice}</discountPriceTag> <courseCountTag>for {courseCount} courses</courseCountTag>. Discover your full potential today.",
+    "title": "Payment successful!",
+    "description": "After your purchase, we’d like to offer you the chance to unlock the {courseCount}-Course Expansion Bundle for just {discountPrice}.\nThis exclusive offer gives you access to three hand-picked courses that perfectly complement your current practice — helping you deepen your progress and stay inspired.",
     "confirm_and_add_to_order": "Confirm and add these course to my order",
     "no_i_dont_need_this": "No, I don't need this"
   }

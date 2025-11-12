@@ -711,8 +711,8 @@
     "complete": "Terminer"
   },
   "bundles": {
-    "title": "Trouvez Votre Flux: Paquets Complets de Bien-être",
-    "description": "Améliorez votre expérience d'apprentissage en ajoutant ces cours complémentaires à celui que vous avez déjà acheté, et regardez votre progression s'accélérer jusqu'à trois fois plus vite pour seulement <originalPriceTag>{originalPrice}</originalPriceTag> <discountPercentageTag>{discountPercentage} </discountPercentageTag><courseCountTag>de réduction</courseCountTag> <discountPriceTag>{discountPrice}</discountPriceTag> <courseCountTag>pour {courseCount} cours</courseCountTag>. Découvrez votre plein potentiel aujourd'hui.",
+    "title": "Paiement réussi !",
+    "description": "Après votre achat, nous souhaitons vous offrir la possibilité de débloquer le Pack d’Extension de {courseCount} Cours pour seulement {discountPrice}.\nCette offre exclusive vous donne accès à trois cours soigneusement sélectionnés qui complètent parfaitement votre pratique actuelle — vous aidant à approfondir vos progrès et à rester inspiré.",
     "confirm_and_add_to_order": "Confirmer et ajouter ces cours à ma commande",
     "no_i_dont_need_this": "Non, je n'en ai pas besoin"
   }
