@@ -464,6 +464,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         handleBlur,
         error: touched.phone && errors.phone,
         type: 'phone',
+        country_code: country_code,
       },
       // {
       //   id: 'location',
@@ -505,7 +506,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         row: true,
       },
     ],
-    [errors, handleBlur, handleChange, touched, values, t]
+    [errors, handleBlur, handleChange, touched, values, t, country_code]
   );
 
   return { handleSubmit, formData, loading };

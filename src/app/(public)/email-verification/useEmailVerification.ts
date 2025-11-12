@@ -39,6 +39,8 @@ const useEmailVerification = ({ data }: any) => {
     (lang: any) => Number(lang.id) === Number(cookies.get('language_id'))
   );
 
+  const country_code = cookies.get('country_code') || '';
+
   useEffect(() => {
     if (fetchAllLanguages) {
       fetchAllLanguages({});
@@ -105,7 +107,7 @@ const useEmailVerification = ({ data }: any) => {
     Array.isArray(data) && data.length > 0 && data?.[0]?.status === 'off';
 
   const formData = useMemo(() => {
-    const fields = [
+    const fields :any = [
       {
         id: 'email',
         name: 'email',
@@ -138,10 +140,11 @@ const useEmailVerification = ({ data }: any) => {
         handleBlur,
         error: touched.phone && errors.phone,
         type: 'phone',
+        country_code: country_code,
       });
     }
     return fields;
-  }, [values, t, handleChange, handleBlur, touched, errors, hidePhoneField]);
+  }, [values, t, handleChange, handleBlur, touched, errors, hidePhoneField, country_code]);
 
   const isPaymentSuccess = useMemo(() => {
     return queryParams?.get('payment') === 'success';

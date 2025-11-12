@@ -26,6 +26,7 @@ const FormControl = React.memo(
     renderSelectedValue,
     mainSx,
     helperText,
+    country_code = 'us',
     ...props
   }: any) => {
     const isError = Boolean(error);
@@ -48,7 +49,7 @@ const FormControl = React.memo(
         )}
         {type === 'phone' ? (
           <CustomPhoneInput
-            {...{ name, color, disabled, size, handleBlur, handleChange }}
+            {...{ name, color, disabled, size, handleBlur, handleChange, country_code }}
             error={isError}
             {...props}
           />

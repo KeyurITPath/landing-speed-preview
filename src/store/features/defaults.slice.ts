@@ -164,7 +164,7 @@ export const initialState = {
   },
   country: {
     isLoading: false,
-    country_code: 'in',
+    country_code: 'us',
   },
   domain_logo: {
     data: null,
