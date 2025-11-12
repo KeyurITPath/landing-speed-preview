@@ -3,12 +3,11 @@
 import { useRef } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { useSelector } from 'react-redux';
 
 const CustomPhoneInput = ({
   name,
-  // color,
   disabled,
-  // size,
   handleBlur,
   handleChange,
   error,
@@ -16,13 +15,16 @@ const CustomPhoneInput = ({
 }: any) => {
   const elementRef = useRef<HTMLInputElement>(null);
   const width = elementRef.current ? elementRef.current?.offsetWidth : 0;
+
+  const { country } = useSelector((state: any) => state.defaults);
+  const { country_code } = country || {};
+
   return (
     <PhoneInput
       {...{ disabled }}
-      country={'us'}
+      country={country_code || 'us'}
       inputProps={{ name, ref: elementRef }}
       onBlur={handleBlur}
-      // onChange={(value, country, e, formattedValue) => {
       onChange={value => {
         handleChange({ target: { name, value } });
       }}
@@ -36,3 +38,4 @@ const CustomPhoneInput = ({
 };
 
 export default CustomPhoneInput;
+
