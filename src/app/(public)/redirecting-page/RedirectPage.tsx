@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import { api } from '@/api';
 import { decodeToken } from '@/utils/helper';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AuthContext } from '@/context/auth-provider';
 import { ERROR_MESSAGES, USER_ROLE } from '@/utils/constants';
 import { updateUser } from '@/store/features/auth.slice';
@@ -17,95 +17,102 @@ import NoData from './NoData';
 
 const RedirectPageComponent = ({ user }: any) => {
   const router = useRouter();
-  const queryParams = useSearchParams();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const { setToken } = useContext(AuthContext);
   const { updateSocketOnLogin } = useSocket();
   const t = useTranslations();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userLogInSuccess, isUserLogInSuccess] = useState(false);
+  const [userLoginSuccess, setUserLoginSuccess] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [showFailedMessage, setShowFailedMessage] = useState(false);
+
+  const token = searchParams.get('token');
+  const payment = searchParams.get('payment');
+  const redirectionPage = searchParams.get('redirection-page');
 
   const verifyTokenHandler = useCallback(
-    async (token: any) => {
+    async (token: string) => {
       try {
         setIsLoading(true);
+        if (token) {
+          const response = await api.auth.verifyToken({ data: { token } });
 
-        if (queryParams?.get('token')) {
-          const response = await api.auth.verifyToken({
-            data: {
-              token,
-            },
-          });
-          if (response?.data?.data?.is_verified) {
-            const decodeData = decodeToken(token);
+          if (response?.data?.data?.is_verified && response?.data?.data?.token) {
+            const newGeneratedToken = response?.data?.data?.token;
+
+            const decodeData = decodeToken(newGeneratedToken);
+
             if (decodeData?.role === USER_ROLE.CUSTOMER) {
-              setToken(token);
-              updateSocketOnLogin(token);
+              setToken(newGeneratedToken);
+              updateSocketOnLogin(newGeneratedToken);
               dispatch(
                 updateUser({
-                  token,
+                  token: newGeneratedToken,
                   activeUI: '',
                   isLoggedIn: true,
                   ...user,
                   ...decodeData,
                 })
               );
+
               if (decodeData?.is_verified) {
-                isUserLogInSuccess(true);
+                setUserLoginSuccess(true);
               }
             }
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         enqueueSnackbar(error?.message || ERROR_MESSAGES.common, {
           variant: 'error',
         });
-        return null;
       } finally {
         setIsLoading(false);
       }
     },
-    [queryParams, setToken, updateSocketOnLogin, dispatch, user]
+    [setToken, updateSocketOnLogin, dispatch, user]
   );
 
   const handleRedirect = useCallback(() => {
-    const searchParams = new URLSearchParams(queryParams);
-    const redirectionPage = searchParams.get('redirection-page');
-    searchParams.delete('token');
-    searchParams.delete('redirection-page');
+    setIsRedirecting(true);
 
-    const remainingParams = searchParams.toString();
-    const targetPath = `${redirectionPage}`;
-    router.replace(`${targetPath}?${remainingParams}`);
-  }, [queryParams, router]);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('token');
+    params.delete('redirection-page');
 
-  const handleRedirectToHome = useCallback(() => {
-    router.push(routes.public.home);
-  }, [router]);
+    const remainingParams = params.toString();
+    const targetUrl = remainingParams
+      ? `${redirectionPage}?${remainingParams}`
+      : redirectionPage || routes.public.home;
+
+    setTimeout(() => {
+      router.replace(targetUrl);
+    }, 200);
+  }, [searchParams, redirectionPage, router]);
 
   useEffect(() => {
-    if (
-      queryParams?.get('token') &&
-      queryParams?.get('payment') === 'success'
-    ) {
-      verifyTokenHandler(queryParams?.get('token'));
-    } else if (queryParams?.get('payment') === 'failed') {
+    if (token && payment === 'success') {
+      verifyTokenHandler(token);
+    } else if (payment === 'failed') {
+      setShowFailedMessage(true);
       setIsLoading(false);
     }
-  }, [queryParams, verifyTokenHandler]);
+  }, [token, payment, verifyTokenHandler]);
 
-  const isPaymentFailed = useMemo(() => {
-    return queryParams?.get('payment') === 'failed';
-  }, [queryParams]);
+  const isPaymentFailed = useMemo(() => payment === 'failed', [payment]);
 
   useEffect(() => {
-    if (userLogInSuccess) {
-      handleRedirect();
+    if (userLoginSuccess) {
+      setTimeout(() => {
+        handleRedirect();
+      }, 300);
     }
-  }, [userLogInSuccess, handleRedirect]);
+  }, [userLoginSuccess, handleRedirect]);
 
-  if (isLoading)
+  const showRedirectingLoader = isLoading || isRedirecting;
+
+  if (showRedirectingLoader ||  userLoginSuccess)
     return (
       <Box
         sx={{
@@ -120,15 +127,41 @@ const RedirectPageComponent = ({ user }: any) => {
           p: 3,
         }}
       >
-        <Typography variant='h6' color='text.secondary'>
+        <Typography variant="h6" color="text.secondary">
           {t('redirecting')}
         </Typography>
       </Box>
     );
 
-  if (isPaymentFailed) return <FailedPaymentPopup open={isPaymentFailed} />;
-  if (!isLoading && !userLogInSuccess && !isPaymentFailed)
-    return <NoData navigateHomePage={handleRedirectToHome} />;
+  if (isPaymentFailed && showFailedMessage)
+    return (
+      <>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            minHeight: '100vh',
+            gap: 2,
+            p: 3,
+          }}
+        >
+          <Typography variant="h6" color="error">
+            {t('payment_failed')}
+          </Typography>
+        </Box>
+
+        <FailedPaymentPopup open={true} />
+      </>
+    );
+
+  if (!isLoading && !userLoginSuccess && !isPaymentFailed)
+    return <NoData />;
+
+  return null;
 };
 
 export default RedirectPageComponent;

@@ -140,7 +140,6 @@ const OpenAccessForm = ({
       ...params,
     };
 
-    console.log('data3', data)
 
     const resOrderCheckout = await api.getAccess.orderCheckout({ data });
 
