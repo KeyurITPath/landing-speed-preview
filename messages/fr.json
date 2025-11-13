@@ -712,7 +712,7 @@
   },
   "bundles": {
     "title": "Paiement réussi !",
-    "description": "Après votre achat, nous souhaitons vous offrir la possibilité de débloquer le Pack d’Extension de {courseCount} Cours pour seulement {discountPrice}.\nCette offre exclusive vous donne accès à trois cours soigneusement sélectionnés qui complètent parfaitement votre pratique actuelle — vous aidant à approfondir vos progrès et à rester inspiré.",
+    "description": "Après votre achat, nous souhaitons vous offrir la possibilité de débloquer le Pack d’Extension de <courseCountTag>{courseCount}-Cours</courseCountTag> pour seulement <discountPriceTag>{discountPrice}</discountPriceTag>.\nCette offre exclusive vous donne accès à trois cours soigneusement sélectionnés qui complètent parfaitement votre pratique actuelle — vous aidant à approfondir vos progrès et à rester inspiré.",
     "confirm_and_add_to_order": "Confirmer et ajouter ces cours à ma commande",
     "no_i_dont_need_this": "Non, je n'en ai pas besoin"
   }

@@ -712,7 +712,7 @@
   },
   "bundles": {
     "title": "¡Pago exitoso!",
-    "description": "Después de tu compra, nos gustaría ofrecerte la oportunidad de desbloquear el Paquete de Expansión de {courseCount} Cursos por solo {discountPrice}.\nEsta oferta exclusiva te da acceso a tres cursos seleccionados especialmente que complementan perfectamente tu práctica actual, ayudándote a profundizar en tu progreso y mantenerte inspirado.",
+    "description": "Después de tu compra, nos gustaría ofrecerte la oportunidad de desbloquear el Paquete de Expansión de <courseCountTag>{courseCount}-Cursos</courseCountTag> por solo <discountPriceTag>{discountPrice}</discountPriceTag>.\nEsta oferta exclusiva te da acceso a tres cursos seleccionados especialmente que complementan perfectamente tu práctica actual, ayudándote a profundizar en tu progreso y mantenerte inspirado.",
     "confirm_and_add_to_order": "Confirmar y añadir estos cursos a mi pedido",
     "no_i_dont_need_this": "No, no lo necesito"
   }

@@ -9,7 +9,6 @@ import { formatCurrency, resolveUrl } from '@/utils/helper';
 import { api } from '@/api';
 import { DOMAIN } from '../../../utils/constants';
 import { routes } from '@/utils/constants/routes';
-import cookies from 'js-cookie';
 
 const useBundles = (courseData?: any, currency?: any) => {
   const searchParams = useSearchParams();
@@ -56,10 +55,6 @@ const useBundles = (courseData?: any, currency?: any) => {
   const [fetchBundles] = useDispatchWithAbort(fetchAllBundles);
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
-
-  const countryCode = useMemo(() => {
-    return cookies.get('country_code') || 'US';
-  }, []);
 
   const fetchBundleCourses = useCallback(async () => {
     // Check if all required params are available
@@ -254,15 +249,15 @@ const useBundles = (courseData?: any, currency?: any) => {
     const formattedOriginalPrice = formatCurrency(totalActualPrice, mainCurrencyCode);
     const formattedDiscountPrice = formatCurrency(totalBundlePrice, mainCurrencyCode);
 
-    const originalPrice = `${countryCode} ${formattedOriginalPrice}`;
-    const discountPrice = `${countryCode} ${formattedDiscountPrice}`;
+    const originalPrice = `${formattedOriginalPrice}`;
+    const discountPrice = `${formattedDiscountPrice}`;
 
     return {
       originalPrice,
       discountPrice,
       discountPercentage: `${discountPercentage}%`,
     };
-  }, [processedBundleCourses, mainCurrencyCode, countryCode]);
+  }, [processedBundleCourses, mainCurrencyCode]);
 
   const handleCheckout = useCallback(async () => {
     try {
