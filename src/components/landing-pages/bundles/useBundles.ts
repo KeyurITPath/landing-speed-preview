@@ -3,14 +3,21 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
-import { fetchAllBundles } from '@/store/features/course.slice';
+import {
+  fetchAllBundles,
+  fetchAllUpSales,
+} from '@/store/features/course.slice';
 import { AuthContext } from '@/context/auth-provider';
 import { formatCurrency, resolveUrl } from '@/utils/helper';
 import { api } from '@/api';
 import { DOMAIN } from '../../../utils/constants';
 import { routes } from '@/utils/constants/routes';
 
-const useBundles = (courseData?: any, currency?: any) => {
+const useBundles = (
+  courseData?: any,
+  currency?: any,
+  landingPageName?: string | null
+) => {
   const searchParams = useSearchParams();
   const { user } = useContext(AuthContext);
   const router = useRouter();
@@ -19,7 +26,6 @@ const useBundles = (courseData?: any, currency?: any) => {
   const { currency: reduxCurrency } = useSelector(
     ({ defaults }: any) => defaults
   );
-
   // Use passed currency with Redux fallback
   const effectiveCurrency = currency || reduxCurrency;
 
@@ -35,6 +41,7 @@ const useBundles = (courseData?: any, currency?: any) => {
   const [loading, setLoading] = useState(false);
   const [showPaymentError, setShowPaymentError] = useState(false);
   const [paymentErrorMessage, setPaymentErrorMessage] = useState<string>('');
+  const { upSaleCourses } = useSelector(({ course }: any) => course);
 
   // Payment status detection
   const isPaymentSuccess = useMemo(() => {
@@ -53,6 +60,7 @@ const useBundles = (courseData?: any, currency?: any) => {
 
   // Dispatch actions
   const [fetchBundles] = useDispatchWithAbort(fetchAllBundles);
+  const [fetchUpSales] = useDispatchWithAbort(fetchAllUpSales);
 
   const mainCurrencyCode = effectiveCurrency?.name || 'USD';
 
@@ -96,7 +104,22 @@ const useBundles = (courseData?: any, currency?: any) => {
   // Load bundle courses on mount
   useEffect(() => {
     fetchBundleCourses();
-  }, [fetchBundleCourses]);
+    if (fetchUpSales) {
+      fetchUpSales({
+        params: {
+          course_id: effectiveCourseId,
+          currency_id: effectiveCurrencyId,
+          language_id: effectiveLanguageId,
+        },
+      });
+    }
+  }, [
+    fetchUpSales,
+    effectiveCourseId,
+    effectiveCurrencyId,
+    effectiveLanguageId,
+    fetchBundleCourses,
+  ]);
 
   // Set loading to false when courses are loaded
   useEffect(() => {
@@ -107,6 +130,10 @@ const useBundles = (courseData?: any, currency?: any) => {
       setIsLoadingBundles(false);
     }
   }, [bundleCourses?.length, isLoadingBundles]);
+
+  const isCourseUpsaleCoursesAvailable = useMemo(() => {
+    return Boolean(upSaleCourses?.length > 0);
+  }, [upSaleCourses?.length]);
 
   // Process bundle courses data
   const processedBundleCourses = useMemo(() => {
@@ -127,10 +154,7 @@ const useBundles = (courseData?: any, currency?: any) => {
         const getBundlePriceData = (course_prices: any) => {
           let found = course_prices?.find(
             ({ is_bundle_price, currency }: any) => {
-              return (
-                is_bundle_price &&
-                currency?.name === mainCurrencyCode
-              );
+              return is_bundle_price && currency?.name === mainCurrencyCode;
             }
           );
 
@@ -139,7 +163,8 @@ const useBundles = (courseData?: any, currency?: any) => {
               ({ is_bundle_price, currency }: any) => {
                 return (
                   is_bundle_price &&
-                  currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase()
+                  currency?.name?.toLowerCase() ===
+                    mainCurrencyCode?.toLowerCase()
                 );
               }
             );
@@ -159,22 +184,20 @@ const useBundles = (courseData?: any, currency?: any) => {
             ({ isDefault, currency, language_id }: any) => {
               return (
                 isDefault &&
-                (currency?.name === mainCurrencyCode ||
-                  !currency) &&
+                (currency?.name === mainCurrencyCode || !currency) &&
                 language_id === effectiveLanguageId
               );
             }
           );
 
           if (!found) {
-            found = innerCoursePrices?.find(
-              ({ isDefault, currency }: any) => {
-                return (
-                  isDefault &&
-                  currency?.name?.toLowerCase() === mainCurrencyCode?.toLowerCase()
-                );
-              }
-            );
+            found = innerCoursePrices?.find(({ isDefault, currency }: any) => {
+              return (
+                isDefault &&
+                currency?.name?.toLowerCase() ===
+                  mainCurrencyCode?.toLowerCase()
+              );
+            });
           }
 
           if (!found) {
@@ -192,7 +215,8 @@ const useBundles = (courseData?: any, currency?: any) => {
 
         const bundlePriceData = getBundlePriceData(course_prices);
         const bundlePriceAmount = bundlePriceData?.price || 0;
-        const currencyCode = bundlePriceData?.currency?.name || mainCurrencyCode;
+        const currencyCode =
+          bundlePriceData?.currency?.name || mainCurrencyCode;
 
         // Get actual price (original price)
         const actualPriceData = getActualPriceData(course?.course_prices);
@@ -243,11 +267,19 @@ const useBundles = (courseData?: any, currency?: any) => {
     let discountPercentage = 0;
     if (totalActualPrice > 0) {
       const discountAmount = totalActualPrice - totalBundlePrice;
-      discountPercentage = Math.round((discountAmount / totalActualPrice) * 100);
+      discountPercentage = Math.round(
+        (discountAmount / totalActualPrice) * 100
+      );
     }
 
-    const formattedOriginalPrice = formatCurrency(totalActualPrice, mainCurrencyCode);
-    const formattedDiscountPrice = formatCurrency(totalBundlePrice, mainCurrencyCode);
+    const formattedOriginalPrice = formatCurrency(
+      totalActualPrice,
+      mainCurrencyCode
+    );
+    const formattedDiscountPrice = formatCurrency(
+      totalBundlePrice,
+      mainCurrencyCode
+    );
 
     const originalPrice = `${formattedOriginalPrice}`;
     const discountPrice = `${formattedDiscountPrice}`;
@@ -327,10 +359,13 @@ const useBundles = (courseData?: any, currency?: any) => {
     router,
   ]);
 
-  // Handle decline bundle - redirect to upsale courses
   const handleDeclineBundle = useCallback(() => {
-    window.location.href = routes.public.upsale_courses;
-  }, []);
+    if (landingPageName === 'landing1' && isCourseUpsaleCoursesAvailable) {
+      window.location.href = routes.public.upsale_courses;
+    } else {
+      window.location.href = routes.public.complete_profile;
+    }
+  }, [landingPageName, isCourseUpsaleCoursesAvailable]);
 
   const handleClosePaymentError = useCallback(() => {
     setShowPaymentError(false);

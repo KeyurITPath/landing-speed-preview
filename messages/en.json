@@ -712,7 +712,7 @@
   },
   "bundles": {
     "title": "Payment successful!",
-    "description": "After your purchase, we’d like to offer you the chance to unlock the <courseCountTag>{courseCount}-Course</courseCountTag> Expansion Bundle for just <discountPriceTag>{discountPrice}</discountPriceTag>.\nThis exclusive offer gives you access to three hand-picked courses that perfectly complement your current practice — helping you deepen your progress and stay inspired.",
+    "description": "After your purchase, we’d like to offer you the chance to unlock the {courseCount}-Course Expansion Bundle for just {discountPrice}.\nThis exclusive offer gives you access to three hand-picked courses that perfectly complement your current practice — helping you deepen your progress and stay inspired.",
     "confirm_and_add_to_order": "Confirm and add these course to my order",
     "no_i_dont_need_this": "No, I don't need this"
   }

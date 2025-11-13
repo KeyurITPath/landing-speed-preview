@@ -101,7 +101,6 @@ const trackFbqEvent = (eventName: string, params: Record<string, any>, pixelIds:
 
     try {
       (window as any).fbq('track', eventName, params, { eventID: event_id });
-      console.log(`[MetaPixel] fbq.track → ${eventName} [${pid}]`);
     } catch (err) {
       console.warn('[MetaPixel] fbq.track error', err);
     }
@@ -186,7 +185,6 @@ const triggerEvent = async ({
     if (fbclid && !fbc) {
       fbc = `fb.${Date.now()}.${fbclid}`;
       cookies.set('_fbc', fbc, { expires: 90, path: '/' });
-      console.log('[MetaPixel] _fbc set from fbclid:', fbc);
     }
   } catch {}
 
@@ -256,7 +254,6 @@ const triggerEvent = async ({
   }
 
   trackFbqEvent(eventName, fbParams, meta_pixels);
-  console.log(`[MetaPixel] Event sent: ${eventName}`, { event_id, fbp, fbc, final_url });
 };
 
 export const pixel = {

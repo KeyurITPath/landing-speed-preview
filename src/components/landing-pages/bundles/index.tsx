@@ -418,7 +418,7 @@ const Bundles = ({
     handleCheckout,
     handleDeclineBundle,
     handleClosePaymentError,
-  } = useBundles(courseData, currency);
+  } = useBundles(courseData, currency, landingPageName);
 
   const { originalPrice, discountPrice, discountPercentage } = bundlePricing;
 
@@ -612,7 +612,7 @@ const Bundles = ({
                         display: 'flex',
                         alignItems: 'stretch',
                         justifyContent: 'center',
-                        gap: { xs: 1 },
+                        gap: { xs: 1, sm: 2, md: 3 },
                         flexWrap: 'nowrap',
                       }}
                     >
@@ -620,10 +620,10 @@ const Bundles = ({
                         <React.Fragment key={course.id}>
                           <Box
                             sx={{
-                              flex: bundleCourses.length === 2 ? '0 1 auto' : '1 1 0',
-                              minWidth: bundleCourses.length === 2 ? '280px' : 0,
-                              maxWidth: bundleCourses.length === 2 ? '350px' : '100%',
-                              width: bundleCourses.length === 2 ? 'auto' : '100%',
+                              flex: '0 1 auto',
+                              minWidth: '280px',
+                              maxWidth: '350px',
+                              width: '100%',
                             }}
                           >
                             <BundleCourseCard

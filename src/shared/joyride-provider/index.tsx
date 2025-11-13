@@ -158,7 +158,7 @@ export const JoyrideProvider = ({ children }: any) => {
     try {
       const response = await api.user.update({
         data: { has_completed_onboarding: true },
-        params: { user_id: (user as any)?.id },
+        params: { user_id: user?.id },
         cookieToken: cookies.get('token') || '',
       });
 
