@@ -270,6 +270,7 @@ export const pixel = {
     triggerEvent({
       ...args,
       eventName: EVENTS.purchase,
+      total_amount,
       value: total_amount,
       currency,
     }).catch(console.error),
