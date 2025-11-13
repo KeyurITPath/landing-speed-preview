@@ -54,6 +54,8 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const [selectedUpsaleCourses, setSelectedUpsaleCourses] = useState([]);
   // 🔑 Flag to prevent duplicate pixel.purchase firing
   const hasFired = useRef(false);
+  // 🔑 Flag to prevent duplicate fbAnalyticsCredentials API calls
+  const hasFetchedAnalytics = useRef(false);
 
   useEffect(() => {
     if (fetchAllLanguages) {
@@ -104,31 +106,69 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     [userOrderData]
   );
 
-  const purchasedCourseWithoutUpsale = useMemo(() => {
-    const course = userOrderData?.user_orders?.[0]?.user_order_details?.find(
-      (item: any) => !item?.is_upsale
+  const courseWithoutUpsale = useMemo(() => {
+    return userOrderData?.user_orders?.[0]?.user_order_details?.find(
+      (detail: any) => !detail?.is_upsale
     );
-    if (course) {
-      const clone = { ...course };
-      const landingPageTranslation =
-        clone?.course?.landing_pages?.[0]?.landing_page_translations?.find(
-          (item: any) =>
-            item?.language_id === Number(cookies.get('language_id'))
-        );
-      if (landingPageTranslation) {
-        return landingPageTranslation;
-      }
-    }
-    return null;
   }, [userOrderData]);
 
+  const currentLandingPageName = useMemo(() => {
+    try {
+      if (!courseWithoutUpsale?.course?.landing_pages) {
+        return null;
+      }
+
+      if (landingPageName) {
+        const matchedLandingPage = courseWithoutUpsale.course.landing_pages.find(
+          (page: any) => page?.landing_name?.name === landingPageName
+        );
+        if (matchedLandingPage?.landing_name?.name) {
+          return matchedLandingPage.landing_name.name;
+        }
+      }
+
+      // If no match found, return the first landing page name as fallback
+      return courseWithoutUpsale.course.landing_pages?.[0]?.landing_name?.name || null;
+    } catch (error) {
+      console.error('Error extracting landing page name:', error);
+      return null;
+    }
+  }, [courseWithoutUpsale, landingPageName]);
+
+  const purchasedCourseWithoutUpsale = useMemo(() => {
+    if (!courseWithoutUpsale?.course?.landing_pages || !currentLandingPageName) {
+      return null;
+    }
+
+    const landingPage = courseWithoutUpsale.course.landing_pages.find(
+      (page: any) => page?.landing_name?.name === currentLandingPageName
+    );
+
+    if (!landingPage?.landing_page_translations) {
+      return null;
+    }
+
+    const languageId = Number(cookies.get('language_id'));
+    const landingPageTranslation = landingPage.landing_page_translations.find(
+      (translation: any) => translation?.language_id === languageId
+    );
+
+    return landingPageTranslation || null;
+  }, [courseWithoutUpsale, currentLandingPageName]);
+
   useEffect(() => {
-    if (purchasedCourseWithoutUpsale && fetchAllFbAnalyticsCredentialsData) {
+    if (
+      !isEmptyObject(purchasedCourseWithoutUpsale) &&
+      fetchAllFbAnalyticsCredentialsData &&
+      !hasFetchedAnalytics.current &&
+      purchasedCourseWithoutUpsale?.id
+    ) {
       fetchAllFbAnalyticsCredentialsData({
         params: {
-          landing_page_translation_id: purchasedCourseWithoutUpsale?.id,
+          landing_page_translation_id: purchasedCourseWithoutUpsale.id,
         },
       });
+      hasFetchedAnalytics.current = true; // prevent duplicate calls
     }
   }, [purchasedCourseWithoutUpsale, fetchAllFbAnalyticsCredentialsData]);
 

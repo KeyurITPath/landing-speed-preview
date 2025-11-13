@@ -332,17 +332,7 @@ const useLanding = ({
     //             );
     //             i18n.changeLanguage(selectedLanguage?.code);
     //         }
-  }, [
-    activeLandingPage,
-    dispatch,
-    fetchAllAnalyticsCredentialsData,
-    fetchAllFbAnalyticsCredentialsData,
-    fetchAllUpSalesData,
-    landingUrl,
-    otherData?.course,
-    otherData?.data,
-    queryParams,
-  ]);
+  }, [activeLandingPage, dispatch, fetchAllAnalyticsCredentialsData, fetchAllBundlesData, fetchAllFbAnalyticsCredentialsData, fetchAllUpSalesData, landingUrl, otherData?.course, otherData?.data, queryParams]);
 
   const utmData = useMemo(() => {
     const params = queryParams;

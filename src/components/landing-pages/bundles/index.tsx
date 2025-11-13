@@ -658,6 +658,7 @@ const Bundles = ({
               <Divider sx={{ borderColor: '#dfdfdf' }} />
               <Stack spacing={{ xs: 2, sm: 3 }} alignItems='center'>
                 <CustomButton
+                  {...{ loading, disabled: loading || !bundleCourses?.length }}
                   onClick={handleCheckout}
                   variant='contained'
                   size='medium'
