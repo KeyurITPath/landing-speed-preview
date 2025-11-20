@@ -369,7 +369,7 @@ const Header = ({
                     }}
                   />
                 )}
-                <FormControl
+                {/* <FormControl
                   placeholder={t('enterLanguage')}
                   name='language'
                   handleChange={chooseLanguageHandler}
@@ -398,7 +398,7 @@ const Header = ({
                     zIndex: '1 !important',
                     width: { xs: 100, md: 160 },
                   }}
-                />
+                /> */}
                 {mdDown ? (
                   <IconButton onClick={onNavOpen} id='mobile-menu-icon'>
                     <ICONS.Menu size={22} />

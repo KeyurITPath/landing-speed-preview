@@ -338,7 +338,7 @@ const Footer = ({
                         </Box>
                       </Grid2>
 
-                      {shouldShowLanguageSelector && (
+                      {/* {shouldShowLanguageSelector && (
                         <Grid2 size={{ xs: 12 }}>
                           <FormControl
                             label={t('languageLabel')}
@@ -372,7 +372,7 @@ const Footer = ({
                             }}
                           />
                         </Grid2>
-                      )}
+                      )} */}
                       {shouldShowCountryDropdown && (
                         <Grid2 size={{ xs: 12 }}>
                           <FormControl
