@@ -10,7 +10,7 @@ import {
 import { AuthContext } from '@/context/auth-provider';
 import { formatCurrency, resolveUrl } from '@/utils/helper';
 import { api } from '@/api';
-import { DOMAIN } from '../../../utils/constants';
+import { DOMAIN, SERVER_URL } from '../../../utils/constants';
 import { routes } from '@/utils/constants/routes';
 
 const useBundles = (
@@ -147,9 +147,9 @@ const useBundles = (
         const image = resolveUrl(course_translation?.course_image);
         const { course } = course_translation;
         const { rating } =
-          course?.landing_pages?.[0]?.landing_page_translations?.[0] || {};
-        const { name: instructorName, profile_image: instructorAvatar } =
-          course?.user || {};
+        course?.landing_pages?.[0]?.landing_page_translations?.[0] || {};
+        const { name: instructorName   } = course?.user || {};
+        const instructorAvatar = course?.landing_pages?.[0]?.landing_page_translations?.[0]?.author_image || '';
 
         const getBundlePriceData = (course_prices: any) => {
           let found = course_prices?.find(
@@ -228,7 +228,7 @@ const useBundles = (
           image,
           instructor: {
             name: instructorName,
-            avatar: instructorAvatar,
+            avatar: instructorAvatar ? SERVER_URL + instructorAvatar : ''
           },
           rating: rating?.toString() || '0',
           bundlePriceAmount,
