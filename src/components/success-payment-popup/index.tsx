@@ -140,7 +140,7 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
     if (!open) {
       hasFired.current = false;
     }
-  }, [courseAmount, data?.id, isExistUpsale, landingPageName, metaParams, open, shouldFirePixel, upSaleAmount, utmData]);
+  }, [courseAmount, data?.id, isExistUpsale, metaParams, open, shouldFirePixel, upSaleAmount, utmData]);
 
   return (
     <PopUpModal

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -70,6 +70,34 @@ const GetAccessWithReview = ({ landingData, getAccessOpen }: any) => {
 
     return formatCurrency(actualPrice, prices.currency);
   }, [course?.discount, prices.currency, prices.price]);
+
+  const [timeLeft, setTimeLeft] = useState(35 * 60); // 35 minutes in seconds
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    // Create interval to countdown every second
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   return (
     <Box
       sx={{
@@ -112,7 +140,7 @@ const GetAccessWithReview = ({ landingData, getAccessOpen }: any) => {
               </Typography>
               <Typography sx={{ color: 'error.main', fontSize: 16 }}>
                 {t('end_of_sale')}:{' '}
-                <span style={{ color: 'black' }}>{t('hours')}</span>
+                <span style={{ color: 'black' }}>{formatTime(timeLeft)}</span>
               </Typography>
             </>
           )}

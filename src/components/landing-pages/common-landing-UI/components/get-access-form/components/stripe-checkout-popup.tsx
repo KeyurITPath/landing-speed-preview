@@ -180,7 +180,10 @@ const StripeInnerForm = ({
         setIsProcessing(false);
       } else if (paymentIntent.status === 'succeeded') {
         if (!user?.is_verified) {
-          cookies.set('onboarding_redirection_url', routes.public.complete_profile, {
+          cookies.set(
+            'onboarding_redirection_url',
+            routes.public.complete_profile,
+            {
               expires: 7,
               path: '/',
             }
@@ -355,7 +358,7 @@ const StripeInnerForm = ({
         >
           <Typography
             variant='subtitle1'
-            sx={{ fontSize: { xs: '16px', sm: '18px' } }}
+            sx={{ fontSize: { xs: '14px', sm: '16px' } }}
           >
             {t('stripe_checkout.total_today')}
           </Typography>
@@ -370,28 +373,22 @@ const StripeInnerForm = ({
             {formatCurrency(totalAmount, coursePrice?.currency?.name)}
           </Typography>
         </Box>
-        <Button
+        <CustomButton
+          {...{
+            loading: isProcessing,
+            disabled: isLoading || isProcessing || !clientSecret,
+          }}
+          size='large'
           type='submit'
-          variant='contained'
-          disabled={isLoading || isProcessing || !clientSecret}
           sx={{
-            backgroundColor: '#49AE56',
-            '&:hover': { backgroundColor: '#42994C' },
             minWidth: { xs: '100%', sm: 140 },
-            height: { xs: 40, sm: 50 },
-            fontSize: { xs: '16px', sm: '18px' },
-            fontWeight: 400,
+            height: { xs: '100%', sm: 50 },
           }}
         >
-          {isProcessing ? (
-            <>
-              <CircularProgress size={16} sx={{ mr: { xs: 0.5, sm: 1 } }} />
-              {t('stripe_checkout.processing')}
-            </>
-          ) : (
-            t('stripe_checkout.pay_now')
-          )}
-        </Button>
+          {isProcessing
+            ? t('stripe_checkout.processing')
+            : t('stripe_checkout.pay_now')}
+        </CustomButton>
       </Box>
 
       {/* Loading state */}
