@@ -60,6 +60,10 @@ const OpenAccessForm = ({
   const { course, currency, language, languages } = useSelector(
     ({ defaults }: any) => defaults
   );
+  const { upSaleCourses } = useSelector(({ course }: any) => course);
+  const mainCurrencyCode = currency.code;
+  const storedUpsaleIds = cookies.get('selectedUpsaleIds');
+  const selectedIds = JSON.parse(storedUpsaleIds || '[]');
   const { data: languagesData } = languages || {};
 
   const dispatch = useDispatch();
@@ -84,6 +88,46 @@ const OpenAccessForm = ({
       fetchAllLanguages({});
     }
   }, [fetchAllLanguages]);
+
+  const selectedCoursePrice = courseData?.course_prices?.[0];
+  const courses = upSaleCourses
+    .map((course: any) => {
+      const priceData = course.course_prices?.find(
+        ({ is_upsale_price, currency, stripe_price_id }: any) =>
+          is_upsale_price &&
+          currency?.name === mainCurrencyCode &&
+          selectedIds.includes(stripe_price_id)
+      );
+
+      if (!priceData) return null;
+
+      return {
+        id: course.id,
+        priceAmount: priceData?.price || 0,
+        stripeId: priceData?.stripe_price_id,
+      };
+    })
+    .filter((item: any) => item !== null);
+
+  const totalAmount = useMemo(() => {
+    return (
+      (selectedCoursePrice?.price || 0) +
+      (courses?.reduce(
+        (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
+        0
+      ) || 0)
+    );
+  }, [courses, selectedCoursePrice?.price]);
+
+  const upsaleContents = () => {
+    return (
+      courses?.map((upsale: any) => ({
+        id: upsale.id,
+        quantity: 1,
+        item_price: upsale.priceAmount,
+      })) || []
+    );
+  };
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
@@ -117,6 +161,29 @@ const OpenAccessForm = ({
           ...registerUserData,
         })
       );
+
+      if (isLandingPage1) {
+        await pixel.initial_checkout({
+          userId: registerUserData?.id,
+          content_type: 'course',
+          content_ids: [
+            courseData?.id,
+            ...(courses?.map((upsale: any) => upsale.id) || []),
+          ],
+          total_amount: totalAmount,
+          value: totalAmount,
+          currency: selectedCoursePrice?.currency?.name,
+          contents: [
+            {
+              id: courseData?.id,
+              quantity: 1,
+              item_price: selectedCoursePrice?.price,
+            },
+            ...upsaleContents(),
+          ],
+          ...(!isEmptyObject(utmData) ? { utmData } : {}),
+        });
+      }
     }
 
     gtm.ecommerce.add_to_cart();

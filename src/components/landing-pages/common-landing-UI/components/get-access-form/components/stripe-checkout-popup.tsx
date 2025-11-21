@@ -191,26 +191,26 @@ const StripeInnerForm = ({
         }
         // Clear selected upsale IDs cookie after successful payment
         cookies.remove('selectedUpsaleIds');
-        await pixel.initial_checkout({
-          userId: registerUserData?.id,
-          content_type: 'course',
-          content_ids: [
-            courseData?.id,
-            ...(selectedUpsaleCourses?.map((upsale: any) => upsale.id) || []),
-          ],
-          total_amount: totalAmount,
-          value: totalAmount,
-          currency: coursePrice?.currency?.name,
-          contents: [
-            {
-              id: courseData?.id,
-              quantity: 1,
-              item_price: coursePrice?.price,
-            },
-            ...upsaleContents,
-          ],
-          ...(!isEmptyObject(utmData) ? { utmData } : {}),
-        });
+        // await pixel.initial_checkout({
+        //   userId: registerUserData?.id,
+        //   content_type: 'course',
+        //   content_ids: [
+        //     courseData?.id,
+        //     ...(selectedUpsaleCourses?.map((upsale: any) => upsale.id) || []),
+        //   ],
+        //   total_amount: totalAmount,
+        //   value: totalAmount,
+        //   currency: coursePrice?.currency?.name,
+        //   contents: [
+        //     {
+        //       id: courseData?.id,
+        //       quantity: 1,
+        //       item_price: coursePrice?.price,
+        //     },
+        //     ...upsaleContents,
+        //   ],
+        //   ...(!isEmptyObject(utmData) ? { utmData } : {}),
+        // });
 
         // Store course data in cookie before redirecting to ensure upsale page has all required data
         cookies.set(

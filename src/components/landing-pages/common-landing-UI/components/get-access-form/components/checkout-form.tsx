@@ -43,11 +43,16 @@ const CheckoutForm = ({
   const [cartUpSalesOrders, setCartUpSalesOrder] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { upSaleCourses } = useSelector(({ course }: any) => course);
+  const { upSaleCourses, registerUserData } = useSelector(
+    ({ course }: any) => course
+  );
 
   const { enqueueSnackbar } = useSnackbar();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
+  const storedUpsaleIds = cookies.get('selectedUpsaleIds');
+  const selectedIds = JSON.parse(storedUpsaleIds || '[]');
+  const selectedCoursePrice = courseData?.course_prices?.[0];
 
   const { user } = useContext(AuthContext);
   const isLandingPage2 = activeLandingPage?.name === 'landing2';
@@ -183,6 +188,45 @@ const CheckoutForm = ({
     ]
   );
 
+  const totalAmount = useMemo(() => {
+    return (
+      (selectedCoursePrice?.price || 0) +
+      (cartUpSalesOrders?.reduce(
+        (sum: number, upsale: any) => sum + (upsale.priceAmount || 0),
+        0
+      ) || 0)
+    );
+  }, [cartUpSalesOrders, selectedCoursePrice?.price]);
+
+  const courses = upSaleCourses
+    .map((course: any) => {
+      const priceData = course.course_prices?.find(
+        ({ is_upsale_price, currency, stripe_price_id }: any) =>
+          is_upsale_price &&
+          currency?.name === mainCurrencyCode &&
+          selectedIds.includes(stripe_price_id)
+      );
+
+      if (!priceData) return null;
+
+      return {
+        id: course.id,
+        priceAmount: priceData?.price || 0,
+        stripeId: priceData?.stripe_price_id,
+      };
+    })
+    .filter((item: any) => item !== null);
+
+  const upsaleContents = () => {
+    return (
+      cartUpSalesOrders?.map((upsale: any) => ({
+        id: upsale.id,
+        quantity: 1,
+        item_price: upsale.priceAmount,
+      })) || []
+    );
+  };
+
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -194,6 +238,27 @@ const CheckoutForm = ({
       setLoading(false);
       dispatch(getAccessClose());
       dispatch(getStripeCheckoutOpen());
+
+      await pixel.initial_checkout({
+        userId: registerUserData?.id,
+        content_type: 'course',
+        content_ids: [
+          courseData?.id,
+          ...(courses?.map((upsale: any) => upsale.id) || []),
+        ],
+        total_amount: totalAmount,
+        value: totalAmount,
+        currency: mainCurrencyCode,
+        contents: [
+          {
+            id: courseData?.id,
+            quantity: 1,
+            item_price: selectedCoursePrice?.price,
+          },
+          ...upsaleContents(),
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      });
     } catch (error) {
       setLoading(false);
       enqueueSnackbar((error as Error)?.message || ERROR_MESSAGES.common, {
