@@ -6,7 +6,7 @@ export async function getDomain() {
   const host = headersList.get("host");
   if(['staging.eduelle.com', 'staging.edzen.org', 'eduelle.com', 'edzen.org'].includes(host)){
     return `https://${host}`;
-  }else return 'https://eduelle.com'
+  }else return 'https://staging.eduelle.com'
 }
 
 export const fetchIP = async() => {
