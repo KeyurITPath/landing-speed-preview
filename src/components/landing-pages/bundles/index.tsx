@@ -117,14 +117,14 @@ const PlusIcon = ({ isMobile }: { isMobile: boolean }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: isMobile ? '18px' : '20px',
-      height: isMobile ? '18px' : '20px',
+      width: isMobile ? '14px' : '20px',
+      height: isMobile ? '14px' : '20px',
       borderRadius: '50%',
       backgroundColor: '#49AE56',
       color: '#FFFFFF',
       flexShrink: 0,
       '& svg': {
-        fontSize: isMobile ? '14px' : '18px',
+        fontSize: isMobile ? '12px' : '18px',
       },
     }}
   >
@@ -165,7 +165,7 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
       />
       <Stack
         sx={{
-          gap: 0.5,
+          gap: 1.5,
           p: 1.5,
           flexGrow: 1,
           display: 'flex',
@@ -192,28 +192,23 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
             {title}
           </Typography>
         </Stack>
-        <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='space-between'
-          width='100%'
-        >
-          <Stack direction='row' alignItems='center' spacing={1}>
-            <Avatar
-              alt={name}
-              src={avatar}
-              sx={{
-                height: 30,
-                width: 30,
-                flexShrink: 0,
-              }}
-            />
+        <Stack direction='row' alignItems='center' width='100%' spacing={1}>
+          <Avatar
+            alt={name}
+            src={avatar}
+            sx={{
+              height: 30,
+              width: 30,
+              flexShrink: 0,
+            }}
+          />
+          <Stack direction='column' alignItems='flex-start'>
             <Typography
               variant='caption'
               sx={{
                 fontSize: '11px',
                 color: '#0E0E0E',
-                height: '50px',
+                height: '24px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 WebkitLineClamp: '2',
@@ -224,33 +219,33 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
             >
               {name}
             </Typography>
-          </Stack>
-          <Stack direction='row' alignItems='center' spacing={0.5}>
-            <Rating
-              name='read-only'
-              value={1}
-              max={1}
-              readOnly
-              sx={{
-                fontSize: '16px',
-                fontWeight: 500,
-                color: '#FFC11E',
-                mb: '3px !important',
-                '& .MuiRating-icon': {
+            <Stack direction='row' alignItems='center' spacing={0.5}>
+              <Rating
+                name='read-only'
+                value={1}
+                max={1}
+                readOnly
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 500,
                   color: '#FFC11E',
-                },
-              }}
-            />
-            <Typography
-              variant='caption'
-              fontWeight={500}
-              sx={{
-                fontSize: '11px',
-                color: '#0E0E0E',
-              }}
-            >
-              {rating}
-            </Typography>
+                  mb: '3px !important',
+                  '& .MuiRating-icon': {
+                    color: '#FFC11E',
+                  },
+                }}
+              />
+              <Typography
+                variant='caption'
+                fontWeight={500}
+                sx={{
+                  fontSize: '11px',
+                  color: '#0E0E0E',
+                }}
+              >
+                {rating}
+              </Typography>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
@@ -405,7 +400,6 @@ const Bundles = ({
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
   const t = useTranslations();
 
-  // Use the bundles hook to fetch and process data
   const {
     bundleCourses,
     isLoadingBundles,
@@ -432,7 +426,6 @@ const Bundles = ({
     >
       <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 1.5, sm: 3 } }}>
         <Stack spacing={{ xs: 3, sm: 4 }}>
-          {/* Header Section */}
           <Stack gap={2}>
             <Typography
               variant='h3'
@@ -525,23 +518,32 @@ const Bundles = ({
               </Typography>
             )}
           </Stack>
-
-          <Stack
-            sx={{
-              backgroundColor: '#F5F5F5',
-              borderRadius: '16px',
-              p: { xs: 1, sm: 3 },
-            }}
-            spacing={{ xs: 3, sm: 4 }}
-          >
-            {/* Bundle Courses Section */}
+        </Stack>
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: '#F5F5F5',
+          borderRadius: { xs: 0, md: '16px' },
+          my: { xs: 3 },
+          mx: { xs: 0, md: 'auto' },
+          maxWidth: { xs: '100%', md: '1200px' },
+        }}
+      >
+        <Box
+          sx={{
+            maxWidth: '1200px',
+            mx: 'auto',
+            px: { xs: 1, sm: 3 },
+            py: { xs: 3, sm: 4 },
+          }}
+        >
+          <Stack spacing={{ xs: 3, sm: 4 }}>
             <Box>
-              {/* Mobile View - Flexbox with plus icons */}
               {isMobile ? (
                 <Box
                   sx={{
                     position: 'relative',
-                    minHeight: '220px'
+                    minHeight: '220px',
                   }}
                 >
                   <Box
@@ -549,7 +551,7 @@ const Bundles = ({
                       display: 'flex',
                       alignItems: 'center',
                       flexWrap: 'nowrap',
-                      gap: 1,
+                      gap: 0.5,
                       pb: 1,
                       overflowX: 'auto',
                     }}
@@ -559,7 +561,13 @@ const Bundles = ({
                       ? Array.from({ length: 3 }).map((_, index) => (
                           <Box
                             key={index}
-                            sx={{ maxWidth: '220px', flexShrink: 0 }}
+                            sx={{
+                              width: {
+                                xs: 'calc((100% - 8px) / 2)',
+                                sm: 'calc((100% - 24px) / 3)',
+                              },
+                              flexShrink: 0,
+                            }}
                           >
                             <MobileBundleCourseSkeleton />
                           </Box>
@@ -567,10 +575,17 @@ const Bundles = ({
                       : bundleCourses?.length > 0
                         ? bundleCourses.map((course: any, index: number) => (
                             <React.Fragment key={course.id}>
-                              <Box sx={{ maxWidth: '220px', flexShrink: 0 }}>
+                              <Box
+                                sx={{
+                                  width: {
+                                    xs: 'calc((100% - 16px) / 2)',
+                                    sm: 'calc((100% - 36px) / 3)',
+                                  },
+                                  flexShrink: 0,
+                                }}
+                              >
                                 <MobileBundleCourseCard course={course} />
                               </Box>
-                              {/* Plus icon between cards - only show if not last card */}
                               {index < bundleCourses.length - 1 && (
                                 <Box
                                   sx={{
@@ -578,7 +593,7 @@ const Bundles = ({
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     flexShrink: 0,
-                                    width: isMobile ? '8px' : '24px',
+                                    width: '8px',
                                     pointerEvents: 'none',
                                   }}
                                 >
@@ -631,7 +646,6 @@ const Bundles = ({
                               isMobile={false}
                             />
                           </Box>
-                          {/* Plus icon between cards - only show if not last card */}
                           {index < bundleCourses.length - 1 && (
                             <Box
                               sx={{
@@ -653,7 +667,6 @@ const Bundles = ({
               )}
             </Box>
 
-            {/* Pricing Details Section */}
             {isLoadingBundles ? (
               <Stack
                 spacing={1}
@@ -681,10 +694,7 @@ const Bundles = ({
               </Stack>
             ) : (
               bundleCourses?.length > 0 && (
-                <Stack
-                  spacing={1}
-                  alignItems='center'
-                >
+                <Stack spacing={1} alignItems='center'>
                   <Stack
                     direction='row'
                     alignItems='center'
@@ -756,14 +766,15 @@ const Bundles = ({
                         color: '#0E0E0E',
                       }}
                     >
-                      {t('bundles.for_courses', { count: bundleCourses?.length })}
+                      {t('bundles.for_courses', {
+                        count: bundleCourses?.length,
+                      })}
                     </Typography>
                   </Stack>
                 </Stack>
               )
             )}
 
-            {/* CTA Section */}
             <Stack spacing={{ xs: 2, sm: 3 }}>
               <Divider sx={{ borderColor: '#dfdfdf' }} />
               <Stack spacing={{ xs: 2, sm: 3 }} alignItems='center'>
@@ -793,7 +804,7 @@ const Bundles = ({
                   onClick={handleDeclineBundle}
                   disabled={loading || !bundleCourses?.length}
                   sx={{
-                    fontSize: { xs: '14px', sm: '16px'},
+                    fontSize: { xs: '14px', sm: '16px' },
                     fontWeight: 400,
                     color: '#0E0E0E',
                     textDecoration: 'underline',
@@ -819,17 +830,15 @@ const Bundles = ({
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        </Box>
       </Box>
 
-      {/* Payment popups */}
       <SuccessPaymentPopup
         open={isPaymentSuccess}
         landingPageName={landingPageName}
       />
       <FailedPaymentPopup open={isPaymentFailed} />
 
-      {/* Payment Error Popup for Bundles */}
       <BundlesPaymentErrorPopup
         open={showPaymentError}
         errorMessage={paymentErrorMessage}
