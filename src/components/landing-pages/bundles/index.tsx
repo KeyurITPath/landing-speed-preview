@@ -117,14 +117,14 @@ const PlusIcon = ({ isMobile }: { isMobile: boolean }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: isMobile ? '18px' : '24px',
-      height: isMobile ? '18px' : '24px',
+      width: isMobile ? '18px' : '20px',
+      height: isMobile ? '18px' : '20px',
       borderRadius: '50%',
       backgroundColor: '#49AE56',
       color: '#FFFFFF',
       flexShrink: 0,
       '& svg': {
-        fontSize: isMobile ? '12px' : '20px',
+        fontSize: isMobile ? '14px' : '18px',
       },
     }}
   >
@@ -532,7 +532,7 @@ const Bundles = ({
               borderRadius: '16px',
               p: { xs: 1, sm: 3 },
             }}
-            spacing={{ xs: 2, sm: 4 }}
+            spacing={{ xs: 3, sm: 4 }}
           >
             {/* Bundle Courses Section */}
             <Box>
@@ -612,7 +612,7 @@ const Bundles = ({
                         display: 'flex',
                         alignItems: 'stretch',
                         justifyContent: 'center',
-                        gap: { xs: 1, sm: 2, md: 3 },
+                        gap: { xs: 1 },
                         flexWrap: 'nowrap',
                       }}
                     >
@@ -653,6 +653,116 @@ const Bundles = ({
               )}
             </Box>
 
+            {/* Pricing Details Section */}
+            {isLoadingBundles ? (
+              <Stack
+                spacing={1}
+                alignItems='center'
+                sx={{ pt: { xs: 2, sm: 3 } }}
+              >
+                <Stack
+                  direction='row'
+                  alignItems='center'
+                  spacing={1}
+                  justifyContent='center'
+                >
+                  <Skeleton variant='text' width={80} height={24} />
+                  <Skeleton variant='text' width={100} height={24} />
+                </Stack>
+                <Stack
+                  direction='row'
+                  alignItems='center'
+                  spacing={1}
+                  justifyContent='center'
+                >
+                  <Skeleton variant='text' width={100} height={32} />
+                  <Skeleton variant='text' width={120} height={32} />
+                </Stack>
+              </Stack>
+            ) : (
+              bundleCourses?.length > 0 && (
+                <Stack
+                  spacing={1}
+                  alignItems='center'
+                >
+                  <Stack
+                    direction='row'
+                    alignItems='center'
+                    spacing={0.5}
+                    flexWrap='wrap'
+                    justifyContent='center'
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '16px',
+                        fontWeight: 400,
+                        color: '#747474',
+                        textDecoration: 'line-through',
+                      }}
+                    >
+                      {originalPrice}
+                    </Typography>
+                    <Box
+                      component='span'
+                      sx={{
+                        fontSize: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                      }}
+                    >
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '16px',
+                          fontWeight: 700,
+                          color: '#304BE0',
+                        }}
+                      >
+                        {discountPercentage}
+                      </Typography>
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: '#0E0E0E',
+                        }}
+                      >
+                        {t('bundles.discount')}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                  <Stack
+                    direction='row'
+                    alignItems='center'
+                    spacing={0.5}
+                    flexWrap='wrap'
+                    justifyContent='center'
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '20px', md: '22px' },
+                        fontWeight: 700,
+                        color: '#304BE0',
+                      }}
+                    >
+                      {discountPrice}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '20px', md: '22px' },
+                        fontWeight: 500,
+                        color: '#0E0E0E',
+                      }}
+                    >
+                      {t('bundles.for_courses', { count: bundleCourses?.length })}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              )
+            )}
+
             {/* CTA Section */}
             <Stack spacing={{ xs: 2, sm: 3 }}>
               <Divider sx={{ borderColor: '#dfdfdf' }} />
@@ -663,14 +773,14 @@ const Bundles = ({
                   variant='contained'
                   size='medium'
                   sx={{
-                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                    fontSize: { sm: '16px', md: '18px' },
                     fontWeight: 400,
                     color: '#FFFFFF',
                     backgroundColor: '#49AE56',
                     maxWidth: { xs: 350, sm: 400, md: 500 },
                     borderRadius: '35px',
                     textTransform: 'none',
-                    p: { xs: '12px 16px', md: '14px 20px' },
+                    p: { xs: '12px 16px', md: '14px 28px' },
                     '&:hover': {
                       backgroundColor: '#3d8e47',
                     },
@@ -681,8 +791,9 @@ const Bundles = ({
                 <Typography
                   component='button'
                   onClick={handleDeclineBundle}
+                  disabled={loading || !bundleCourses?.length}
                   sx={{
-                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                    fontSize: { xs: '14px', sm: '16px'},
                     fontWeight: 400,
                     color: '#0E0E0E',
                     textDecoration: 'underline',
@@ -695,6 +806,11 @@ const Bundles = ({
                     display: 'block',
                     '&:hover': {
                       opacity: 0.7,
+                    },
+                    '&:disabled': {
+                      cursor: 'not-allowed',
+                      opacity: 0.5,
+                      pointerEvents: 'none',
                     },
                   }}
                 >

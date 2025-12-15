@@ -711,8 +711,10 @@
     "complete": "Completar"
   },
   "bundles": {
-    "title": "¡Pago exitoso!",
-    "description": "Después de tu compra, nos gustaría ofrecerte la oportunidad de desbloquear el Paquete de Expansión de {courseCount} Cursos por solo {discountPrice}.\nEsta oferta exclusiva te da acceso a tres cursos seleccionados especialmente que complementan perfectamente tu práctica actual, ayudándote a profundizar en tu progreso y mantenerte inspirado.",
+    "title": "Encuentra tu Ritmo: Paquetes de Bienestar Completos",
+    "description": "Explora una colección de sesiones guiadas de yoga y liberación del estrés. De principiante a avanzado, cada paquete te ayuda a moverte, respirar y recargar — en cualquier momento, en cualquier lugar.",
+    "discount": "descuento",
+    "for_courses": "por {count} cursos",
     "confirm_and_add_to_order": "Confirmar y añadir estos cursos a mi pedido",
     "no_i_dont_need_this": "No, no lo necesito"
   }

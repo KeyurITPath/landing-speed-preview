@@ -711,8 +711,10 @@
     "complete": "Terminer"
   },
   "bundles": {
-    "title": "Paiement réussi !",
-    "description": "Après votre achat, nous souhaitons vous offrir la possibilité de débloquer le Pack d’Extension de {courseCount} Cours pour seulement {discountPrice}.\nCette offre exclusive vous donne accès à trois cours soigneusement sélectionnés qui complètent parfaitement votre pratique actuelle — vous aidant à approfondir vos progrès et à rester inspiré.",
+    "title": "Trouvez Votre Rythme : Packs de Bien-être Complets",
+    "description": "Découvrez une collection de séances guidées de yoga et de libération du stress. Du débutant à l'avancé, chaque pack vous aide à bouger, respirer et vous ressourcer — à tout moment, n'importe où.",
+    "discount": "réduction",
+    "for_courses": "pour {count} cours",
     "confirm_and_add_to_order": "Confirmer et ajouter ces cours à ma commande",
     "no_i_dont_need_this": "Non, je n'en ai pas besoin"
   }
