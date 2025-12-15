@@ -206,7 +206,7 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
             <Typography
               variant='caption'
               sx={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: '#0E0E0E',
                 height: '24px',
                 overflow: 'hidden',
@@ -239,7 +239,7 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
                 variant='caption'
                 fontWeight={500}
                 sx={{
-                  fontSize: '11px',
+                  fontSize: '12px',
                   color: '#0E0E0E',
                 }}
               >
@@ -339,7 +339,7 @@ const BundleCourseCard = React.memo(
               <Typography
                 variant='caption'
                 sx={{
-                  fontSize: { xs: '11px', sm: '12px' },
+                  fontSize: { xs: '12px' },
                   color: '#0E0E0E',
                   height: '50px',
                   overflow: 'hidden',
@@ -372,7 +372,7 @@ const BundleCourseCard = React.memo(
                 variant='caption'
                 fontWeight={500}
                 sx={{
-                  fontSize: { xs: '11px', sm: '12px' },
+                  fontSize: { xs: '12px' },
                   color: '#0E0E0E',
                 }}
               >
