@@ -192,7 +192,13 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
             {title}
           </Typography>
         </Stack>
-        <Stack direction='row' alignItems='center' width='100%' spacing={1}>
+        <Stack
+          direction='row'
+          alignItems='center'
+          width='100%'
+          spacing={1}
+          sx={{ overflow: 'hidden' }}
+        >
           <Avatar
             alt={name}
             src={avatar}
@@ -202,19 +208,21 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
               flexShrink: 0,
             }}
           />
-          <Stack direction='column' alignItems='flex-start'>
+          <Stack
+            direction='column'
+            alignItems='flex-start'
+            sx={{ flex: 1, minWidth: 0 }}
+          >
             <Typography
               variant='caption'
               sx={{
                 fontSize: '12px',
                 color: '#0E0E0E',
-                height: '24px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                WebkitLineClamp: '2',
-                WebkitBoxOrient: 'vertical',
-                display: 'flex',
-                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                width: '100%',
+                maxWidth: '100%',
               }}
             >
               {name}
