@@ -5,6 +5,7 @@ import {
   Grid2,
   IconButton,
   Link,
+  Skeleton,
   Stack,
   styled,
   Typography,
@@ -47,14 +48,20 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
   const router = useRouter();
   const t = useTranslations();
 
-  const { data: userOrderData } = useSelector(({ user }: any) => user);
+  const { data: userOrderData, loading: userDataLoading } = useSelector(
+    ({ user }: any) => user
+  );
+
+  const hasReduxData = userOrderData?.user_orders?.length > 0;
 
   const effectiveUserData = useMemo(() => {
-    if (userOrderData?.user_orders?.length > 0) {
+    if (hasReduxData) {
       return userOrderData;
     }
     return userData;
-  }, [userOrderData, userData]);
+  }, [hasReduxData, userOrderData, userData]);
+
+  const isOrderHistoryLoading = userDataLoading || !hasReduxData;
 
   // const { data: monthlySubscriptionData } = useSelector(
   //   ({ popup }: any) => popup?.monthlySubscription
@@ -132,29 +139,40 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
       ) : (
         <>
           <Stack sx={{ gap: 2 }}>
-            {orderHistory?.map(({ id, title }: any) => {
-              return (
-                <ProductsCard key={id} sx={{ alignItems: 'center' }}>
-                  <Image
-                    height={40}
-                    width={40}
-                    src={IMAGES.HandEmoji}
-                    alt='HandEmoji'
-                    style={{
-                        width: 'auto',
-                        height: '40px'
-                    }}
-                  />
-                  <Typography variant='subtitle1'>
-                    <Box component='span' sx={{ fontWeight: 400 }}>
-                      {t('access_message')}
-                      {':'}
-                    </Box>{' '}
-                    {title}
-                  </Typography>
+            {isOrderHistoryLoading ? (
+              [...Array(3)].map((_, index) => (
+                <ProductsCard key={index} sx={{ alignItems: 'center' }}>
+                  <Skeleton variant='circular' width={40} height={40} />
+                  <Stack sx={{ flex: 1 }}>
+                    <Skeleton variant='text' width='80%' height={24} />
+                  </Stack>
                 </ProductsCard>
-              );
-            })}
+              ))
+            ) : (
+              orderHistory?.map(({ id, title }: any) => {
+                return (
+                  <ProductsCard key={id} sx={{ alignItems: 'center' }}>
+                    <Image
+                      height={40}
+                      width={40}
+                      src={IMAGES.HandEmoji}
+                      alt='HandEmoji'
+                      style={{
+                        width: 'auto',
+                        height: '40px',
+                      }}
+                    />
+                    <Typography variant='subtitle1'>
+                      <Box component='span' sx={{ fontWeight: 400 }}>
+                        {t('access_message')}
+                        {':'}
+                      </Box>{' '}
+                      {title}
+                    </Typography>
+                  </ProductsCard>
+                );
+              })
+            )}
             {isFreeTrial && (
               <ProductsCard sx={{ flexDirection: 'column', gap: 1.5 }}>
                 <Stack direction='row' spacing={1.5} alignItems='flex-start'>

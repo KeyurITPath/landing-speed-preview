@@ -16,6 +16,8 @@ import FailedPaymentPopup from '@/components/failed-payment-popup';
 import { useSelector } from 'react-redux';
 import cookies from 'js-cookie';
 import { AuthContext } from '@/context/auth-provider';
+import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
+import { fetchUser } from '@/store/features/user.slice';
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   height: 20,
@@ -50,6 +52,7 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
 
   const [activeTab, setActiveTab] = useState(1);
   const { data: courseData } = useSelector(({ course }: any) => course);
+  const [fetchUserData] = useDispatchWithAbort(fetchUser);
 
   const barValue = useMemo(() => {
     return (activeTab / tabs.length) * 100;
@@ -66,6 +69,17 @@ const CompleteProfileComponent = ({ domainDetails, userData }: any) => {
   const SUPPORT_MAIL = useMemo(() => {
     return email || '';
   }, [email]);
+
+  useEffect(() => {
+    if (user?.id && fetchUserData) {
+      const country_code = cookies.get('country_code') || '';
+      fetchUserData({
+        params: { user_id: user.id },
+        headers: { 'req-from': country_code },
+        cookieToken: cookies.get('token') || '',
+      });
+    }
+  }, [user?.id, fetchUserData]);
 
   useEffect(() => {
     sessionStorage.removeItem('hasSalesFlowAccess');

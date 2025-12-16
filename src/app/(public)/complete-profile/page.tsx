@@ -11,7 +11,7 @@ const CompleteProfile = async () => {
   const cookieStore = await cookies()
 
   const token = cookieStore.get('token')?.value
-  console.log('token', token);
+
   let userData
   if(token){
     const decodeUser = decodeToken(token)
@@ -26,7 +26,7 @@ const CompleteProfile = async () => {
   const response = await api.home.fetchDomainDetails({
     params: { name: domain_value },
   });
-console.log('userData', userData);
+
   return <CompleteProfileComponent userData={userData} domainDetails={response.data} />;
 };
 
