@@ -49,17 +49,12 @@ const MobileBundleCourseSkeleton = () => (
         <Skeleton variant='text' height={18} width='100%' />
         <Skeleton variant='text' height={18} width='90%' />
       </Stack>
-      <Stack
-        direction='row'
-        alignItems='center'
-        spacing={1}
-        sx={{ mt: 'auto' }}
-      >
-        <Skeleton variant='circular' width={20} height={20} />
-        <Skeleton variant='text' height={14} width='60px' />
-        <Box sx={{ ml: 'auto' }}>
-          <Skeleton variant='text' height={14} width='30px' />
-        </Box>
+      <Stack direction='row' alignItems='center' spacing={1}>
+        <Skeleton variant='circular' width={30} height={30} />
+        <Stack direction='column' sx={{ flex: 1 }}>
+          <Skeleton variant='text' height={14} width='80px' />
+          <Skeleton variant='text' height={14} width='50px' />
+        </Stack>
       </Stack>
     </Stack>
   </Box>
@@ -117,8 +112,8 @@ const PlusIcon = ({ isMobile }: { isMobile: boolean }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: isMobile ? '14px' : '20px',
-      height: isMobile ? '14px' : '20px',
+      width: isMobile ? '16px' : '20px',
+      height: isMobile ? '16px' : '20px',
       borderRadius: '50%',
       backgroundColor: '#49AE56',
       color: '#FFFFFF',
@@ -151,13 +146,14 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
     >
       <Image
         width={165}
-        height={130}
+        height={92}
         src={image}
         alt={title}
         style={{
           objectFit: 'cover',
           aspectRatio: '16/9',
           width: '100%',
+          height: "100%",
           borderRadius: '8px',
         }}
         priority={false}
@@ -165,7 +161,7 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
       />
       <Stack
         sx={{
-          gap: 1.5,
+          gap: 0.5,
           p: 1.5,
           flexGrow: 1,
           display: 'flex',
@@ -541,7 +537,7 @@ const Bundles = ({
           sx={{
             maxWidth: '1200px',
             mx: 'auto',
-            px: { xs: 1, sm: 3 },
+            px: { xs: 1, sm: 2 },
             py: { xs: 3, sm: 4 },
           }}
         >
@@ -550,68 +546,62 @@ const Bundles = ({
               {isMobile ? (
                 <Box
                   sx={{
-                    position: 'relative',
-                    minHeight: '220px',
+                    display: 'flex',
+                    alignItems: 'stretch',
+                    flexWrap: 'nowrap',
+                    gap: 0.5,
+                    pb: 1,
+                    overflowX: 'auto',
                   }}
+                  className='custom-scrollbar'
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexWrap: 'nowrap',
-                      gap: 0.5,
-                      pb: 1,
-                      overflowX: 'auto',
-                    }}
-                    className='custom-scrollbar'
-                  >
-                    {isLoadingBundles
-                      ? Array.from({ length: 3 }).map((_, index) => (
-                          <Box
-                            key={index}
-                            sx={{
-                              width: {
-                                xs: 'calc((100% - 8px) / 2)',
-                                sm: 'calc((100% - 24px) / 3)',
-                              },
-                              flexShrink: 0,
-                            }}
-                          >
-                            <MobileBundleCourseSkeleton />
-                          </Box>
-                        ))
-                      : bundleCourses?.length > 0
-                        ? bundleCourses.map((course: any, index: number) => (
-                            <React.Fragment key={course.id}>
+                  {isLoadingBundles
+                    ? Array.from({ length: 3 }).map((_, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            width: {
+                              xs: 'calc((100% - 20px) / 2)',
+                              sm: 'calc((100% - 24px) / 3)',
+                            },
+                            minWidth: '150px',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <MobileBundleCourseSkeleton />
+                        </Box>
+                      ))
+                    : bundleCourses?.length > 0
+                      ? bundleCourses.map((course: any, index: number) => (
+                          <React.Fragment key={course.id}>
+                            <Box
+                              sx={{
+                                width: {
+                                  xs: 'calc((100% - 20px) / 2)',
+                                  sm: 'calc((100% - 24px) / 3)',
+                                },
+                                minWidth: '150px',
+                                flexShrink: 0,
+                              }}
+                            >
+                              <MobileBundleCourseCard course={course} />
+                            </Box>
+                            {index < bundleCourses.length - 1 && (
                               <Box
                                 sx={{
-                                  width: {
-                                    xs: 'calc((100% - 16px) / 2)',
-                                    sm: 'calc((100% - 36px) / 3)',
-                                  },
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
                                   flexShrink: 0,
+                                  pointerEvents: 'none',
                                 }}
                               >
-                                <MobileBundleCourseCard course={course} />
+                                <PlusIcon isMobile={isMobile} />
                               </Box>
-                              {index < bundleCourses.length - 1 && (
-                                <Box
-                                  sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0,
-                                    width: '8px',
-                                    pointerEvents: 'none',
-                                  }}
-                                >
-                                  <PlusIcon isMobile={isMobile} />
-                                </Box>
-                              )}
-                            </React.Fragment>
-                          ))
-                        : null}
-                  </Box>
+                            )}
+                          </React.Fragment>
+                        ))
+                      : null}
                 </Box>
               ) : (
                 <Box
