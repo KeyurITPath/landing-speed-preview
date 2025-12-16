@@ -107,7 +107,6 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
     );
   }, [effectiveUserData]);
 
-  console.log('orderHistory', orderHistory);
 
   useEffect(() => {
     if (!effectiveUserData?.id) {
