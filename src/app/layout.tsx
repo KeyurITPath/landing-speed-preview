@@ -75,7 +75,7 @@ export default async function RootLayout(
                 u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
                 a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))
               }(window,document,'script');
-              twq('config', ${TWITTER_TAG_ID});
+              twq('config', '${TWITTER_TAG_ID}');
             `,
           }}
         />
