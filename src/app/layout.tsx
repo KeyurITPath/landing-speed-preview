@@ -1,5 +1,6 @@
 import type { Viewport } from 'next';
 import { Rubik } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -15,6 +16,7 @@ import { SocketProvider } from '@/context/socket-context';
 import GTM from '@/components/GTM';
 import JoyrideProvider from '@/shared/joyride-provider';
 import { getDomain } from '@/utils/domain';
+import { TWITTER_TAG_ID } from '../utils/constants';
 
 const rubik = Rubik({
   variable: '--font-rubik',
@@ -60,6 +62,24 @@ export default async function RootLayout(
 
   return (
     <html lang={locale}>
+      <head>
+        <Script
+          id='x-pixel'
+          strategy='afterInteractive'
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(e,t,n,s,u,a){
+                e.twq||(s=e.twq=function(){
+                  s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+                },s.version='1.1',s.queue=[],u=t.createElement(n),
+                u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+                a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))
+              }(window,document,'script');
+              twq('config', '${TWITTER_TAG_ID}');
+            `,
+          }}
+        />
+      </head>
       <body className={`${rubik.variable}`} suppressHydrationWarning={true}>
         <GTM />
         <ReduxProvider>

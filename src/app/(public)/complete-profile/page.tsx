@@ -11,6 +11,7 @@ const CompleteProfile = async () => {
   const cookieStore = await cookies()
 
   const token = cookieStore.get('token')?.value
+
   let userData
   if(token){
     const decodeUser = decodeToken(token)

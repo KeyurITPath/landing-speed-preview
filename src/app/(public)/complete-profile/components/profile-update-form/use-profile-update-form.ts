@@ -41,8 +41,8 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     last_name: userData?.last_name || '',
     phone: '',
     // location: '',
-    age: '',
-    gender: '',
+    age: userData?.age || '',
+    gender: userData?.gender || '',
   };
 
   const { enqueueSnackbar } = useSnackbar();
@@ -435,6 +435,8 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       first_name: userData?.first_name || '',
       last_name: userData?.last_name || '',
       phone: phoneWithoutPrefix,
+      age: userData?.age || '',
+      gender: userData?.gender || '',
     }));
   }, [userData, setValues]);
 

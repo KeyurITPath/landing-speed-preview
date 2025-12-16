@@ -72,12 +72,13 @@ const ASPECT_RATIO = {
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://54.193.35.97:3004';
-const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'https://eduelle.com';
+const OWN_URL = process.env.NEXT_PUBLIC_OWN_URL || 'https://staging.eduelle.com';
 const TOLSTOY_COMMENT_LAST_KEY = process.env.NEXT_PUBLIC_TOLSTOY_COMMENT_LAST_KEY || ''
 const GTM_TAG_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
+const TWITTER_TAG_ID = process.env.NEXT_PUBLIC_TWITTER_PIXEL_ID || 'qw6i7'
 
-const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'https://eduelle.com';
-// const DOMAIN = 'https://eduelle.com'
+const DOMAIN = typeof window !== 'undefined' ? window.location.origin : 'https://staging.eduelle.com';
+// const DOMAIN = 'https://staging.eduelle.com'
 
 const AUTHOR_URL = process.env.NEXT_PUBLIC_REDIRECT_ADMIN_URL;
 const RAPID_API_KEY = process.env.NEXT_PUBLIC_RAPID_API_KEY || '';
@@ -187,5 +188,6 @@ export {
   AUTHOR_URL,
   OWN_URL,
   TOLSTOY_COMMENT_LAST_KEY,
-  GTM_TAG_ID
+  GTM_TAG_ID,
+  TWITTER_TAG_ID
 };

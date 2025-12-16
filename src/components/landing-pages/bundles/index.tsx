@@ -49,17 +49,12 @@ const MobileBundleCourseSkeleton = () => (
         <Skeleton variant='text' height={18} width='100%' />
         <Skeleton variant='text' height={18} width='90%' />
       </Stack>
-      <Stack
-        direction='row'
-        alignItems='center'
-        spacing={1}
-        sx={{ mt: 'auto' }}
-      >
-        <Skeleton variant='circular' width={20} height={20} />
-        <Skeleton variant='text' height={14} width='60px' />
-        <Box sx={{ ml: 'auto' }}>
-          <Skeleton variant='text' height={14} width='30px' />
-        </Box>
+      <Stack direction='row' alignItems='center' spacing={1}>
+        <Skeleton variant='circular' width={30} height={30} />
+        <Stack direction='column' sx={{ flex: 1 }}>
+          <Skeleton variant='text' height={14} width='80px' />
+          <Skeleton variant='text' height={14} width='50px' />
+        </Stack>
       </Stack>
     </Stack>
   </Box>
@@ -117,14 +112,14 @@ const PlusIcon = ({ isMobile }: { isMobile: boolean }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: isMobile ? '18px' : '24px',
-      height: isMobile ? '18px' : '24px',
+      width: isMobile ? '16px' : '20px',
+      height: isMobile ? '16px' : '20px',
       borderRadius: '50%',
       backgroundColor: '#49AE56',
       color: '#FFFFFF',
       flexShrink: 0,
       '& svg': {
-        fontSize: isMobile ? '12px' : '20px',
+        fontSize: isMobile ? '12px' : '18px',
       },
     }}
   >
@@ -151,13 +146,14 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
     >
       <Image
         width={165}
-        height={130}
+        height={92}
         src={image}
         alt={title}
         style={{
           objectFit: 'cover',
           aspectRatio: '16/9',
           width: '100%',
+          height: "100%",
           borderRadius: '8px',
         }}
         priority={false}
@@ -195,62 +191,65 @@ const MobileBundleCourseCard = React.memo(({ course }: { course: any }) => {
         <Stack
           direction='row'
           alignItems='center'
-          justifyContent='space-between'
           width='100%'
+          spacing={1}
+          sx={{ overflow: 'hidden' }}
         >
-          <Stack direction='row' alignItems='center' spacing={1}>
-            <Avatar
-              alt={name}
-              src={avatar}
-              sx={{
-                height: 30,
-                width: 30,
-                flexShrink: 0,
-              }}
-            />
+          <Avatar
+            alt={name}
+            src={avatar}
+            sx={{
+              height: 30,
+              width: 30,
+              flexShrink: 0,
+            }}
+          />
+          <Stack
+            direction='column'
+            alignItems='flex-start'
+            sx={{ flex: 1, minWidth: 0 }}
+          >
             <Typography
               variant='caption'
               sx={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: '#0E0E0E',
-                height: '50px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                WebkitLineClamp: '2',
-                WebkitBoxOrient: 'vertical',
-                display: 'flex',
-                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                width: '100%',
+                maxWidth: '100%',
               }}
             >
               {name}
             </Typography>
-          </Stack>
-          <Stack direction='row' alignItems='center' spacing={0.5}>
-            <Rating
-              name='read-only'
-              value={1}
-              max={1}
-              readOnly
-              sx={{
-                fontSize: '16px',
-                fontWeight: 500,
-                color: '#FFC11E',
-                mb: '3px !important',
-                '& .MuiRating-icon': {
+            <Stack direction='row' alignItems='center' spacing={0.5}>
+              <Rating
+                name='read-only'
+                value={1}
+                max={1}
+                readOnly
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 500,
                   color: '#FFC11E',
-                },
-              }}
-            />
-            <Typography
-              variant='caption'
-              fontWeight={500}
-              sx={{
-                fontSize: '11px',
-                color: '#0E0E0E',
-              }}
-            >
-              {rating}
-            </Typography>
+                  mb: '3px !important',
+                  '& .MuiRating-icon': {
+                    color: '#FFC11E',
+                  },
+                }}
+              />
+              <Typography
+                variant='caption'
+                fontWeight={500}
+                sx={{
+                  fontSize: '12px',
+                  color: '#0E0E0E',
+                }}
+              >
+                {rating}
+              </Typography>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
@@ -344,7 +343,7 @@ const BundleCourseCard = React.memo(
               <Typography
                 variant='caption'
                 sx={{
-                  fontSize: { xs: '11px', sm: '12px' },
+                  fontSize: { xs: '12px' },
                   color: '#0E0E0E',
                   height: '50px',
                   overflow: 'hidden',
@@ -377,7 +376,7 @@ const BundleCourseCard = React.memo(
                 variant='caption'
                 fontWeight={500}
                 sx={{
-                  fontSize: { xs: '11px', sm: '12px' },
+                  fontSize: { xs: '12px' },
                   color: '#0E0E0E',
                 }}
               >
@@ -405,7 +404,6 @@ const Bundles = ({
   const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'));
   const t = useTranslations();
 
-  // Use the bundles hook to fetch and process data
   const {
     bundleCourses,
     isLoadingBundles,
@@ -432,7 +430,6 @@ const Bundles = ({
     >
       <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 1.5, sm: 3 } }}>
         <Stack spacing={{ xs: 3, sm: 4 }}>
-          {/* Header Section */}
           <Stack gap={2}>
             <Typography
               variant='h3'
@@ -525,70 +522,86 @@ const Bundles = ({
               </Typography>
             )}
           </Stack>
-
-          <Stack
-            sx={{
-              backgroundColor: '#F5F5F5',
-              borderRadius: '16px',
-              p: { xs: 1, sm: 3 },
-            }}
-            spacing={{ xs: 2, sm: 4 }}
-          >
-            {/* Bundle Courses Section */}
+        </Stack>
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: '#F5F5F5',
+          borderRadius: { xs: 0, md: '16px' },
+          my: { xs: 3 },
+          mx: { xs: 0, md: 'auto' },
+          maxWidth: { xs: '100%', md: '1200px' },
+        }}
+      >
+        <Box
+          sx={{
+            maxWidth: '1200px',
+            mx: 'auto',
+            px: { xs: 1, sm: 2 },
+            py: { xs: 3, sm: 4 },
+          }}
+        >
+          <Stack spacing={{ xs: 3, sm: 4 }}>
             <Box>
-              {/* Mobile View - Flexbox with plus icons */}
               {isMobile ? (
                 <Box
                   sx={{
-                    position: 'relative',
-                    minHeight: '220px'
+                    display: 'flex',
+                    alignItems: 'stretch',
+                    flexWrap: 'nowrap',
+                    gap: 0.5,
+                    pb: 1,
+                    overflowX: 'auto',
                   }}
+                  className='custom-scrollbar'
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexWrap: 'nowrap',
-                      gap: 1,
-                      pb: 1,
-                      overflowX: 'auto',
-                    }}
-                    className='custom-scrollbar'
-                  >
-                    {isLoadingBundles
-                      ? Array.from({ length: 3 }).map((_, index) => (
-                          <Box
-                            key={index}
-                            sx={{ maxWidth: '220px', flexShrink: 0 }}
-                          >
-                            <MobileBundleCourseSkeleton />
-                          </Box>
-                        ))
-                      : bundleCourses?.length > 0
-                        ? bundleCourses.map((course: any, index: number) => (
-                            <React.Fragment key={course.id}>
-                              <Box sx={{ maxWidth: '220px', flexShrink: 0 }}>
-                                <MobileBundleCourseCard course={course} />
+                  {isLoadingBundles
+                    ? Array.from({ length: 3 }).map((_, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            width: {
+                              xs: 'calc((100% - 20px) / 2)',
+                              sm: 'calc((100% - 24px) / 3)',
+                            },
+                            minWidth: '150px',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <MobileBundleCourseSkeleton />
+                        </Box>
+                      ))
+                    : bundleCourses?.length > 0
+                      ? bundleCourses.map((course: any, index: number) => (
+                          <React.Fragment key={course.id}>
+                            <Box
+                              sx={{
+                                width: {
+                                  xs: 'calc((100% - 20px) / 2)',
+                                  sm: 'calc((100% - 24px) / 3)',
+                                },
+                                minWidth: '150px',
+                                flexShrink: 0,
+                              }}
+                            >
+                              <MobileBundleCourseCard course={course} />
+                            </Box>
+                            {index < bundleCourses.length - 1 && (
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                  pointerEvents: 'none',
+                                }}
+                              >
+                                <PlusIcon isMobile={isMobile} />
                               </Box>
-                              {/* Plus icon between cards - only show if not last card */}
-                              {index < bundleCourses.length - 1 && (
-                                <Box
-                                  sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexShrink: 0,
-                                    width: isMobile ? '8px' : '24px',
-                                    pointerEvents: 'none',
-                                  }}
-                                >
-                                  <PlusIcon isMobile={isMobile} />
-                                </Box>
-                              )}
-                            </React.Fragment>
-                          ))
-                        : null}
-                  </Box>
+                            )}
+                          </React.Fragment>
+                        ))
+                      : null}
                 </Box>
               ) : (
                 <Box
@@ -612,7 +625,7 @@ const Bundles = ({
                         display: 'flex',
                         alignItems: 'stretch',
                         justifyContent: 'center',
-                        gap: { xs: 1, sm: 2, md: 3 },
+                        gap: { xs: 1 },
                         flexWrap: 'nowrap',
                       }}
                     >
@@ -631,7 +644,6 @@ const Bundles = ({
                               isMobile={false}
                             />
                           </Box>
-                          {/* Plus icon between cards - only show if not last card */}
                           {index < bundleCourses.length - 1 && (
                             <Box
                               sx={{
@@ -653,7 +665,114 @@ const Bundles = ({
               )}
             </Box>
 
-            {/* CTA Section */}
+            {isLoadingBundles ? (
+              <Stack
+                spacing={1}
+                alignItems='center'
+                sx={{ pt: { xs: 2, sm: 3 } }}
+              >
+                <Stack
+                  direction='row'
+                  alignItems='center'
+                  spacing={1}
+                  justifyContent='center'
+                >
+                  <Skeleton variant='text' width={80} height={24} />
+                  <Skeleton variant='text' width={100} height={24} />
+                </Stack>
+                <Stack
+                  direction='row'
+                  alignItems='center'
+                  spacing={1}
+                  justifyContent='center'
+                >
+                  <Skeleton variant='text' width={100} height={32} />
+                  <Skeleton variant='text' width={120} height={32} />
+                </Stack>
+              </Stack>
+            ) : (
+              bundleCourses?.length > 0 && (
+                <Stack spacing={1} alignItems='center'>
+                  <Stack
+                    direction='row'
+                    alignItems='center'
+                    spacing={0.5}
+                    flexWrap='wrap'
+                    justifyContent='center'
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '16px',
+                        fontWeight: 400,
+                        color: '#747474',
+                        textDecoration: 'line-through',
+                      }}
+                    >
+                      {originalPrice}
+                    </Typography>
+                    <Box
+                      component='span'
+                      sx={{
+                        fontSize: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                      }}
+                    >
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '16px',
+                          fontWeight: 700,
+                          color: '#304BE0',
+                        }}
+                      >
+                        {discountPercentage}
+                      </Typography>
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: '#0E0E0E',
+                        }}
+                      >
+                        {t('bundles.discount')}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                  <Stack
+                    direction='row'
+                    alignItems='center'
+                    spacing={0.5}
+                    flexWrap='wrap'
+                    justifyContent='center'
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '20px', md: '22px' },
+                        fontWeight: 700,
+                        color: '#304BE0',
+                      }}
+                    >
+                      {discountPrice}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '20px', md: '22px' },
+                        fontWeight: 500,
+                        color: '#0E0E0E',
+                      }}
+                    >
+                      {t('bundles.for_courses', {
+                        count: bundleCourses?.length,
+                      })}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              )
+            )}
+
             <Stack spacing={{ xs: 2, sm: 3 }}>
               <Divider sx={{ borderColor: '#dfdfdf' }} />
               <Stack spacing={{ xs: 2, sm: 3 }} alignItems='center'>
@@ -663,14 +782,14 @@ const Bundles = ({
                   variant='contained'
                   size='medium'
                   sx={{
-                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                    fontSize: { sm: '16px', md: '18px' },
                     fontWeight: 400,
                     color: '#FFFFFF',
                     backgroundColor: '#49AE56',
                     maxWidth: { xs: 350, sm: 400, md: 500 },
                     borderRadius: '35px',
                     textTransform: 'none',
-                    p: { xs: '12px 16px', md: '14px 20px' },
+                    p: { xs: '12px 16px', md: '14px 28px' },
                     '&:hover': {
                       backgroundColor: '#3d8e47',
                     },
@@ -681,8 +800,9 @@ const Bundles = ({
                 <Typography
                   component='button'
                   onClick={handleDeclineBundle}
+                  disabled={loading || !bundleCourses?.length}
                   sx={{
-                    fontSize: { xs: '14px', sm: '16px', md: '18px' },
+                    fontSize: { xs: '14px', sm: '16px' },
                     fontWeight: 400,
                     color: '#0E0E0E',
                     textDecoration: 'underline',
@@ -696,6 +816,11 @@ const Bundles = ({
                     '&:hover': {
                       opacity: 0.7,
                     },
+                    '&:disabled': {
+                      cursor: 'not-allowed',
+                      opacity: 0.5,
+                      pointerEvents: 'none',
+                    },
                   }}
                 >
                   {t('bundles.no_i_dont_need_this')}
@@ -703,17 +828,15 @@ const Bundles = ({
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        </Box>
       </Box>
 
-      {/* Payment popups */}
       <SuccessPaymentPopup
         open={isPaymentSuccess}
         landingPageName={landingPageName}
       />
       <FailedPaymentPopup open={isPaymentFailed} />
 
-      {/* Payment Error Popup for Bundles */}
       <BundlesPaymentErrorPopup
         open={showPaymentError}
         errorMessage={paymentErrorMessage}

@@ -5,12 +5,13 @@ import {
   Grid2,
   IconButton,
   Link,
+  Skeleton,
   Stack,
   styled,
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ICONS } from '@/assets/icons';
 import CustomButton from '@/shared/button';
 import useClipboard from '@/hooks/use-clipboard';
@@ -47,14 +48,29 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
   const router = useRouter();
   const t = useTranslations();
 
+  const { data: userOrderData, loading: userDataLoading } = useSelector(
+    ({ user }: any) => user
+  );
+
+  const hasReduxData = userOrderData?.user_orders?.length > 0;
+
+  const effectiveUserData = useMemo(() => {
+    if (hasReduxData) {
+      return userOrderData;
+    }
+    return userData;
+  }, [hasReduxData, userOrderData, userData]);
+
+  const isOrderHistoryLoading = userDataLoading || !hasReduxData;
+
   // const { data: monthlySubscriptionData } = useSelector(
   //   ({ popup }: any) => popup?.monthlySubscription
   // );
   // const [fetchFreeTrialPopupsData] = useDispatchWithAbort(fetchFreeTrialPopups);
   // const country_code = cookies.get('country_code');
   const plainPassword = useMemo(() => {
-    return decrypt(userData?.passwordforUI);
-  }, [userData?.passwordforUI]);
+    return decrypt(effectiveUserData?.passwordforUI);
+  }, [effectiveUserData?.passwordforUI]);
 
   // Format subscription price
   // const subscriptionPrice = useMemo(() => {
@@ -66,36 +82,37 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
 
   const isFreeTrial = useMemo(() => {
     return (
-      userData?.subscription_purchase_histories?.find(
+      effectiveUserData?.subscription_purchase_histories?.find(
         ({ is_trial }: any) => is_trial
       )?.is_trial || false
     );
-  }, [userData?.subscription_purchase_histories]);
+  }, [effectiveUserData?.subscription_purchase_histories]);
 
   const trailDays = useMemo(() => {
     return (
-      userData?.subscription_purchase_histories?.find(
+      effectiveUserData?.subscription_purchase_histories?.find(
         ({ is_trial }: any) => is_trial
       )?.subscription_plan?.trial_days || 7
     );
-  }, [userData?.subscription_purchase_histories]);
+  }, [effectiveUserData?.subscription_purchase_histories]);
 
   const orderHistory = useMemo(() => {
     return (
-      userData?.user_orders?.[0]?.user_order_details
+      effectiveUserData?.user_orders?.[0]?.user_order_details
         ?.filter(({ payment_status }: any) => payment_status === 'paid')
         ?.map(({ id, course_translation }: any) => ({
           id,
           title: course_translation?.title,
         })) || []
     );
-  }, [userData]);
+  }, [effectiveUserData]);
+
 
   useEffect(() => {
-    if (!userData?.id) {
+    if (!effectiveUserData?.id) {
       router.push(routes.public.home);
     }
-  }, [userData?.id, router]);
+  }, [effectiveUserData?.id, router]);
 
   // useEffect(() => {
   //   if (fetchFreeTrialPopupsData) {
@@ -114,36 +131,47 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
         {t('purchase_message')}
         {':'}
       </Typography>
-      {!userData?.id ? (
+      {!effectiveUserData?.id ? (
         <Stack sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress />
         </Stack>
       ) : (
         <>
           <Stack sx={{ gap: 2 }}>
-            {orderHistory?.map(({ id, title }: any) => {
-              return (
-                <ProductsCard key={id} sx={{ alignItems: 'center' }}>
-                  <Image
-                    height={40}
-                    width={40}
-                    src={IMAGES.HandEmoji}
-                    alt='HandEmoji'
-                    style={{
-                        width: 'auto',
-                        height: '40px'
-                    }}
-                  />
-                  <Typography variant='subtitle1'>
-                    <Box component='span' sx={{ fontWeight: 400 }}>
-                      {t('access_message')}
-                      {':'}
-                    </Box>{' '}
-                    {title}
-                  </Typography>
+            {isOrderHistoryLoading ? (
+              [...Array(3)].map((_, index) => (
+                <ProductsCard key={index} sx={{ alignItems: 'center' }}>
+                  <Skeleton variant='circular' width={40} height={40} />
+                  <Stack sx={{ flex: 1 }}>
+                    <Skeleton variant='text' width='80%' height={24} />
+                  </Stack>
                 </ProductsCard>
-              );
-            })}
+              ))
+            ) : (
+              orderHistory?.map(({ id, title }: any) => {
+                return (
+                  <ProductsCard key={id} sx={{ alignItems: 'center' }}>
+                    <Image
+                      height={40}
+                      width={40}
+                      src={IMAGES.HandEmoji}
+                      alt='HandEmoji'
+                      style={{
+                        width: 'auto',
+                        height: '40px',
+                      }}
+                    />
+                    <Typography variant='subtitle1'>
+                      <Box component='span' sx={{ fontWeight: 400 }}>
+                        {t('access_message')}
+                        {':'}
+                      </Box>{' '}
+                      {title}
+                    </Typography>
+                  </ProductsCard>
+                );
+              })
+            )}
             {isFreeTrial && (
               <ProductsCard sx={{ flexDirection: 'column', gap: 1.5 }}>
                 <Stack direction='row' spacing={1.5} alignItems='flex-start'>
@@ -206,7 +234,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
                     >
                       {t('login_text')}
                     </Box>{' '}
-                    {userData?.email}
+                    {effectiveUserData?.email}
                   </Typography>
                 </Stack>
                 <IconButton
@@ -214,7 +242,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
                   sx={{ mr: -1, color: 'primary.main' }}
                   onClick={() => {
                     if (!emailIsCopied) {
-                      copyEmail(userData?.email);
+                      copyEmail(effectiveUserData?.email);
                     }
                   }}
                   disableRipple={emailIsCopied}
@@ -292,7 +320,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
         onClick={() => {
           router.push(routes.private.dashboard);
         }}
-        disabled={!userData?.id}
+        disabled={!effectiveUserData?.id}
       >
         {t('go_to_course')}
       </CustomButton>
