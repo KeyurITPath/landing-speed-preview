@@ -91,6 +91,7 @@ const CredentialsForm = ({ setActiveTab, SUPPORT_MAIL, userData }: any) => {
     );
   }, [userData]);
 
+  console.log('orderHistory', orderHistory);
   useEffect(() => {
     if (!userData?.id) {
       router.push(routes.public.home);
