@@ -364,6 +364,7 @@ export const fetchCategories = async (params: any) => {
 export const fetchUser = async (data: any) => {
   try {
     const response = await api.user.get(data);
+    console.log('response', response);
     const userData = response?.data?.data || {};
 
     const clone = { ...userData };
