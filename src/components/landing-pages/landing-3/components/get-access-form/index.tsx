@@ -34,22 +34,17 @@ const GetAccessForm = ({
       gtm.ecommerce.open_cart();
       trackAddToCart({
         conversion_id: conversion_id,
-        content_ids: [course?.id],
-        content_type: 'course',
         ...(course.course_prices?.[0]?.currency?.name
           ? { currency: course.course_prices?.[0]?.currency?.name }
           : {}),
         ...(course.course_prices?.[0]?.price
           ? { value: course.course_prices?.[0]?.price }
           : {}),
-        ...(course.course_prices?.[0]?.price
-          ? { total_amount: course.course_prices?.[0]?.price }
-          : {}),
+        num_items: 1,
         contents: [
           {
-            id: course?.id,
-            quantity: 1,
-            item_price: course.course_prices?.[0]?.price,
+            content_id: course?.id,
+            price: course.course_prices?.[0]?.price,
           },
         ],
         ...(!isEmptyObject(utmData) ? { utmData } : {}),

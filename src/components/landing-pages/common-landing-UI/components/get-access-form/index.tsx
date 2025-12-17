@@ -20,7 +20,6 @@ import { gtm } from '@/utils/gtm';
 import {
   generateConversionId,
   trackAddToCart,
-  trackContentView,
   TWITTER_EVENTS,
 } from '../../../../../utils/pixel/twitter';
 
@@ -49,22 +48,17 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
       gtm.ecommerce.open_cart();
       trackAddToCart({
         conversion_id: conversion_id,
-        content_ids: [landingData.course?.id],
-        content_type: 'course',
         ...(landingData?.course.course_prices?.[0]?.currency?.name
           ? { currency: landingData?.course.course_prices?.[0]?.currency?.name }
           : { currency: 'USD' }),
         ...(landingData?.course.course_prices?.[0]?.price
           ? { value: landingData?.course.course_prices?.[0]?.price }
           : { value: 0 }),
-        ...(landingData?.course.course_prices?.[0]?.price
-          ? { total_amount: landingData?.course.course_prices?.[0]?.price }
-          : { total_amount: 0 }),
+        num_items: 1,
         contents: [
           {
-            id: course?.id,
-            quantity: 1,
-            item_price: landingData?.course.course_prices?.[0]?.price,
+            content_id: course?.id,
+            price: landingData?.course.course_prices?.[0]?.price,
           },
         ],
         ...(!isEmptyObject(utmData) ? { utmData } : {}),
