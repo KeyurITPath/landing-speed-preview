@@ -27,6 +27,11 @@ import cookies from 'js-cookie';
 import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { getAllLanguages } from '@/store/features/defaults.slice';
 import { gtm } from '@/utils/gtm';
+import {
+  generateConversionId,
+  trackCheckoutInitiated,
+  TWITTER_EVENTS,
+} from '../../../../../../utils/pixel/twitter';
 
 const TermsLink = styled(Link)(() => ({
   color: '#304BE0',
@@ -80,6 +85,8 @@ const OpenAccessForm = ({
       fetchAllLanguages({});
     }
   }, [fetchAllLanguages]);
+
+  const conversion_id = generateConversionId('checkout');
 
   const [onSubmit, loading] = useAsyncOperation(async (values: any) => {
     const selectedLanguage = languagesData?.find(
@@ -140,22 +147,35 @@ const OpenAccessForm = ({
       ...params,
     };
 
-
     const resOrderCheckout = await api.getAccess.orderCheckout({ data });
 
     if (resOrderCheckout?.data?.data?.checkoutUrl) {
-      pixel.initial_checkout({
+      trackCheckoutInitiated({
+        conversion_id: conversion_id,
         userId: registerUserData?.id,
-        content_type: 'course',
-        content_ids: [courseData?.id],
-        total_amount: courseData?.course_prices?.[0]?.price,
+        email_address: registerUserData?.email || '',
         value: courseData?.course_prices?.[0]?.price,
         currency: courseData?.course_prices?.[0]?.currency?.name,
+        num_items: 1,
         contents: [
           {
-            id: courseData?.id,
-            quantity: 1,
-            item_price: courseData.course_prices?.[0]?.price,
+            content_id: courseData?.id,
+            price: courseData.course_prices?.[0]?.price,
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      });
+      pixel.initial_checkout({
+        conversion_id: conversion_id,
+        twitter_event_id: TWITTER_EVENTS.checkout,
+        userId: registerUserData?.id,
+        value: courseData?.course_prices?.[0]?.price,
+        currency: courseData?.course_prices?.[0]?.currency?.name,
+        num_items: 1,
+        contents: [
+          {
+            content_id: courseData?.id,
+            price: courseData.course_prices?.[0]?.price,
           },
         ],
         ...(!isEmptyObject(utmData) ? { utmData } : {}),

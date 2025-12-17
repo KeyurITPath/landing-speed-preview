@@ -13,6 +13,7 @@ import { isEmptyObject } from '@/utils/helper';
 import { useSearchParams } from 'next/navigation';
 import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
+import { generateConversionId, trackAddToCart, TWITTER_EVENTS } from '../../../../../utils/pixel/twitter';
 
 const GetAccessForm = ({
   open,
@@ -23,14 +24,34 @@ const GetAccessForm = ({
   activeLandingPage,
   domainName,
   utmData,
+  data,
   ...props
 }: any) => {
   const queryParams = useSearchParams();
+  const conversion_id = generateConversionId('cart');
 
   useEffect(() => {
     if (open && activeForm === 'access-form') {
       gtm.ecommerce.open_cart();
+      trackAddToCart({
+        conversion_id: conversion_id,
+        ...(course.course_prices?.[0]?.currency?.name
+          ? { currency: course.course_prices?.[0]?.currency?.name }
+          : {}),
+        ...(course.course_prices?.[0]?.price
+          ? { value: course.course_prices?.[0]?.price }
+          : {}),
+        contents: [
+          {
+            content_id: course?.id,
+            content_name: data?.header|| '',
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      })
       pixel.add_to_cart({
+        conversion_id: conversion_id,
+        twitter_event_id: TWITTER_EVENTS.add_to_cart,
         content_ids: [course?.id],
         content_type: 'course',
         ...(course.course_prices?.[0]?.currency?.name
@@ -52,7 +73,7 @@ const GetAccessForm = ({
         ...(!isEmptyObject(utmData) ? { utmData } : {}),
       });
     }
-  }, [activeForm, open, utmData, course]);
+  }, [activeForm, open, utmData, course, conversion_id]);
 
   return (
     <Dialog

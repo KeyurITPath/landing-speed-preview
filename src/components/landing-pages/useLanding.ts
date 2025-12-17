@@ -49,6 +49,7 @@ import { fetchAllBundles, fetchAllUpSales } from '@/store/features/course.slice'
 import useSocket from '@/hooks/use-socket';
 import { AuthContext } from '@/context/auth-provider';
 import { clearMetaPixelHandler, pixel, prepareMetaFunction } from '../../utils/pixel';
+import { generateConversionId, trackContentView, TWITTER_EVENTS } from '../../utils/pixel/twitter';
 
 let globalPipValue = false;
 
@@ -341,6 +342,7 @@ const useLanding = ({
       ...(params?.get('gclid') ? { gclid: params?.get('gclid') } : {}),
       ...(params?.get('ttclid') ? { ttclid: params?.get('ttclid') } : {}),
       ...(params?.get('utm_term') ? { utm_term: params?.get('utm_term') } : {}),
+      ...(params?.get('twclid') ? { twclid: params?.get('twclid') } : {}),
       ...(params?.get('utm_source')
         ? { utm_source: params?.get('utm_source') }
         : {}),
@@ -384,6 +386,7 @@ const useLanding = ({
     [otherData?.course?.course_prices, otherData?.course?.id]
   );
 
+  const conversion_id = generateConversionId('view')
 
  useEffect(() => {
   if (
@@ -395,6 +398,8 @@ const useLanding = ({
   ) {
     pixelViewTriggered.current = true;
     pixel.view_content({
+      conversion_id: conversion_id,
+      twitter_event_id: TWITTER_EVENTS.view_content,
       landingMetaPixelId: pixelIds,
       isAnalyticsCredentialsExists: true,
       ...(!isEmptyObject(utmData) && { utmData }),
@@ -403,10 +408,19 @@ const useLanding = ({
     });
   }
 
+  if(conversion_id){
+    trackContentView({
+      conversion_id,
+      ...(!isEmptyObject(utmData) && { utmData }),
+      ...(user?.email ? { email_address: user.email } : {}),
+      ...anotherPixelData,
+    })
+  }
+
   return () => {
     clearMetaPixelHandler();
   };
-}, [isFbAnalyticsCredentialsAPICalled, isTiktokAnalyticsCredentialsAPICalled, pixelIds, otherData?.data?.id, utmData, user.id, anotherPixelData]);
+}, [isFbAnalyticsCredentialsAPICalled, isTiktokAnalyticsCredentialsAPICalled, pixelIds, otherData?.data?.id, utmData, user.id, anotherPixelData, conversion_id, user.email]);
 
 
 
