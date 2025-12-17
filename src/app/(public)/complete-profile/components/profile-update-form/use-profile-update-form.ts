@@ -192,6 +192,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
           id: course.id,
           priceAmount: priceData?.price || 0,
           stripeId: priceData?.stripe_price_id,
+          title: course?.course_translation?.title || ''
         };
       })
       .filter((item: any) => item !== null);
@@ -216,6 +217,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         id: item?.course_id,
         quantity: 1,
         item_price: item?.course_price?.price || 0,
+        name: item?.course_translation?.title || ''
       })) || [],
     [userOrderData]
   );
@@ -226,6 +228,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
         id: item?.id,
         quantity: 1,
         item_price: item?.priceAmount || 0,
+        name: item?.title
       })) || [],
     [selectedUpsaleCourses]
   );
@@ -279,15 +282,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       total_amount: totalCoursePrice,
       final_url: purchasedCourseWithoutUpsale?.final_url,
     };
-  }, [
-    userOrderData?.id,
-    contentIds,
-    currencyName,
-    course_content,
-    upsaleContents,
-    totalCoursePrice,
-    purchasedCourseWithoutUpsale?.final_url,
-  ]);
+  }, [userOrderData?.id, userData?.email, contentIds, currencyName, course_content, upsaleContents, totalCoursePrice, purchasedCourseWithoutUpsale?.final_url]);
 
   const utmData = useMemo(() => {
     const utmSources =
@@ -454,7 +449,13 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       }
       trackPurchase({
         conversion_id: conversion_id,
-        ...metaParams,
+        email_address: userData?.email,
+        currency: currencyName,
+        contents: [...course_content, ...upsaleContents]?.map(item => ({
+          content_id: item?.id,
+          content_name: item?.name,
+        })),
+      value: totalCoursePrice,
         ...(!isEmptyObject(utmData) && { utmData }),
       })
       pixel.purchase({

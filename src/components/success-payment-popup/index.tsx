@@ -70,6 +70,7 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
       id: item?.course_id,
       quantity: 1,
       item_price: item?.course_price?.price || 0,
+      name: item?.course_translation?.title || ''
     })
   );
 
@@ -141,7 +142,13 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
       }
       trackPurchase({
         conversion_id: conversion_id,
-        ...metaParams,
+        email_address: data?.email || '',
+        currency: currency,
+        contents: [...course_content]?.map(item => ({
+          content_id: item?.id,
+          content_name: item?.name,
+        })),
+      value: totalPrice,
         ...(!isEmptyObject(utmData) && { utmData }),
       })
       pixel.purchase({
