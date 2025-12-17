@@ -100,6 +100,7 @@ const useTrialActivation = ({ domainDetails, country_code }: any) => {
       ...(params?.get('fbclid') ? { fbclid: params?.get('fbclid') } : {}),
       ...(params?.get('gclid') ? { gclid: params?.get('gclid') } : {}),
       ...(params?.get('ttclid') ? { ttclid: params?.get('ttclid') } : {}),
+      ...(params?.get('twclid') ? { ttclid: params?.get('twclid') } : {}),
       ...(params?.get('utm_term') ? { utm_term: params?.get('utm_term') } : {}),
       ...(params?.get('utm_source')
         ? { utm_source: params?.get('utm_source') }

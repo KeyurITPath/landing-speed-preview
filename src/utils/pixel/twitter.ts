@@ -1,6 +1,4 @@
 export {}; // 👈 makes this file an external module
-import { api } from '../../api';
-import { apiAsyncHandler } from '../helper';
 
 export const generateConversionId = (prefix = 'x') => {
   const timestamp = Date.now();
@@ -8,11 +6,12 @@ export const generateConversionId = (prefix = 'x') => {
   return `${prefix}_${timestamp}_${random}`;
 };
 
-const sendXEventToBE = async (payload: any) => {
-  await apiAsyncHandler(async () => {
-    await api.pixel.event({ data: payload });
-  });
-};
+export const TWITTER_EVENTS = {
+  view_content: 'tw-qwlow-qwlvv',
+  add_to_cart: 'tw-qwlow-qwlw6',
+  checkout: 'tw-qwlow-qwlwf',
+  purchase: 'tw-qwlow-qwlwg'
+}
 
 declare global {
   interface Window {
@@ -24,7 +23,7 @@ const isTwqReady = () =>
   typeof window !== 'undefined' && typeof window.twq === 'function';
 
 /* Content View Event */
-export const trackContentView = async ({
+export const trackContentView = ({
   conversion_id = generateConversionId('view'),
   value = 0,
   currency = 'USD',
@@ -37,7 +36,7 @@ export const trackContentView = async ({
 }) => {
   // FE (optional)
   if (isTwqReady()) {
-    window.twq!('event', 'tw-qw6i7-qwfc7', {
+    window.twq!('event', TWITTER_EVENTS.view_content, {
       conversion_id,
       value,
       currency,
@@ -46,106 +45,97 @@ export const trackContentView = async ({
   }
 
   // BE (always)
-  await sendXEventToBE({
-    event_id: 'tw-qw6i7-qwfc7',
-    conversion_id,
-    value,
-    currency,
-    email_address,
-  });
+  // await sendXEventToBE({
+  //   event_id: 'tw-qw6i7-qwfc7',
+  //   conversion_id,
+  //   value,
+  //   currency,
+  //   email_address,
+  // });
 
   return conversion_id;
 };
 
 /* Add to Cart */
-export const trackAddToCart = async ({
+export const trackAddToCart = ({
   conversion_id = generateConversionId('cart'),
   value = 0,
   currency = 'USD',
   email_address,
-}: {
-  conversion_id?: string;
-  value?: number;
-  currency?: string;
-  email_address?: string;
-}) => {
+  ...otherProps
+}: any) => {
   if (isTwqReady()) {
-    window.twq!('event', 'tw-qw6i7-qwfb3', {
+    window.twq!('event', TWITTER_EVENTS.add_to_cart, {
       conversion_id,
       value,
       currency,
       email_address,
+      ...otherProps
     });
   }
 
-  await sendXEventToBE({
-    event_id: 'tw-qw6i7-qwfb3',
-    conversion_id,
-    value,
-    currency,
-    email_address,
-  });
+  // await sendXEventToBE({
+  //   event_id: 'tw-qw6i7-qwfb3',
+  //   conversion_id,
+  //   value,
+  //   currency,
+  //   email_address,
+  // });
 
   return conversion_id;
 };
 
 /* Checkout Initiated */
-export const trackCheckoutInitiated = async ({
+export const trackCheckoutInitiated = ({
   conversion_id = generateConversionId('checkout'),
   value = 0,
   currency = 'USD',
   email_address,
-}: {
-  conversion_id?: string;
-  value?: number;
-  currency?: string;
-  email_address?: string;
-}) => {
+  ...otherProps
+}: any) => {
   if (isTwqReady()) {
-    window.twq!('event', 'tw-qw6i7-qwfbp', {
+    window.twq!('event', TWITTER_EVENTS.checkout, {
       conversion_id,
       value,
       currency,
       email_address,
+      ...otherProps
     });
   }
-  await sendXEventToBE({
-    event_id: 'tw-qw6i7-qwfbp',
-    conversion_id,
-    value,
-    currency,
-    email_address,
-  });
+  // await sendXEventToBE({
+  //   event_id: 'tw-qw6i7-qwfbp',
+  //   conversion_id,
+  //   value,
+  //   currency,
+  //   email_address,
+  // });
 
   return conversion_id;
 };
 
 /* Purchase */
-export const trackPurchase = async ({
+export const trackPurchase = ({
   conversion_id = generateConversionId('purchase'),
   value = 0,
   currency = 'USD',
   email_address,
-}: {
-  conversion_id: string;
-  value: number;
-  currency: string;
-  email_address?: string;
-}) => {
+  ...otherProps
+}: any) => {
   if (isTwqReady()) {
-    window.twq!('event', 'tw-qw6i7-qwfbv', {
+    window.twq!('event', TWITTER_EVENTS.purchase, {
       conversion_id,
       value,
       currency,
       email_address,
+      ...otherProps
     });
   }
 
-  await sendXEventToBE({
-    event_id: 'tw-qw6i7-qwfbv',
-    conversion_id,
-    value,
-    currency,
-    email_address,
-  });
+  // await sendXEventToBE({
+  //   event_id: 'tw-qw6i7-qwfbv',
+  //   conversion_id,
+  //   value,
+  //   currency,
+  //   email_address,
+  // });
 };

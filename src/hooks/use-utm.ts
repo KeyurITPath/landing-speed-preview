@@ -11,7 +11,7 @@ export function useStoreAllUtmParams() {
     const params: Record<string, string> = {};
 
     searchParams.forEach((value, key) => {
-       if (key.startsWith("utm_") || ['fbclid', 'gclid', 'ttclid'].includes(key)) {
+       if (key.startsWith("utm_") || ['fbclid', 'gclid', 'ttclid', 'twclid'].includes(key)) {
         params[key] = value;
       }
     });

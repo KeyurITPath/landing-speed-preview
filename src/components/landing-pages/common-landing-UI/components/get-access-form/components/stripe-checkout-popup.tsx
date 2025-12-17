@@ -47,6 +47,11 @@ import { fetchFreeTrialPopups } from '../../../../../../store/features/popup.sli
 import cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
 import { AuthContext } from '@/context/auth-provider';
+import {
+  generateConversionId,
+  trackCheckoutInitiated,
+  TWITTER_EVENTS,
+} from '../../../../../../utils/pixel/twitter';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -118,6 +123,8 @@ const StripeInnerForm = ({
     coursePrice?.price,
     coursePrice?.currency?.name
   );
+
+  const conversion_id = generateConversionId('checkout');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -191,7 +198,31 @@ const StripeInnerForm = ({
         }
         // Clear selected upsale IDs cookie after successful payment
         cookies.remove('selectedUpsaleIds');
+        trackCheckoutInitiated({
+          conversion_id: conversion_id,
+          userId: registerUserData?.id,
+          email_address: registerUserData?.email || '',
+          content_type: 'course',
+          content_ids: [
+            courseData?.id,
+            ...(selectedUpsaleCourses?.map((upsale: any) => upsale.id) || []),
+          ],
+          total_amount: totalAmount,
+          value: totalAmount,
+          currency: coursePrice?.currency?.name,
+          contents: [
+            {
+              id: courseData?.id,
+              quantity: 1,
+              item_price: coursePrice?.price,
+            },
+            ...upsaleContents,
+          ],
+          ...(!isEmptyObject(utmData) ? { utmData } : {}),
+        });
         await pixel.initial_checkout({
+          conversion_id: conversion_id,
+          twitter_event_id: TWITTER_EVENTS.checkout,
           userId: registerUserData?.id,
           content_type: 'course',
           content_ids: [

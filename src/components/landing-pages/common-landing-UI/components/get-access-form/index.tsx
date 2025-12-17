@@ -17,40 +17,90 @@ import { isEmptyObject } from '@/utils/helper';
 import { useTranslations } from 'next-intl';
 import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
+import {
+  generateConversionId,
+  trackAddToCart,
+  trackContentView,
+  TWITTER_EVENTS,
+} from '../../../../../utils/pixel/twitter';
 
 const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
-  const { data, course, activeForm, setActiveForm, SUPPORT_MAIL, utmData, activeLandingPage } =
-    landingData;
+  const {
+    data,
+    course,
+    activeForm,
+    setActiveForm,
+    SUPPORT_MAIL,
+    utmData,
+    activeLandingPage,
+  } = landingData;
   const queryParams = useSearchParams();
   const { upSaleCourses } = useSelector(({ course }: any) => course);
-
 
   const isCourseUpsaleCoursesAvailable = useMemo(() => {
     return Boolean(upSaleCourses?.length > 0);
   }, [upSaleCourses?.length]);
 
   const t = useTranslations();
+  const conversion_id = generateConversionId('cart');
 
-     useEffect(() => {
-          if (open && activeForm === 'access-form') {
-              gtm.ecommerce.open_cart();
-              pixel.add_to_cart({
-                  content_ids: [landingData.course?.id],
-                  content_type: 'course',
-                  ...(landingData?.course.course_prices?.[0]?.currency?.name ? { currency: landingData?.course.course_prices?.[0]?.currency?.name }: { currency: 'USD' }),
-                  ...(landingData?.course.course_prices?.[0]?.price ? { value : landingData?.course.course_prices?.[0]?.price } : { value: 0 }),
-                  ...(landingData?.course.course_prices?.[0]?.price ? { total_amount : landingData?.course.course_prices?.[0]?.price } : { total_amount: 0 }),
-                  contents: [
-                    {
-                      id: course?.id,
-                      quantity: 1,
-                      item_price: landingData?.course.course_prices?.[0]?.price
-                    }
-                  ],
-                  ...(!isEmptyObject(utmData) ? { utmData } : {})
-              });
-          }
-      }, [activeForm, course?.id, landingData.course, open, utmData]);
+  useEffect(() => {
+    if (open && activeForm === 'access-form') {
+      gtm.ecommerce.open_cart();
+      trackAddToCart({
+        conversion_id: conversion_id,
+        content_ids: [landingData.course?.id],
+        content_type: 'course',
+        ...(landingData?.course.course_prices?.[0]?.currency?.name
+          ? { currency: landingData?.course.course_prices?.[0]?.currency?.name }
+          : { currency: 'USD' }),
+        ...(landingData?.course.course_prices?.[0]?.price
+          ? { value: landingData?.course.course_prices?.[0]?.price }
+          : { value: 0 }),
+        ...(landingData?.course.course_prices?.[0]?.price
+          ? { total_amount: landingData?.course.course_prices?.[0]?.price }
+          : { total_amount: 0 }),
+        contents: [
+          {
+            id: course?.id,
+            quantity: 1,
+            item_price: landingData?.course.course_prices?.[0]?.price,
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      });
+      pixel.add_to_cart({
+        conversion_id: conversion_id,
+        twitter_event_id: TWITTER_EVENTS.add_to_cart,
+        content_ids: [landingData.course?.id],
+        content_type: 'course',
+        ...(landingData?.course.course_prices?.[0]?.currency?.name
+          ? { currency: landingData?.course.course_prices?.[0]?.currency?.name }
+          : { currency: 'USD' }),
+        ...(landingData?.course.course_prices?.[0]?.price
+          ? { value: landingData?.course.course_prices?.[0]?.price }
+          : { value: 0 }),
+        ...(landingData?.course.course_prices?.[0]?.price
+          ? { total_amount: landingData?.course.course_prices?.[0]?.price }
+          : { total_amount: 0 }),
+        contents: [
+          {
+            id: course?.id,
+            quantity: 1,
+            item_price: landingData?.course.course_prices?.[0]?.price,
+          },
+        ],
+        ...(!isEmptyObject(utmData) ? { utmData } : {}),
+      });
+    }
+  }, [
+    activeForm,
+    conversion_id,
+    course?.id,
+    landingData.course,
+    open,
+    utmData,
+  ]);
 
   return (
     <Dialog

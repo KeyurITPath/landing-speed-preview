@@ -11,6 +11,11 @@ import { isEmptyObject } from '@/utils/helper';
 import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
 import cookies from 'js-cookie';
+import {
+  generateConversionId,
+  trackPurchase,
+  TWITTER_EVENTS,
+} from '../../utils/pixel/twitter';
 
 const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
   const router = useRouter();
@@ -25,7 +30,8 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
 
   const country_code = cookies.get('country_code') || '';
 
-  const shouldFirePixel = landingPageName !== 'landing1' && landingPageName !== 'landing2';
+  const shouldFirePixel =
+    landingPageName !== 'landing1' && landingPageName !== 'landing2';
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -85,17 +91,20 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
     ({ is_upsale }: any) => is_upsale
   );
 
+  const conversion_id = generateConversionId('purchase');
+
   const metaParams = useMemo(() => {
     return {
       content_type: 'course',
       userId: data?.id,
+      email_address: data?.email || '',
       content_ids: course_content?.map((item: any) => item?.id) || [],
       currency: currency,
       contents: course_content,
       value: totalPrice,
       total_amount: totalPrice,
     };
-  }, [course_content, currency, data?.id, totalPrice]);
+  }, [course_content, currency, data?.email, data?.id, totalPrice]);
 
   const utmData = useMemo(() => {
     const utmSources = data?.user_orders?.[0]?.payment_histories?.[0] || {};
@@ -107,6 +116,7 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
     const fbclid = utmSources?.fbclid || '';
     const gclid = utmSources?.gclid || '';
     const ttclid = utmSources?.ttclid || '';
+    const twclid = utmSources?.twclid || '';
     return {
       ...(utm_campaign && { utm_campaign }),
       ...(utm_source && { utm_source }),
@@ -116,6 +126,7 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
       ...(fbclid && { fbclid }),
       ...(gclid && { gclid }),
       ...(ttclid && { ttclid }),
+      ...(twclid && { twclid })
     };
   }, [data?.user_orders]);
 
@@ -128,9 +139,16 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
       }
+      trackPurchase({
+        conversion_id: conversion_id,
+        ...metaParams,
+        ...(!isEmptyObject(utmData) && { utmData }),
+      })
       pixel.purchase({
-          ...metaParams,
-          ...(!isEmptyObject(utmData) && { utmData }),
+        conversion_id: conversion_id,
+        twitter_event_id: TWITTER_EVENTS.purchase,
+        ...metaParams,
+        ...(!isEmptyObject(utmData) && { utmData }),
       });
 
       hasFired.current = true; // prevent duplicate firing
@@ -140,7 +158,16 @@ const SuccessPaymentPopup = ({ open, landingPageName }: any) => {
     if (!open) {
       hasFired.current = false;
     }
-  }, [courseAmount, data?.id, isExistUpsale, metaParams, open, shouldFirePixel, upSaleAmount, utmData]);
+  }, [
+    courseAmount,
+    data?.id,
+    isExistUpsale,
+    metaParams,
+    open,
+    shouldFirePixel,
+    upSaleAmount,
+    utmData,
+  ]);
 
   return (
     <PopUpModal

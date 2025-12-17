@@ -23,6 +23,7 @@ import useDispatchWithAbort from '@/hooks/use-dispatch-with-abort';
 import { fetchUser } from '@/store/features/user.slice';
 import { pixel } from '@/utils/pixel';
 import { gtm } from '@/utils/gtm';
+import { generateConversionId, trackPurchase, TWITTER_EVENTS } from '../../../../../utils/pixel/twitter';
 
 const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
   const { user, setToken } = useContext(AuthContext);
@@ -270,6 +271,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     return {
       content_type: 'course',
       userId: userOrderData?.id,
+      email_address: userData?.email,
       content_ids: contentIds,
       currency: currencyName,
       contents: [...course_content, ...upsaleContents],
@@ -298,6 +300,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     const fbclid = utmSources?.fbclid || '';
     const gclid = utmSources?.gclid || '';
     const ttclid = utmSources?.ttclid || '';
+    const twclid = utmSources?.twclid || '';
     return {
       ...(utm_campaign && { utm_campaign }),
       ...(utm_source && { utm_source }),
@@ -307,6 +310,7 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
       ...(fbclid && { fbclid }),
       ...(gclid && { gclid }),
       ...(ttclid && { ttclid }),
+      ...(twclid && { twclid }),
     };
   }, [userOrderData?.user_orders]);
 
@@ -440,13 +444,22 @@ const useProfileUpdateForm = ({ setActiveTab, userData }: any) => {
     }));
   }, [userData, setValues]);
 
+  const conversion_id = generateConversionId('purchase');
+
   useEffect(() => {
     if (userOrderData?.id && isProfileCompleted && !hasFired.current) {
       gtm.ecommerce.purchase({ value: courseAmount });
       if (isExistUpsale) {
         gtm.ecommerce.upsale({ value: upSaleAmount });
       }
+      trackPurchase({
+        conversion_id: conversion_id,
+        ...metaParams,
+        ...(!isEmptyObject(utmData) && { utmData }),
+      })
       pixel.purchase({
+        conversion_id: conversion_id,
+        twitter_event_id: TWITTER_EVENTS.purchase,
         ...metaParams,
         ...(!isEmptyObject(utmData) && { utmData }),
       });
