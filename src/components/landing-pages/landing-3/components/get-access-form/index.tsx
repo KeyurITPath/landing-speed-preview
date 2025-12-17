@@ -24,6 +24,7 @@ const GetAccessForm = ({
   activeLandingPage,
   domainName,
   utmData,
+  data,
   ...props
 }: any) => {
   const queryParams = useSearchParams();
@@ -40,11 +41,10 @@ const GetAccessForm = ({
         ...(course.course_prices?.[0]?.price
           ? { value: course.course_prices?.[0]?.price }
           : {}),
-        num_items: 1,
         contents: [
           {
             content_id: course?.id,
-            price: course.course_prices?.[0]?.price,
+            content_name: data?.header|| '',
           },
         ],
         ...(!isEmptyObject(utmData) ? { utmData } : {}),

@@ -54,11 +54,10 @@ const GetAccessForm = ({ open, onClose, landingData, ...props }: any) => {
         ...(landingData?.course.course_prices?.[0]?.price
           ? { value: landingData?.course.course_prices?.[0]?.price }
           : { value: 0 }),
-        num_items: 1,
         contents: [
           {
             content_id: course?.id,
-            price: landingData?.course.course_prices?.[0]?.price,
+            content_name: data?.header || '',
           },
         ],
         ...(!isEmptyObject(utmData) ? { utmData } : {}),
